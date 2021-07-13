@@ -10,8 +10,10 @@ import copy from "copy-to-clipboard";
 import createPopup from "../api/createPopup";
 import lz from "lzutf8";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-export const Topbar = () => {
+export const Topbar = ({ save = true }) => {
+  let history = useHistory();
   const { actions, query, canUndo, canRedo } = useEditor((state, query) => ({
     canUndo: query.history.canUndo(),
     canRedo: query.history.canRedo()
@@ -54,13 +56,17 @@ export const Topbar = () => {
           <AppqButton
             size="sm"
             flat={true}
+            disabled={!save}
             color="secondary"
             className="aq-float-right aq-mr-2"
             onClick={() => {
               const json = query.serialize();
               const base64 = lz.encodeBase64(lz.compress(json));
               createPopup({ content: base64 })
-                .then(() => alert("Saved!"))
+                .then(data => {
+                  alert("Saved!");
+                  history.push(`/backoffice/${data.id}`);
+                })
                 .catch(e => {
                   alert("Error!");
                   console.err(e.message);

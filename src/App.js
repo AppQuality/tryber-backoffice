@@ -9,6 +9,7 @@ import {
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Create from "./pages/Create";
 import Update from "./pages/Update";
+import List from "./pages/List";
 import "./App.css";
 
 function App() {
@@ -17,8 +18,9 @@ function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Switch>
-          <Route path={`/backoffice/:id`} component={() => <Update />} />
-          <Route path={`/backoffice`} component={Create} />
+        <Route path={`/backoffice/new`} component={Create} />
+        <Route path={`/backoffice/:id`} component={Update} />
+          <Route path={`/backoffice`} component={List} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
