@@ -2,6 +2,7 @@
   "name": "pagebuilder-poc",
   "version": "0.1.0",
   "private": true,
+  "homepage": "backoffice/",
   "dependencies": {
     "@appquality/appquality-design-system": "^0.1.86",
     "@appquality/craft-blocks": "^0.1.11",
@@ -18,7 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && mkdir -p build/backoffice/ &&  mv build/* build/backoffice/ ; true",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
