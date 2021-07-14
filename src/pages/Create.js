@@ -45,7 +45,7 @@ export default ({}) => {
       >
         <Topbar
           onSave={content => {
-            const data = { title, content };
+            const data = { title, content, profiles: targets, once: once == 1 };
             createPopup(data)
               .then(data => {
                 alert("Saved!");
@@ -102,8 +102,8 @@ export default ({}) => {
                 </Frame>
               </div>
               <Card>
-              <TargetSelect value={targets} onChange={setTargets} />
-              <ShowOnce value={once} onChange={setOnce} />
+                <TargetSelect value={targets} onChange={setTargets} />
+                <ShowOnce value={once} onChange={setOnce} />
               </Card>
             </BSCol>
             <BSCol size="col-4">

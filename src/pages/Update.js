@@ -12,7 +12,12 @@ import {
   Frame,
   Element
 } from "@appquality/craft-blocks";
-import { BSGrid, BSCol, Input, Card } from "@appquality/appquality-design-system";
+import {
+  BSGrid,
+  BSCol,
+  Input,
+  Card
+} from "@appquality/appquality-design-system";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import getOnePopup from "../api/getOnePopup";
@@ -36,11 +41,7 @@ export default ({}) => {
           setTitle(data.title);
         }
         if (data.profiles) {
-          if (Array.isArray(data.profiles)) {
-            setTargets("list");
-          } else {
             setTargets(data.profiles);
-          }
         }
         if (data.once) {
           setOnce(data.once ? 1 : 0);
@@ -68,8 +69,7 @@ export default ({}) => {
       >
         <Topbar
           onSave={content => {
-            const profiles = targets;
-            const data = { title, content, profiles, once: once == 1 };
+            const data = { title, content, profiles: targets, once: once == 1 };
             updatePopup(data, id)
               .then(data => {
                 alert("Saved!");
