@@ -10,8 +10,14 @@ export default (token = false) => {
     headers: myHeaders
   };
 
-  return fetch(
-    process.env.REACT_APP_API_URL + "/popups/",
-    requestOptions
-  ).then(response => response.json());
+  return new Promise((resolve, reject) =>
+    fetch(process.env.REACT_APP_API_URL + "/popups/", requestOptions)
+      .then(response => {
+        if (response.status == 200) {
+          return response.json();
+        }
+        return Promise.resolve([])
+      })
+      .then(data => resolve(data))
+  );
 };

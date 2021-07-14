@@ -14,6 +14,7 @@ export default ({}) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getAllPopups().then(res => {
+      console.log(res)
       setData(
         res.map(r => ({
           id: r.id,
