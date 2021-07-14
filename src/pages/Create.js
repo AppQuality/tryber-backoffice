@@ -12,12 +12,18 @@ import {
   Frame,
   Element
 } from "@appquality/craft-blocks";
-import { BSGrid, BSCol } from "@appquality/appquality-design-system";
+import {
+  BSGrid,
+  BSCol,
+  Input,
+  FormLabel
+} from "@appquality/appquality-design-system";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import getOnePopup from "../api/getOnePopup";
 
 export default ({}) => {
+  const [title, setTitle] = useState("");
   return (
     <div style={{ margin: "0 auto", width: "800px" }}>
       <Editor
@@ -29,11 +35,16 @@ export default ({}) => {
           ButtonContainer
         }}
       >
-        <Topbar />
+        <Topbar data={{ title }} />
         <div className="aq-mt-3">
           <BSGrid>
             <BSCol size="col-8">
               <div id="editor-area">
+                <Input
+                  value={title}
+                  onChange={setTitle}
+                  placeholder="Title..."
+                />
                 <Frame>
                   <Element
                     canvas

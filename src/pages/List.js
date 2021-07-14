@@ -17,6 +17,7 @@ export default ({}) => {
       setData(
         res.map(r => ({
           id: r.id,
+          title: r.title,
           action: {
             title: "Open",
             content: (
@@ -38,7 +39,13 @@ export default ({}) => {
       title: "Id",
       dataIndex: "id",
       key: "id",
-      width: "8ch"
+      width: "2ch"
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      width: "10ch"
     },
     {
       title: "Action",

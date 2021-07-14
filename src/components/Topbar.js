@@ -12,7 +12,7 @@ import lz from "lzutf8";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export const Topbar = ({ save = true }) => {
+export const Topbar = ({ data, save = true }) => {
   let history = useHistory();
   const { actions, query, canUndo, canRedo } = useEditor((state, query) => ({
     canUndo: query.history.canUndo(),
@@ -62,7 +62,7 @@ export const Topbar = ({ save = true }) => {
             onClick={() => {
               const json = query.serialize();
               const base64 = lz.encodeBase64(lz.compress(json));
-              createPopup({ content: base64 })
+              createPopup({ title: data.title, content: base64 })
                 .then(data => {
                   alert("Saved!");
                   history.push(`/backoffice/${data.id}`);
