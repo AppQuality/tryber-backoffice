@@ -19,7 +19,7 @@ import {
   Card
 } from "@appquality/appquality-design-system";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import getOnePopup from "../api/getOnePopup";
 import updatePopup from "../api/updatePopup";
 import TargetSelect from "../features/TargetSelect";
@@ -27,26 +27,29 @@ import ShowOnce from "../features/ShowOnce";
 
 export default ({}) => {
   let { id } = useParams();
+  let history = useHistory();
   let [base64, setBase64] = useState(false);
   const [title, setTitle] = useState("");
   const [targets, setTargets] = useState("all");
   const [once, setOnce] = useState(0);
   useEffect(() => {
     if (id) {
-      getOnePopup(id).then(data => {
-        if (data.content) {
-          setBase64(data.content);
-        }
-        if (data.title) {
-          setTitle(data.title);
-        }
-        if (data.profiles) {
+      getOnePopup(id)
+        .then(data => {
+          if (data.content) {
+            setBase64(data.content);
+          }
+          if (data.title) {
+            setTitle(data.title);
+          }
+          if (data.profiles) {
             setTargets(data.profiles);
-        }
-        if (data.once) {
-          setOnce(data.once ? 1 : 0);
-        }
-      });
+          }
+          if (data.once) {
+            setOnce(data.once ? 1 : 0);
+          }
+        })
+        .catch(err => history.push(`/backoffice/`));
     }
   }, [id]);
   let json = false;
