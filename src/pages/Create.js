@@ -20,9 +20,11 @@ import {
 } from "@appquality/appquality-design-system";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import getOnePopup from "../api/getOnePopup";
+import { useHistory } from "react-router-dom";
+import createPopup from "../api/createPopup";
 
 export default ({}) => {
+  let history = useHistory();
   const [title, setTitle] = useState("");
   return (
     <div style={{ margin: "0 auto", width: "800px" }}>
@@ -35,7 +37,20 @@ export default ({}) => {
           ButtonContainer
         }}
       >
-        <Topbar data={{ title }} />
+        <Topbar
+          onSave={content => {
+            const data = { title, content };
+            createPopup(data)
+              .then(data => {
+                alert("Saved!");
+                history.push(`/backoffice/${data.id}`);
+              })
+              .catch(e => {
+                alert("Error!");
+                console.err(e.message);
+              });
+          }}
+        />
         <div className="aq-mt-3">
           <BSGrid>
             <BSCol size="col-8">

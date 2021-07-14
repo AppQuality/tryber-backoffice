@@ -12,8 +12,7 @@ import lz from "lzutf8";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export const Topbar = ({ data, save = true }) => {
-  let history = useHistory();
+export const Topbar = ({ onSave = false }) => {
   const { actions, query, canUndo, canRedo } = useEditor((state, query) => ({
     canUndo: query.history.canUndo(),
     canRedo: query.history.canRedo()
@@ -56,21 +55,13 @@ export const Topbar = ({ data, save = true }) => {
           <AppqButton
             size="sm"
             flat={true}
-            disabled={!save}
+            disabled={!onSave}
             color="secondary"
             className="aq-float-right aq-mr-2"
             onClick={() => {
               const json = query.serialize();
               const base64 = lz.encodeBase64(lz.compress(json));
-              createPopup({ title: data.title, content: base64 })
-                .then(data => {
-                  alert("Saved!");
-                  history.push(`/backoffice/${data.id}`);
-                })
-                .catch(e => {
-                  alert("Error!");
-                  console.err(e.message);
-                });
+              onSave(base64);
             }}
           >
             Save

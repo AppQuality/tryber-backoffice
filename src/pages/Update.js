@@ -16,6 +16,7 @@ import { BSGrid, BSCol, Input } from "@appquality/appquality-design-system";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import getOnePopup from "../api/getOnePopup";
+import updatePopup from "../api/updatePopup";
 
 export default ({}) => {
   let { id } = useParams();
@@ -51,7 +52,19 @@ export default ({}) => {
           ButtonContainer
         }}
       >
-        <Topbar data={{ title }} save={false} />
+        <Topbar
+          onSave={content => {
+            const data = { title, content };
+            updatePopup(data, id)
+              .then(data => {
+                alert("Saved!");
+              })
+              .catch(e => {
+                alert("Error!");
+                console.err(e.message);
+              });
+          }}
+        />
         <div className="aq-mt-3">
           <BSGrid>
             <BSCol size="col-8">
