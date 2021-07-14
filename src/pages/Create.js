@@ -15,17 +15,23 @@ import {
 import {
   BSGrid,
   BSCol,
+  Card,
   Input,
+  Select,
   FormLabel
 } from "@appquality/appquality-design-system";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import createPopup from "../api/createPopup";
+import TargetSelect from "../features/TargetSelect";
+import ShowOnce from "../features/ShowOnce";
 
 export default ({}) => {
   let history = useHistory();
   const [title, setTitle] = useState("");
+  const [targets, setTargets] = useState("all");
+  const [once, setOnce] = useState(0);
   return (
     <div style={{ margin: "0 auto", width: "800px" }}>
       <Editor
@@ -95,6 +101,10 @@ export default ({}) => {
                   </Element>
                 </Frame>
               </div>
+              <Card>
+              <TargetSelect value={targets} onChange={setTargets} />
+              <ShowOnce value={once} onChange={setOnce} />
+              </Card>
             </BSCol>
             <BSCol size="col-4">
               <Toolbox />

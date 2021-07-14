@@ -12,16 +12,20 @@ import {
   Frame,
   Element
 } from "@appquality/craft-blocks";
-import { BSGrid, BSCol, Input } from "@appquality/appquality-design-system";
+import { BSGrid, BSCol, Input, Card } from "@appquality/appquality-design-system";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import getOnePopup from "../api/getOnePopup";
 import updatePopup from "../api/updatePopup";
+import TargetSelect from "../features/TargetSelect";
+import ShowOnce from "../features/ShowOnce";
 
 export default ({}) => {
   let { id } = useParams();
   let [base64, setBase64] = useState(false);
   const [title, setTitle] = useState("");
+  const [targets, setTargets] = useState("all");
+  const [once, setOnce] = useState(0);
   useEffect(() => {
     if (id) {
       getOnePopup(id).then(data => {
@@ -30,6 +34,16 @@ export default ({}) => {
         }
         if (data.title) {
           setTitle(data.title);
+        }
+        if (data.profiles) {
+          if (Array.isArray(data.profiles)) {
+            setTargets("list");
+          } else {
+            setTargets(data.profiles);
+          }
+        }
+        if (data.once) {
+          setOnce(data.once ? 1 : 0);
         }
       });
     }
@@ -54,7 +68,8 @@ export default ({}) => {
       >
         <Topbar
           onSave={content => {
-            const data = { title, content };
+            const profiles = targets;
+            const data = { title, content, profiles, once: once == 1 };
             updatePopup(data, id)
               .then(data => {
                 alert("Saved!");
@@ -76,6 +91,10 @@ export default ({}) => {
                 />
                 <Frame json={json}></Frame>
               </div>
+              <Card>
+                <TargetSelect value={targets} onChange={setTargets} />
+                <ShowOnce value={once} onChange={setOnce} />
+              </Card>
             </BSCol>
             <BSCol size="col-4">
               <Toolbox />
