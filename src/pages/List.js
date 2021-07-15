@@ -14,7 +14,7 @@ export default ({}) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getAllPopups().then(res => {
-      console.log(res)
+      console.log(res);
       setData(
         res.map(r => ({
           id: r.id,
@@ -51,32 +51,30 @@ export default ({}) => {
     {
       title: "Action",
       dataIndex: "action",
-      key: "id"
+      key: "action"
     }
   ];
   return (
-    <div style={{ margin: "0 auto", width: "800px" }}>
-      <div className="aq-mt-3">
-        <BSGrid>
-          <BSCol size="col-12">
-            <Link to="/backoffice/new">
-              <Button type="primary" flat={true} size="block">
-                New
-              </Button>
-            </Link>
-          </BSCol>
-          <BSCol>
-            <Card>
-              <Table
-                dataSource={data}
-                columns={columns}
-                isLoading={loading}
-                isStriped
-              />
-            </Card>
-          </BSCol>
-        </BSGrid>
-      </div>
+    <div className="aq-mt-3">
+      <BSGrid>
+        <BSCol size="col-12">
+          <Link to="/backoffice/new">
+            <Button type="primary" flat={true} size="block">
+              New
+            </Button>
+          </Link>
+        </BSCol>
+        <BSCol>
+          <Card>
+            <Table
+              dataSource={data}
+              columns={columns}
+              isLoading={loading}
+              isStriped
+            />
+          </Card>
+        </BSCol>
+      </BSGrid>
     </div>
   );
 };

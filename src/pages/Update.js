@@ -8,7 +8,6 @@ import {
   ButtonContainer,
   Container,
   Text,
-  Editor,
   Frame,
   Element
 } from "@appquality/craft-blocks";
@@ -24,6 +23,7 @@ import getOnePopup from "../api/getOnePopup";
 import updatePopup from "../api/updatePopup";
 import TargetSelect from "../features/TargetSelect";
 import ShowOnce from "../features/ShowOnce";
+import Editor from '../features/Editor'
 
 export default ({}) => {
   let { id } = useParams();
@@ -60,52 +60,23 @@ export default ({}) => {
     return <p>Loading</p>;
   }
   return (
-    <div style={{ margin: "0 auto", width: "800px" }}>
-      <Editor
-        resolver={{
-          Button,
-          Container,
-          Text,
-          Wysiwyg,
-          ButtonContainer
-        }}
-      >
-        <Topbar
-          onSave={content => {
-            const data = { title, content, profiles: targets, once: once == 1 };
-            updatePopup(data, id)
-              .then(data => {
-                alert("Saved!");
-              })
-              .catch(e => {
-                alert("Error!");
-                console.err(e.message);
-              });
-          }}
-        />
-        <div className="aq-mt-3">
-          <BSGrid>
-            <BSCol size="col-8">
-              <div id="editor-area">
-                <Input
-                  value={title}
-                  onChange={setTitle}
-                  placeholder="Title..."
-                />
-                <Frame json={json}></Frame>
-              </div>
-              <Card>
-                <TargetSelect value={targets} onChange={setTargets} />
-                <ShowOnce value={once} onChange={setOnce} />
-              </Card>
-            </BSCol>
-            <BSCol size="col-4">
-              <Toolbox />
-              <SettingsPanel />
-            </BSCol>
-          </BSGrid>
-        </div>
-      </Editor>
-    </div>
+    <Editor
+      onSave={data => {
+        updatePopup(data, id)
+          .then(data => {
+            alert("Saved!");
+          })
+          .catch(e => {
+            alert("Error!");
+            console.err(e.message);
+          });
+      }}
+      data={{
+        title,
+        targets,
+        once
+      }}
+      json={json}
+    ></Editor>
   );
 };

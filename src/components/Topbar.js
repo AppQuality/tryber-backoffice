@@ -7,7 +7,6 @@ import {
   Button as AppqButton
 } from "@appquality/appquality-design-system";
 import copy from "copy-to-clipboard";
-import createPopup from "../api/createPopup";
 import lz from "lzutf8";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -27,47 +26,42 @@ export const Topbar = ({ onSave = false }) => {
     setSnackbarMessage(null);
   }
   return (
-    <Card>
-      <BSGrid>
-        <BSCol>
-          <AppqButton
-            size="sm"
-            color="secondary"
-            className="aq-mr-2"
-            flat={true}
-            disabled={!canUndo}
-            onClick={() => actions.history.undo()}
-          >
-            Undo
-          </AppqButton>
-          <AppqButton
-            size="sm"
-            color="secondary"
-            className="aq-mr-2"
-            flat={true}
-            disabled={!canRedo}
-            onClick={() => actions.history.redo()}
-          >
-            Redo
-          </AppqButton>
-        </BSCol>
-        <BSCol>
-          <AppqButton
-            size="sm"
-            flat={true}
-            disabled={!onSave}
-            color="secondary"
-            className="aq-float-right aq-mr-2"
-            onClick={() => {
-              const json = query.serialize();
-              const base64 = lz.encodeBase64(lz.compress(json));
-              onSave(base64);
-            }}
-          >
-            Save
-          </AppqButton>
-        </BSCol>
-      </BSGrid>
-    </Card>
+    <BSGrid>
+      <BSCol size="col-7">
+        <AppqButton
+          color="secondary"
+          className="aq-mr-2"
+          flat={true}
+          disabled={!canUndo}
+          onClick={() => actions.history.undo()}
+        >
+          Undo
+        </AppqButton>
+        <AppqButton 
+          color="secondary"
+          className="aq-mr-2"
+          flat={true}
+          disabled={!canRedo}
+          onClick={() => actions.history.redo()}
+        >
+          Redo
+        </AppqButton>
+      </BSCol>
+      <BSCol size="col-5">
+        <AppqButton
+          size="block"
+          disabled={!onSave}
+          color="secondary"
+          className="aq-float-right aq-mr-2"
+          onClick={() => {
+            const json = query.serialize();
+            const base64 = lz.encodeBase64(lz.compress(json));
+            onSave(base64);
+          }}
+        >
+          Save
+        </AppqButton>
+      </BSCol>
+    </BSGrid>
   );
 };

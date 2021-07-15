@@ -16,13 +16,15 @@ function App() {
   return (
     <ThemeProvider theme={aqBootstrapTheme}>
       <GlobalStyle />
-      <BrowserRouter>
-        <Switch>
-        <Route path={`/backoffice/new`} component={Create} />
-        <Route path={`/backoffice/:id`} component={Update} />
-          <Route path={`/backoffice`} component={List} />
-        </Switch>
-      </BrowserRouter>
+      <div style={{ margin: "0 auto", width: "800px" }}>
+        <BrowserRouter>
+          <Switch>
+            <Route path={`/backoffice/new`} component={Create} />
+            <Route path={`/backoffice/:id`} component={Update} />
+            <Route path={`/backoffice`} component={List} />
+          </Switch>
+        </BrowserRouter>
+      </div>
     </ThemeProvider>
   );
 }
