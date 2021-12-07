@@ -1,16 +1,13 @@
-import { useEditor } from '@appquality/craft-blocks';
 import {
-  BSGrid,
-  BSCol,Title,
-  Card,
-  Pill,
-  Button,
+  BSCol, BSGrid, Button, Card,
+  Pill, Title
 } from '@appquality/appquality-design-system';
+import { useEditor } from '@appquality/craft-blocks';
 import React from 'react';
 
 export const SettingsPanel = () => {
   const { actions, selected, isEnabled } = useEditor((state, query) => {
-    const currentNodeId = state.events.selected;
+    const currentNodeId = query.getEvent('selected').last();
     let selected;
 
     if (currentNodeId) {

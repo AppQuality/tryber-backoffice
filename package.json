@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "backoffice/",
   "dependencies": {
-    "@appquality/appquality-design-system": "^0.1.155",
+    "@appquality/appquality-design-system": "^1.0.1",
     "@appquality/craft-blocks": "^0.1.17",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
