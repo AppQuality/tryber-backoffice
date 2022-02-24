@@ -14,11 +14,15 @@ fieldset.MuiFormControl-root {
   cursor: move !important;
 }
 
-#editor-area button ,
+#editor-area button,
 #editor-area a {
   pointer-events: none;
 }
 
+.popupContainer {
+  margin: 0 auto;
+  width: 800px;
+}
 .craftjs-node-selected {
   position: relative;
 }
@@ -26,7 +30,7 @@ fieldset.MuiFormControl-root {
   content: "";
   width: calc(100% + 20px);
   height: calc(100% + 20px);
-  border: 2px dashed #17405C;
+  border: 2px dashed #17405c;
   display: block;
   position: absolute;
   pointer-events: none;

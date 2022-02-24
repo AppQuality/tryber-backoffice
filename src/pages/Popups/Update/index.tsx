@@ -40,23 +40,25 @@ export default ({}) => {
     return <p>Loading</p>;
   }
   return (
-    <Editor
-      onSave={(data: any) => {
-        updatePopup(data, id)
-          .then((data) => {
-            alert("Saved!");
-          })
-          .catch((e) => {
-            alert("Error!");
-            console.error(e.message);
-          });
-      }}
-      data={{
-        title,
-        targets,
-        once,
-      }}
-      json={json}
-    ></Editor>
+    <div className="popupContainer">
+      <Editor
+        onSave={(data: any) => {
+          updatePopup(data, id)
+            .then((data) => {
+              alert("Saved!");
+            })
+            .catch((e) => {
+              alert("Error!");
+              console.error(e.message);
+            });
+        }}
+        data={{
+          title,
+          targets,
+          once,
+        }}
+        json={json}
+      ></Editor>
+    </div>
   );
 };

@@ -49,26 +49,28 @@ export default ({}) => {
     },
   ];
   return (
-    <div className="aq-mt-3">
-      <BSGrid>
-        <BSCol size="col-12">
-          <Link to="/backoffice/new">
-            <Button type="primary" flat={true} size="block">
-              New
-            </Button>
-          </Link>
-        </BSCol>
-        <BSCol>
-          <Card>
-            <Table
-              dataSource={data}
-              columns={columns}
-              isLoading={loading}
-              isStriped
-            />
-          </Card>
-        </BSCol>
-      </BSGrid>
+    <div className="popupContainer">
+      <div className="aq-mt-3">
+        <BSGrid>
+          <BSCol size="col-12">
+            <Link to="/backoffice/new">
+              <Button type="primary" flat={true} size="block">
+                New
+              </Button>
+            </Link>
+          </BSCol>
+          <BSCol>
+            <Card>
+              <Table
+                dataSource={data}
+                columns={columns}
+                isLoading={loading}
+                isStriped
+              />
+            </Card>
+          </BSCol>
+        </BSGrid>
+      </div>
     </div>
   );
 };
