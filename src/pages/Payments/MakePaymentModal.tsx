@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 
 export const MakePaymentModal = () => {
-  const [requestsSent, sendRequest] = useState(false);
+  const [isRequestsSending, setRequestSending] = useState(false);
   const {
     paymentModal: { isOpen },
     pendingRequests: { selected },
@@ -19,8 +19,10 @@ export const MakePaymentModal = () => {
   };
 
   const onPayClick = () => {
-    sendRequest(true);
-    dispatch(paySelectedRequests("pending"));
+    setRequestSending(true);
+    dispatch(paySelectedRequests("pending")).then(() => {
+      setRequestSending(false);
+    });
   };
 
   const ModalFooter = () => {
@@ -30,9 +32,9 @@ export const MakePaymentModal = () => {
         type="primary"
         size="block"
         flat
-        disabled={requestsSent}
+        disabled={isRequestsSending}
       >
-        {requestsSent ? "Wait..." : "Pay"}
+        {isRequestsSending ? "Wait..." : "Pay"}
       </Button>
     );
   };

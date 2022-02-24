@@ -125,5 +125,5 @@ export const paySelectedRequests =
     }
     dispatch(selectRequest([]));
     dispatch(fetchPaymentRequests(status));
-    dispatch(togglePaymentModal(false));
+    return dispatch(togglePaymentModal(false));
   };
