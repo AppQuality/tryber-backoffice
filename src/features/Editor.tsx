@@ -1,31 +1,30 @@
-import {
-  Wysiwyg,
-  Button,
-  ButtonContainer,
-  Container,
-  Text,
-  Frame,
-  Editor
-} from "@appquality/craft-blocks";
+import { BSCol, BSGrid, FormLabel, Input, PageTitle } from '@appquality/appquality-design-system';
+import { Button, ButtonContainer, Container, Editor, Frame, Text, Wysiwyg } from '@appquality/craft-blocks';
+import { ReactElement, useEffect, useState } from 'react';
 
-import {
-  BSGrid,
-  BSCol,
-  Card,
-  Input,
-  Select,
-  Title,
-  FormLabel,
-  PageTitle
-} from "@appquality/appquality-design-system";
-import TargetSelect from "./TargetSelect";
-import ShowOnce from "./ShowOnce";
-import { Topbar } from "../components/Topbar";
-import { SettingsPanel } from "../components/SettingsPanel";
-import { Toolbox } from "../components/Toolbox";
+import { SettingsPanel } from '../components/SettingsPanel';
+import { Toolbox } from '../components/Toolbox';
+import { Topbar } from '../components/Topbar';
+import ShowOnce from './ShowOnce';
+import TargetSelect from './TargetSelect';
 
-import { useState, useEffect } from "react";
-export default ({ onSave, children, json, data = false }) => {
+export default ({
+  onSave,
+  children,
+  json,
+  data = false,
+}: {
+  onSave: (data: any) => void;
+  children?: ReactElement;
+  json?: string;
+  data?:
+    | false
+    | {
+        title: string;
+        targets: string;
+        once: number;
+      };
+}) => {
   const [title, setTitle] = useState((data && data.title) || "");
   const [targets, setTargets] = useState((data && data.targets) || "all");
   const [once, setOnce] = useState((data && data.once) || 0);
@@ -48,7 +47,7 @@ export default ({ onSave, children, json, data = false }) => {
           Container,
           Text,
           Wysiwyg,
-          ButtonContainer
+          ButtonContainer,
         }}
       >
         <div className="aq-mt-3">
@@ -56,8 +55,10 @@ export default ({ onSave, children, json, data = false }) => {
             <BSCol size="col-8">
               <BSGrid>
                 <BSCol size="col-12 aq-mb-3">
-                  <FormLabel label="Title" />
+                  <FormLabel htmlFor="title" label="Title" />
                   <Input
+                    id="title"
+                    type="text"
                     value={title}
                     onChange={setTitle}
                     placeholder="Title..."
@@ -75,18 +76,18 @@ export default ({ onSave, children, json, data = false }) => {
                 className="aq-mb-3"
                 style={{
                   borderTop: "1px solid rgba(0,0,0,.2)",
-                  borderBottom: "1px solid rgba(0,0,0,.2)"
+                  borderBottom: "1px solid rgba(0,0,0,.2)",
                 }}
               >
                 <Frame json={json}>{children}</Frame>
               </div>
               <Topbar
-                onSave={content => {
+                onSave={(content) => {
                   const data = {
                     title,
                     content,
                     profiles: targets,
-                    once: once == 1
+                    once: once == 1,
                   };
                   onSave(data);
                 }}

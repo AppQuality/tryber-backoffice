@@ -1,24 +1,22 @@
-import { useEditor } from "@appquality/craft-blocks";
-import {
-  BSGrid,
-  BSCol,
-  Card,
-  Modal,
-  Button as AppqButton
-} from "@appquality/appquality-design-system";
-import copy from "copy-to-clipboard";
-import lz from "lzutf8";
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { BSCol, BSGrid, Button as AppqButton } from '@appquality/appquality-design-system';
+import { useEditor } from '@appquality/craft-blocks';
+import lz from 'lzutf8';
+import React, { useState } from 'react';
 
-export const Topbar = ({ onSave = false }) => {
-  const { actions, query, canUndo, canRedo } = useEditor((state, query) => ({
-    canUndo: query.history.canUndo(),
-    canRedo: query.history.canRedo()
-  }));
+export const Topbar = ({
+  onSave = false,
+}: {
+  onSave: false | ((data: any) => void);
+}) => {
+  const { actions, query, canUndo, canRedo } = useEditor(
+    (state: any, query: any) => ({
+      canUndo: query.history.canUndo(),
+      canRedo: query.history.canRedo(),
+    })
+  );
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState();
+  const [snackbarMessage, setSnackbarMessage] = useState<null | undefined>();
 
   const [stateToLoad, setStateToLoad] = useState(null);
   if (snackbarMessage) {
@@ -29,7 +27,7 @@ export const Topbar = ({ onSave = false }) => {
     <BSGrid>
       <BSCol size="col-7">
         <AppqButton
-          color="secondary"
+          type="secondary"
           className="aq-mr-2"
           flat={true}
           disabled={!canUndo}
@@ -37,8 +35,8 @@ export const Topbar = ({ onSave = false }) => {
         >
           Undo
         </AppqButton>
-        <AppqButton 
-          color="secondary"
+        <AppqButton
+          type="secondary"
           className="aq-mr-2"
           flat={true}
           disabled={!canRedo}
@@ -51,12 +49,12 @@ export const Topbar = ({ onSave = false }) => {
         <AppqButton
           size="block"
           disabled={!onSave}
-          color="secondary"
+          type="secondary"
           className="aq-float-right aq-mr-2"
           onClick={() => {
             const json = query.serialize();
             const base64 = lz.encodeBase64(lz.compress(json));
-            onSave(base64);
+            onSave && onSave(base64);
           }}
         >
           Save

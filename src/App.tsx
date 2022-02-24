@@ -1,16 +1,11 @@
-import React from "react";
-import {
-  BSGrid,
-  BSCol,
-  ThemeProvider,
-  aqBootstrapTheme,
-  GlobalStyle
-} from "@appquality/appquality-design-system";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import Create from "./pages/Create";
-import Update from "./pages/Update";
-import List from "./pages/List";
-import "./App.css";
+import './App.css';
+
+import { aqBootstrapTheme, GlobalStyle } from '@appquality/appquality-design-system';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Create from 'src/pages/Popups/Create';
+import List from 'src/pages/Popups/List';
+import Update from 'src/pages/Popups/Update';
+import { ThemeProvider } from 'styled-components';
 
 function App() {
   return (

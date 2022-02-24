@@ -1,22 +1,16 @@
-import {
-  Table,
-  Button,
-  Card,
-  BSGrid,
-  BSCol
-} from "@appquality/appquality-design-system";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import getAllPopups from "../api/getAllPopups";
+import { BSCol, BSGrid, Button, Card, Table } from '@appquality/appquality-design-system';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import getAllPopups from 'src/api/getAllPopups';
 
 export default ({}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    getAllPopups().then(res => {
+    getAllPopups().then((res) => {
       console.log(res);
       setData(
-        res.map(r => ({
+        res.map((r: any) => ({
           id: r.id,
           title: r.title,
           action: {
@@ -27,8 +21,8 @@ export default ({}) => {
                   Open
                 </Button>
               </Link>
-            )
-          }
+            ),
+          },
         }))
       );
 
@@ -40,19 +34,19 @@ export default ({}) => {
       title: "Id",
       dataIndex: "id",
       key: "id",
-      width: "2ch"
+      width: "2ch",
     },
     {
       title: "Title",
       dataIndex: "title",
       key: "title",
-      width: "10ch"
+      width: "10ch",
     },
     {
       title: "Action",
       dataIndex: "action",
-      key: "action"
-    }
+      key: "action",
+    },
   ];
   return (
     <div className="aq-mt-3">

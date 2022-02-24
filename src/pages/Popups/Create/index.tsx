@@ -1,30 +1,21 @@
-
-import { Element } from "@appquality/craft-blocks";
-import {
-  Wysiwyg,
-  Button,
-  ButtonContainer,
-  Container,
-  Text
-} from "@appquality/craft-blocks";
-
-import { useHistory } from "react-router-dom";
-import createPopup from "../api/createPopup";
-import Editor from "../features/Editor";
+import { Button, ButtonContainer, Container, Element, Wysiwyg } from '@appquality/craft-blocks';
+import { useHistory } from 'react-router-dom';
+import createPopup from 'src/api/createPopup';
+import Editor from 'src/features/Editor';
 
 export default ({}) => {
   let history = useHistory();
   return (
     <Editor
-      onSave={data => {
+      onSave={(data) => {
         createPopup(data)
-          .then(data => {
+          .then((data) => {
             alert("Saved!");
             history.push(`/backoffice/${data.id}`);
           })
-          .catch(e => {
+          .catch((e) => {
             alert("Error!");
-            console.err(e.message);
+            console.error(e.message);
           });
       }}
     >
