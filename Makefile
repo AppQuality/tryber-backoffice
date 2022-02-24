@@ -4,11 +4,23 @@ ecr-login:
 prod-build:
 	docker-compose build
 	
+devel-build:
+	docker-compose -f docker-compose-devel.yml build
+
+devel-push: ecr-login devel-build
+	docker-compose -f docker-compose-devel.yml push
+	
 push: ecr-login prod-build
 	docker-compose push
 
+devel-pull: ecr-login
+	docker-compose -f docker-compose-pull-devel.yml pull 
+	
 pull: ecr-login
-	docker-compose -f docker-compose-pull.yml pull 
+	docker-compose pull 
+
+devel-deploy: devel-pull
+	docker-compose -f docker-compose-pull-devel.yml down && docker-compose -f docker-compose-pull-devel.yml up -d
 	
 deploy: pull
-	docker-compose -f docker-compose-pull.yml down && docker-compose -f docker-compose-pull.yml up -d
+	docker-compose down && docker-compose up -d
