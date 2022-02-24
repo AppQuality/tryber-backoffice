@@ -49,7 +49,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "generate-schema": ". ./.env.development; npx openapi-typescript $REACT_APP_API_URL/reference/ --output src/utils/schema.ts ",
     "start": "craco start",
-    "build": "react-scripts build && npm run move move",
+    "build": "react-scripts build && npm run move",
     "test": "react-scripts test",
     "prettier": "npx prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
     "translate": "i18next-scanner"
