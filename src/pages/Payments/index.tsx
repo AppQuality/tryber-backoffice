@@ -1,9 +1,17 @@
-import { BSCol, BSGrid, Card, Container, Tab, Tabs } from '@appquality/appquality-design-system';
-import { useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { TabFailedPayments } from 'src/pages/Payments/TabFailedPayments';
-import { TabPendingPayments } from 'src/pages/Payments/TabPendingPayments';
-import styled from 'styled-components';
+import {
+  BSCol,
+  BSGrid,
+  Card,
+  Container,
+  Tab,
+  Tabs,
+} from "@appquality/appquality-design-system";
+import { useState } from "react";
+import { shallowEqual, useSelector } from "react-redux";
+import { TabFailedPayments } from "src/pages/Payments/TabFailedPayments";
+import { TabPendingPayments } from "src/pages/Payments/TabPendingPayments";
+import styled from "styled-components";
+import { MakePaymentModal } from "src/pages/Payments/MakePaymentModal";
 
 const StyledTabs = styled.div`
   .cell {
@@ -21,6 +29,7 @@ export default function AdminPayments() {
 
   return (
     <Container>
+      <MakePaymentModal />
       <BSGrid>
         <BSCol size="col-lg-9 ">
           <Card className="aq-mb-3" bodyClass="">

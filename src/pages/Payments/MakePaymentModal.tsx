@@ -5,8 +5,10 @@ import {
   paySelectedRequests,
   togglePaymentModal,
 } from "src/redux/adminPayments/actionCreator";
+import { useState } from "react";
 
 export const MakePaymentModal = () => {
+  const [requestsSent, sendRequest] = useState(false);
   const {
     paymentModal: { isOpen },
     pendingRequests: { selected },
@@ -17,13 +19,20 @@ export const MakePaymentModal = () => {
   };
 
   const onPayClick = () => {
+    sendRequest(true);
     dispatch(paySelectedRequests("pending"));
   };
 
   const ModalFooter = () => {
     return (
-      <Button onClick={onPayClick} type="primary" size="block" flat>
-        Pay
+      <Button
+        onClick={onPayClick}
+        type="primary"
+        size="block"
+        flat
+        disabled={requestsSent}
+      >
+        {requestsSent ? "Wait..." : "Pay"}
       </Button>
     );
   };

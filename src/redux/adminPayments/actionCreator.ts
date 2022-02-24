@@ -102,14 +102,15 @@ export const paySelectedRequests =
     try {
       const storeSlice =
         status === "pending" ? "pendingRequests" : "failedRequests";
-      const action =
-        status === "pending" ? "updatePendingReqs" : "updateFailedReqs";
 
       const paymentId = adminPayments[storeSlice].selected[0].toString();
-      const data = await API.payRequests(paymentId);
+      await API.payRequests(paymentId);
       dispatch({
-        type: "admin/payments/" + action,
-        payload: data,
+        type: messageActionTypes.ADD_MESSAGE,
+        data: {
+          message: `Done payment with id ${paymentId}`,
+          type: "success",
+        },
       });
     } catch (e) {
       const error = e as HttpError;
@@ -122,6 +123,7 @@ export const paySelectedRequests =
         },
       });
     }
-    await dispatch(fetchPaymentRequests(status));
-    await dispatch(togglePaymentModal(false));
+    dispatch(selectRequest([]));
+    dispatch(fetchPaymentRequests(status));
+    dispatch(togglePaymentModal(false));
   };

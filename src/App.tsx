@@ -1,19 +1,24 @@
-import './App.css';
+import "./App.css";
 
-import { aqBootstrapTheme, GlobalStyle } from '@appquality/appquality-design-system';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import AdminPayments from 'src/pages/Payments';
-import Create from 'src/pages/Popups/Create';
-import List from 'src/pages/Popups/List';
-import Update from 'src/pages/Popups/Update';
-import Provider from 'src/redux/provider';
-import { ThemeProvider } from 'styled-components';
+import {
+  aqBootstrapTheme,
+  GlobalStyle,
+} from "@appquality/appquality-design-system";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import AdminPayments from "src/pages/Payments";
+import Create from "src/pages/Popups/Create";
+import List from "src/pages/Popups/List";
+import Update from "src/pages/Popups/Update";
+import Provider from "src/redux/provider";
+import { ThemeProvider } from "styled-components";
+import SiteWideMessages from "./features/SiteWideMessages";
 
 function App() {
   return (
     <Provider>
       <ThemeProvider theme={aqBootstrapTheme}>
         <GlobalStyle />
+        <SiteWideMessages />
         <BrowserRouter>
           <Switch>
             <Route path={`/backoffice/new`} component={Create} />
