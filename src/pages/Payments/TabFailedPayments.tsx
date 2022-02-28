@@ -54,40 +54,55 @@ export const TabFailedPayments = () => {
     if (typeof items !== "undefined") {
       setRows(
         items.map((req) => ({
-          select: (
-            <Checkbox
-              checked={selectedReqs.indexOf(req.id) >= 0}
-              onChange={() => changeSelectedReqs(req.id)}
-            />
-          ),
+          select: {
+            title: "select",
+            content: (
+              <Checkbox
+                checked={selectedReqs.indexOf(req.id) >= 0}
+                onChange={() => changeSelectedReqs(req.id)}
+              />
+            ),
+          },
           key: req.id,
-          updated: (
-            <div className="aq-text-primary">
-              {getWaitingDays(req.updated)} days
-            </div>
-          ),
-          error: (
-            <div className="aq-text-danger">
-              {req.error ? getErrorMessage(req.error) : "Undefined Error"}
-            </div>
-          ),
+          updated: {
+            title: "waiting days",
+            content: (
+              <div className="aq-text-primary">
+                {getWaitingDays(req.updated)} days
+              </div>
+            ),
+          },
+          error: {
+            title: "type of error",
+            content: (
+              <div className="aq-text-danger">
+                {req.error ? getErrorMessage(req.error) : "Undefined Error"}
+              </div>
+            ),
+          },
           name: `${req.tryber.name} ${req.tryber.surname}`,
           tryberId: "T" + req.tryber.id,
           reqId: req.id,
-          amount: (
-            <div className="aq-text-success">
-              {req.amount.currency in currencyTable
-                ? currencyTable[req.amount.currency]
-                : req.amount.currency}{" "}
-              {req.amount.value}
-            </div>
-          ),
-          method: (
-            <img
-              src={req.type === "paypal" ? paypalIcon : twIcon}
-              alt={req.type}
-            />
-          ),
+          amount: {
+            title: "amount",
+            content: (
+              <div className="aq-text-success">
+                {req.amount.currency in currencyTable
+                  ? currencyTable[req.amount.currency]
+                  : req.amount.currency}{" "}
+                {req.amount.value}
+              </div>
+            ),
+          },
+          method: {
+            title: req.type,
+            content: (
+              <img
+                src={req.type === "paypal" ? paypalIcon : twIcon}
+                alt={req.type}
+              />
+            ),
+          },
         }))
       );
     }
