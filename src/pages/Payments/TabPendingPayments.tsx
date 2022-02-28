@@ -64,7 +64,9 @@ export const TabPendingPayments = () => {
           ),
           key: req.id,
           created: (
-            <div className="aq-text-primary">{getWaitingDays(req.created)}</div>
+            <div className="aq-text-primary">
+              {getWaitingDays(req.created)} days
+            </div>
           ),
           name: `${req.tryber.name} ${req.tryber.surname}`,
           tryberId: "T" + req.tryber.id,

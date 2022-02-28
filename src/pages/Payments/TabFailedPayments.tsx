@@ -1,13 +1,22 @@
-import { Checkbox, Pagination, Table, TableType } from '@appquality/appquality-design-system';
-import { useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { TableActions } from 'src/pages/Payments/TabPendingPayments';
-import { currencyTable, getWaitingDays } from 'src/pages/Payments/utils';
-import { fetchPaymentRequests, updatePagination, updateSortingOptions } from 'src/redux/adminPayments/actionCreator';
-import { useAppDispatch } from 'src/redux/provider';
+import {
+  Checkbox,
+  Pagination,
+  Table,
+  TableType,
+} from "@appquality/appquality-design-system";
+import { useEffect, useState } from "react";
+import { shallowEqual, useSelector } from "react-redux";
+import { TableActions } from "src/pages/Payments/TabPendingPayments";
+import { currencyTable, getWaitingDays } from "src/pages/Payments/utils";
+import {
+  fetchPaymentRequests,
+  updatePagination,
+  updateSortingOptions,
+} from "src/redux/adminPayments/actionCreator";
+import { useAppDispatch } from "src/redux/provider";
 
-import paypalIcon from './assets/paypal.svg';
-import twIcon from './assets/transferwise.svg';
+import paypalIcon from "./assets/paypal.svg";
+import twIcon from "./assets/transferwise.svg";
 
 export const TabFailedPayments = () => {
   const dispatch = useAppDispatch();
@@ -53,7 +62,9 @@ export const TabFailedPayments = () => {
           ),
           key: req.id,
           updated: (
-            <div className="aq-text-primary">{getWaitingDays(req.updated)}</div>
+            <div className="aq-text-primary">
+              {getWaitingDays(req.updated)} days
+            </div>
           ),
           error: (
             <div className="aq-text-danger">
@@ -85,7 +96,7 @@ export const TabFailedPayments = () => {
   const changePagination = (newPage: number) => {
     setPage(newPage);
     setIsLoading(true);
-    const newStart = limit * (newPage - 1) + 1;
+    const newStart = limit * (newPage - 1);
     dispatch(updatePagination(newStart, "failed")).then(() =>
       setIsLoading(false)
     );
