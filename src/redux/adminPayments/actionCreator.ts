@@ -1,8 +1,8 @@
 import { ThunkAction } from "redux-thunk";
-import * as messageActionTypes from "../siteWideMessages/actionTypes";
 import HttpError from "src/utils/HttpError";
 import { AnyAction } from "redux";
 import API from "src/utils/api";
+import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 
 // fetch requests return thunk async function
 export const fetchPaymentRequests =
@@ -11,9 +11,9 @@ export const fetchPaymentRequests =
   ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
   async (dispatch, getState) => {
     const { adminPayments } = getState();
+    const storeSlice =
+      status === "pending" ? "pendingRequests" : "failedRequests";
     try {
-      const storeSlice =
-        status === "pending" ? "pendingRequests" : "failedRequests";
       const query = {
         status: status,
         order: adminPayments[storeSlice].order,
@@ -30,15 +30,14 @@ export const fetchPaymentRequests =
       });
     } catch (e) {
       const error = e as HttpError;
-      if (error.statusCode !== 404) {
+      if (error.statusCode === 404) {
+        const { start, limit } = adminPayments[storeSlice];
+        if (start - limit >= 0) {
+          dispatch(updatePagination(start - limit, status));
+        }
+      } else {
         console.error(e);
-        return dispatch({
-          type: messageActionTypes.ADD_MESSAGE,
-          data: {
-            message: error.message,
-            type: "danger",
-          },
-        });
+        return dispatch(addMessage(error.message, "danger", false));
       }
     }
   };
@@ -105,23 +104,15 @@ export const paySelectedRequests =
 
       const paymentId = adminPayments[storeSlice].selected[0].toString();
       await API.payRequests(paymentId);
-      dispatch({
-        type: messageActionTypes.ADD_MESSAGE,
-        data: {
-          message: `Done payment with id ${paymentId}`,
-          type: "success",
-        },
-      });
+      dispatch(
+        addMessage(`Done payment with id ${paymentId}`, "success", false)
+      );
     } catch (e) {
       const error = e as HttpError;
       console.error(e);
-      dispatch({
-        type: messageActionTypes.ADD_MESSAGE,
-        data: {
-          message: `${error.statusCode} - ${error.message}`,
-          type: "danger",
-        },
-      });
+      dispatch(
+        addMessage(`${error.statusCode} - ${error.message}`, "danger", false)
+      );
     }
     dispatch(selectRequest([]));
     dispatch(fetchPaymentRequests(status));
