@@ -1,19 +1,25 @@
-import { Button, Checkbox, Pagination, Table, TableType } from '@appquality/appquality-design-system';
-import { useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { currencyTable, getWaitingDays } from 'src/pages/Payments/utils';
+import {
+  Button,
+  Checkbox,
+  Pagination,
+  Table,
+  TableType,
+} from "@appquality/appquality-design-system";
+import { useEffect, useState } from "react";
+import { shallowEqual, useSelector } from "react-redux";
+import { currencyTable, getWaitingDays } from "src/pages/Payments/utils";
 import {
   fetchPaymentRequests,
   selectRequest,
   togglePaymentModal,
   updatePagination,
   updateSortingOptions,
-} from 'src/redux/adminPayments/actionCreator';
-import { useAppDispatch } from 'src/redux/provider';
-import styled from 'styled-components';
+} from "src/redux/adminPayments/actionCreator";
+import { useAppDispatch } from "src/redux/provider";
+import styled from "styled-components";
 
-import paypalIcon from './assets/paypal.svg';
-import twIcon from './assets/transferwise.svg';
+import paypalIcon from "./assets/paypal.svg";
+import twIcon from "./assets/transferwise.svg";
 
 export const TableActions = styled.div`
   display: flex;
@@ -85,7 +91,7 @@ export const TabPendingPayments = () => {
   const changePagination = (newPage: number) => {
     setPage(newPage);
     setIsLoading(true);
-    const newStart = limit * (newPage - 1) + 1;
+    const newStart = limit * (newPage - 1);
     dispatch(updatePagination(newStart, "pending")).then(() =>
       setIsLoading(false)
     );
