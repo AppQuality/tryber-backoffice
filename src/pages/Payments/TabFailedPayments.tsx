@@ -90,7 +90,7 @@ export const TabFailedPayments = () => {
                 {req.amount.currency in currencyTable
                   ? currencyTable[req.amount.currency]
                   : req.amount.currency}{" "}
-                {req.amount.value}
+                {req.amount.value.toFixed(2)}
               </div>
             ),
           },

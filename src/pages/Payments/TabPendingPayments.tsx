@@ -84,7 +84,7 @@ export const TabPendingPayments = () => {
                 {req.amount.currency in currencyTable
                   ? currencyTable[req.amount.currency]
                   : req.amount.currency}{" "}
-                {req.amount.value}
+                {req.amount.value.toFixed(2)}
               </div>
             ),
           },
@@ -148,6 +148,7 @@ export const TabPendingPayments = () => {
       dataIndex: "amount",
       key: "amount",
       role: "cta",
+      align: "right",
     },
     {
       title: "Request Id",
