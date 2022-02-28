@@ -122,7 +122,7 @@ export const TabFailedPayments = () => {
       title: "Wait",
       dataIndex: "updated",
       key: "updated",
-      isSortable: true,
+      isSortable: "reverse",
       onSort: (newOrder) => {
         setIsLoading(true);
         dispatch(updateSortingOptions(newOrder, "updated", "failed")).then(() =>

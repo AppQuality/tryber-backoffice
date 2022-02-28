@@ -123,7 +123,7 @@ export const TabPendingPayments = () => {
       title: "Wait",
       dataIndex: "created",
       key: "created",
-      isSortable: true,
+      isSortable: "reverse",
       onSort: (newOrder) => {
         setIsLoading(true);
         dispatch(updateSortingOptions(newOrder, "created", "pending")).then(
