@@ -19,10 +19,16 @@ type AdminPayments_SelectRequest = {
   type: "admin/payments/selectRequest";
   payload: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"][];
 };
+
+type AdminPayments_ClearSelectedRequests = {
+  type: "admin/payments/clearSelectedRequests";
+};
+
 type AdminPayments_ToggleModal = {
   type: "admin/payments/togglePaymentModal";
   payload: boolean;
 };
+
 type AdminPayments_PaySelectedPendingRequests = {
   type: "admin/payments/payPendingRequests";
   payload: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"][];

@@ -72,12 +72,23 @@ export const updateSortingOptions =
 
 export const selectRequest =
   (
-    ids: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"][]
+    id: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"]
   ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
+    const {
+      adminPayments: {
+        pendingRequests: { selected },
+      },
+    } = getState();
+    const pos = selected.indexOf(id);
+    if (pos >= 0) {
+      selected.splice(pos, 1);
+    } else {
+      selected.push(id);
+    }
     dispatch({
       type: "admin/payments/selectRequest",
-      payload: ids,
+      payload: selected,
     });
   };
 
@@ -114,7 +125,7 @@ export const paySelectedRequests =
         addMessage(`${error.statusCode} - ${error.message}`, "danger", false)
       );
     }
-    dispatch(selectRequest([]));
+    dispatch({ type: "AdminPayments_ClearSelectedRequests" });
     dispatch(fetchPaymentRequests(status));
     return dispatch(togglePaymentModal(false));
   };

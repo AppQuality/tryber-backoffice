@@ -30,6 +30,7 @@ export default (
     | AdminPayments_UpdateActions
     | AdminPayments_QueryActions
     | AdminPayments_SelectRequest
+    | AdminPayments_ClearSelectedRequests
     | AdminPayments_ToggleModal
     | AdminPayments_PaySelectedPendingRequests
 ) => {
@@ -56,6 +57,14 @@ export default (
         pendingRequests: {
           ...state.pendingRequests,
           selected: action.payload,
+        },
+      };
+    case "admin/payments/clearSelectedRequests":
+      return {
+        ...state,
+        pendingRequests: {
+          ...state.pendingRequests,
+          selected: [],
         },
       };
     case "admin/payments/updateReqsQuery":
