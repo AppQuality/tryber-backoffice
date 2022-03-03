@@ -57,7 +57,7 @@ export const MakePaymentModal = () => {
 
   const ProgressModalFooter = () => {
     return (
-      <Button onClick={() => setCancel(true)} type="danger" flat size="block">
+      <Button type="danger" flat size="block">
         Cancel
       </Button>
     );
