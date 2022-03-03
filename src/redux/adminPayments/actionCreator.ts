@@ -95,7 +95,7 @@ export const selectRequest =
 export const togglePaymentModal =
   (
     isOpen: boolean
-  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch) => {
     dispatch({
       type: "admin/payments/togglePaymentModal",
@@ -106,26 +106,37 @@ export const togglePaymentModal =
 export const paySelectedRequests =
   (
     status: ApiOperations["get-payments"]["parameters"]["query"]["status"]
-  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch, getState) => {
     const { adminPayments } = getState();
-    try {
-      const storeSlice =
-        status === "pending" ? "pendingRequests" : "failedRequests";
+    const storeSlice =
+      status === "pending" ? "pendingRequests" : "failedRequests";
+    const processingPayments: ProcessableRequest[] = adminPayments[
+      storeSlice
+    ].selected.map((req) => ({
+      id: req.toString(),
+      status: "pending",
+    }));
+    dispatch({
+      type: "admin/payments/processRequests",
+      payload: processingPayments,
+    });
 
-      const paymentId = adminPayments[storeSlice].selected[0].toString();
-      await API.payRequests(paymentId);
-      dispatch(
-        addMessage(`Done payment with id ${paymentId}`, "success", false)
-      );
-    } catch (e) {
-      const error = e as HttpError;
-      console.error(e);
-      dispatch(
-        addMessage(`${error.statusCode} - ${error.message}`, "danger", false)
-      );
+    for (let i = 0; i < processingPayments.length; i++) {
+      try {
+        await API.payRequests(processingPayments[i].id);
+        processingPayments[i].status = "success";
+      } catch (e) {
+        const error = e as HttpError;
+        console.error(e);
+        processingPayments[i].status = "error";
+        processingPayments[i].error = error;
+      }
+      dispatch({
+        type: "admin/payments/processRequests",
+        payload: processingPayments,
+      });
     }
-    dispatch({ type: "AdminPayments_ClearSelectedRequests" });
     dispatch(fetchPaymentRequests(status));
     return dispatch(togglePaymentModal(false));
   };

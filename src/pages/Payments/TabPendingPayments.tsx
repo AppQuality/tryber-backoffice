@@ -34,10 +34,11 @@ export const TabPendingPayments = () => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
-  const { items, limit, order, orderBy, total, selected } = useSelector(
-    (state: GeneralState) => state.adminPayments.pendingRequests,
+  const { pendingRequests } = useSelector(
+    (state: GeneralState) => state.adminPayments,
     shallowEqual
   );
+  const { items, limit, order, orderBy, total, selected } = pendingRequests;
   const [rows, setRows] = useState<TableType.Row[]>([]);
 
   // initial requests
@@ -94,7 +95,7 @@ export const TabPendingPayments = () => {
         }))
       );
     }
-  }, [items, selected]);
+  }, [pendingRequests]);
 
   const changePagination = (newPage: number) => {
     setPage(newPage);

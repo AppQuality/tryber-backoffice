@@ -9,6 +9,7 @@ const initialState: AdminPaymentsState = {
     size: 0,
     total: 0,
     selected: [],
+    processing: [],
     order: "ASC",
     orderBy: "created",
   },
@@ -19,21 +20,13 @@ const initialState: AdminPaymentsState = {
     size: 0,
     total: 0,
     selected: [],
+    processing: [],
     order: "ASC",
     orderBy: "updated",
   },
 };
 
-export default (
-  state = initialState,
-  action:
-    | AdminPayments_UpdateActions
-    | AdminPayments_QueryActions
-    | AdminPayments_SelectRequest
-    | AdminPayments_ClearSelectedRequests
-    | AdminPayments_ToggleModal
-    | AdminPayments_PaySelectedPendingRequests
-) => {
+export default (state = initialState, action: PaymentActions) => {
   switch (action.type) {
     case "admin/payments/updatePendingReqs":
       return {
@@ -57,6 +50,15 @@ export default (
         pendingRequests: {
           ...state.pendingRequests,
           selected: action.payload,
+        },
+      };
+    case "admin/payments/processRequests":
+      return {
+        ...state,
+        pendingRequests: {
+          ...state.pendingRequests,
+          selected: [],
+          processing: action.payload,
         },
       };
     case "admin/payments/clearSelectedRequests":

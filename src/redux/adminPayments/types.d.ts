@@ -1,10 +1,24 @@
 type ApiPayments =
   ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"];
 
+type ProcessableRequest = {
+  id: string;
+  status: "pending" | "success" | "error";
+  error?: HttpError;
+};
+
+type PaymentActions =
+  | AdminPayments_UpdateActions
+  | AdminPayments_QueryActions
+  | AdminPayments_SelectRequest
+  | AdminPayments_ClearSelectedRequests
+  | AdminPayments_ToggleModal
+  | AdminPayments_PaySelectedPendingRequests
+  | AdminPayments_ProcessRequests;
+
 /**
  *  Action types and their payloads
  */
-
 type AdminPayments_UpdateActions = {
   type: "admin/payments/updatePendingReqs" | "admin/payments/updateFailedReqs";
   payload: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"];
@@ -29,6 +43,11 @@ type AdminPayments_ToggleModal = {
   payload: boolean;
 };
 
+type AdminPayments_ProcessRequests = {
+  type: "admin/payments/processRequests";
+  payload: ProcessableRequest[];
+};
+
 type AdminPayments_PaySelectedPendingRequests = {
   type: "admin/payments/payPendingRequests";
   payload: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"][];
@@ -39,6 +58,7 @@ type requestsList =
     limit: number;
     total: number;
     selected: number[];
+    processing: ProcessableRequest[];
     order: ApiOperations["get-payments"]["parameters"]["query"]["order"];
     orderBy: ApiOperations["get-payments"]["parameters"]["query"]["orderBy"];
   };
