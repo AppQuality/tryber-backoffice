@@ -3,6 +3,7 @@ import HttpError from "src/utils/HttpError";
 import { AnyAction } from "redux";
 import API from "src/utils/api";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+import { toastrMessage } from "src/redux/adminPayments/toastrMessage";
 
 // fetch requests return thunk async function
 export const fetchPaymentRequests =
@@ -103,26 +104,31 @@ export const togglePaymentModal =
     });
   };
 
-export const paySelectedRequests =
-  (
-    status: ApiOperations["get-payments"]["parameters"]["query"]["status"]
-  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+export const payMultiplePendingRequests =
+  (): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch, getState) => {
     const { adminPayments } = getState();
-    const storeSlice =
-      status === "pending" ? "pendingRequests" : "failedRequests";
-    const processingPayments: ProcessableRequest[] = adminPayments[
-      storeSlice
-    ].selected.map((req) => ({
-      id: req.toString(),
-      status: "pending",
-    }));
-    dispatch({
-      type: "admin/payments/processRequests",
-      payload: processingPayments,
-    });
-
+    const processingPayments: ProcessableRequest[] =
+      adminPayments.pendingRequests.selected.map((req) => ({
+        id: req.toString(),
+        status: "pending",
+      }));
     for (let i = 0; i < processingPayments.length; i++) {
+      const {
+        adminPayments: {
+          pendingRequests: { processing },
+        },
+      } = getState();
+      if (processing.abort) break;
+      dispatch({
+        type: "admin/payments/updateProcessRequests",
+        payload: {
+          items: processingPayments,
+          status: `processing ${i + 1} of ${
+            processingPayments.length
+          } requests`,
+        },
+      });
       try {
         await API.payRequests(processingPayments[i].id);
         processingPayments[i].status = "success";
@@ -132,11 +138,48 @@ export const paySelectedRequests =
         processingPayments[i].status = "error";
         processingPayments[i].error = error;
       }
-      dispatch({
-        type: "admin/payments/processRequests",
-        payload: processingPayments,
-      });
     }
-    dispatch(fetchPaymentRequests(status));
+    dispatch(
+      addMessage(
+        toastrMessage(processingPayments),
+        processingPayments.some((p) => p.status === "error")
+          ? "warning"
+          : "success",
+        false
+      )
+    );
+    dispatch(fetchPaymentRequests("pending"));
+    dispatch(fetchPaymentRequests("failed"));
+    return dispatch(togglePaymentModal(false));
+  };
+
+export const stopMultipaymentProcess =
+  (): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    dispatch({
+      type: "admin/payments/stopMultipaymentProcess",
+    });
+  };
+
+export const paySingleFailedRequest =
+  (
+    id: number
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    const paymentId = id.toString();
+    try {
+      await API.payRequests(paymentId);
+      dispatch(
+        addMessage(`Done payment with id ${paymentId}`, "success", false)
+      );
+    } catch (e) {
+      const error = e as HttpError;
+      console.error(e);
+      dispatch(
+        addMessage(`${error.statusCode} - ${error.message}`, "danger", false)
+      );
+    }
+    dispatch({ type: "admin/payments/clearSelectedRequests" });
+    dispatch(fetchPaymentRequests("failed"));
     return dispatch(togglePaymentModal(false));
   };

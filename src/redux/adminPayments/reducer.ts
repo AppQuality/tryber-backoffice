@@ -9,7 +9,10 @@ const initialState: AdminPaymentsState = {
     size: 0,
     total: 0,
     selected: [],
-    processing: [],
+    processing: {
+      items: [],
+      status: "0 payment requests are being processed",
+    },
     order: "ASC",
     orderBy: "created",
   },
@@ -19,8 +22,6 @@ const initialState: AdminPaymentsState = {
     limit: 10,
     size: 0,
     total: 0,
-    selected: [],
-    processing: [],
     order: "ASC",
     orderBy: "updated",
   },
@@ -52,13 +53,24 @@ export default (state = initialState, action: PaymentActions) => {
           selected: action.payload,
         },
       };
-    case "admin/payments/processRequests":
+    case "admin/payments/updateProcessRequests":
       return {
         ...state,
         pendingRequests: {
           ...state.pendingRequests,
           selected: [],
           processing: action.payload,
+        },
+      };
+    case "admin/payments/stopMultipaymentProcess":
+      return {
+        ...state,
+        pendingRequests: {
+          ...state.pendingRequests,
+          processing: {
+            ...state.pendingRequests.processing,
+            abort: true,
+          },
         },
       };
     case "admin/payments/clearSelectedRequests":

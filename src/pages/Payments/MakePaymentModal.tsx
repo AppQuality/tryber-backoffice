@@ -9,8 +9,9 @@ import { shallowEqual, useSelector } from "react-redux";
 import { useAppDispatch } from "src/redux/provider";
 import { HourglassSplit } from "react-bootstrap-icons";
 import {
-  paySelectedRequests,
+  payMultiplePendingRequests,
   togglePaymentModal,
+  stopMultipaymentProcess,
 } from "src/redux/adminPayments/actionCreator";
 import { useState } from "react";
 
@@ -21,13 +22,18 @@ export const MakePaymentModal = () => {
     pendingRequests: { selected, processing },
   } = useSelector((state: GeneralState) => state.adminPayments, shallowEqual);
   const dispatch = useAppDispatch();
+
   const onClose = () => {
     dispatch(togglePaymentModal(false));
   };
 
+  const cancelPayments = () => {
+    dispatch(stopMultipaymentProcess());
+  };
+
   const onPayClick = async () => {
     setRequestSending(true);
-    dispatch(paySelectedRequests("pending")).then(() => {
+    dispatch(payMultiplePendingRequests()).then(() => {
       setRequestSending(false);
     });
   };
@@ -43,7 +49,7 @@ export const MakePaymentModal = () => {
             size="block"
             disabled={isRequestsSending}
           >
-            Cancel
+            Close
           </Button>
         </BSCol>
         <BSCol>
@@ -57,7 +63,7 @@ export const MakePaymentModal = () => {
 
   const ProgressModalFooter = () => {
     return (
-      <Button type="danger" flat size="block">
+      <Button onClick={cancelPayments} type="danger" flat size="block">
         Cancel
       </Button>
     );
@@ -70,10 +76,7 @@ export const MakePaymentModal = () => {
           <strong>Please don’t leave the window.</strong>
         </Text>
         <HourglassSplit />
-        <Text>
-          {processing.filter((req) => req.status !== "pending").length}/
-          {processing.length} processing
-        </Text>
+        <Text>{processing.status}</Text>
       </>
     );
   };

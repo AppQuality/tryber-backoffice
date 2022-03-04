@@ -1,6 +1,3 @@
-type ApiPayments =
-  ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"];
-
 type ProcessableRequest = {
   id: string;
   status: "pending" | "success" | "error";
@@ -13,8 +10,8 @@ type PaymentActions =
   | AdminPayments_SelectRequest
   | AdminPayments_ClearSelectedRequests
   | AdminPayments_ToggleModal
-  | AdminPayments_PaySelectedPendingRequests
-  | AdminPayments_ProcessRequests;
+  | AdminPayments_StopMultipaymentProcess
+  | AdminPayments_UpdateProcessRequests;
 
 /**
  *  Action types and their payloads
@@ -43,28 +40,35 @@ type AdminPayments_ToggleModal = {
   payload: boolean;
 };
 
-type AdminPayments_ProcessRequests = {
-  type: "admin/payments/processRequests";
-  payload: ProcessableRequest[];
+type AdminPayments_UpdateProcessRequests = {
+  type: "admin/payments/updateProcessRequests";
+  payload: {
+    items: ProcessableRequest[];
+    status: string; // processing 2 of 10 requests
+  };
 };
 
-type AdminPayments_PaySelectedPendingRequests = {
-  type: "admin/payments/payPendingRequests";
-  payload: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"][];
+type AdminPayments_StopMultipaymentProcess = {
+  type: "admin/payments/stopMultipaymentProcess";
 };
 
 type requestsList =
   ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"] & {
     limit: number;
     total: number;
-    selected: number[];
-    processing: ProcessableRequest[];
     order: ApiOperations["get-payments"]["parameters"]["query"]["order"];
     orderBy: ApiOperations["get-payments"]["parameters"]["query"]["orderBy"];
   };
 
 type AdminPaymentsState = {
-  pendingRequests: requestsList;
+  pendingRequests: requestsList & {
+    selected: number[];
+    processing: {
+      items: ProcessableRequest[];
+      status: string; // processing 2 of 10 requests
+      abort?: boolean;
+    };
+  };
   failedRequests: requestsList;
   paymentModal: {
     isOpen: boolean;
