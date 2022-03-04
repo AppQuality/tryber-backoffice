@@ -107,7 +107,7 @@ export const MakePaymentModal = () => {
                 </Text>
                 <Text>
                   <strong>{errors}</strong> request were not payed because of an
-                  error, you'll find them in the failed payments tab.
+                  error, check the failed payments tab.
                 </Text>
               </>
             ) : (
