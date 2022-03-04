@@ -3,7 +3,6 @@ import HttpError from "src/utils/HttpError";
 import { AnyAction } from "redux";
 import API from "src/utils/api";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
-import { toastrMessage } from "src/redux/adminPayments/toastrMessage";
 
 // fetch requests return thunk async function
 export const fetchPaymentRequests =
@@ -124,9 +123,7 @@ export const payMultiplePendingRequests =
         type: "admin/payments/updateProcessRequests",
         payload: {
           items: processingPayments,
-          status: `processing ${i + 1} of ${
-            processingPayments.length
-          } requests`,
+          status: `${i + 1}/${processingPayments.length} processing...`,
         },
       });
       try {
@@ -139,18 +136,16 @@ export const payMultiplePendingRequests =
         processingPayments[i].error = error;
       }
     }
-    dispatch(
-      addMessage(
-        toastrMessage(processingPayments),
-        processingPayments.some((p) => p.status === "error")
-          ? "warning"
-          : "success",
-        false
-      )
-    );
+    dispatch({
+      type: "admin/payments/updateProcessRequests",
+      payload: {
+        items: processingPayments,
+        status: "finished",
+      },
+    });
+    dispatch({ type: "admin/payments/clearSelectedRequests" });
     dispatch(fetchPaymentRequests("pending"));
     dispatch(fetchPaymentRequests("failed"));
-    return dispatch(togglePaymentModal(false));
   };
 
 export const stopMultipaymentProcess =
@@ -179,7 +174,6 @@ export const paySingleFailedRequest =
         addMessage(`${error.statusCode} - ${error.message}`, "danger", false)
       );
     }
-    dispatch({ type: "admin/payments/clearSelectedRequests" });
     dispatch(fetchPaymentRequests("failed"));
     return dispatch(togglePaymentModal(false));
   };

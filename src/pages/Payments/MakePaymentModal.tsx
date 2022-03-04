@@ -4,10 +4,15 @@ import {
   BSGrid,
   BSCol,
   Text,
+  aqBootstrapTheme,
 } from "@appquality/appquality-design-system";
 import { shallowEqual, useSelector } from "react-redux";
 import { useAppDispatch } from "src/redux/provider";
-import { HourglassSplit } from "react-bootstrap-icons";
+import {
+  Check2Circle,
+  ExclamationTriangle,
+  HourglassSplit,
+} from "react-bootstrap-icons";
 import {
   payMultiplePendingRequests,
   togglePaymentModal,
@@ -25,6 +30,7 @@ export const MakePaymentModal = () => {
 
   const onClose = () => {
     dispatch(togglePaymentModal(false));
+    setRequestSending(false);
   };
 
   const cancelPayments = () => {
@@ -33,9 +39,7 @@ export const MakePaymentModal = () => {
 
   const onPayClick = async () => {
     setRequestSending(true);
-    dispatch(payMultiplePendingRequests()).then(() => {
-      setRequestSending(false);
-    });
+    dispatch(payMultiplePendingRequests());
   };
 
   const InitialModalFooter = () => {
@@ -63,20 +67,80 @@ export const MakePaymentModal = () => {
 
   const ProgressModalFooter = () => {
     return (
-      <Button onClick={cancelPayments} type="danger" flat size="block">
-        Cancel
-      </Button>
+      <>
+        {processing.status === "finished" ? (
+          <Button onClick={onClose} type="primary" flat size="block">
+            Close
+          </Button>
+        ) : (
+          <Button
+            onClick={cancelPayments}
+            type="danger"
+            flat
+            size="block"
+            disabled={processing.abort}
+          >
+            {processing.abort ? "...cancelling process" : "Stop"}
+          </Button>
+        )}
+      </>
     );
   };
 
   const ProgressModalContent = () => {
+    const success = processing.items.filter(
+      (p) => p.status === "success"
+    ).length;
+    const errors = processing.items.filter((p) => p.status === "error").length;
+    const pending = processing.items.filter(
+      (p) => p.status === "pending"
+    ).length;
     return (
       <>
-        <Text>
-          <strong>Please don’t leave the window.</strong>
-        </Text>
-        <HourglassSplit />
-        <Text>{processing.status}</Text>
+        {processing.status === "finished" ? (
+          <div className="aq-text-center">
+            {errors > 0 ? (
+              <>
+                <ExclamationTriangle color={aqBootstrapTheme.palette.warning} />
+                <Text className="aq-mb-3">
+                  <strong>Some payment didn't go through</strong>
+                </Text>
+                <Text>
+                  <strong>{errors}</strong> request were not payed because of an
+                  error, you'll find them in the failed payments tab.
+                </Text>
+              </>
+            ) : (
+              <>
+                <Check2Circle color={aqBootstrapTheme.palette.success} />
+                <Text>
+                  <strong>
+                    {success - pending}/{processing.items.length} requests were
+                    payed successfully
+                  </strong>
+                </Text>
+              </>
+            )}
+            {pending > 0 && (
+              <Text>
+                <strong>{pending}</strong> payment requests were manually
+                interrupted, you'll still find them in the pending payments tab
+              </Text>
+            )}
+          </div>
+        ) : (
+          <>
+            <Text className="aq-mb-3">
+              <strong>Please don’t leave the window.</strong>
+            </Text>
+            <div className="aq-text-center">
+              <HourglassSplit />
+              <Text>
+                <strong>{processing.status}</strong>
+              </Text>
+            </div>
+          </>
+        )}
       </>
     );
   };
