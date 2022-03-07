@@ -77,6 +77,18 @@ export const updateSortingOptions =
     return dispatch(fetchPaymentRequests(status));
   };
 
+export const updatePendingRequestsFilter =
+  (
+    paymentMethod: "all" | "pp" | "tw"
+  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+  async (dispatch) => {
+    dispatch({
+      type: "admin/payments/updateReqsQuery",
+      payload: { paymentMethod: paymentMethod },
+    });
+    return dispatch(fetchPaymentRequests("pending"));
+  };
+
 export const selectRequest =
   (
     id: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"]

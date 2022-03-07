@@ -58,6 +58,8 @@ type requestsList =
     total: number;
     order: ApiOperations["get-payments"]["parameters"]["query"]["order"];
     orderBy: ApiOperations["get-payments"]["parameters"]["query"]["orderBy"];
+    // paymentMethod: ApiOperations["get-payments"]["parameters"]["query"]["paymentMethod"],
+    paymentMethod: "all" | "pp" | "tw";
   };
 
 type AdminPaymentsState = {
