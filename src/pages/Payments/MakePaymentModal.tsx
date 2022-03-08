@@ -162,7 +162,10 @@ export const MakePaymentModal = () => {
         {isRequestsSending ? (
           <ProgressModalContent />
         ) : (
-          `Are you sure you want to pay ${selected.length} request(s)?`
+          <Text>
+            Are you sure you want to pay{" "}
+            <strong>{selected.length} request(s)?</strong>
+          </Text>
         )}
       </>
     </Modal>
