@@ -115,8 +115,8 @@ export const MakePaymentModal = () => {
                 <Check2Circle color={aqBootstrapTheme.palette.success} />
                 <Text>
                   <strong>
-                    {success - pending}/{processing.items.length} requests were
-                    payed successfully
+                    {success}/{processing.items.length} requests were payed
+                    successfully
                   </strong>
                 </Text>
               </>
