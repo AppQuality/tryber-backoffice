@@ -33,12 +33,12 @@ export const TableActions = styled.div`
 export const TabPendingPayments = () => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);
   const { pendingRequests } = useSelector(
     (state: GeneralState) => state.adminPayments,
     shallowEqual
   );
-  const { items, limit, order, orderBy, total, selected } = pendingRequests;
+  const { items, limit, order, orderBy, total, selected, start } =
+    pendingRequests;
   const [rows, setRows] = useState<TableType.Row[]>([]);
 
   // initial requests
@@ -98,7 +98,6 @@ export const TabPendingPayments = () => {
   }, [pendingRequests]);
 
   const changePagination = (newPage: number) => {
-    setPage(newPage);
     setIsLoading(true);
     const newStart = limit * (newPage - 1);
     dispatch(updatePagination(newStart, "pending")).then(() =>
@@ -175,7 +174,7 @@ export const TabPendingPayments = () => {
       />
       <TableActions>
         <Pagination
-          current={page}
+          current={start / limit + 1}
           maxPages={Math.ceil(total / limit)}
           onPageChange={changePagination}
         />
