@@ -31,12 +31,19 @@ export const fetchPaymentRequests =
     } catch (e) {
       const error = e as HttpError;
       if (error.statusCode === 404) {
-        const { start, limit } = adminPayments[storeSlice];
+        const { start, limit, items } = adminPayments[storeSlice];
         if (start - limit >= 0) {
           dispatch(updatePagination(start - limit, status));
         }
+        const action =
+          status === "pending" ? "updatePendingReqs" : "updateFailedReqs";
+        if (items.length) {
+          return dispatch({
+            type: "admin/payments/" + action,
+            payload: [],
+          });
+        }
       } else {
-        console.error(e);
         return dispatch(addMessage(error.message, "danger", false));
       }
     }
