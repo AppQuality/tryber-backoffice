@@ -1979,6 +1979,8 @@ export interface operations {
         start?: components["parameters"]["start"];
         /** Max items to retrieve */
         limit?: components["parameters"]["limit"];
+        /** Key-value Array for item filtering */
+        filterBy?: components["parameters"]["filterBy"];
       };
     };
     responses: {

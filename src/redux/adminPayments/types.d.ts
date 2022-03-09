@@ -4,6 +4,8 @@ type ProcessableRequest = {
   error?: HttpError;
 };
 
+type AcceptedPaymentMethod = "all" | "paypal" | "transferwise";
+
 type PaymentActions =
   | AdminPayments_UpdateActions
   | AdminPayments_QueryActions
@@ -59,7 +61,7 @@ type requestsList =
     order: ApiOperations["get-payments"]["parameters"]["query"]["order"];
     orderBy: ApiOperations["get-payments"]["parameters"]["query"]["orderBy"];
     // paymentMethod: ApiOperations["get-payments"]["parameters"]["query"]["paymentMethod"],
-    paymentMethod: "all" | "pp" | "tw";
+    paymentMethod: AcceptedPaymentMethod;
   };
 
 type AdminPaymentsState = {

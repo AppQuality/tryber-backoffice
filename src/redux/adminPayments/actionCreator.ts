@@ -14,13 +14,18 @@ export const fetchPaymentRequests =
     const storeSlice =
       status === "pending" ? "pendingRequests" : "failedRequests";
     try {
-      const query = {
+      const query: ApiOperations["get-payments"]["parameters"]["query"] = {
         status: status,
         order: adminPayments[storeSlice].order,
         orderBy: adminPayments[storeSlice].orderBy,
         limit: adminPayments[storeSlice].limit,
         start: adminPayments[storeSlice].start,
       };
+      if (adminPayments[storeSlice].paymentMethod) {
+        query.filterBy = {
+          paymentMethod: adminPayments[storeSlice].paymentMethod,
+        };
+      }
       const action =
         status === "pending" ? "updatePendingReqs" : "updateFailedReqs";
       const data = await API.adminPayments(query);
@@ -79,7 +84,7 @@ export const updateSortingOptions =
 
 export const updatePendingRequestsFilter =
   (
-    paymentMethod: "all" | "pp" | "tw"
+    paymentMethod: AcceptedPaymentMethod
   ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
   async (dispatch) => {
     dispatch({

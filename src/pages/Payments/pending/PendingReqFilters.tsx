@@ -1,15 +1,15 @@
-import { Card, Checkbox } from "@appquality/appquality-design-system";
+import { Card, Radio } from "@appquality/appquality-design-system";
 import { updatePendingRequestsFilter } from "src/redux/adminPayments/actionCreator";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 export const PendingReqFilters = () => {
   const dispatch = useDispatch();
   const { paymentMethod } = useSelector(
-    (state: GeneralState) => state.adminPayments.failedRequests,
+    (state: GeneralState) => state.adminPayments.pendingRequests,
     shallowEqual
   );
 
-  const changeFilter = (filter: "all" | "pp" | "tw") => {
+  const changeFilter = (filter: AcceptedPaymentMethod) => {
     dispatch(updatePendingRequestsFilter(filter));
   };
 
@@ -17,25 +17,31 @@ export const PendingReqFilters = () => {
     <Card title="Filters and Status">
       <div>Payment Method</div>
       <div>
-        <Checkbox
+        <Radio
+          label="all"
+          id="all"
+          name="all"
           onChange={() => changeFilter("all")}
           checked={paymentMethod === "all"}
         />
-        All
       </div>
       <div>
-        <Checkbox
-          onChange={() => changeFilter("pp")}
-          checked={paymentMethod === "pp"}
+        <Radio
+          label="paypal"
+          id="paypal"
+          name="paypal"
+          onChange={() => changeFilter("paypal")}
+          checked={paymentMethod === "paypal"}
         />
-        Paypal
       </div>
       <div>
-        <Checkbox
-          onChange={() => changeFilter("tw")}
-          checked={paymentMethod === "tw"}
+        <Radio
+          label="transferwise"
+          id="transferwise"
+          name="transferwise"
+          onChange={() => changeFilter("transferwise")}
+          checked={paymentMethod === "transferwise"}
         />
-        Trasferwise
       </div>
     </Card>
   );
