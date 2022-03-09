@@ -101,7 +101,10 @@ export const MakePaymentModal = () => {
           <div className="aq-text-center">
             {errors > 0 ? (
               <>
-                <ExclamationTriangle color={aqBootstrapTheme.palette.warning} />
+                <ExclamationTriangle
+                  size={21}
+                  color={aqBootstrapTheme.palette.warning}
+                />
                 <Text className="aq-mb-3">
                   <strong>Some payment didn't go through</strong>
                 </Text>
@@ -115,7 +118,10 @@ export const MakePaymentModal = () => {
               </>
             ) : (
               <>
-                <Check2Circle color={aqBootstrapTheme.palette.success} />
+                <Check2Circle
+                  size={21}
+                  color={aqBootstrapTheme.palette.success}
+                />
                 <Text>
                   <strong>
                     {success}/{processing.items.length} requests were payed
