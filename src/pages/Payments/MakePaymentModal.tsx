@@ -106,8 +106,11 @@ export const MakePaymentModal = () => {
                   <strong>Some payment didn't go through</strong>
                 </Text>
                 <Text>
-                  <strong>{errors}</strong> request were not payed because of an
-                  error, check the failed payments tab.
+                  <strong>
+                    {errors}/{processing.items.length}
+                  </strong>{" "}
+                  requests were not payed because of an error, check the failed
+                  payments tab.
                 </Text>
               </>
             ) : (
