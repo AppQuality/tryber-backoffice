@@ -173,7 +173,7 @@ export const MakePaymentModal = () => {
         ) : (
           <Text>
             Are you sure you want to pay{" "}
-            <strong>{selected.length} request(s)?</strong>
+            <strong>{selected.size} request(s)?</strong>
           </Text>
         )}
       </>

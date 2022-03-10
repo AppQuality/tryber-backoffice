@@ -8,7 +8,7 @@ const initialState: AdminPaymentsState = {
     limit: 10,
     size: 0,
     total: 0,
-    selected: [],
+    selected: new Set<number>(),
     processing: {
       items: [],
       status: "0 payment requests are being processed",

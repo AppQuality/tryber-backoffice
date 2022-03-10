@@ -56,7 +56,7 @@ export const TabPendingPayments = () => {
             title: "select",
             content: (
               <Checkbox
-                checked={selected.indexOf(req.id) >= 0}
+                checked={selected.has(req.id)}
                 onChange={() => dispatch(selectRequest(req.id))}
               />
             ),
@@ -130,7 +130,7 @@ export const TabPendingPayments = () => {
           onClick={paySelectedRequests}
           type="primary"
           className="pay-btn"
-          disabled={selected.length <= 0}
+          disabled={selected.size === 0}
         >
           Pay
         </Button>
