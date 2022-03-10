@@ -3,9 +3,9 @@
 
 
 "@appquality/appquality-design-system@^1.0.0", "@appquality/appquality-design-system@^1.0.1":
-  "integrity" "sha512-zXOUDMNbllajeAMi/kdGo9/H+YvfC+ANufbwJ2/kkCh0Abry9LnePiOMaYqnWUkhmskn7zFI7Mfp3U8bN9Xhug=="
-  "resolved" "https://registry.npmjs.org/@appquality/appquality-design-system/-/appquality-design-system-1.0.21.tgz"
-  "version" "1.0.21"
+  "integrity" "sha512-cFUzD4Lrppn+W4TSOQKu9T5LfQG/2OmmKX+RE4MiKkNZiBgIEm4p0mADLA4cVoyBPLuretMSQRWJsA4ZwuYt4w=="
+  "resolved" "https://registry.npmjs.org/@appquality/appquality-design-system/-/appquality-design-system-1.0.22.tgz"
+  "version" "1.0.22"
   dependencies:
     "@appquality/mobiscroll" "^5.10.1"
     "formik" "^2.2.9"
