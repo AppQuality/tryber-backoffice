@@ -33,10 +33,12 @@ export const TableActions = styled.div`
 export const TabPendingPayments = () => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);
-  const {
-    pendingRequests: { items, limit, order, orderBy, total, selected },
-  } = useSelector((state: GeneralState) => state.adminPayments, shallowEqual);
+  const { pendingRequests } = useSelector(
+    (state: GeneralState) => state.adminPayments,
+    shallowEqual
+  );
+  const { items, limit, order, orderBy, total, selected, start } =
+    pendingRequests;
   const [rows, setRows] = useState<TableType.Row[]>([]);
 
   // initial requests
@@ -44,13 +46,6 @@ export const TabPendingPayments = () => {
     dispatch(fetchPaymentRequests("pending")).then(() => setIsLoading(false));
   }, []);
 
-  const changeSelectedReqs = (id: number) => {
-    if (selected.indexOf(id) >= 0) {
-      dispatch(selectRequest([]));
-    } else {
-      dispatch(selectRequest([id]));
-    }
-  };
   // update datasource for the table
   useEffect(() => {
     if (typeof items !== "undefined") {
@@ -61,7 +56,7 @@ export const TabPendingPayments = () => {
             content: (
               <Checkbox
                 checked={selected.indexOf(req.id) >= 0}
-                onChange={() => changeSelectedReqs(req.id)}
+                onChange={() => dispatch(selectRequest(req.id))}
               />
             ),
           },
@@ -100,10 +95,9 @@ export const TabPendingPayments = () => {
         }))
       );
     }
-  }, [items, selected]);
+  }, [pendingRequests]);
 
   const changePagination = (newPage: number) => {
-    setPage(newPage);
     setIsLoading(true);
     const newStart = limit * (newPage - 1);
     dispatch(updatePagination(newStart, "pending")).then(() =>
@@ -180,7 +174,7 @@ export const TabPendingPayments = () => {
       />
       <TableActions>
         <Pagination
-          current={page}
+          current={start / limit + 1}
           maxPages={Math.ceil(total / limit)}
           onPageChange={changePagination}
         />

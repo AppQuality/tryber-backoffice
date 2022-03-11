@@ -22,8 +22,7 @@ export const TabFailedPayments = () => {
   const dispatch = useAppDispatch();
   const [selectedReqs, setSelectedReqs] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);
-  const { items, limit, order, orderBy, total } = useSelector(
+  const { items, limit, order, orderBy, total, start } = useSelector(
     (state: GeneralState) => state.adminPayments.failedRequests,
     shallowEqual
   );
@@ -109,7 +108,6 @@ export const TabFailedPayments = () => {
   }, [items, selectedReqs]);
 
   const changePagination = (newPage: number) => {
-    setPage(newPage);
     setIsLoading(true);
     const newStart = limit * (newPage - 1);
     dispatch(updatePagination(newStart, "failed")).then(() =>
@@ -174,7 +172,7 @@ export const TabFailedPayments = () => {
       />
       <TableActions>
         <Pagination
-          current={page}
+          current={start / limit + 1}
           maxPages={Math.ceil(total / limit)}
           onPageChange={changePagination}
         />
