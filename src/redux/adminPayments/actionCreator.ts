@@ -8,7 +8,7 @@ import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 export const fetchPaymentRequests =
   (
     status: ApiOperations["get-payments"]["parameters"]["query"]["status"]
-  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch, getState) => {
     const { adminPayments } = getState();
     const storeSlice =
@@ -26,26 +26,42 @@ export const fetchPaymentRequests =
           paymentMethod: adminPayments[storeSlice].paymentMethod,
         };
       }
-      const action =
-        status === "pending" ? "updatePendingReqs" : "updateFailedReqs";
       const data = await API.adminPayments(query);
-      return dispatch({
-        type: "admin/payments/" + action,
-        payload: data,
-      });
+      if (status === "pending") {
+        return dispatch({
+          type: "admin/payments/updatePendingReqs",
+          payload: data,
+        });
+      } else {
+        return dispatch({
+          type: "admin/payments/updateFailedReqs",
+          payload: data,
+        });
+      }
     } catch (e) {
       const error = e as HttpError;
       if (error.statusCode === 404) {
-        const { start, limit, items } = adminPayments[storeSlice];
+        const { start, limit, size } = adminPayments[storeSlice];
         if (start - limit >= 0) {
           dispatch(updatePagination(start - limit, status));
         }
-        const action =
-          status === "pending" ? "updatePendingReqs" : "updateFailedReqs";
-        if (items.length) {
+        if (status === "pending") {
           return dispatch({
-            type: "admin/payments/" + action,
-            payload: [],
+            type: "admin/payments/updatePendingReqs",
+            payload: {
+              size: size,
+              start: start,
+              items: [],
+            },
+          });
+        } else {
+          return dispatch({
+            type: "admin/payments/updateFailedReqs",
+            payload: {
+              size: size,
+              start: start,
+              items: [],
+            },
           });
         }
       } else {
