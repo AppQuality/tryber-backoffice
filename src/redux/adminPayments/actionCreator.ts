@@ -68,27 +68,6 @@ export const updatePagination =
     return dispatch(fetchPaymentRequests(status));
   };
 
-export const toggleCurrentItems =
-  (
-    type: "select" | "deselect"
-  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
-  async (dispatch, getState) => {
-    const {
-      adminPayments: {
-        pendingRequests: { items, selected },
-      },
-    } = getState();
-    if (type === "select") {
-      items.map((i) => selected.add(i.id));
-    } else if (type === "deselect") {
-      items.map((i) => selected.delete(i.id));
-    }
-    dispatch({
-      type: "admin/payments/selectRequest",
-      payload: selected,
-    });
-  };
-
 export const updateSortingOptions =
   (
     order: ApiOperations["get-payments"]["parameters"]["query"]["order"],
@@ -133,10 +112,11 @@ export const selectRequest =
         pendingRequests: { selected },
       },
     } = getState();
-    if (selected.has(id)) {
-      selected.delete(id);
+    const pos = selected.indexOf(id);
+    if (pos >= 0) {
+      selected.splice(pos, 1);
     } else {
-      selected.add(id);
+      selected.push(id);
     }
     dispatch({
       type: "admin/payments/selectRequest",
@@ -159,14 +139,11 @@ export const payMultiplePendingRequests =
   (): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch, getState) => {
     const { adminPayments } = getState();
-    const processingPayments: ProcessableRequest[] = [];
-    adminPayments.pendingRequests.selected.forEach(
-      (req, i) =>
-        (processingPayments[i] = {
-          id: req.toString(),
-          status: "pending",
-        })
-    );
+    const processingPayments: ProcessableRequest[] =
+      adminPayments.pendingRequests.selected.map((req) => ({
+        id: req.toString(),
+        status: "pending",
+      }));
     for (let i = 0; i < processingPayments.length; i++) {
       const {
         adminPayments: {

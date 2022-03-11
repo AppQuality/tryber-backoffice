@@ -30,7 +30,7 @@ type AdminPayments_QueryActions = {
 
 type AdminPayments_SelectRequest = {
   type: "admin/payments/selectRequest";
-  payload: Set<number>;
+  payload: number[];
 };
 
 type AdminPayments_ClearSelectedRequests = {
@@ -66,7 +66,7 @@ type requestsList =
 
 type AdminPaymentsState = {
   pendingRequests: requestsList & {
-    selected: Set<number>;
+    selected: number[];
     processing: {
       items: ProcessableRequest[];
       status: string; // processing 2 of 10 requests
