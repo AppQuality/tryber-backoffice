@@ -89,7 +89,7 @@ export const updatePendingRequestsFilter =
   async (dispatch) => {
     dispatch({
       type: "admin/payments/selectRequest",
-      payload: new Set(),
+      payload: [],
     });
     dispatch({
       type: "admin/payments/updateReqsQuery",
