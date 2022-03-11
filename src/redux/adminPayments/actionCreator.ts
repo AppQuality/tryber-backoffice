@@ -109,9 +109,17 @@ export const updatePendingRequestsFilter =
   ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
   async (dispatch) => {
     dispatch({
-      type: "admin/payments/updateReqsQuery",
-      payload: { paymentMethod: paymentMethod },
+      type: "admin/payments/selectRequest",
+      payload: new Set(),
     });
+    dispatch({
+      type: "admin/payments/updateReqsQuery",
+      payload: {
+        start: 0,
+        paymentMethod: paymentMethod,
+      },
+    });
+
     return dispatch(fetchPaymentRequests("pending"));
   };
 
