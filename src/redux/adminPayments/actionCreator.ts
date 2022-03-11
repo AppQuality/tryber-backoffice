@@ -31,12 +31,19 @@ export const fetchPaymentRequests =
     } catch (e) {
       const error = e as HttpError;
       if (error.statusCode === 404) {
-        const { start, limit } = adminPayments[storeSlice];
+        const { start, limit, items } = adminPayments[storeSlice];
         if (start - limit >= 0) {
           dispatch(updatePagination(start - limit, status));
         }
+        const action =
+          status === "pending" ? "updatePendingReqs" : "updateFailedReqs";
+        if (items.length) {
+          return dispatch({
+            type: "admin/payments/" + action,
+            payload: [],
+          });
+        }
       } else {
-        console.error(e);
         return dispatch(addMessage(error.message, "danger", false));
       }
     }
@@ -72,19 +79,30 @@ export const updateSortingOptions =
 
 export const selectRequest =
   (
-    ids: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"][]
+    id: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"]
   ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
+    const {
+      adminPayments: {
+        pendingRequests: { selected },
+      },
+    } = getState();
+    const pos = selected.indexOf(id);
+    if (pos >= 0) {
+      selected.splice(pos, 1);
+    } else {
+      selected.push(id);
+    }
     dispatch({
       type: "admin/payments/selectRequest",
-      payload: ids,
+      payload: selected,
     });
   };
 
 export const togglePaymentModal =
   (
     isOpen: boolean
-  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch) => {
     dispatch({
       type: "admin/payments/togglePaymentModal",
@@ -92,17 +110,66 @@ export const togglePaymentModal =
     });
   };
 
-export const paySelectedRequests =
-  (
-    status: ApiOperations["get-payments"]["parameters"]["query"]["status"]
-  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+export const payMultiplePendingRequests =
+  (): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch, getState) => {
     const { adminPayments } = getState();
-    try {
-      const storeSlice =
-        status === "pending" ? "pendingRequests" : "failedRequests";
+    const processingPayments: ProcessableRequest[] =
+      adminPayments.pendingRequests.selected.map((req) => ({
+        id: req.toString(),
+        status: "pending",
+      }));
+    for (let i = 0; i < processingPayments.length; i++) {
+      const {
+        adminPayments: {
+          pendingRequests: { processing },
+        },
+      } = getState();
+      if (processing.abort) break;
+      dispatch({
+        type: "admin/payments/updateProcessRequests",
+        payload: {
+          items: processingPayments,
+          status: `${i + 1}/${processingPayments.length} processing...`,
+        },
+      });
+      try {
+        await API.payRequests(processingPayments[i].id);
+        processingPayments[i].status = "success";
+      } catch (e) {
+        const error = e as HttpError;
+        console.error(e);
+        processingPayments[i].status = "error";
+        processingPayments[i].error = error;
+      }
+    }
+    dispatch({
+      type: "admin/payments/updateProcessRequests",
+      payload: {
+        items: processingPayments,
+        status: "finished",
+      },
+    });
+    dispatch({ type: "admin/payments/clearSelectedRequests" });
+    dispatch(fetchPaymentRequests("pending"));
+    dispatch(fetchPaymentRequests("failed"));
+  };
 
-      const paymentId = adminPayments[storeSlice].selected[0].toString();
+export const stopMultipaymentProcess =
+  (): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    dispatch({
+      type: "admin/payments/stopMultipaymentProcess",
+    });
+  };
+
+export const paySingleFailedRequest =
+  (
+    id: number
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    const paymentId = id.toString();
+    try {
       await API.payRequests(paymentId);
       dispatch(
         addMessage(`Done payment with id ${paymentId}`, "success", false)
@@ -114,7 +181,6 @@ export const paySelectedRequests =
         addMessage(`${error.statusCode} - ${error.message}`, "danger", false)
       );
     }
-    dispatch(selectRequest([]));
-    dispatch(fetchPaymentRequests(status));
+    dispatch(fetchPaymentRequests("failed"));
     return dispatch(togglePaymentModal(false));
   };
