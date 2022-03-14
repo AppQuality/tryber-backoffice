@@ -8,39 +8,60 @@ import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 export const fetchPaymentRequests =
   (
     status: ApiOperations["get-payments"]["parameters"]["query"]["status"]
-  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch, getState) => {
     const { adminPayments } = getState();
     const storeSlice =
       status === "pending" ? "pendingRequests" : "failedRequests";
     try {
-      const query = {
+      const query: ApiOperations["get-payments"]["parameters"]["query"] = {
         status: status,
         order: adminPayments[storeSlice].order,
         orderBy: adminPayments[storeSlice].orderBy,
         limit: adminPayments[storeSlice].limit,
         start: adminPayments[storeSlice].start,
       };
-      const action =
-        status === "pending" ? "updatePendingReqs" : "updateFailedReqs";
+      if (adminPayments[storeSlice].paymentMethod) {
+        query.filterBy = {
+          paymentMethod: adminPayments[storeSlice].paymentMethod,
+        };
+      }
       const data = await API.adminPayments(query);
-      return dispatch({
-        type: "admin/payments/" + action,
-        payload: data,
-      });
+      if (status === "pending") {
+        return dispatch({
+          type: "admin/payments/updatePendingReqs",
+          payload: data,
+        });
+      } else {
+        return dispatch({
+          type: "admin/payments/updateFailedReqs",
+          payload: data,
+        });
+      }
     } catch (e) {
       const error = e as HttpError;
       if (error.statusCode === 404) {
-        const { start, limit, items } = adminPayments[storeSlice];
+        const { start, limit, size } = adminPayments[storeSlice];
         if (start - limit >= 0) {
           dispatch(updatePagination(start - limit, status));
         }
-        const action =
-          status === "pending" ? "updatePendingReqs" : "updateFailedReqs";
-        if (items.length) {
+        if (status === "pending") {
           return dispatch({
-            type: "admin/payments/" + action,
-            payload: [],
+            type: "admin/payments/updatePendingReqs",
+            payload: {
+              size: size,
+              start: start,
+              items: [],
+            },
+          });
+        } else {
+          return dispatch({
+            type: "admin/payments/updateFailedReqs",
+            payload: {
+              size: size,
+              start: start,
+              items: [],
+            },
           });
         }
       } else {
@@ -77,10 +98,30 @@ export const updateSortingOptions =
     return dispatch(fetchPaymentRequests(status));
   };
 
+export const updatePendingRequestsFilter =
+  (
+    paymentMethod: AcceptedPaymentMethod
+  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+  async (dispatch) => {
+    dispatch({
+      type: "admin/payments/selectRequest",
+      payload: [],
+    });
+    dispatch({
+      type: "admin/payments/updateReqsQuery",
+      payload: {
+        start: 0,
+        paymentMethod: paymentMethod,
+      },
+    });
+
+    return dispatch(fetchPaymentRequests("pending"));
+  };
+
 export const selectRequest =
   (
     id: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"]
-  ): ThunkAction<Promise<any>, GeneralState, unknown, AnyAction> =>
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch, getState) => {
     const {
       adminPayments: {

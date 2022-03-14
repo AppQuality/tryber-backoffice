@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   Pagination,
   Table,
@@ -6,48 +7,46 @@ import {
 } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
-import { TableActions } from "src/pages/Payments/TabPendingPayments";
 import { currencyTable, getWaitingDays } from "src/pages/Payments/utils";
 import {
   fetchPaymentRequests,
+  selectRequest,
+  togglePaymentModal,
   updatePagination,
-  updateSortingOptions,
 } from "src/redux/adminPayments/actionCreator";
 import { useAppDispatch } from "src/redux/provider";
+import styled from "styled-components";
 
-import paypalIcon from "./assets/paypal.svg";
-import twIcon from "./assets/transferwise.svg";
+import paypalIcon from "src/pages/Payments/assets/paypal.svg";
+import twIcon from "src/pages/Payments/assets/transferwise.svg";
+import { getColumns } from "src/pages/Payments/pending/columns";
 
-export const TabFailedPayments = () => {
+export const TableActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 ${(p) => p.theme.grid.sizes[3]} ${(p) => p.theme.grid.sizes[3]};
+  .pay-btn {
+    min-width: 135px;
+  }
+`;
+
+export const TabPendingPayments = () => {
   const dispatch = useAppDispatch();
-  const [selectedReqs, setSelectedReqs] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { items, limit, order, orderBy, total, start } = useSelector(
-    (state: GeneralState) => state.adminPayments.failedRequests,
+  const { pendingRequests } = useSelector(
+    (state: GeneralState) => state.adminPayments,
     shallowEqual
   );
+  const { items, limit, order, orderBy, total, selected, start } =
+    pendingRequests;
   const [rows, setRows] = useState<TableType.Row[]>([]);
+  const columns = getColumns(setIsLoading, dispatch);
 
   // initial requests
   useEffect(() => {
-    dispatch(fetchPaymentRequests("failed")).then(() => setIsLoading(false));
+    dispatch(fetchPaymentRequests("pending")).then(() => setIsLoading(false));
   }, []);
 
-  const changeSelectedReqs = (id: number) => {
-    if (selectedReqs.indexOf(id) >= 0) {
-      setSelectedReqs([]);
-    } else {
-      setSelectedReqs([id]);
-    }
-  };
-  const getErrorMessage = (err: string): string => {
-    try {
-      const obj = JSON.parse(err);
-      return obj.code as string;
-    } catch (e) {
-      return err;
-    }
-  };
   // update datasource for the table
   useEffect(() => {
     if (typeof items !== "undefined") {
@@ -57,25 +56,17 @@ export const TabFailedPayments = () => {
             title: "select",
             content: (
               <Checkbox
-                checked={selectedReqs.indexOf(req.id) >= 0}
-                onChange={() => changeSelectedReqs(req.id)}
+                checked={selected.indexOf(req.id) >= 0}
+                onChange={() => dispatch(selectRequest(req.id))}
               />
             ),
           },
           key: req.id,
-          updated: {
+          created: {
             title: "waiting days",
             content: (
               <div className="aq-text-primary">
-                {getWaitingDays(req.updated)} days
-              </div>
-            ),
-          },
-          error: {
-            title: "type of error",
-            content: (
-              <div className="aq-text-danger">
-                {req.error ? getErrorMessage(req.error) : "Undefined Error"}
+                {getWaitingDays(req.created)} days
               </div>
             ),
           },
@@ -105,60 +96,19 @@ export const TabFailedPayments = () => {
         }))
       );
     }
-  }, [items, selectedReqs]);
+  }, [pendingRequests]);
 
   const changePagination = (newPage: number) => {
     setIsLoading(true);
     const newStart = limit * (newPage - 1);
-    dispatch(updatePagination(newStart, "failed")).then(() =>
+    dispatch(updatePagination(newStart, "pending")).then(() =>
       setIsLoading(false)
     );
   };
 
-  const columns: TableType.Column[] = [
-    {
-      title: "Wait",
-      dataIndex: "updated",
-      key: "updated",
-      isSortable: "reverse",
-      onSort: (newOrder) => {
-        setIsLoading(true);
-        dispatch(updateSortingOptions(newOrder, "updated", "failed")).then(() =>
-          setIsLoading(false)
-        );
-      },
-    },
-    {
-      title: "Who",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Reason",
-      dataIndex: "error",
-      key: "error",
-    },
-    {
-      title: "id",
-      dataIndex: "tryberId",
-      key: "tryberId",
-    },
-    {
-      title: "Request Id",
-      dataIndex: "reqId",
-      key: "reqId",
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-    },
-    {
-      title: "Method",
-      dataIndex: "method",
-      key: "method",
-    },
-  ];
+  const paySelectedRequests = () => {
+    dispatch(togglePaymentModal(true));
+  };
   return (
     <>
       <Table
@@ -166,9 +116,9 @@ export const TabFailedPayments = () => {
         isLoading={isLoading}
         columns={columns}
         dataSource={rows}
-        className="aq-p-3"
         order={order}
         orderBy={orderBy}
+        className="aq-p-3"
       />
       <TableActions>
         <Pagination
@@ -176,6 +126,14 @@ export const TabFailedPayments = () => {
           maxPages={Math.ceil(total / limit)}
           onPageChange={changePagination}
         />
+        <Button
+          onClick={paySelectedRequests}
+          type="primary"
+          className="pay-btn"
+          disabled={selected.length === 0}
+        >
+          Pay
+        </Button>
       </TableActions>
     </>
   );

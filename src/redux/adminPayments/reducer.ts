@@ -15,6 +15,7 @@ const initialState: AdminPaymentsState = {
     },
     order: "ASC",
     orderBy: "created",
+    paymentMethod: "all",
   },
   failedRequests: {
     items: [],
@@ -24,6 +25,7 @@ const initialState: AdminPaymentsState = {
     total: 0,
     order: "ASC",
     orderBy: "updated",
+    paymentMethod: "all",
   },
 };
 
@@ -82,25 +84,13 @@ export default (state = initialState, action: PaymentActions) => {
         },
       };
     case "admin/payments/updateReqsQuery":
-      if (action.payload.status === "pending") {
-        return {
-          ...state,
-          pendingRequests: {
-            ...state.pendingRequests,
-            ...action.payload,
-          },
-        };
-      } else if (action.payload.status === "failed") {
-        return {
-          ...state,
-          failedRequests: {
-            ...state.failedRequests,
-            ...action.payload,
-          },
-        };
-      } else {
-        return state;
-      }
+      return {
+        ...state,
+        pendingRequests: {
+          ...state.pendingRequests,
+          ...action.payload,
+        },
+      };
     case "admin/payments/togglePaymentModal":
       return {
         ...state,
