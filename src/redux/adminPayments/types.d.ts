@@ -4,6 +4,8 @@ type ProcessableRequest = {
   error?: HttpError;
 };
 
+type AcceptedPaymentMethod = "all" | "paypal" | "transferwise";
+
 type PaymentActions =
   | AdminPayments_UpdateActions
   | AdminPayments_QueryActions
@@ -28,7 +30,7 @@ type AdminPayments_QueryActions = {
 
 type AdminPayments_SelectRequest = {
   type: "admin/payments/selectRequest";
-  payload: ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"]["items"][0]["id"][];
+  payload: number[];
 };
 
 type AdminPayments_ClearSelectedRequests = {
@@ -58,6 +60,8 @@ type requestsList =
     total: number;
     order: ApiOperations["get-payments"]["parameters"]["query"]["order"];
     orderBy: ApiOperations["get-payments"]["parameters"]["query"]["orderBy"];
+    // paymentMethod: ApiOperations["get-payments"]["parameters"]["query"]["paymentMethod"],
+    paymentMethod: AcceptedPaymentMethod;
   };
 
 type AdminPaymentsState = {

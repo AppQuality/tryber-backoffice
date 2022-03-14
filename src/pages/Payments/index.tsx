@@ -8,10 +8,11 @@ import {
 } from "@appquality/appquality-design-system";
 import { useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
-import { TabFailedPayments } from "src/pages/Payments/TabFailedPayments";
-import { TabPendingPayments } from "src/pages/Payments/TabPendingPayments";
+import { TabFailedPayments } from "src/pages/Payments/failed/TabFailedPayments";
+import { TabPendingPayments } from "src/pages/Payments/pending/TabPendingPayments";
 import styled from "styled-components";
 import { MakePaymentModal } from "src/pages/Payments/MakePaymentModal";
+import { PendingReqFilters } from "src/pages/Payments/pending/PendingReqFilters";
 
 const StyledTabs = styled.div`
   .cell {
@@ -61,9 +62,7 @@ export default function AdminPayments() {
           </Card>
         </BSCol>
         <BSCol size="col-lg-3">
-          {/*<Card>*/}
-          {/*  <div>Filters and Status</div>*/}
-          {/*</Card>*/}
+          {activeTab === "pending" && <PendingReqFilters />}
         </BSCol>
       </BSGrid>
     </Container>
