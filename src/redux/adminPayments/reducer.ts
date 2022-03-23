@@ -84,13 +84,25 @@ export default (state = initialState, action: PaymentActions) => {
         },
       };
     case "admin/payments/updateReqsQuery":
-      return {
-        ...state,
-        pendingRequests: {
-          ...state.pendingRequests,
-          ...action.payload,
-        },
-      };
+      if (action.payload.status === "pending") {
+        return {
+          ...state,
+          pendingRequests: {
+            ...state.pendingRequests,
+            ...action.payload,
+          },
+        };
+      } else if (action.payload.status === "failed") {
+        return {
+          ...state,
+          failedRequests: {
+            ...state.failedRequests,
+            ...action.payload,
+          },
+        };
+      } else {
+        return state;
+      }
     case "admin/payments/togglePaymentModal":
       return {
         ...state,
