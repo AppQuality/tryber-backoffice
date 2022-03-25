@@ -1,8 +1,8 @@
-import { ThunkAction } from "redux-thunk";
-import HttpError from "src/utils/HttpError";
 import { AnyAction } from "redux";
-import API from "src/utils/api";
+import { ThunkAction } from "redux-thunk";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+import API from "src/utils/api";
+import HttpError from "src/utils/HttpError";
 
 // fetch requests return thunk async function
 export const fetchPaymentRequests =
@@ -110,6 +110,7 @@ export const updatePendingRequestsFilter =
     dispatch({
       type: "admin/payments/updateReqsQuery",
       payload: {
+        status: "pending",
         start: 0,
         paymentMethod: paymentMethod,
       },
