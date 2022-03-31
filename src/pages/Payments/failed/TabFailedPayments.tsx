@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   Pagination,
   Table,
@@ -10,13 +11,25 @@ import { TableActions } from "src/pages/Payments/pending/TabPendingPayments";
 import { currencyTable, getWaitingDays } from "src/pages/Payments/utils";
 import {
   fetchPaymentRequests,
+  toggleRetryModal,
   updatePagination,
 } from "src/redux/adminPayments/actionCreator";
 import { useAppDispatch } from "src/redux/provider";
-
 import paypalIcon from "src/pages/Payments/assets/paypal.svg";
 import twIcon from "src/pages/Payments/assets/transferwise.svg";
 import { getColumns } from "src/pages/Payments/failed/columns";
+import styled from "styled-components";
+
+const StyledActions = styled.div`
+  ${Button} {
+    padding: 0;
+    color: ${(props) => props.theme.palette.primary};
+
+    &:hover {
+      color: ${(props) => props.theme.palette.secondary};
+    }
+  }
+`;
 
 export const TabFailedPayments = () => {
   const dispatch = useAppDispatch();
@@ -100,6 +113,19 @@ export const TabFailedPayments = () => {
                 src={req.type === "paypal" ? paypalIcon : twIcon}
                 alt={req.type}
               />
+            ),
+          },
+          actions: {
+            title: "retry",
+            content: (
+              <StyledActions>
+                <Button
+                  type="link"
+                  onClick={() => dispatch(toggleRetryModal(true, req.id))}
+                >
+                  Retry
+                </Button>
+              </StyledActions>
             ),
           },
         }))
