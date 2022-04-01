@@ -121,7 +121,7 @@ export const RetryPaymentModal = () => {
     >
       <>
         <Text className="aq-mb-3">
-          <strong>Pay</strong>
+          <strong>Retry</strong>
         </Text>
         {isRequestsSending ? (
           <ProgressModalContent />
