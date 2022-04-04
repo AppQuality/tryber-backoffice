@@ -21,12 +21,25 @@ import { getColumns } from "src/pages/Payments/failed/columns";
 import styled from "styled-components";
 
 const StyledActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 7em;
+
   ${Button} {
     padding: 0;
     color: ${(props) => props.theme.palette.primary};
 
     &:hover {
       color: ${(props) => props.theme.palette.secondary};
+    }
+  }
+
+  @media (max-width: ${(p) => p.theme.grid.breakpoints.lg}) {
+    flex-direction: column;
+    align-items: flex-end;
+
+    ${Button} {
+      padding-bottom: 1em;
     }
   }
 `;
@@ -119,6 +132,9 @@ export const TabFailedPayments = () => {
             title: "retry",
             content: (
               <StyledActions>
+                <Button type="link" onClick={() => null}>
+                  Delete
+                </Button>
                 <Button
                   type="link"
                   onClick={() => dispatch(toggleRetryModal(true, req.id))}
