@@ -15,7 +15,8 @@ type PaymentActions =
   | AdminPayments_StopMultipaymentProcess
   | AdminPayments_UpdateProcessRequests
   | AdminPayments_ToggleRetryModal
-  | AdminPayments_SetRetryStatus;
+  | AdminPayments_ToggleDeleteModal
+  | AdminPayments_SetActionOutcome;
 
 /**
  *  Action types and their payloads
@@ -64,9 +65,17 @@ type AdminPayments_ToggleRetryModal = {
   };
 };
 
-type AdminPayments_SetRetryStatus = {
-  type: "admin/payments/setRetryStatus";
+type AdminPayments_SetActionOutcome = {
+  type: "admin/payments/setActionOutcome";
   payload?: "success" | "error";
+};
+
+type AdminPayments_ToggleDeleteModal = {
+  type: "admin/payments/toggleDeleteModal";
+  payload: {
+    isOpen: boolean;
+    requestId?: number;
+  };
 };
 
 type requestsList =
@@ -96,5 +105,9 @@ type AdminPaymentsState = {
     isOpen: boolean;
     requestId?: number;
   };
-  retryStatus?: "success" | "error";
+  deleteModal: {
+    isOpen: boolean;
+    requestId?: string;
+  };
+  actionOutcome?: "success" | "error";
 };
