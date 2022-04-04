@@ -1,0 +1,37 @@
+name: Deploy to staging
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Extract branch name
+        shell: bash
+        run: |
+          BRANCH=$(echo ${GITHUB_REF#refs/heads/})
+          if [ "$BRANCH" = "master" ]; then
+              timestamp=$(date +%s)
+              TAG="$timestamp,latest"
+          else
+              TAG="$BRANCH"
+          fi
+          echo "##[set-output name=tag;]$TAG"
+        id: extract_branch
+      - name: "Generate dist zip"
+        run: |
+          cd deployment
+          echo -n "appquality-pagebuilder-poc:${{steps.extract_branch.outputs.tag}}" > docker-image.txt
+          zip dist.zip *
+      - uses: zdurham/s3-upload-github-action@master
+        env:
+          S3_BUCKET: backoffice-app-staging-s3-source-bucket
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "eu-west-1" # optional: defaults to us-east-1
+          FILE: ./deployment/dist.zip
+          S3_KEY: dist.zip
