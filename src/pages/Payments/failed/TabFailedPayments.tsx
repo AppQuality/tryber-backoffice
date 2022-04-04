@@ -11,6 +11,7 @@ import { TableActions } from "src/pages/Payments/pending/TabPendingPayments";
 import { currencyTable, getWaitingDays } from "src/pages/Payments/utils";
 import {
   fetchPaymentRequests,
+  toggleDeleteModal,
   toggleRetryModal,
   updatePagination,
 } from "src/redux/adminPayments/actionCreator";
@@ -23,7 +24,7 @@ import styled from "styled-components";
 const StyledActions = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 7em;
+  width: 8em;
 
   ${Button} {
     padding: 0;
@@ -32,14 +33,18 @@ const StyledActions = styled.div`
     &:hover {
       color: ${(props) => props.theme.palette.secondary};
     }
+    &:nth-child(2) {
+      padding-right: 1em;
+    }
   }
 
-  @media (max-width: ${(p) => p.theme.grid.breakpoints.lg}) {
+  @media (max-width: ${(p) => p.theme.grid.breakpoints.xl}) {
     flex-direction: column;
     align-items: flex-end;
+    width: 4em;
 
     ${Button} {
-      padding-bottom: 1em;
+      padding: 0 1em 1em 0;
     }
   }
 `;
@@ -129,10 +134,13 @@ export const TabFailedPayments = () => {
             ),
           },
           actions: {
-            title: "retry",
+            title: "",
             content: (
               <StyledActions>
-                <Button type="link" onClick={() => null}>
+                <Button
+                  type="link"
+                  onClick={() => dispatch(toggleDeleteModal(true, req.id))}
+                >
                   Delete
                 </Button>
                 <Button
