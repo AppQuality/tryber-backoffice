@@ -13,7 +13,9 @@ type PaymentActions =
   | AdminPayments_ClearSelectedRequests
   | AdminPayments_ToggleModal
   | AdminPayments_StopMultipaymentProcess
-  | AdminPayments_UpdateProcessRequests;
+  | AdminPayments_UpdateProcessRequests
+  | AdminPayments_ToggleRetryModal
+  | AdminPayments_SetRetryStatus;
 
 /**
  *  Action types and their payloads
@@ -54,6 +56,19 @@ type AdminPayments_StopMultipaymentProcess = {
   type: "admin/payments/stopMultipaymentProcess";
 };
 
+type AdminPayments_ToggleRetryModal = {
+  type: "admin/payments/toggleRetryModal";
+  payload: {
+    isOpen: boolean;
+    requestId?: number;
+  };
+};
+
+type AdminPayments_SetRetryStatus = {
+  type: "admin/payments/setRetryStatus";
+  payload?: "success" | "error";
+};
+
 type requestsList =
   ApiOperations["get-payments"]["responses"]["200"]["content"]["application/json"] & {
     limit: number;
@@ -77,4 +92,9 @@ type AdminPaymentsState = {
   paymentModal: {
     isOpen: boolean;
   };
+  retryModal: {
+    isOpen: boolean;
+    requestId?: number;
+  };
+  retryStatus?: "success" | "error";
 };
