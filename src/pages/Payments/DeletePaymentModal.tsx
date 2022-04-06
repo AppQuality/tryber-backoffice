@@ -14,29 +14,29 @@ import {
 } from "react-bootstrap-icons";
 import { shallowEqual, useSelector } from "react-redux";
 import {
-  paySingleFailedRequest,
+  deletePaymentRequest,
   setActionOutcome,
-  toggleRetryModal,
+  toggleDeleteModal,
 } from "../../redux/adminPayments/actionCreator";
 import { useAppDispatch } from "../../redux/provider";
 
-export const RetryPaymentModal = () => {
+export const DeletePaymentModal = () => {
   const dispatch = useAppDispatch();
   const [isRequestsSending, setRequestSending] = useState(false);
   const {
-    retryModal: { isOpen, requestId },
+    deleteModal: { isOpen, requestId },
     actionOutcome,
   } = useSelector((state: GeneralState) => state.adminPayments, shallowEqual);
 
   const onClose = () => {
-    dispatch(toggleRetryModal(false));
+    dispatch(toggleDeleteModal(false));
     setRequestSending(false);
     dispatch(setActionOutcome());
   };
 
-  const onRetryClick = () => {
+  const onDeleteClick = () => {
     setRequestSending(true);
-    requestId && dispatch(paySingleFailedRequest(requestId));
+    requestId && dispatch(deletePaymentRequest(requestId));
   };
 
   const ModalFooter = () => {
@@ -56,13 +56,13 @@ export const RetryPaymentModal = () => {
         {!actionOutcome && (
           <BSCol>
             <Button
-              onClick={onRetryClick}
+              onClick={onDeleteClick}
               type="primary"
               flat
               size="block"
               disabled={isRequestsSending}
             >
-              Pay
+              Delete
             </Button>
           </BSCol>
         )}
@@ -94,8 +94,7 @@ export const RetryPaymentModal = () => {
             color={aqBootstrapTheme.palette.warning}
           />
           <Text className="aq-mb-3">
-            Request was not payed because of an error, check the failed payments
-            tab.
+            Request was not deleted because of an error.
           </Text>
         </div>
       );
@@ -104,7 +103,7 @@ export const RetryPaymentModal = () => {
         <div className="aq-text-center">
           <Check2Circle size={21} color={aqBootstrapTheme.palette.success} />
           <Text>
-            <strong>Request was payed successfully</strong>
+            <strong>Request was deleted successfully</strong>
           </Text>
         </div>
       );
@@ -121,12 +120,12 @@ export const RetryPaymentModal = () => {
     >
       <>
         <Text className="aq-mb-3">
-          <strong>Retry</strong>
+          <strong>Delete</strong>
         </Text>
         {isRequestsSending ? (
           <ProgressModalContent />
         ) : (
-          <Text>Are you sure you want to pay request?</Text>
+          <Text>Are you sure you want to delete request?</Text>
         )}
       </>
     </Modal>

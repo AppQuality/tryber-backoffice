@@ -214,13 +214,13 @@ export const paySingleFailedRequest =
     try {
       await API.payRequests(paymentId);
       dispatch({
-        type: "admin/payments/setRetryStatus",
+        type: "admin/payments/setActionOutcome",
         payload: "success",
       });
     } catch (e) {
       console.error(e);
       dispatch({
-        type: "admin/payments/setRetryStatus",
+        type: "admin/payments/setActionOutcome",
         payload: "error",
       });
     }
@@ -239,13 +239,46 @@ export const toggleRetryModal =
     });
   };
 
-export const setRetryStatus =
+export const deletePaymentRequest =
+  (
+    id: string
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    try {
+      await API.deleteRequest(id);
+      dispatch({
+        type: "admin/payments/setActionOutcome",
+        payload: "success",
+      });
+    } catch (e) {
+      console.error(e);
+      dispatch({
+        type: "admin/payments/setActionOutcome",
+        payload: "error",
+      });
+    }
+    dispatch(fetchPaymentRequests("failed"));
+  };
+
+export const toggleDeleteModal =
+  (
+    isOpen: boolean,
+    requestId?: number
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    dispatch({
+      type: "admin/payments/toggleDeleteModal",
+      payload: { isOpen, requestId },
+    });
+  };
+
+export const setActionOutcome =
   (
     status?: "success" | "error"
   ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
   async (dispatch) => {
     dispatch({
-      type: "admin/payments/setRetryStatus",
+      type: "admin/payments/setActionOutcome",
       payload: status,
     });
   };

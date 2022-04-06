@@ -14,6 +14,7 @@ import styled from "styled-components";
 import { MakePaymentModal } from "src/pages/Payments/MakePaymentModal";
 import { PendingReqFilters } from "src/pages/Payments/pending/PendingReqFilters";
 import { RetryPaymentModal } from "./RetryPaymentModal";
+import { DeletePaymentModal } from "./DeletePaymentModal";
 
 const StyledTabs = styled.div`
   .cell {
@@ -33,6 +34,7 @@ export default function AdminPayments() {
     <Container>
       <MakePaymentModal />
       <RetryPaymentModal />
+      <DeletePaymentModal />
       <BSGrid>
         <BSCol size="col-lg-9 ">
           <Card className="aq-mb-3" bodyClass="">
