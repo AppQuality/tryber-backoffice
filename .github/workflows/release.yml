@@ -29,6 +29,7 @@ jobs:
           region: eu-west-1
           repo: appquality-pagebuilder-poc
           tags: ${{ steps.extract_tag.outputs.tag }}
+          extra_build_args: --build-arg NPM_TOKEN=${{ secrets.NPM_TOKEN }}
 
   release-to-preprod:
     name: Release to PreProd
