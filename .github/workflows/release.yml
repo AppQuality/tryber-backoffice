@@ -122,7 +122,7 @@ jobs:
       - name: Get deployment url
         uses: AppQuality/get-codeploy-from-codepipeline@1.0.0
         id: codedeploy
-        with:
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "eu-west-1"
@@ -134,4 +134,4 @@ jobs:
           CODEDEPLOY_URL: ${{ steps.codedeploy.outputs.codedeploy_url }}
         with:
           body: $CODEDEPLOY_URL
-          is_append_body: true
+          isAppendBody: true
