@@ -22,3 +22,13 @@ export const payRequests = async (
     token: token,
   });
 };
+export const deleteRequest = async (
+  id: ApiOperations["delete-payments-paymentId"]["parameters"]["path"]["paymentId"],
+  token?: string
+): Promise<ApiOperations["delete-payments-paymentId"]["responses"]> => {
+  return apifetch({
+    method: "DELETE",
+    endpoint: `/payments/${id}`,
+    token: token,
+  });
+};

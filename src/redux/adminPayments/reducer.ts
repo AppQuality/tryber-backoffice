@@ -27,6 +27,12 @@ const initialState: AdminPaymentsState = {
     orderBy: "updated",
     paymentMethod: "all",
   },
+  retryModal: {
+    isOpen: false,
+  },
+  deleteModal: {
+    isOpen: false,
+  },
 };
 
 export default (state = initialState, action: PaymentActions) => {
@@ -109,6 +115,27 @@ export default (state = initialState, action: PaymentActions) => {
         paymentModal: {
           isOpen: action.payload,
         },
+      };
+    case "admin/payments/toggleRetryModal":
+      return {
+        ...state,
+        retryModal: {
+          isOpen: action.payload.isOpen,
+          requestId: action.payload.requestId,
+        },
+      };
+    case "admin/payments/toggleDeleteModal":
+      return {
+        ...state,
+        deleteModal: {
+          isOpen: action.payload.isOpen,
+          requestId: action.payload.requestId,
+        },
+      };
+    case "admin/payments/setActionOutcome":
+      return {
+        ...state,
+        actionOutcome: action.payload,
       };
     default:
       return state;

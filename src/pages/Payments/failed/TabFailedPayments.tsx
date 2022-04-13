@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   Pagination,
   Table,
@@ -10,13 +11,43 @@ import { TableActions } from "src/pages/Payments/pending/TabPendingPayments";
 import { currencyTable, getWaitingDays } from "src/pages/Payments/utils";
 import {
   fetchPaymentRequests,
+  toggleDeleteModal,
+  toggleRetryModal,
   updatePagination,
 } from "src/redux/adminPayments/actionCreator";
 import { useAppDispatch } from "src/redux/provider";
-
 import paypalIcon from "src/pages/Payments/assets/paypal.svg";
 import twIcon from "src/pages/Payments/assets/transferwise.svg";
 import { getColumns } from "src/pages/Payments/failed/columns";
+import styled from "styled-components";
+
+const StyledActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 8em;
+
+  ${Button} {
+    padding: 0;
+    color: ${(props) => props.theme.palette.primary};
+
+    &:hover {
+      color: ${(props) => props.theme.palette.secondary};
+    }
+    &:nth-child(2) {
+      padding-right: 1em;
+    }
+  }
+
+  @media (max-width: ${(p) => p.theme.grid.breakpoints.xl}) {
+    flex-direction: column;
+    align-items: flex-end;
+    width: 4em;
+
+    ${Button} {
+      padding: 0 1em 1em 0;
+    }
+  }
+`;
 
 export const TabFailedPayments = () => {
   const dispatch = useAppDispatch();
@@ -100,6 +131,25 @@ export const TabFailedPayments = () => {
                 src={req.type === "paypal" ? paypalIcon : twIcon}
                 alt={req.type}
               />
+            ),
+          },
+          actions: {
+            title: "",
+            content: (
+              <StyledActions>
+                <Button
+                  type="link"
+                  onClick={() => dispatch(toggleDeleteModal(true, req.id))}
+                >
+                  Delete
+                </Button>
+                <Button
+                  type="link"
+                  onClick={() => dispatch(toggleRetryModal(true, req.id))}
+                >
+                  Retry
+                </Button>
+              </StyledActions>
             ),
           },
         }))
