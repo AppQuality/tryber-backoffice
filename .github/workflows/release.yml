@@ -131,7 +131,6 @@ jobs:
         uses: tubone24/update_release@v1.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          CODEDEPLOY_URL: ${{ steps.codedeploy.outputs.codedeploy_url }}
         with:
-          body: $CODEDEPLOY_URL
+          body: ${{ steps.codedeploy.outputs.codedeploy_url }}
           isAppendBody: true
