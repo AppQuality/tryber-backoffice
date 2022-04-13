@@ -213,16 +213,72 @@ export const paySingleFailedRequest =
     const paymentId = id.toString();
     try {
       await API.payRequests(paymentId);
-      dispatch(
-        addMessage(`Done payment with id ${paymentId}`, "success", false)
-      );
+      dispatch({
+        type: "admin/payments/setActionOutcome",
+        payload: "success",
+      });
     } catch (e) {
-      const error = e as HttpError;
       console.error(e);
-      dispatch(
-        addMessage(`${error.statusCode} - ${error.message}`, "danger", false)
-      );
+      dispatch({
+        type: "admin/payments/setActionOutcome",
+        payload: "error",
+      });
     }
     dispatch(fetchPaymentRequests("failed"));
-    return dispatch(togglePaymentModal(false));
+  };
+
+export const toggleRetryModal =
+  (
+    isOpen: boolean,
+    requestId?: number
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    dispatch({
+      type: "admin/payments/toggleRetryModal",
+      payload: { isOpen, requestId },
+    });
+  };
+
+export const deletePaymentRequest =
+  (
+    id: string
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    try {
+      await API.deleteRequest(id);
+      dispatch({
+        type: "admin/payments/setActionOutcome",
+        payload: "success",
+      });
+    } catch (e) {
+      console.error(e);
+      dispatch({
+        type: "admin/payments/setActionOutcome",
+        payload: "error",
+      });
+    }
+    dispatch(fetchPaymentRequests("failed"));
+  };
+
+export const toggleDeleteModal =
+  (
+    isOpen: boolean,
+    requestId?: number
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    dispatch({
+      type: "admin/payments/toggleDeleteModal",
+      payload: { isOpen, requestId },
+    });
+  };
+
+export const setActionOutcome =
+  (
+    status?: "success" | "error"
+  ): ThunkAction<Promise<any>, GeneralState, unknown, PaymentActions> =>
+  async (dispatch) => {
+    dispatch({
+      type: "admin/payments/setActionOutcome",
+      payload: status,
+    });
   };

@@ -49,5 +49,12 @@ export const getColumns = (
       dataIndex: "method",
       key: "method",
     },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      role: "cta",
+      hideIndex: true,
+    },
   ];
 };
