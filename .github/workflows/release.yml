@@ -132,5 +132,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          body: ${{ steps.codedeploy.outputs.codedeploy_url }}
+          body: "[![](https://img.shields.io/badge/AWS-Redeploy-blueviolet)](${{ steps.codedeploy.outputs.codedeploy_url }})"
           isAppendBody: true
