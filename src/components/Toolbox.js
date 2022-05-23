@@ -10,7 +10,7 @@ import {
 
 import {
   Button,
-  ButtonContainer,
+  Layout,
   Text,
   Wysiwyg,
   Picture,
@@ -60,15 +60,15 @@ export const Toolbox = () => {
             ref={(ref) =>
               connectors.create(
                 ref,
-                <ButtonContainer positions="space-around">
+                <Layout positions="space-around">
                   <Button text="Contained button 1" />
                   <Button text="Contained button 2" />
-                </ButtonContainer>
+                </Layout>
               )
             }
           >
             <AppqButton size="block" flat={true} type="info">
-              Button Container
+              Layout
             </AppqButton>
           </span>
         </BSCol>

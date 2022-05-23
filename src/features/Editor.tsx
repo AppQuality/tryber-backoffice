@@ -11,6 +11,7 @@ import {
   Container,
   Editor,
   Frame,
+  Layout,
   Text,
   Wysiwyg,
   Picture,
@@ -64,6 +65,7 @@ export default ({
           Picture,
           Wysiwyg,
           ButtonContainer,
+          Layout,
         }}
       >
         <div className="aq-mt-3">
