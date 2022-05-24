@@ -1,12 +1,28 @@
-import { BSCol, BSGrid, FormLabel, Input, PageTitle } from '@appquality/appquality-design-system';
-import { Button, ButtonContainer, Container, Editor, Frame, Text, Wysiwyg } from '@appquality/craft-blocks';
-import { ReactElement, useEffect, useState } from 'react';
+import {
+  BSCol,
+  BSGrid,
+  FormLabel,
+  Input,
+  PageTitle,
+} from "@appquality/appquality-design-system";
+import {
+  Button,
+  ButtonContainer,
+  Container,
+  Editor,
+  Frame,
+  Layout,
+  Text,
+  Wysiwyg,
+  Picture,
+} from "@appquality/craft-blocks";
+import { ReactElement, useEffect, useState } from "react";
 
-import { SettingsPanel } from '../components/SettingsPanel';
-import { Toolbox } from '../components/Toolbox';
-import { Topbar } from '../components/Topbar';
-import ShowOnce from './ShowOnce';
-import TargetSelect from './TargetSelect';
+import { SettingsPanel } from "../components/SettingsPanel";
+import { Toolbox } from "../components/Toolbox";
+import { Topbar } from "../components/Topbar";
+import ShowOnce from "./ShowOnce";
+import TargetSelect from "./TargetSelect";
 
 export default ({
   onSave,
@@ -46,8 +62,10 @@ export default ({
           Button,
           Container,
           Text,
+          Picture,
           Wysiwyg,
           ButtonContainer,
+          Layout,
         }}
       >
         <div className="aq-mt-3">
