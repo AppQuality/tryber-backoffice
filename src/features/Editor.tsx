@@ -5,17 +5,7 @@ import {
   Input,
   PageTitle,
 } from "@appquality/appquality-design-system";
-import {
-  Button,
-  ButtonContainer,
-  Container,
-  Editor,
-  Frame,
-  Layout,
-  Text,
-  Wysiwyg,
-  Picture,
-} from "@appquality/craft-blocks";
+import { Editor, Frame } from "@appquality/craft-blocks";
 import { ReactElement, useEffect, useState } from "react";
 
 import { SettingsPanel } from "../components/SettingsPanel";
@@ -58,14 +48,12 @@ export default ({
         Crea o modifica i tuoi popup
       </PageTitle>
       <Editor
-        resolver={{
-          Button,
-          Container,
-          Text,
-          Picture,
-          Wysiwyg,
-          ButtonContainer,
-          Layout,
+        context={{
+          profileResolver: () => {
+            return new Promise((resolve) => {
+              resolve({ Profile: { name: "pippo", surname: "Franco" } });
+            });
+          },
         }}
       >
         <div className="aq-mt-3">
