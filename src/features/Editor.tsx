@@ -49,10 +49,21 @@ export default ({
       </PageTitle>
       <Editor
         context={{
-          profileResolver: () => {
-            return new Promise((resolve) => {
-              resolve({ Profile: { name: "pippo", surname: "Franco" } });
-            });
+          profile: {
+            resolver: () => {
+              return new Promise((resolve) => {
+                resolve({
+                  name: "pippo",
+                  surname: "Franco",
+                  residence: { city: "Lambrate", province: "Milano" },
+                });
+              });
+            },
+            shape: {
+              name: "pippo",
+              surname: "Franco",
+              residence: { city: "Lambrate", province: "Milano" },
+            },
           },
         }}
       >
