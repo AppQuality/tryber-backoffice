@@ -49,21 +49,17 @@ export default ({
       </PageTitle>
       <Editor
         context={{
-          profile: {
-            resolver: () => {
-              return new Promise((resolve) => {
-                resolve({
-                  name: "pippo",
+          resolveDynamicContent: true,
+          resolver: () => {
+            return new Promise((resolve) => {
+              resolve({
+                Profile: {
+                  name: "Pippo",
                   surname: "Franco",
-                  residence: { city: "Lambrate", province: "Milano" },
-                });
+                  residence: { city: "Lambrat", province: "Milano" },
+                },
               });
-            },
-            shape: {
-              name: "pippo",
-              surname: "Franco",
-              residence: { city: "Lambrate", province: "Milano" },
-            },
+            });
           },
         }}
       >
