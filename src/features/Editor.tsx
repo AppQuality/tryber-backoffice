@@ -6,34 +6,21 @@ import {
   PageTitle,
 } from "@appquality/appquality-design-system";
 import { Editor, Frame } from "@appquality/craft-blocks";
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SettingsPanel } from "../components/SettingsPanel";
 import { Toolbox } from "../components/Toolbox";
 import { Topbar } from "../components/Topbar";
 import ShowOnce from "./ShowOnce";
 import TargetSelect from "./TargetSelect";
+import { PreviewModal } from "src/features/PreviewModal";
 
-export default ({
-  onSave,
-  children,
-  json,
-  data = false,
-}: {
-  onSave: (data: any) => void;
-  children?: ReactElement;
-  json?: string;
-  data?:
-    | false
-    | {
-        title: string;
-        targets: string;
-        once: number;
-      };
-}) => {
+export default ({ onSave, children, json, data = false }: EditorProps) => {
   const [title, setTitle] = useState((data && data.title) || "");
   const [targets, setTargets] = useState((data && data.targets) || "all");
   const [once, setOnce] = useState((data && data.once) || 0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [preview, setPreview] = useState(json);
   useEffect(() => {
     setTitle((data && data.title) || "");
     setTargets((data && data.targets) || "all");
@@ -41,6 +28,12 @@ export default ({
   }, [data]);
   return (
     <>
+      <PreviewModal
+        onClose={() => setModalOpen(false)}
+        isOpen={modalOpen}
+        data={preview}
+        title={title}
+      />
       <PageTitle
         back={{ text: "Back", navigation: "/backoffice/" }}
         size="regular"
@@ -48,15 +41,18 @@ export default ({
         Crea o modifica i tuoi popup
       </PageTitle>
       <Editor
+        onNodesChange={(query: { serialize: () => any }) => {
+          const json = query.serialize();
+          setPreview(json);
+        }}
         context={{
-          resolveDynamicContent: true,
           resolver: () => {
             return new Promise((resolve) => {
               resolve({
                 Profile: {
+                  id: "T1987",
                   name: "Pippo",
                   surname: "Franco",
-                  residence: { city: "Lambrat", province: "Milano" },
                 },
               });
             });
@@ -104,6 +100,7 @@ export default ({
                   };
                   onSave(data);
                 }}
+                onPreview={() => setModalOpen(true)}
               />
             </BSCol>
             <BSCol size="col-4">
