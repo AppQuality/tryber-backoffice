@@ -1,12 +1,18 @@
-import { BSCol, BSGrid, Button as AppqButton } from '@appquality/appquality-design-system';
-import { useEditor } from '@appquality/craft-blocks';
-import lz from 'lzutf8';
-import React, { useState } from 'react';
+import {
+  BSCol,
+  BSGrid,
+  Button as AppqButton,
+} from "@appquality/appquality-design-system";
+import { useEditor } from "@appquality/craft-blocks";
+import lz from "lzutf8";
+import React, { useState } from "react";
 
 export const Topbar = ({
   onSave = false,
+  onPreview,
 }: {
   onSave: false | ((data: any) => void);
+  onPreview: () => void;
 }) => {
   const { actions, query, canUndo, canRedo } = useEditor(
     (state: any, query: any) => ({
@@ -15,17 +21,15 @@ export const Topbar = ({
     })
   );
 
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState<null | undefined>();
 
-  const [stateToLoad, setStateToLoad] = useState(null);
   if (snackbarMessage) {
     alert(snackbarMessage);
     setSnackbarMessage(null);
   }
   return (
     <BSGrid>
-      <BSCol size="col-7">
+      <BSCol size="col-5">
         <AppqButton
           type="secondary"
           className="aq-mr-2"
@@ -45,20 +49,31 @@ export const Topbar = ({
           Redo
         </AppqButton>
       </BSCol>
-      <BSCol size="col-5">
-        <AppqButton
-          size="block"
-          disabled={!onSave}
-          type="secondary"
-          className="aq-float-right aq-mr-2"
-          onClick={() => {
-            const json = query.serialize();
-            const base64 = lz.encodeBase64(lz.compress(json));
-            onSave && onSave(base64);
-          }}
-        >
-          Save
-        </AppqButton>
+      <BSCol size="col-7">
+        <div style={{ display: "flex" }}>
+          <AppqButton
+            size="block"
+            disabled={!onSave}
+            flat
+            type="secondary"
+            className="aq-mr-2"
+            onClick={() => onPreview()}
+          >
+            Preview
+          </AppqButton>
+          <AppqButton
+            size="block"
+            disabled={!onSave}
+            type="secondary"
+            onClick={() => {
+              const json = query.serialize();
+              const base64 = lz.encodeBase64(lz.compress(json));
+              onSave && onSave(base64);
+            }}
+          >
+            Save
+          </AppqButton>
+        </div>
       </BSCol>
     </BSGrid>
   );

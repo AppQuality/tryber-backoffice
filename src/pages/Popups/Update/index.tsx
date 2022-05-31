@@ -1,9 +1,9 @@
-import lz from 'lzutf8';
-import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import getOnePopup from 'src/api/getOnePopup';
-import updatePopup from 'src/api/updatePopup';
-import Editor from 'src/features/Editor';
+import lz from "lzutf8";
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import getOnePopup from "src/api/getOnePopup";
+import updatePopup from "src/api/updatePopup";
+import Editor from "src/features/Editor";
 
 export default ({}) => {
   let { id } = useParams<{ id: string }>();
@@ -58,7 +58,7 @@ export default ({}) => {
           once,
         }}
         json={json}
-      ></Editor>
+      />
     </div>
   );
 };
