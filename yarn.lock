@@ -17,37 +17,16 @@
     "web-vitals" "^1.0.1"
     "yup" "^0.32.9"
 
-"@appquality/craft-blocks@^0.1.25":
-  "integrity" "sha512-d4RnSt6mVWDLyXB8UHpd1XA9NcLEyi7ICkvqwmdlDjq/c4C8WV6zvnePa3rdapEhYLN/225kmoRRMF3x/rLqNw=="
-  "resolved" "https://registry.npmjs.org/@appquality/craft-blocks/-/craft-blocks-0.1.25.tgz"
-  "version" "0.1.25"
+"@appquality/craft-blocks@^0.1.26":
+  "integrity" "sha512-2OXtalJ1VsjLEHi8Xq151gi9wtemlFQBi5hrUOK17MsubOA0Am/uYLgoy8mp6qBzYJid5RkzWdHCsZXMhGd05Q=="
+  "resolved" "https://registry.npmjs.org/@appquality/craft-blocks/-/craft-blocks-0.1.26.tgz"
+  "version" "0.1.26"
   dependencies:
-    "@appquality/craftjs-core" "^0.2.0-beta.6"
+    "@craftjs/core" "^0.2.0-beta.5"
     "@draft-js-plugins/editor" "^4.1.0"
     "@draft-js-plugins/static-toolbar" "^4.1.1"
     "draft-js" "^0.11.7"
     "react-contenteditable" "^3.3.5"
-
-"@appquality/craftjs-core@^0.2.0-beta.6":
-  "integrity" "sha512-AGpDbsSokVqBJOmq5xh8Yl13Bp2g4flGum1DkBsTDKwLwAb0nGPWQUrJwhlAr6LujcIwnVbX3xLsFvIf5pUoag=="
-  "resolved" "https://registry.npmjs.org/@appquality/craftjs-core/-/craftjs-core-0.2.0-beta.6.tgz"
-  "version" "0.2.0-beta.6"
-  dependencies:
-    "@appquality/craftjs-utils" "^0.2.0-beta.5"
-    "debounce" "^1.2.0"
-    "lodash" "^4.17.20"
-    "tiny-invariant" "^1.0.6"
-
-"@appquality/craftjs-utils@^0.2.0-beta.5":
-  "integrity" "sha512-r71yJBDZPZUyc6z2Wr9TQiiIMVSDFRiSSb87nFq6NTmyxMZDWVNLTt3Xu3kqOxd4pQIJIeY9teBZpMy47cAYug=="
-  "resolved" "https://registry.npmjs.org/@appquality/craftjs-utils/-/craftjs-utils-0.2.0-beta.5.tgz"
-  "version" "0.2.0-beta.5"
-  dependencies:
-    "immer" "^9.0.6"
-    "lodash" "^4.17.20"
-    "nanoid" "^3.1.23"
-    "shallowequal" "^1.1.0"
-    "tiny-invariant" "^1.0.6"
 
 "@appquality/mobiscroll@^5.10.1":
   "integrity" "sha512-A9YVu/5aFcmd6WtLEfr//x20mV5w9O3X5nsooYW43HMdfrx1fKcPfarCk9fHyyov1h0S9DdrzR7Dl/sciL7usA=="
@@ -1252,20 +1231,20 @@
     "semver" "^7.3.2"
     "webpack-merge" "^4.2.2"
 
-"@craftjs/core@^0.2.0-beta.2":
-  "integrity" "sha512-irLZylsLYA52ILjM4gJrDe+Kdz/X+je6ABHYUfYenCV5nib7k1ejCclARrAlrIHrtibvVDbKnc8km/jrieBwXA=="
-  "resolved" "https://registry.npmjs.org/@craftjs/core/-/core-0.2.0-beta.4.tgz"
-  "version" "0.2.0-beta.4"
+"@craftjs/core@^0.2.0-beta.2", "@craftjs/core@^0.2.0-beta.5":
+  "integrity" "sha512-hO6ldnr75z5aYlQ8DpQWzsf9xAuyjV93T/GwAbske0NaoX8ww39uMdCsfo/8BOfztbJoUiPd47OEbXKwiuMSUw=="
+  "resolved" "https://registry.npmjs.org/@craftjs/core/-/core-0.2.0-beta.5.tgz"
+  "version" "0.2.0-beta.5"
   dependencies:
-    "@craftjs/utils" "^0.2.0-beta.4"
+    "@craftjs/utils" "^0.2.0-beta.5"
     "debounce" "^1.2.0"
     "lodash" "^4.17.20"
     "tiny-invariant" "^1.0.6"
 
-"@craftjs/utils@^0.2.0-beta.4":
-  "integrity" "sha512-8+7IjtU+A3dNqHO70FTPhF2fdPCZBIDHyor5MD4ix2jEX1nUB3gLAuro3WmIPQ7Ma0plx3LmKMb/Yp+hkgkCAg=="
-  "resolved" "https://registry.npmjs.org/@craftjs/utils/-/utils-0.2.0-beta.4.tgz"
-  "version" "0.2.0-beta.4"
+"@craftjs/utils@^0.2.0-beta.5":
+  "integrity" "sha512-eldphbQ2keoC/rhjvl9jdh1XCnhh2NQXd2KXxMGgNVJYdQJEykNo4jX2/CuLkEsHGR7PXOAtVB+ixHms3GnSLg=="
+  "resolved" "https://registry.npmjs.org/@craftjs/utils/-/utils-0.2.0-beta.5.tgz"
+  "version" "0.2.0-beta.5"
   dependencies:
     "immer" "^9.0.6"
     "lodash" "^4.17.20"
