@@ -17,7 +17,7 @@ export const PreviewModal = ({
             return new Promise((resolve) => {
               resolve({
                 Profile: {
-                  id: "T1987",
+                  id: "1987",
                   name: "Pippo",
                   surname: "Franco",
                 },
