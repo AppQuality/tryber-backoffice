@@ -43,6 +43,10 @@ export default ({}) => {
     <div className="popupContainer">
       <Editor
         onSave={(data: any) => {
+          if (!data.title) {
+            alert("Please specify a title for the popup");
+            return;
+          }
           updatePopup(data, id)
             .then((data) => {
               alert("Saved!");
