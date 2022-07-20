@@ -8,6 +8,8 @@
     "@appquality/craft-blocks": "^0.1.27",
     "@craco/craco": "^6.4.3",
     "@craftjs/core": "^0.2.0-beta.5",
+    "@reduxjs/toolkit": "^1.8.3",
+    "@rtk-query/codegen-openapi": "^1.0.0-alpha.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -54,7 +56,8 @@
     "build": "react-scripts build && npm run move",
     "test": "react-scripts test",
     "prettier": "npx prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
-    "translate": "i18next-scanner"
+    "translate": "i18next-scanner",
+    "generate-api": ". ./.env.development; API_URL=$REACT_APP_API_URL/reference/ npx @rtk-query/codegen-openapi src/services/tryberApi/config.ts"
   },
   "browserslist": {
     "production": [
@@ -74,6 +77,7 @@
     "@types/react-transition-group": "^4.4.4",
     "@types/styled-components": "^5.1.23",
     "@types/uuid": "^8.3.4",
-    "openapi-typescript": "^5.2.0"
+    "openapi-typescript": "^5.2.0",
+    "ts-node": "^10.9.1"
   }
 }
