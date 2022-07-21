@@ -1,4 +1,7 @@
+type JotformValues = {
+  additional: { [key: string]: any };
+};
 interface CufField {
-  fieldsData: ApiComponents["schemas"]["CustomUserFieldsData"];
+  fieldData: ApiComponents["schemas"]["CustomUserFieldsData"];
   checked: boolean;
 }

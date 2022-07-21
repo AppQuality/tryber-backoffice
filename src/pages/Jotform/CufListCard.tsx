@@ -1,5 +1,5 @@
 import { Card, Checkbox } from "@appquality/appquality-design-system";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { setFields } from "./jotformSlice";
 import useCufData from "./useCufData";
@@ -13,7 +13,7 @@ export const CufListCard = () => {
   useEffect(() => {
     const list: CufField[] = [];
     data?.forEach((d) => {
-      d.fields?.forEach((f) => list.push({ checked: false, fieldsData: f }));
+      d.fields?.forEach((f) => list.push({ checked: false, fieldData: f }));
     });
     dispatch(setFields(list));
   }, [data]);
@@ -22,15 +22,15 @@ export const CufListCard = () => {
     <Card title={"Additional fields selection"} className="aq-mb-3">
       {fields.map((f, i) => (
         <Checkbox
-          key={`${f.fieldsData.id}-${f.fieldsData.name.it}`}
-          id={`${f.fieldsData.id}-${f.fieldsData.name.it}`}
-          label={f.fieldsData.name.it}
+          key={f.fieldData.id}
+          id={f.fieldData.id.toString()}
+          label={f.fieldData.name.it}
           checked={f.checked}
           onChange={() => {
             const newFields = [...fields];
             newFields[i] = {
               checked: !f.checked,
-              fieldsData: f.fieldsData,
+              fieldData: f.fieldData,
             };
             dispatch(setFields(newFields));
           }}
