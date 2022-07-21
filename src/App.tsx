@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import { store } from "src/store";
 import { ThemeProvider } from "styled-components";
 import SiteWideMessages from "./features/SiteWideMessages";
+import Jotform from "./pages/Jotform";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Switch>
             <Route path={`/backoffice/new`} component={Create} />
             <Route path="/backoffice/payments" component={AdminPayments} />
+            <Route path="/backoffice/jotform" component={Jotform} />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
           </Switch>
