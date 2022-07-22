@@ -4,8 +4,10 @@ import { CufConfigurator } from "./CufConfigurator/CufConfigurator";
 import { CufListCard } from "./CufListCard";
 
 const StickyContainer = styled.div`
-  position: sticky;
-  top: 16px;
+  @media (min-width: ${(p) => p.theme.grid.breakpoints.lg}) {
+    position: sticky;
+    top: 16px;
+  }
 `;
 
 export default function Jotform() {
