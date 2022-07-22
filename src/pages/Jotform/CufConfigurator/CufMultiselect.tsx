@@ -1,4 +1,8 @@
-import { Select, FormGroup } from "@appquality/appquality-design-system";
+import {
+  Select,
+  FormGroup,
+  ErrorMessage,
+} from "@appquality/appquality-design-system";
 import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
 import { Field, FieldProps } from "formik";
 import { useMemo } from "react";
@@ -24,7 +28,14 @@ export const CufMultiselect = ({
   );
   return (
     <div className="aq-mb-3">
-      <Field name={name}>
+      <Field
+        name={name}
+        validate={(value: string) => {
+          if (!value.length) {
+            return "This is a required field";
+          }
+        }}
+      >
         {({
           field, // { name, value, onChange, onBlur }
           form,
@@ -40,6 +51,9 @@ export const CufMultiselect = ({
                     ? optionAll
                     : [...optionAll, ...selectOptions]
                 }
+                onBlur={() => {
+                  form.setFieldTouched(name);
+                }}
                 label={label}
                 placeholder={"Select options"}
                 menuTargetQuery="body"
@@ -48,12 +62,13 @@ export const CufMultiselect = ({
                   if (v === null) {
                     v = { label: "", value: "" };
                   }
-                  form.setFieldValue(field.name, v);
+                  form.setFieldValue(field.name, v, true);
                   if (v?.some((v: any) => v.value === "-1"))
-                    form.setFieldValue(field.name, optionAll);
+                    form.setFieldValue(field.name, optionAll, true);
                 }}
                 isMulti
               />
+              <ErrorMessage name={name} />
             </FormGroup>
           );
         }}
