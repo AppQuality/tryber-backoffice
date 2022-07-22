@@ -56,7 +56,7 @@ export const CufConfigurator = () => {
           <Form id="jotform">
             <CufConfiguratorCard />
             <Button
-              className="aq-mt-1 aq-mb-2"
+              className="aq-mt-1 aq-mb-4"
               type="primary"
               htmlType="submit"
               size="block"

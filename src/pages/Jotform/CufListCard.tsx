@@ -19,7 +19,7 @@ export const CufListCard = () => {
   }, [data]);
 
   return (
-    <Card title={"Additional fields selection"} className="aq-mb-3">
+    <Card title={"Additional fields selection"} className="aq-mb-3" shadow>
       {fields.map((f, i) => (
         <Checkbox
           key={f.fieldData.id}
