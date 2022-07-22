@@ -1,10 +1,6 @@
-import {
-  Card,
-  Field,
-  Select,
-  Text,
-} from "@appquality/appquality-design-system";
+import { Card, Field, Text } from "@appquality/appquality-design-system";
 import { useAppSelector } from "src/store";
+import { CufMultiselect } from "./CufMultiselect";
 
 export const CufConfiguratorCard = () => {
   const { fields } = useAppSelector((state) => state.jotform);
@@ -25,14 +21,12 @@ export const CufConfiguratorCard = () => {
                 placeholder="Write a question"
               />
               {f.fieldData.options && (
-                <Select
+                <CufMultiselect
                   name={`additional.${f.fieldData.id}.options`}
-                  value={{ value: "", label: "" }}
                   label={"Options"}
                   options={f.fieldData.options.map((o) => {
                     return { value: o.id.toString(), label: o.name };
                   })}
-                  isMulti
                 />
               )}
             </div>

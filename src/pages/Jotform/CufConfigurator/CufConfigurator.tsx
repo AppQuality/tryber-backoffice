@@ -10,15 +10,13 @@ const initialJotformValues: JotformValues = {
 export const CufConfigurator = () => {
   const { fields } = useAppSelector((state) => state.jotform);
 
-  fields.forEach((f) => {
-    if (f.checked)
-      initialJotformValues.additional[f.fieldData.id] = {
-        id: f.fieldData.id,
-        type: f.fieldData.type,
+  fields.forEach(
+    (f) =>
+      (initialJotformValues.additional[f.fieldData.id] = {
         question: "",
         ...(f.fieldData.options ? { options: [] } : undefined),
-      };
-  });
+      })
+  );
 
   return (
     <Formik
