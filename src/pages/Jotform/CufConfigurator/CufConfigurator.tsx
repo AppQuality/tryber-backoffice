@@ -5,6 +5,7 @@ import { FormikProps } from "formik";
 import * as yup from "yup";
 import FocusError from "./FocusError";
 import { FormTitleCard } from "./FormTitleCard";
+import { useEffect } from "react";
 
 const initialJotformValues: JotformValues = {
   formTitle: "",
@@ -12,17 +13,18 @@ const initialJotformValues: JotformValues = {
 };
 
 export const CufConfigurator = () => {
-  const { fields } = useAppSelector((state) => state.jotform);
+  const { list } = useAppSelector((state) => state.jotform);
 
-  fields.forEach(
-    (f, i) =>
-      (initialJotformValues.additional[f.fieldData.id] = {
-        cufId: f.fieldData.id,
+  useEffect(() => {
+    list.forEach((l, i) => {
+      initialJotformValues.additional[i] = {
+        cufId: l.id,
         title: "",
-        type: f.fieldData.type,
-        ...(f.fieldData.options ? { options: [] } : undefined),
-      })
-  );
+        type: l.type,
+        ...(l.options ? { options: [] } : undefined),
+      };
+    });
+  }, [list]);
 
   const validationSchema = {
     additional: yup.object(),
@@ -36,14 +38,14 @@ export const CufConfigurator = () => {
         let toBeSendValues: FormElement[] = [];
         const keys = Object.keys(values.additional);
         keys.forEach((k) => {
-          fields.forEach((f) => {
-            if (f.checked && values.additional[k].cufId === f.fieldData.id) {
+          list.forEach((f) => {
+            if (values.additional[k].cufId === f.id) {
               if (
                 values.additional[k].options?.some((o: any) => o.value === "-1")
               ) {
                 toBeSendValues.push({
                   ...values.additional[k],
-                  options: f.fieldData.options,
+                  options: f.options,
                 });
               } else toBeSendValues.push(values.additional[k]);
             }
@@ -64,11 +66,11 @@ export const CufConfigurator = () => {
               htmlType="submit"
               size="block"
               flat
-              disabled={!fields.some((f) => f.checked)}
+              disabled={!list.length}
             >
               Submit
             </Button>
-            {/* <FocusError /> */}
+            <FocusError />
           </Form>
         );
       }}
