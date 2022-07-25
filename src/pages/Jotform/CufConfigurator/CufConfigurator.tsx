@@ -15,10 +15,9 @@ export const CufConfigurator = () => {
   fields.forEach(
     (f, i) =>
       (initialJotformValues.additional[f.fieldData.id] = {
-        id: f.fieldData.id,
-        question: "",
+        cufId: f.fieldData.id,
+        title: "",
         type: f.fieldData.type,
-        name: f.fieldData.name,
         ...(f.fieldData.options ? { options: [] } : undefined),
       })
   );
@@ -36,7 +35,7 @@ export const CufConfigurator = () => {
         const keys = Object.keys(values.additional);
         keys.forEach((k) => {
           fields.forEach((f) => {
-            if (f.checked && values.additional[k].id === f.fieldData.id) {
+            if (f.checked && values.additional[k].cufId === f.fieldData.id) {
               if (
                 values.additional[k].options?.some((o: any) => o.value === "-1")
               ) {

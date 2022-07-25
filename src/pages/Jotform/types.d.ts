@@ -7,9 +7,8 @@ interface CufField {
 }
 
 interface FormElement {
-  id: number;
-  question: string;
+  cufId: number;
+  title: string;
   type: "select" | "multiselect" | "text";
-  name: ApiComponents["schemas"]["TranslatablePage"];
   options?: ApiComponents["schemas"]["CustomUserFieldsDataOption"][];
 }
