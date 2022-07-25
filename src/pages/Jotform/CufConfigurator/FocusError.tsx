@@ -14,8 +14,7 @@ const FocusError = () => {
           const additionalKeys = Object.keys(e.additional);
           let subKeys: string[] = [];
           additionalKeys.forEach((a) => {
-            if (!!e.additional[a]?.question)
-              subKeys.push(`additional.${a}.question`);
+            if (!!e.additional[a]?.title) subKeys.push(`additional.${a}.title`);
             else if (!!e.additional[a]?.options)
               subKeys.push(`additional.${a}.options`);
           });

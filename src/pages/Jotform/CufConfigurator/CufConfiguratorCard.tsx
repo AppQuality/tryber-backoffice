@@ -36,10 +36,7 @@ export const CufConfiguratorCard = () => {
           <Text className="aq-mb-2">
             <strong>{e.name.it}</strong>
           </Text>
-          <CufTextField
-            name={`additional.${e.id}.question`}
-            label={"Question"}
-          />
+          <CufTextField name={`additional.${e.id}.title`} label={"Question"} />
           {e.options && (
             <CufMultiselect
               name={`additional.${e.id}.options`}
