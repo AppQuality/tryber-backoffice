@@ -14,7 +14,7 @@ export const CufConfigurator = () => {
 
   fields.forEach(
     (f, i) =>
-      (initialJotformValues.additional[i] = {
+      (initialJotformValues.additional[f.fieldData.id] = {
         id: f.fieldData.id,
         question: "",
         type: f.fieldData.type,
@@ -65,7 +65,7 @@ export const CufConfigurator = () => {
             >
               Submit
             </Button>
-            <FocusError />
+            {/* <FocusError /> */}
           </Form>
         );
       }}
