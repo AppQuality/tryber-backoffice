@@ -4,8 +4,10 @@ import { CufConfiguratorCard } from "./CufConfiguratorCard";
 import { FormikProps } from "formik";
 import * as yup from "yup";
 import FocusError from "./FocusError";
+import { FormTitleCard } from "./FormTitleCard";
 
 const initialJotformValues: JotformValues = {
+  formTitle: "",
   additional: {},
 };
 
@@ -47,12 +49,14 @@ export const CufConfigurator = () => {
             }
           });
         });
+        console.log(values.formTitle);
         console.log(toBeSendValues);
       }}
     >
       {(formikProps: FormikProps<JotformValues>) => {
         return (
           <Form id="jotform">
+            <FormTitleCard />
             <CufConfiguratorCard />
             <Button
               className="aq-mt-1 aq-mb-4"
