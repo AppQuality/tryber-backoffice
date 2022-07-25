@@ -1,4 +1,5 @@
 type JotformValues = {
+  formTitle: string;
   additional: { [key: string]: any };
 };
 interface CufField {
