@@ -31,7 +31,7 @@ export const CufMultiselect = ({
       <Field
         name={name}
         validate={(value: string) => {
-          if (!value.length) {
+          if (!value || !value.length) {
             return "This is a required field";
           }
         }}
