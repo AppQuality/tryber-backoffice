@@ -1,4 +1,4 @@
-import { FormikValues, FormikHelpers } from "formik";
+import { FormikHelpers } from "formik";
 import { CustomUserFieldsData } from "src/services/tryberApi";
 
 export const submitValues = (
@@ -8,16 +8,15 @@ export const submitValues = (
 ) => {
   let toBeSendValues: FormElement[] = [];
   const keys = Object.keys(values.additional);
-  keys.forEach((k) => {
-    const i = parseInt(k);
-    list.forEach((f) => {
-      if (values.additional[i] === f.id) {
-        if (values.additional[i].options?.some((o: any) => o.value === "-1")) {
+  list.forEach((l, i) => {
+    keys.forEach((k) => {
+      if (values.additional[k].cufId === l.id) {
+        if (values.additional[k].options?.some((o: any) => o.value === "-1")) {
           toBeSendValues.push({
-            ...values.additional[i],
-            options: f.options,
+            ...values.additional[k],
+            options: l.options,
           });
-        } else toBeSendValues.push(values.additional[i]);
+        } else toBeSendValues.push(values.additional[k]);
       }
     });
   });
