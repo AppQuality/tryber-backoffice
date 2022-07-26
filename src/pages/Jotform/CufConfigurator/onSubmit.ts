@@ -1,11 +1,11 @@
 import { FormikValues, FormikHelpers } from "formik";
-import { useAppSelector } from "src/store";
+import { CustomUserFieldsData } from "src/services/tryberApi";
 
 export const submitValues = (
   values: JotformValues,
-  helpers: FormikHelpers<JotformValues>
+  helpers: FormikHelpers<JotformValues>,
+  list: CustomUserFieldsData[]
 ) => {
-  const { list } = useAppSelector((state) => state.jotform);
   let toBeSendValues: FormElement[] = [];
   const keys = Object.keys(values.additional);
   keys.forEach((k) => {
