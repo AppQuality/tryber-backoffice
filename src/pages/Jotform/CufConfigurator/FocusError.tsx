@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useFormikContext } from "formik";
+import { useAppSelector } from "src/store";
 
 const FocusError = () => {
   const { errors, isSubmitting, isValidating } = useFormikContext();
+  const { list } = useAppSelector((state) => state.jotform);
 
   useEffect(() => {
     if (isSubmitting && !isValidating) {
@@ -13,10 +15,15 @@ const FocusError = () => {
         if (e.additional) {
           const additionalKeys = Object.keys(e.additional);
           let subKeys: string[] = [];
-          additionalKeys.forEach((a) => {
-            if (!!e.additional[a]?.title) subKeys.push(`additional.${a}.title`);
-            else if (!!e.additional[a]?.options)
-              subKeys.push(`additional.${a}.options`);
+          list.forEach((l) => {
+            additionalKeys.forEach((a) => {
+              if (a === l.id.toString()) {
+                if (!!e.additional[a]?.title)
+                  subKeys.push(`additional.${a}.title`);
+                else if (!!e.additional[a]?.options)
+                  subKeys.push(`additional.${a}.options`);
+              }
+            });
           });
           keys = keys.concat(subKeys);
         }
