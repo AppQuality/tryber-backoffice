@@ -5,6 +5,7 @@ import * as yup from "yup";
 import FocusError from "./FocusError";
 import { FormTitleCard } from "./FormTitleCard";
 import { useEffect, useState } from "react";
+import { submitValues } from "src/pages/Jotform/CufConfigurator/onSubmit";
 
 export const CufConfigurator = () => {
   const [initialCufValues, setInitialCufValues] = useState<{
@@ -38,26 +39,7 @@ export const CufConfigurator = () => {
         additional: initialCufValues,
       }}
       validationSchema={yup.object(validationSchema)}
-      onSubmit={async (values, helpers) => {
-        let toBeSendValues: FormElement[] = [];
-        const keys = Object.keys(values.additional);
-        keys.forEach((k) => {
-          list.forEach((f) => {
-            if (values.additional[k].cufId === f.id) {
-              if (
-                values.additional[k].options?.some((o: any) => o.value === "-1")
-              ) {
-                toBeSendValues.push({
-                  ...values.additional[k],
-                  options: f.options,
-                });
-              } else toBeSendValues.push(values.additional[k]);
-            }
-          });
-        });
-        console.log(values.formTitle);
-        console.log(toBeSendValues);
-      }}
+      onSubmit={submitValues}
     >
       <Form id="jotform">
         <FormTitleCard />
