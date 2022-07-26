@@ -35,10 +35,10 @@ export const CufConfiguratorCard = () => {
           <Text className="aq-mb-2">
             <strong>{e.name.it}</strong>
           </Text>
-          <CufTextField name={`additional.${i}.title`} label={"Question"} />
+          <CufTextField name={`additional.${e.id}.title`} label={"Question"} />
           {e.options && (
             <CufMultiselect
-              name={`additional.${i}.options`}
+              name={`additional.${e.id}.options`}
               label={"Options"}
               options={e.options.map((o) => {
                 return { value: o.id.toString(), label: o.name };
