@@ -4,6 +4,7 @@ import { CustomUserFieldsData } from "../../services/tryberApi";
 interface JotformState {
   fields: CufField[];
   list: CustomUserFieldsData[];
+  url?: string;
 }
 
 const initialState: JotformState = {
@@ -21,9 +22,15 @@ const jotformSlice = createSlice({
     setList(state, action: PayloadAction<CustomUserFieldsData[]>) {
       state.list = action.payload;
     },
+    setUrl(state, action: PayloadAction<string>) {
+      state.url = action.payload;
+    },
+    resetJotform() {
+      return initialState;
+    },
   },
 });
 
 const { actions, reducer } = jotformSlice;
-export const { setFields, setList } = actions;
+export const { setFields, setList, setUrl, resetJotform } = actions;
 export default reducer;

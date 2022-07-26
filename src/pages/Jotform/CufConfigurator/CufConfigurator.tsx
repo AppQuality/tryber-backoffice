@@ -5,7 +5,7 @@ import { FormikProps } from "formik";
 import * as yup from "yup";
 import FocusError from "./FocusError";
 import { FormTitleCard } from "./FormTitleCard";
-import { submitValues } from "./onSubmit";
+import { useSubmitValues } from "./useSubmitValues";
 
 const initialJotformValues: JotformValues = {
   formTitle: "",
@@ -29,13 +29,13 @@ export const CufConfigurator = () => {
     additional: yup.object(),
   };
 
+  const { submitValues } = useSubmitValues();
+
   return (
     <Formik
       initialValues={initialJotformValues}
       validationSchema={yup.object(validationSchema)}
-      onSubmit={(values, formikHelpers) =>
-        submitValues(values, formikHelpers, list)
-      }
+      onSubmit={submitValues}
     >
       {(formikProps: FormikProps<JotformValues>) => {
         return (
@@ -48,9 +48,9 @@ export const CufConfigurator = () => {
               htmlType="submit"
               size="block"
               flat
-              disabled={!list.length}
+              disabled={!list.length || formikProps.isSubmitting}
             >
-              Submit
+              {formikProps.isSubmitting ? "...wait" : "Submit"}
             </Button>
             <FocusError />
           </Form>
