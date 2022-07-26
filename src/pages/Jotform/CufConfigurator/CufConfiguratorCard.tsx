@@ -7,8 +7,7 @@ import { CufTextField } from "./CufTextField";
 
 export const CufConfiguratorCard = () => {
   const dispatch = useAppDispatch();
-  const { fields } = useAppSelector((state) => state.jotform);
-  const { list } = useAppSelector((state) => state.jotform);
+  const { fields, list } = useAppSelector((state) => state.jotform);
 
   useEffect(() => {
     fields?.some((f) => {
