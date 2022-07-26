@@ -16,7 +16,7 @@ export const CufConfigurator = () => {
   const { list, fields } = useAppSelector((state) => state.jotform);
 
   fields.forEach(
-    (f, i) =>
+    (f) =>
       (initialJotformValues.additional[f.fieldData.id] = {
         cufId: f.fieldData.id,
         title: "",
