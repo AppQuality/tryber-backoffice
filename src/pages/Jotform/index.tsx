@@ -18,9 +18,12 @@ export default function Jotform() {
     <Container>
       <BSGrid className="aq-mt-4">
         {url ? (
-          <BSCol size="col-lg-8">
-            <JotformSuccessCard url={url} />
-          </BSCol>
+          <>
+            <BSCol size="col-lg-2" />
+            <BSCol size="col-lg-8">
+              <JotformSuccessCard url={url} />
+            </BSCol>
+          </>
         ) : (
           <>
             <BSCol size="col-lg-4">

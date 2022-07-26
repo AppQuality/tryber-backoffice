@@ -1,12 +1,16 @@
-import { Button, Card, Title } from "@appquality/appquality-design-system";
+import {
+  aqBootstrapTheme,
+  Button,
+  Card,
+  CSSGrid,
+  Text,
+} from "@appquality/appquality-design-system";
 import { useAppDispatch } from "src/store";
 import { resetJotform } from "src/pages/Jotform/jotformSlice";
 
 export const JotformSuccessCard = ({ url }: { url: string }) => {
   const dispatch = useAppDispatch();
   const getFormBuilderUrl = () => {
-    // https://eu.jotform.com/222063718431349?testerId={Profile.id}
-    // https://eu.jotform.com/build/222063777788369
     const editUrl = url.split("/");
     editUrl.splice(3, 0, "build");
     return editUrl.join("/");
@@ -15,34 +19,44 @@ export const JotformSuccessCard = ({ url }: { url: string }) => {
     dispatch(resetJotform());
   };
   return (
-    <Card title={"Jotform created with success"} className="aq-mb-3" shadow>
-      <Title size="m" className="aq-mb-3">
-        {url}
-      </Title>
-      <Button
-        className="aq-mr-3"
-        type="info"
-        target="_blank"
-        forwardedAs="a"
-        href={getFormBuilderUrl()}
-        size="lg"
-      >
-        Edit Form on Jotform
-      </Button>
-      <Button
-        className="aq-mr-3"
-        type="info"
-        variant
-        target="_blank"
-        forwardedAs="a"
-        href={url}
-        size="lg"
-      >
-        Preview
-      </Button>
-      <Button type="primary" size="lg" onClick={onCreateNewForm}>
-        Create a new Form
-      </Button>
+    <Card title={"Jotform created with success"} className="aq-mt-4" shadow>
+      <div className="aq-mb-4">
+        <Text className="aq-mb-3">
+          Copy and paste the following link to share the form with trybers,
+          <br />
+          <strong>NEVER forget</strong> the last part (testerId=Profile.id) or
+          you won't be able to associate the submission to the user
+        </Text>
+        <code
+          className="aq-p-2"
+          style={{ backgroundColor: aqBootstrapTheme.colors.gray100 }}
+        >
+          {url}
+        </code>
+      </div>
+      <CSSGrid min="180px">
+        <Button
+          type="info"
+          target="_blank"
+          forwardedAs="a"
+          href={getFormBuilderUrl()}
+          size="block"
+        >
+          Edit Form on Jotform
+        </Button>
+        <Button
+          type="info"
+          target="_blank"
+          forwardedAs="a"
+          href={url}
+          size="block"
+        >
+          Preview
+        </Button>
+        <Button type="primary" size="block" onClick={onCreateNewForm}>
+          Create new Form
+        </Button>
+      </CSSGrid>
     </Card>
   );
 };
