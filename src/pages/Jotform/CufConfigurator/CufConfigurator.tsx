@@ -39,7 +39,9 @@ export const CufConfigurator = () => {
         additional: initialCufValues,
       }}
       validationSchema={yup.object(validationSchema)}
-      onSubmit={submitValues}
+      onSubmit={(values, formikHelpers) =>
+        submitValues(values, formikHelpers, list)
+      }
     >
       <Form id="jotform">
         <FormTitleCard />
