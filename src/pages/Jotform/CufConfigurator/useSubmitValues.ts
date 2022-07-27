@@ -2,6 +2,7 @@ import { FormikHelpers } from "formik";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { setUrl } from "src/pages/Jotform/jotformSlice";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+import { sortArrayOfObjectsByField } from "./sortArrayOfObjectsByField";
 
 export const useSubmitValues = () => {
   const dispatch = useAppDispatch();
@@ -16,14 +17,22 @@ export const useSubmitValues = () => {
     list.forEach((l) => {
       keys.forEach((k) => {
         if (values.additional[k].cufId === l.id) {
-          if (
-            values.additional[k].options?.some((o: any) => o.value === "-1")
-          ) {
-            toBeSendValues.push({
-              ...values.additional[k],
-              options: l.options,
-            });
-          } else toBeSendValues.push(values.additional[k]);
+          const selectedOptions = values.additional[k].options?.some(
+            (o: any) => o.value === "-1"
+          )
+            ? l.options
+            : values.additional[k].options?.map((o: any) => ({
+                id: o.value,
+                name: o.label,
+              }));
+          const sortedOptions = sortArrayOfObjectsByField(
+            "name",
+            selectedOptions
+          );
+          toBeSendValues.push({
+            ...values.additional[k],
+            ...(sortedOptions ? { options: sortedOptions } : undefined),
+          });
         }
       });
     });
