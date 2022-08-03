@@ -24,8 +24,9 @@ export const JotformSuccessCard = ({ url }: { url: string }) => {
         <Text className="aq-mb-3">
           Copy and paste the following link to share the form with trybers,
           <br />
-          <strong>NEVER forget</strong> the last part (testerId=Profile.id) or
-          you won't be able to associate the submission to the user
+          <strong>NEVER forget</strong>
+          {` the last part (testerId={Extra.crypted_id}) or
+          you won't be able to associate the submission to the user`}
         </Text>
         <code
           className="aq-p-2"
