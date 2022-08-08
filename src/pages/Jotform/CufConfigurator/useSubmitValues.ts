@@ -49,7 +49,15 @@ export const useSubmitValues = () => {
       dispatch(setUrl(body.url));
     } catch (err) {
       if (err instanceof Error) {
-        dispatch(addMessage(err.message, "danger", false));
+        if (err.message === "TOO_LONG_REQUEST: Failed to create form.") {
+          dispatch(
+            addMessage(
+              "You have selected too many questions or options. Remove some and try again.",
+              "danger",
+              false
+            )
+          );
+        } else dispatch(addMessage(err.message, "danger", false));
       } else {
         dispatch(
           addMessage(
