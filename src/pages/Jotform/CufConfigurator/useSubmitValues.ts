@@ -39,6 +39,7 @@ export const useSubmitValues = () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_POST_JOTFORM}`, {
         body: JSON.stringify({
+          tester_id: "T69",
           title: values.formTitle,
           questions: toBeSendValues,
         }),
