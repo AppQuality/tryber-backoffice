@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CustomUserFieldsData } from "../../services/tryberApi";
 
 interface JotformState {
-  creatorTid?: string;
   fields: CufField[];
   list: CustomUserFieldsData[];
   url?: string;
