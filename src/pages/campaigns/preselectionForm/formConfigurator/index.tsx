@@ -6,27 +6,42 @@ import {
   Button,
 } from "@appquality/appquality-design-system";
 import * as Yup from "yup";
+import { FieldConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator/FieldConfigurator";
 
 const initialValues: PreselectionFormValues = {
   formTitle: "",
-  questions: [],
+  questions: {},
 };
-
-const validationSchema = Yup.object({
-  formTitle: Yup.string().required(),
-});
 
 export const FormConfigurator = () => {
   const { selectedFields } = useAppSelector(
     (state) => state.campaignPreselection
   );
+
+  selectedFields.forEach((f) => {
+    initialValues.questions[f.fieldData.id] = {
+      fieldId: f.fieldData.id,
+      title: "",
+      type: f.fieldData.type,
+      ...("options" in f.fieldData && f.fieldData.options
+        ? { options: [] }
+        : undefined),
+    };
+  });
+
+  const validationSchema = Yup.object({
+    formTitle: Yup.string().required(),
+    questions: Yup.object(),
+  });
+
   return (
     <Formik
+      enableReinitialize
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log(values);
         alert("submitted");
+        console.log(values);
       }}
     >
       <Form>
@@ -38,12 +53,10 @@ export const FormConfigurator = () => {
         />
         <div>
           {selectedFields.map((field) => (
-            <div key={field.fieldData.id}>
-              name:{" "}
-              {typeof field.fieldData.name === "string"
-                ? field.fieldData.name
-                : field.fieldData.name.it}
-            </div>
+            <FieldConfigurator
+              key={`configurator-${field.fieldData.id}`}
+              field={field}
+            />
           ))}
         </div>
         <Button htmlType="submit" type="primary">
