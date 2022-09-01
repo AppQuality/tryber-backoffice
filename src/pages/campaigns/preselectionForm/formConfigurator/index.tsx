@@ -7,7 +7,12 @@ export const FormConfigurator = () => {
   return (
     <div>
       {selectedFields.map((field) => (
-        <div>name: {field.fieldData.name}</div>
+        <div key={field.fieldData.id}>
+          name:{" "}
+          {typeof field.fieldData.name === "string"
+            ? field.fieldData.name
+            : field.fieldData.name.it}
+        </div>
       ))}
     </div>
   );

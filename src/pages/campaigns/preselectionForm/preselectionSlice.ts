@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CustomUserFieldsData } from "src/services/tryberApi";
 
 interface PreselectionFormState {
   profileFieldsList: ProfileField[];
@@ -12,6 +11,7 @@ const initialState: PreselectionFormState = {
   profileFieldsList: [
     {
       fieldData: {
+        id: "gender",
         type: "gender",
         name: "Gender",
       },
@@ -19,6 +19,7 @@ const initialState: PreselectionFormState = {
     },
     {
       fieldData: {
+        id: "phone",
         type: "phone",
         name: "Phone Number",
       },
@@ -26,6 +27,7 @@ const initialState: PreselectionFormState = {
     },
     {
       fieldData: {
+        id: "address",
         type: "address",
         name: "Address",
       },
@@ -56,6 +58,24 @@ const campaignPreselectionSlice = createSlice({
         return field;
       });
     },
+    setCufList(state, action: PayloadAction<CufField[]>) {
+      state.cufList = action.payload;
+    },
+    toggleCufField(state, action: PayloadAction<number>) {
+      state.cufList = state.cufList.map((field) => {
+        if (field.fieldData.id === action.payload) {
+          field.checked = !field.checked;
+          if (field.checked) {
+            state.selectedFields.push(field);
+          } else {
+            state.selectedFields = state.selectedFields.filter(
+              (field) => field.fieldData.id !== action.payload
+            );
+          }
+        }
+        return field;
+      });
+    },
     resetForm() {
       return initialState;
     },
@@ -63,5 +83,6 @@ const campaignPreselectionSlice = createSlice({
 });
 
 const { actions, reducer } = campaignPreselectionSlice;
-export const { resetForm, toggleProfileField } = actions;
+export const { resetForm, toggleProfileField, setCufList, toggleCufField } =
+  actions;
 export default reducer;
