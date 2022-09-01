@@ -4,7 +4,7 @@ interface CufField {
 }
 type PreselectionFormValues = {
   formTitle: string;
-  questions: object[];
+  questions: { [key: string]: any };
 };
 
 type ProfileFieldType = "gender" | "phone" | "address";

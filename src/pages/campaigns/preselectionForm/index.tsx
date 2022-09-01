@@ -6,7 +6,7 @@ import { FormConfigurator } from "src/pages/campaigns/preselectionForm/formConfi
 function preselectionForm() {
   return (
     <OpsUserContainer>
-      <BSGrid className="aq-mt-4">
+      <BSGrid className="aq-my-4">
         <BSCol size="col-lg-4">
           <FieldsSelectors />
         </BSCol>

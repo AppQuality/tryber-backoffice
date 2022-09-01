@@ -4,10 +4,10 @@ import { Button } from "@appquality/appquality-design-system";
 
 export const FieldsSelectors = () => {
   return (
-    <>
-      <Button>New (+)</Button>
+    <div>
       <ProfileFieldsSelectorCard />
       <CufSelectorCard />
-    </>
+      <Button>New (+)</Button>
+    </div>
   );
 };
