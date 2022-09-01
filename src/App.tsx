@@ -9,7 +9,7 @@ import AdminPayments from "src/pages/Payments";
 import Create from "src/pages/Popups/Create";
 import List from "src/pages/Popups/List";
 import Update from "src/pages/Popups/Update";
-import CampaignPreselction from "src/pages/campaigns/preselection";
+import CampaignPreselection from "src/pages/campaigns/preselectionForm";
 import { Provider } from "react-redux";
 import { store } from "src/store";
 import { ThemeProvider } from "styled-components";
@@ -29,7 +29,7 @@ function App() {
             <Route path="/backoffice/jotform" component={Jotform} />
             <Route
               path="/backoffice/campaigns/preselection"
-              component={CampaignPreselction}
+              component={CampaignPreselection}
             />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
