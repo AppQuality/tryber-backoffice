@@ -6,6 +6,10 @@ interface CufField {
 type ProfileFieldType = "gender" | "phone" | "address";
 
 interface ProfileField {
-  fieldData: { name: string; type: ProfilefieldType };
+  fieldData: {
+    id: ProfileFieldType;
+    name: string;
+    type: ProfileFieldType;
+  };
   checked: boolean;
 }

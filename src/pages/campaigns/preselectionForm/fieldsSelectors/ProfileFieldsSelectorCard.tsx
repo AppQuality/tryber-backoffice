@@ -16,7 +16,7 @@ export const ProfileFieldsSelectorCard = () => {
           label={f.fieldData.name}
           checked={f.checked}
           onChange={() => {
-            dispatch(toggleProfileField(f.fieldData.type));
+            dispatch(toggleProfileField(f.fieldData.id));
           }}
           className="aq-mb-2"
         />
