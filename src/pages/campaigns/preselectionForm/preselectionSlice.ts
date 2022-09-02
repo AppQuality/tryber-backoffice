@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from "uuid";
 
 interface PreselectionFormState {
   profileFieldsList: ProfileField[];
@@ -79,7 +80,7 @@ const campaignPreselectionSlice = createSlice({
     addCustomQuestion(state, action: PayloadAction<CustomQuestionType>) {
       const newQuestion = {
         fieldData: {
-          id: `custom-question-${state.customQuestionsList.length}`,
+          id: uuidv4(),
           type: action.payload,
         },
       };
