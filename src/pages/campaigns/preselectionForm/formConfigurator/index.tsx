@@ -7,6 +7,7 @@ import {
 } from "@appquality/appquality-design-system";
 import * as Yup from "yup";
 import { FieldConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator/FieldConfigurator";
+import { QuestionConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator/QuestionConfigurator";
 
 const initialValues: PreselectionFormValues = {
   formTitle: "",
@@ -52,12 +53,16 @@ export const FormConfigurator = () => {
           label={"Form Title"}
         />
         <div>
-          {selectedFields.map((field) => (
-            <FieldConfigurator
-              key={`configurator-${field.fieldData.id}`}
-              field={field}
-            />
-          ))}
+          {selectedFields.map((field) =>
+            "checked" in field ? (
+              <FieldConfigurator
+                key={`configurator-${field.fieldData.id}`}
+                field={field}
+              />
+            ) : (
+              <QuestionConfigurator field={field} />
+            )
+          )}
         </div>
         <Button htmlType="submit" type="primary">
           Save
