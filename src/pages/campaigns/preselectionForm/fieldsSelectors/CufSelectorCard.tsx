@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "src/store";
 import { useEffect } from "react";
-import { Card, Checkbox } from "@appquality/appquality-design-system";
+import { Card, Checkbox, Text } from "@appquality/appquality-design-system";
 import { useGetCustomUserFieldsQuery } from "src/services/tryberApi";
 import {
   setCufList,
@@ -27,7 +27,11 @@ export const CufSelectorCard = () => {
     return <Card>...error retrieving cuf fields</Card>;
   }
   return (
-    <Card title={"Custom User Fields"} className="aq-mb-3" shadow>
+    <Card title={"Custom User Fields (CUF)"} className="aq-mb-3" shadow>
+      <Text small color="danger" className="aq-mb-3">
+        Attenzione, le risposte dell'utente a queste domande modificano il suo
+        profilo su tryber.me
+      </Text>
       {cufList.map((f) => (
         <Checkbox
           key={f.fieldData.id}

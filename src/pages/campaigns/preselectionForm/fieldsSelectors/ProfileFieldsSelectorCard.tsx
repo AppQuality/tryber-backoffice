@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "src/store";
-import { Card, Checkbox } from "@appquality/appquality-design-system";
+import { Card, Checkbox, Text } from "@appquality/appquality-design-system";
 import { toggleProfileField } from "src/pages/campaigns/preselectionForm/preselectionSlice";
 
 export const ProfileFieldsSelectorCard = () => {
@@ -9,6 +9,10 @@ export const ProfileFieldsSelectorCard = () => {
   );
   return (
     <Card title={"User Profile Fields"} className="aq-mb-3" shadow>
+      <Text small color="danger" className="aq-mb-3">
+        Attenzione, le risposte dell'utente a queste domande modificano il suo
+        profilo su tryber.me
+      </Text>
       {profileFieldsList.map((f) => (
         <Checkbox
           key={f.fieldData.type}
@@ -21,7 +25,6 @@ export const ProfileFieldsSelectorCard = () => {
           className="aq-mb-2"
         />
       ))}
-      Questi dati modificano il profilo dell'utente
     </Card>
   );
 };
