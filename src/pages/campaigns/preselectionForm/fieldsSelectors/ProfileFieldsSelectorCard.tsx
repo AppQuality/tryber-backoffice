@@ -21,6 +21,7 @@ export const ProfileFieldsSelectorCard = () => {
           className="aq-mb-2"
         />
       ))}
+      Questi dati modificano il profilo dell'utente
     </Card>
   );
 };

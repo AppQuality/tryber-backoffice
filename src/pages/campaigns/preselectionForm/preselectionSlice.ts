@@ -3,8 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface PreselectionFormState {
   profileFieldsList: ProfileField[];
   cufList: CufField[];
-  newFieldsList: object[];
-  selectedFields: Array<ProfileField | CufField>;
+  customQuestionsList: CustomQuestion[];
+  selectedFields: Array<ProfileField | CufField | CustomQuestion>;
 }
 
 const initialState: PreselectionFormState = {
@@ -13,7 +13,7 @@ const initialState: PreselectionFormState = {
       fieldData: {
         id: "gender",
         type: "gender",
-        name: "Gender",
+        name: "Genere",
       },
       checked: false,
     },
@@ -21,7 +21,7 @@ const initialState: PreselectionFormState = {
       fieldData: {
         id: "phone",
         type: "phone",
-        name: "Phone Number",
+        name: "Numero di Telefono",
       },
       checked: false,
     },
@@ -29,13 +29,13 @@ const initialState: PreselectionFormState = {
       fieldData: {
         id: "address",
         type: "address",
-        name: "Address",
+        name: "Città e Nazione di residenza",
       },
       checked: false,
     },
   ],
   cufList: [],
-  newFieldsList: [],
+  customQuestionsList: [],
   selectedFields: [],
 };
 
@@ -76,6 +76,24 @@ const campaignPreselectionSlice = createSlice({
         return field;
       });
     },
+    addCustomQuestion(state, action: PayloadAction<CustomQuestionType>) {
+      const newQuestion = {
+        fieldData: {
+          id: `custom-question-${state.customQuestionsList.length}`,
+          type: action.payload,
+        },
+      };
+      state.customQuestionsList.push(newQuestion);
+      state.selectedFields.push(newQuestion);
+    },
+    removeCustomQuestion(state, action: PayloadAction<string>) {
+      state.customQuestionsList = state.customQuestionsList.filter(
+        (question) => question.fieldData.id !== action.payload
+      );
+      state.selectedFields = state.selectedFields.filter(
+        (question) => question.fieldData.id !== action.payload
+      );
+    },
     resetForm() {
       return initialState;
     },
@@ -83,6 +101,12 @@ const campaignPreselectionSlice = createSlice({
 });
 
 const { actions, reducer } = campaignPreselectionSlice;
-export const { resetForm, toggleProfileField, setCufList, toggleCufField } =
-  actions;
+export const {
+  resetForm,
+  toggleProfileField,
+  setCufList,
+  toggleCufField,
+  addCustomQuestion,
+  removeCustomQuestion,
+} = actions;
 export default reducer;

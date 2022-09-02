@@ -17,3 +17,12 @@ interface ProfileField {
   };
   checked: boolean;
 }
+
+type CustomQuestionType = "select" | "multiselect" | "text" | "radio";
+
+interface CustomQuestion {
+  fieldData: {
+    type: CustomQuestionType;
+    id: string;
+  };
+}
