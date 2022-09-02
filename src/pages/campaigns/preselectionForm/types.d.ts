@@ -4,7 +4,14 @@ interface CufField {
 }
 type PreselectionFormValues = {
   formTitle: string;
-  questions: { [key: string]: any };
+  questions: {
+    [key: string | number]: {
+      fieldId: string | number;
+      title: string;
+      type: string;
+      options?: string[];
+    };
+  };
 };
 
 type ProfileFieldType = "gender" | "phone" | "address";
@@ -24,5 +31,6 @@ interface CustomQuestion {
   fieldData: {
     type: CustomQuestionType;
     id: string;
+    options?: string[];
   };
 }
