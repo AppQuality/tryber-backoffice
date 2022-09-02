@@ -60,7 +60,10 @@ export const FormConfigurator = () => {
                 field={field}
               />
             ) : (
-              <QuestionConfigurator field={field} />
+              <QuestionConfigurator
+                key={`configurator-${field.fieldData.id}`}
+                field={field}
+              />
             )
           )}
         </div>
