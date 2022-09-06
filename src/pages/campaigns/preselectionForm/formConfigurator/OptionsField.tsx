@@ -9,32 +9,31 @@ export const OptionsField: React.FC<{ name: string }> = ({ name }) => {
   } = useFormikContext<PreselectionFormValues>();
   return (
     <>
-      <FormLabel label="Options" htmlFor={`${name}.options.0`} />
+      <FormLabel label="Options" htmlFor={`questions.${name}.options`} />
       <FieldArray
         name={`questions.${name}.options`}
         render={(arrayHelpers) => (
-          <>
-            {questions[name]?.options?.map((option, index) => (
-              <div style={{ display: "flex" }} key={index}>
-                <Field name={`${name}.options.${index}`} type="text" />
-                <Button
-                  flat
-                  size="sm"
-                  style={{ padding: "0 10px", marginLeft: "1em" }}
-                  onClick={arrayHelpers.remove(index)}
-                >
-                  <XLg />
-                </Button>
-              </div>
-            ))}
-            <Button
-              onClick={() =>
-                arrayHelpers.insert(questions[name]?.options?.length || 0, "")
-              }
-            >
-              Add an Option
-            </Button>
-          </>
+          <div>
+            <div>
+              {questions[name]?.options?.map((option, index) => (
+                <div style={{ display: "flex" }} key={index}>
+                  <Field
+                    name={`questions.${name}.options.${index}`}
+                    type="text"
+                  />
+                  <Button
+                    flat
+                    size="sm"
+                    style={{ padding: "0 10px", marginLeft: "1em" }}
+                    onClick={() => arrayHelpers.remove(index)}
+                  >
+                    <XLg />
+                  </Button>
+                </div>
+              ))}
+            </div>
+            <Button onClick={() => arrayHelpers.push("")}>Add an Option</Button>
+          </div>
         )}
       />
     </>

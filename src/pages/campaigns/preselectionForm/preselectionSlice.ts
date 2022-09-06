@@ -82,7 +82,9 @@ const campaignPreselectionSlice = createSlice({
         fieldData: {
           id: uuidv4(),
           type: action.payload,
-          ...(action.payload !== "text" ? { options: [] } : undefined),
+          ...(action.payload !== "text"
+            ? { options: ["option 1", "option 2"] }
+            : undefined),
         },
       };
       state.customQuestionsList.push(newQuestion);
