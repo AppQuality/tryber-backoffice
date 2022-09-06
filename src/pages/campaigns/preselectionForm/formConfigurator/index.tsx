@@ -25,7 +25,7 @@ export const FormConfigurator = () => {
       title: "",
       type: f.fieldData.type,
       ...("options" in f.fieldData && f.fieldData.options
-        ? { options: [] }
+        ? { options: f.fieldData.options }
         : undefined),
     };
   });

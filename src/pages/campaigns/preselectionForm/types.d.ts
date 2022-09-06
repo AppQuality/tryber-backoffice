@@ -9,7 +9,9 @@ type PreselectionFormValues = {
       fieldId: string | number;
       title: string;
       type: string;
-      options?: string[];
+      options?:
+        | string[]
+        | ApiComponents["schemas"]["CustomUserFieldsDataOption"][];
     };
   };
 };
