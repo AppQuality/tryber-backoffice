@@ -135,6 +135,7 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/campaigns/${queryArg.campaign}/candidates`,
         method: "POST",
         body: queryArg.body,
+        params: { device: queryArg.device },
       }),
     }),
     getPopups: build.query<GetPopupsApiResponse, GetPopupsApiArg>({
@@ -605,6 +606,32 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/users/me/campaigns/${queryArg.campaignId}/devices`,
       }),
     }),
+    getCampaignsFormsByFormId: build.query<
+      GetCampaignsFormsByFormIdApiResponse,
+      GetCampaignsFormsByFormIdApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/forms/${queryArg.formId}` }),
+    }),
+    putCampaignsFormsByFormId: build.mutation<
+      PutCampaignsFormsByFormIdApiResponse,
+      PutCampaignsFormsByFormIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/forms/${queryArg.formId}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
+    postCampaignsForms: build.mutation<
+      PostCampaignsFormsApiResponse,
+      PostCampaignsFormsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/forms`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -771,6 +798,7 @@ export type PostCampaignsByCampaignCandidatesApiResponse =
 export type PostCampaignsByCampaignCandidatesApiArg = {
   /** A campaign id */
   campaign: string;
+  device?: string;
   body: {
     tester_id: number;
   };
@@ -1597,6 +1625,50 @@ export type GetUsersMeCampaignsByCampaignIdDevicesApiResponse =
 export type GetUsersMeCampaignsByCampaignIdDevicesApiArg = {
   campaignId: string;
 };
+export type GetCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  campaign?: {
+    id: number;
+    name: string;
+  };
+  fields: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+};
+export type GetCampaignsFormsByFormIdApiArg = {
+  formId: string;
+};
+export type PutCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  fields: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+};
+export type PutCampaignsFormsByFormIdApiArg = {
+  formId: string;
+  body: {
+    name: string;
+    campaign?: number;
+    fields: ({
+      id?: number;
+    } & PreselectionFormQuestion)[];
+  };
+};
+export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
+  id: number;
+  name: string;
+  fields?: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+};
+export type PostCampaignsFormsApiArg = {
+  body: {
+    name: string;
+    fields: PreselectionFormQuestion[];
+  };
+};
 export type Project = {
   name?: string;
 };
@@ -1778,13 +1850,14 @@ export type RankingItem = {
   name: string;
   monthly_exp: number;
 };
+export type CustomUserFieldsType = "text" | "select" | "multiselect";
 export type CustomUserFieldsDataOption = {
   id: number;
   name: string;
 };
 export type CustomUserFieldsData = {
   id: number;
-  type: "select" | "multiselect" | "text";
+  type: CustomUserFieldsType;
   placeholder?: TranslatablePage;
   allow_other?: boolean;
   name: TranslatablePage;
@@ -1809,6 +1882,24 @@ export type CampaignAdditionalField = {
   | {
       type: "text";
       regex: string;
+    }
+);
+export type PreselectionFormQuestion = {
+  question: string;
+} & (
+  | {
+      type: "text";
+    }
+  | {
+      type: "multiselect" | "select" | "radio";
+      options: string[];
+    }
+  | {
+      type: string;
+      options?: number[];
+    }
+  | {
+      type: "gender" | "phone_number" | "address";
     }
 );
 export const {
@@ -1884,4 +1975,7 @@ export const {
   useGetUsersMeCampaignsByCampaignIdQuery,
   usePostUsersMeCampaignsByCampaignIdMediaMutation,
   useGetUsersMeCampaignsByCampaignIdDevicesQuery,
+  useGetCampaignsFormsByFormIdQuery,
+  usePutCampaignsFormsByFormIdMutation,
+  usePostCampaignsFormsMutation,
 } = injectedRtkApi;
