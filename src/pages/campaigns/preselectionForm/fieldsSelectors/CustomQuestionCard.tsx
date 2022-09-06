@@ -1,13 +1,19 @@
-import { useAppDispatch } from "src/store";
 import React, { useState } from "react";
 import { Button, Card, Radio } from "@appquality/appquality-design-system";
-import { addCustomQuestion } from "src/pages/campaigns/preselectionForm/preselectionSlice";
+import { v4 as uuidv4 } from "uuid";
 
-export const CustomQuestionCard = () => {
+export const CustomQuestionCard: React.FC<{
+  add: (field: AdditionalField) => void;
+}> = ({ add }) => {
   const [selected, setSelected] = useState<CustomQuestionType>();
-  const dispatch = useAppDispatch();
   const newCustomQuestion = () => {
-    if (selected) dispatch(addCustomQuestion(selected));
+    if (selected)
+      add({
+        type: selected,
+        fieldId: uuidv4(),
+        question: "",
+        ...(selected !== "text" ? { options: [] } : undefined),
+      });
   };
 
   const QuestionTypeRadio: React.FC<{ type: CustomQuestionType }> = ({

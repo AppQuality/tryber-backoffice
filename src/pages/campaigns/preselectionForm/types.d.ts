@@ -1,19 +1,20 @@
-interface CufField {
-  fieldData: ApiComponents["schemas"]["CustomUserFieldsData"];
-  checked: boolean;
+interface AdditionalField {
+  fieldId: string;
+  question: string;
+  type: string; // cuf_22 || text || select || multiselect || radio || gender || phone ||
+  options?: string[];
 }
+
+interface CustomUserField extends AdditionalField {
+  cufId: number;
+  cufType: string;
+  availableOptions?: ApiComponents["schemas"]["CustomUserFieldsDataOption"][];
+  selectedOptions?: number[];
+}
+
 type PreselectionFormValues = {
   formTitle: string;
-  questions: {
-    [key: string | number]: {
-      fieldId: string | number;
-      title: string;
-      type: string;
-      options?:
-        | string[]
-        | ApiComponents["schemas"]["CustomUserFieldsDataOption"][];
-    };
-  };
+  fields: Array<AdditionalField | CustomUserField>;
 };
 
 type ProfileFieldType = "gender" | "phone" | "address";

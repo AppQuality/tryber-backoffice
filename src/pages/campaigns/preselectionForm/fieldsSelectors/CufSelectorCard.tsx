@@ -1,23 +1,25 @@
-import { useAppDispatch, useAppSelector } from "src/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, Checkbox, Text } from "@appquality/appquality-design-system";
 import { useGetCustomUserFieldsQuery } from "src/services/tryberApi";
-import {
-  setCufList,
-  toggleCufField,
-} from "src/pages/campaigns/preselectionForm/preselectionSlice";
+import { useFormikContext } from "formik";
 
-export const CufSelectorCard = () => {
-  const dispatch = useAppDispatch();
+export const CufSelectorCard: React.FC<{
+  add: (newField: CustomUserField) => void;
+  remove: (index: number) => void;
+}> = ({ add, remove }) => {
+  const { values } = useFormikContext<PreselectionFormValues>();
   const { data, error, isFetching, isLoading } = useGetCustomUserFieldsQuery();
-  const { cufList } = useAppSelector((state) => state.campaignPreselection);
+  const [selected, setselected] = useState<number[]>([]);
+  const [cufList, setCufList] = useState<
+    ApiComponents["schemas"]["CustomUserFieldsData"][]
+  >([]);
 
   useEffect(() => {
-    const list: CufField[] = [];
+    const list: ApiComponents["schemas"]["CustomUserFieldsData"][] = [];
     data?.forEach((d) => {
-      d.fields?.forEach((f) => list.push({ checked: false, fieldData: f }));
+      d.fields?.forEach((f) => list.push(f));
     });
-    dispatch(setCufList(list));
+    setCufList(list);
   }, [data]);
 
   if (isLoading || isFetching) {
@@ -26,6 +28,39 @@ export const CufSelectorCard = () => {
   if (error || !data) {
     return <Card>...error retrieving cuf fields</Card>;
   }
+  const toggleCuf = (id: number) => {
+    if (selected.indexOf(id) >= 0) {
+      // remove
+      const indexOfFieldToRemove = values.fields.reduce(
+        (previousValue, field, currentIndex) => {
+          return field.fieldId === `cuf_${id}` ? currentIndex : previousValue;
+        },
+        -1
+      );
+      if (indexOfFieldToRemove < 0) return; // todo: error message
+      remove(indexOfFieldToRemove);
+      selected.splice(selected.indexOf(id), 1);
+      setselected(selected);
+    } else {
+      // add
+      const cufToAdd = cufList.find((cuf) => cuf.id === id);
+      if (!cufToAdd) return; // todo: error message
+      add({
+        fieldId: `cuf_${cufToAdd.id}`,
+        question: "",
+        type: `${cufToAdd.name.it} - cuf_${cufToAdd.id} `,
+        cufType: cufToAdd.type,
+        cufId: cufToAdd.id,
+        ...(cufToAdd.options
+          ? {
+              availableOptions: cufToAdd.options,
+              selectedOptions: [],
+            }
+          : undefined),
+      });
+      setselected([...selected, id]);
+    }
+  };
   return (
     <Card title={"Custom User Fields (CUF)"} className="aq-mb-3" shadow>
       <Text small color="danger" className="aq-mb-3">
@@ -34,12 +69,12 @@ export const CufSelectorCard = () => {
       </Text>
       {cufList.map((f) => (
         <Checkbox
-          key={f.fieldData.id}
-          id={f.fieldData.id.toString()}
-          label={f.fieldData.name.it}
-          checked={f.checked}
+          key={f.id}
+          id={f.id.toString()}
+          label={f.name.it}
+          checked={false}
           onChange={() => {
-            dispatch(toggleCufField(f.fieldData.id));
+            toggleCuf(f.id);
           }}
           className="aq-mb-2"
         />

@@ -1,82 +1,47 @@
-import { useAppSelector } from "src/store";
-import {
-  Formik,
-  Field,
-  Form,
-  Button,
-} from "@appquality/appquality-design-system";
-import * as Yup from "yup";
-import { FieldConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator/FieldConfigurator";
-import { QuestionConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator/QuestionConfigurator";
-
-const initialValues: PreselectionFormValues = {
-  formTitle: "",
-  questions: {},
-};
+import { Field, Button, Card } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
+import { QuestionField } from "src/pages/campaigns/preselectionForm/formConfigurator/QuestionField";
+import { OptionsField } from "src/pages/campaigns/preselectionForm/formConfigurator/OptionsField";
+import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect";
 
 export const FormConfigurator = () => {
-  const { selectedFields } = useAppSelector(
-    (state) => state.campaignPreselection
-  );
-
-  selectedFields.forEach((f) => {
-    initialValues.questions[f.fieldData.id] = {
-      fieldId: f.fieldData.id,
-      title: "",
-      type: f.fieldData.type,
-      ...("options" in f.fieldData && f.fieldData.options
-        ? { options: f.fieldData.options }
-        : undefined),
-    };
-  });
-
-  const validationSchema = Yup.object({
-    formTitle: Yup.string().required(),
-    questions: Yup.object(),
-  });
-
+  const { values } = useFormikContext<PreselectionFormValues>();
   return (
-    <Formik
-      enableReinitialize
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        alert("submitted");
-        console.log(values);
-      }}
-    >
-      <Form>
-        <Field
-          name="formTitle"
-          type="text"
-          placeholder="e.g. CP-3887 Preselection Form"
-          label={"Form Title"}
-        />
-        <div>
-          {selectedFields.map((field) =>
-            "checked" in field ? (
-              <FieldConfigurator
-                key={`configurator-${field.fieldData.id}`}
-                field={field}
+    <div>
+      <Field
+        name="formTitle"
+        type="text"
+        placeholder="e.g. CP-3887 Preselection Form"
+        label={"Form Title"}
+      />
+      <div>
+        {values.fields.map((field, index) => (
+          <Card className="aq-mb-3" key={field.fieldId} title={field.type}>
+            <QuestionField name={`fields.${index}.question`} />
+            {"options" in field && field.options && (
+              <OptionsField index={index} />
+            )}
+            {"availableOptions" in field && field.availableOptions && (
+              <CufMultiselect
+                name={`fields.${index}.selectedOptions`}
+                label={"Options"}
+                options={field.availableOptions?.map((o) => {
+                  return { value: o.id.toString(), label: o.name };
+                })}
               />
-            ) : (
-              <QuestionConfigurator
-                key={`configurator-${field.fieldData.id}`}
-                field={field}
-              />
-            )
-          )}
-        </div>
-        <Button htmlType="submit" type="primary">
-          Save
-        </Button>{" "}
-        <Button htmlType="reset" type="warning" flat>
-          Reset
-        </Button>{" "}
-        <Button type="info" flat>
-          Preview
-        </Button>
-      </Form>
-    </Formik>
+            )}
+          </Card>
+        ))}
+      </div>
+      <Button htmlType="submit" type="primary">
+        Save
+      </Button>{" "}
+      <Button htmlType="reset" type="warning" flat>
+        Reset
+      </Button>{" "}
+      <Button type="info" flat>
+        Preview
+      </Button>
+    </div>
   );
 };

@@ -11,7 +11,7 @@ import { FieldProps } from "formik";
 export const QuestionField: React.FC<{ name: string }> = ({ name }) => {
   return (
     <FormikField
-      name={`questions.${name}.title`}
+      name={name}
       validate={(value: string) => {
         if (!value) {
           return "This is a required field";
