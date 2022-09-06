@@ -3,29 +3,26 @@ import React from "react";
 import { FieldArray, useFormikContext } from "formik";
 import { XLg } from "react-bootstrap-icons";
 
-export const OptionsField: React.FC<{ name: string }> = ({ name }) => {
+export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
   const {
-    values: { questions },
+    values: { fields },
   } = useFormikContext<PreselectionFormValues>();
   return (
     <>
-      <FormLabel label="Options" htmlFor={`questions.${name}.options`} />
+      <FormLabel label="Options" htmlFor={`fields.${index}.options`} />
       <FieldArray
-        name={`questions.${name}.options`}
+        name={`fields.${index}.options`}
         render={(arrayHelpers) => (
           <div>
             <div>
-              {questions[name]?.options?.map((option, index) => (
-                <div style={{ display: "flex" }} key={index}>
-                  <Field
-                    name={`questions.${name}.options.${index}`}
-                    type="text"
-                  />
+              {fields[index].options?.map((option, i) => (
+                <div style={{ display: "flex" }} key={i}>
+                  <Field name={`fields.${index}.options.${i}`} type="text" />
                   <Button
                     flat
                     size="sm"
                     style={{ padding: "0 10px", marginLeft: "1em" }}
-                    onClick={() => arrayHelpers.remove(index)}
+                    onClick={() => arrayHelpers.remove(i)}
                   >
                     <XLg />
                   </Button>
