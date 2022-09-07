@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
+import { GetCampaignsFormsByFormIdApiResponse } from "../../../services/tryberApi";
 
 interface PreselectionFormState {
   profileFieldsList: ProfileField[];
   cufList: CufField[];
   customQuestionsList: CustomQuestion[];
   selectedFields: Array<ProfileField | CufField | CustomQuestion>;
+  loadedForm?: GetCampaignsFormsByFormIdApiResponse;
 }
 
 const initialState: PreselectionFormState = {
@@ -98,6 +100,12 @@ const campaignPreselectionSlice = createSlice({
         (question) => question.fieldData.id !== action.payload
       );
     },
+    setLoadedForm(
+      state,
+      action: PayloadAction<GetCampaignsFormsByFormIdApiResponse>
+    ) {
+      state.loadedForm = action.payload;
+    },
     resetForm() {
       return initialState;
     },
@@ -112,5 +120,6 @@ export const {
   toggleCufField,
   addCustomQuestion,
   removeCustomQuestion,
+  setLoadedForm,
 } = actions;
 export default reducer;
