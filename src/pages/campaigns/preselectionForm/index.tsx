@@ -47,7 +47,7 @@ function PreselectionForm() {
           fieldId: uuidv4(),
           question: f.question,
           type: f.type,
-          name: "",
+          name: f.type,
         });
         break;
       case "radio":
@@ -60,21 +60,37 @@ function PreselectionForm() {
           options: f.options?.map((o) =>
             typeof o === "string" ? o : o.toString()
           ),
-          name: "",
+          name: f.type,
         });
         break;
       default:
         if (f.type.startsWith("cuf_")) {
           const cufId = parseInt(f.type.replace("cuf_", ""));
           const cufToAdd = cufList.find((cuf) => cuf.id === cufId);
+          const selectedOptions: { label: string; value: string }[] = [];
+          // @ts-ignore
+          if (cufToAdd?.options?.length === f.options?.length) {
+            selectedOptions.push({ label: "All options", value: "-1" });
+          } else {
+            // @ts-ignore
+            f.options?.forEach((selected) => {
+              const opt = cufToAdd?.options?.find((all) => all.id === selected);
+              opt &&
+                selectedOptions.push({
+                  label: opt.name,
+                  value: opt.id.toString(),
+                });
+            });
+          }
           initialFieldValue.push({
             cufId,
             cufType: cufToAdd?.type,
             fieldId: f.type,
             question: f.question,
             type: f.type,
-            name: "",
+            name: cufToAdd?.name.it || f.type,
             availableOptions: cufToAdd?.options,
+            selectedOptions,
           });
         }
     }
