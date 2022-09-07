@@ -2,6 +2,7 @@ interface AdditionalField {
   fieldId: string;
   question: string;
   type: string; // cuf_22 || text || select || multiselect || radio || gender || phone ||
+  name: string;
   options?: string[];
 }
 
@@ -9,7 +10,7 @@ interface CustomUserField extends AdditionalField {
   cufId: number;
   cufType: string;
   availableOptions?: ApiComponents["schemas"]["CustomUserFieldsDataOption"][];
-  selectedOptions?: number[];
+  selectedOptions?: { label: string; value: string }[];
 }
 
 type PreselectionFormValues = {
