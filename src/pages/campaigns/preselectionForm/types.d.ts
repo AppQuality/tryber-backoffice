@@ -17,6 +17,14 @@ type PreselectionFormValues = {
   fields: Array<AdditionalField | CustomUserField>;
 };
 
+interface CardDropProps {
+  name: string;
+}
+
+interface DropResult {
+  name: string;
+}
+
 type ProfileFieldType = "gender" | "phone" | "address";
 
 interface ProfileField {

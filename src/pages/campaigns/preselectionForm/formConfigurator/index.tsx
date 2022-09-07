@@ -1,13 +1,13 @@
-import { Field, Button, Card } from "@appquality/appquality-design-system";
+import { Field, Button } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
-import { QuestionField } from "src/pages/campaigns/preselectionForm/formConfigurator/QuestionField";
-import { OptionsField } from "src/pages/campaigns/preselectionForm/formConfigurator/OptionsField";
-import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { ValuesFielsCard } from "src/pages/campaigns/preselectionForm/formConfigurator/ValuesFielsCard";
 
 export const FormConfigurator = () => {
   const { values } = useFormikContext<PreselectionFormValues>();
   return (
-    <div>
+    <DndProvider backend={HTML5Backend}>
       <Field
         name="formTitle"
         type="text"
@@ -16,21 +16,7 @@ export const FormConfigurator = () => {
       />
       <div>
         {values.fields.map((field, index) => (
-          <Card className="aq-mb-3" key={field.fieldId} title={field.type}>
-            <QuestionField name={`fields.${index}.question`} />
-            {"options" in field && field.options && (
-              <OptionsField index={index} />
-            )}
-            {"availableOptions" in field && field.availableOptions && (
-              <CufMultiselect
-                name={`fields.${index}.selectedOptions`}
-                label={"Options"}
-                options={field.availableOptions?.map((o) => {
-                  return { value: o.id.toString(), label: o.name };
-                })}
-              />
-            )}
-          </Card>
+          <ValuesFielsCard field={field} index={index} key={field.fieldId} />
         ))}
       </div>
       <Button htmlType="submit" type="primary">
@@ -42,6 +28,6 @@ export const FormConfigurator = () => {
       <Button type="info" flat>
         Preview
       </Button>
-    </div>
+    </DndProvider>
   );
 };
