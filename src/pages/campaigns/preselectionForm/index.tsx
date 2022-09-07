@@ -32,7 +32,6 @@ const PreselectionForm = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          console.log(values);
           const fieldsToSend = values.fields.map((field) => {
             const newField: PreselectionFormQuestion = {
               question: field.question,
@@ -55,7 +54,6 @@ const PreselectionForm = () => {
             }
             return newField;
           });
-          console.log(fieldsToSend);
           const res = await createForm({
             body: {
               name: values.formTitle,
