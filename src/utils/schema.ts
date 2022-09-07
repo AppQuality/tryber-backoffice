@@ -377,6 +377,19 @@ export interface paths {
       };
     };
   };
+  "/campaigns/forms/{formId}": {
+    get: operations["get-campaigns-forms-formId"];
+    put: operations["put-campaigns-forms-formId"];
+    parameters: {
+      path: {
+        formId: string;
+      };
+    };
+  };
+  "/campaigns/forms": {
+    post: operations["post-campaigns-forms"];
+    parameters: {};
+  };
 }
 
 export interface components {
@@ -572,8 +585,7 @@ export interface components {
     /** CustomUserFieldsData */
     CustomUserFieldsData: {
       id: number;
-      /** @enum {string} */
-      type: "select" | "multiselect" | "text";
+      type: components["schemas"]["CustomUserFieldsType"];
       placeholder?: components["schemas"]["TranslatablePage"];
       allow_other?: boolean;
       name: components["schemas"]["TranslatablePage"];
@@ -624,6 +636,33 @@ export interface components {
           /** @enum {string} */
           type: "text";
           regex: string;
+        }
+    );
+    /**
+     * CustomUserFieldsType
+     * @enum {string}
+     */
+    CustomUserFieldsType: "text" | "select" | "multiselect";
+    /** PreselectionFormQuestion */
+    PreselectionFormQuestion: {
+      question: string;
+    } & (
+      | {
+          /** @enum {string} */
+          type: "text";
+        }
+      | {
+          /** @enum {string} */
+          type: "multiselect" | "select" | "radio";
+          options: string[];
+        }
+      | {
+          type: string;
+          options?: number[];
+        }
+      | {
+          /** @enum {string} */
+          type: "gender" | "phone_number" | "address";
         }
     );
   };
@@ -1037,6 +1076,9 @@ export interface operations {
       path: {
         /** A campaign id */
         campaign: string;
+      };
+      query: {
+        device?: string;
       };
     };
     responses: {
@@ -2688,6 +2730,97 @@ export interface operations {
       };
       403: components["responses"]["NotAuthorized"];
       404: components["responses"]["NotFound"];
+    };
+  };
+  "get-campaigns-forms-formId": {
+    parameters: {
+      path: {
+        formId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            /** @example My form */
+            name: string;
+            campaign?: {
+              id: number;
+              name: string;
+            };
+            fields: ({
+              id: number;
+            } & components["schemas"]["PreselectionFormQuestion"])[];
+          };
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  "put-campaigns-forms-formId": {
+    parameters: {
+      path: {
+        formId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            name: string;
+            fields: ({
+              id: number;
+            } & components["schemas"]["PreselectionFormQuestion"])[];
+          };
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          name: string;
+          campaign?: number;
+          fields: ({
+            id?: number;
+          } & components["schemas"]["PreselectionFormQuestion"])[];
+        };
+      };
+    };
+  };
+  "post-campaigns-forms": {
+    parameters: {};
+    responses: {
+      /** Created */
+      201: {
+        content: {
+          "application/json": {
+            id: number;
+            name: string;
+            campaign_id?: number;
+            fields?: ({
+              id: number;
+            } & components["schemas"]["PreselectionFormQuestion"])[];
+          };
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          name: string;
+          fields: components["schemas"]["PreselectionFormQuestion"][];
+          campaign_id?: number;
+        };
+      };
     };
   };
 }
