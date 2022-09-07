@@ -11,12 +11,19 @@ import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 import { FieldsSelectors } from "src/pages/campaigns/preselectionForm/fieldsSelectors";
 import { FormConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator";
 import * as Yup from "yup";
-import { useGetCampaignsFormsByFormIdQuery } from "../../../services/tryberApi";
+import {
+  PreselectionFormQuestion,
+  useGetCampaignsFormsByFormIdQuery,
+  usePostCampaignsFormsMutation,
+} from "src/services/tryberApi";
+import useCufData from "src/pages/campaigns/preselectionForm/useCufData";
 import { useAppDispatch } from "src/store";
 import { setLoadedForm } from "./preselectionSlice";
 import { v4 as uuidv4 } from "uuid";
 
 function PreselectionForm() {
+  const [createForm] = usePostCampaignsFormsMutation();
+  const { getAllOptions } = useCufData();
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const savedData = useGetCampaignsFormsByFormIdQuery(
@@ -35,6 +42,7 @@ function PreselectionForm() {
           fieldId: uuidv4(),
           question: f.question,
           type: f.type,
+          name: "",
         });
         break;
       case "radio":
@@ -47,6 +55,7 @@ function PreselectionForm() {
           options: f.options?.map((o) =>
             typeof o === "string" ? o : o.toString()
           ),
+          name: "",
         });
         break;
       default:
@@ -57,6 +66,7 @@ function PreselectionForm() {
             fieldId: f.type,
             question: f.question,
             type: f.type,
+            name: "",
           });
     }
   });
@@ -82,9 +92,37 @@ function PreselectionForm() {
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          alert("submitted");
-          console.log(values);
+        onSubmit={async (values) => {
+          const fieldsToSend = values.fields.map((field) => {
+            const newField: PreselectionFormQuestion = {
+              question: field.question,
+              type: field.type,
+            };
+            if (field.options) {
+              // @ts-ignore
+              newField.options = field.options;
+            }
+            if ("selectedOptions" in field && field.selectedOptions) {
+              if (field.selectedOptions[0].value === "-1") {
+                getAllOptions(field.cufId).then((res) => {
+                  newField.options = res;
+                });
+              } else {
+                newField.options = field.selectedOptions.map((o) =>
+                  parseInt(o.value)
+                );
+              }
+            }
+            return newField;
+          });
+          const res = await createForm({
+            body: {
+              name: values.formTitle,
+              // @ts-ignore
+              fields: fieldsToSend,
+            },
+          });
+          console.log(res);
         }}
       >
         <Form>

@@ -49,8 +49,9 @@ export const CufSelectorCard: FC<{
       if (!cufToAdd) return; // todo: error message
       add({
         fieldId: `cuf_${cufToAdd.id}`,
+        type: `cuf_${cufToAdd.id}`,
         question: "",
-        type: `${cufToAdd.name.it} - cuf_${cufToAdd.id} `,
+        name: `${cufToAdd.name.it} - cuf_${cufToAdd.id} `,
         cufType: cufToAdd.type,
         cufId: cufToAdd.id,
         ...(cufToAdd.options
