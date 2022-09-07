@@ -9,7 +9,10 @@ export const FieldsSelectors = () => {
       name="fields"
       render={(arrayHelpers) => (
         <>
-          {/*<ProfileFieldsSelectorCard />*/}
+          <ProfileFieldsSelectorCard
+            add={arrayHelpers.push}
+            remove={arrayHelpers.remove}
+          />
           <CufSelectorCard
             add={arrayHelpers.push}
             remove={arrayHelpers.remove}

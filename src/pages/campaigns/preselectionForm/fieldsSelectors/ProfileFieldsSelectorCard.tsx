@@ -1,12 +1,54 @@
-import { useAppDispatch, useAppSelector } from "src/store";
 import { Card, Checkbox, Text } from "@appquality/appquality-design-system";
-import { toggleProfileField } from "src/pages/campaigns/preselectionForm/preselectionSlice";
+import { FC, useState } from "react";
+import { useFormikContext } from "formik";
 
-export const ProfileFieldsSelectorCard = () => {
-  const dispatch = useAppDispatch();
-  const { profileFieldsList } = useAppSelector(
-    (state) => state.campaignPreselection
-  );
+const profileFieldsList: AdditionalField[] = [
+  {
+    fieldId: "gender",
+    type: "gender",
+    question: "Seleziona  il tuo genere",
+  },
+  {
+    fieldId: "phone",
+    type: "phone",
+    question: "qual è il tuo numero di telefono?",
+  },
+  {
+    fieldId: "address",
+    type: "address",
+    question: "Seleziona Città e Nazione di residenza",
+  },
+];
+
+export const ProfileFieldsSelectorCard: FC<{
+  add: (newField: AdditionalField) => void;
+  remove: (index: number) => void;
+}> = ({ add, remove }) => {
+  const [selected, setselected] = useState<string[]>([]);
+  const { values } = useFormikContext<PreselectionFormValues>();
+  const toggleField = (id: string) => {
+    if (selected.indexOf(id) >= 0) {
+      //remove
+      let indexOfFieldToRemove = -1;
+      values.fields.some((field, index) => {
+        if (field.fieldId === `cuf_${id}`) {
+          indexOfFieldToRemove = index;
+          return true;
+        }
+        return false;
+      });
+      if (indexOfFieldToRemove < 0) return; // todo: error message
+      remove(indexOfFieldToRemove);
+      selected.splice(selected.indexOf(id), 1);
+      setselected(selected);
+    } else {
+      // add
+      const newField = profileFieldsList.find((f) => f.fieldId === id);
+      if (!newField) return;
+      add(newField);
+      setselected([...selected, id]);
+    }
+  };
   return (
     <Card title={"User Profile Fields"} className="aq-mb-3" shadow>
       <Text small color="danger" className="aq-mb-3">
@@ -15,12 +57,12 @@ export const ProfileFieldsSelectorCard = () => {
       </Text>
       {profileFieldsList.map((f) => (
         <Checkbox
-          key={f.fieldData.type}
-          id={f.fieldData.type}
-          label={f.fieldData.name}
-          checked={f.checked}
+          key={f.fieldId}
+          id={f.fieldId}
+          label={f.type}
+          checked={selected.indexOf(f.fieldId) >= 0}
           onChange={() => {
-            dispatch(toggleProfileField(f.fieldData.id));
+            toggleField(f.fieldId);
           }}
           className="aq-mb-2"
         />

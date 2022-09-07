@@ -5,7 +5,7 @@ import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect
 import { Card } from "@appquality/appquality-design-system";
 import { useDrag } from "react-dnd";
 
-export const ValuesFielsCard: FC<{
+export const ValuesFieldsCard: FC<{
   field: AdditionalField | CustomUserField;
   index: number;
 }> = ({ field, index }) => {

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Card, Checkbox, Text } from "@appquality/appquality-design-system";
 import { useGetCustomUserFieldsQuery } from "src/services/tryberApi";
 import { useFormikContext } from "formik";
 
-export const CufSelectorCard: React.FC<{
+export const CufSelectorCard: FC<{
   add: (newField: CustomUserField) => void;
   remove: (index: number) => void;
 }> = ({ add, remove }) => {
@@ -31,12 +31,14 @@ export const CufSelectorCard: React.FC<{
   const toggleCuf = (id: number) => {
     if (selected.indexOf(id) >= 0) {
       // remove
-      const indexOfFieldToRemove = values.fields.reduce(
-        (previousValue, field, currentIndex) => {
-          return field.fieldId === `cuf_${id}` ? currentIndex : previousValue;
-        },
-        -1
-      );
+      let indexOfFieldToRemove = -1;
+      values.fields.some((field, index) => {
+        if (field.fieldId === `cuf_${id}`) {
+          indexOfFieldToRemove = index;
+          return true;
+        }
+        return false;
+      });
       if (indexOfFieldToRemove < 0) return; // todo: error message
       remove(indexOfFieldToRemove);
       selected.splice(selected.indexOf(id), 1);
