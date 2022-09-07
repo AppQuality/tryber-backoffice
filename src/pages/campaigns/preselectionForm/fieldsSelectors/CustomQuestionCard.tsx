@@ -12,6 +12,7 @@ export const CustomQuestionCard: React.FC<{
         type: selected,
         fieldId: uuidv4(),
         question: "",
+        name: "custom" + selected + "question",
         ...(selected !== "text" ? { options: [] } : undefined),
       });
   };
