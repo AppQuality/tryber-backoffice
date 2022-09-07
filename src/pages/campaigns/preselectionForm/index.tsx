@@ -6,7 +6,7 @@ import {
   Card,
 } from "@appquality/appquality-design-system";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 import { FieldsSelectors } from "src/pages/campaigns/preselectionForm/fieldsSelectors";
 import { FormConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator";
@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import {
   PreselectionFormQuestion,
   useGetCampaignsFormsByFormIdQuery,
+  useGetCustomUserFieldsQuery,
   usePostCampaignsFormsMutation,
 } from "src/services/tryberApi";
 import useCufData from "src/pages/campaigns/preselectionForm/useCufData";
@@ -26,10 +27,14 @@ function PreselectionForm() {
   const { getAllOptions } = useCufData();
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
+  const { data } = useGetCustomUserFieldsQuery();
   const savedData = useGetCampaignsFormsByFormIdQuery(
     { formId: id },
     { skip: !id }
   );
+  const [cufList, setCufList] = useState<
+    ApiComponents["schemas"]["CustomUserFieldsData"][]
+  >([]);
 
   const initialFieldValue: (AdditionalField | CustomUserField)[] = [];
   savedData.data?.fields.forEach((f) => {
@@ -59,15 +64,19 @@ function PreselectionForm() {
         });
         break;
       default:
-        if (f.type.startsWith("cuf_"))
+        if (f.type.startsWith("cuf_")) {
+          const cufId = parseInt(f.type.replace("cuf_", ""));
+          const cufToAdd = cufList.find((cuf) => cuf.id === cufId);
           initialFieldValue.push({
-            cufId: parseInt(f.type.replace("cuf_", "")),
-            cufType: f.type,
+            cufId,
+            cufType: cufToAdd?.type,
             fieldId: f.type,
             question: f.question,
             type: f.type,
             name: "",
+            availableOptions: cufToAdd?.options,
           });
+        }
     }
   });
 
@@ -77,8 +86,16 @@ function PreselectionForm() {
   });
   const initialValues: PreselectionFormValues = {
     formTitle: savedData.data?.name || "",
-    fields: initialFieldValue || [],
+    fields: initialFieldValue,
   };
+
+  useEffect(() => {
+    const list: ApiComponents["schemas"]["CustomUserFieldsData"][] = [];
+    data?.forEach((d) => {
+      d.fields?.forEach((f) => list.push(f));
+    });
+    setCufList(list);
+  }, [data]);
 
   useEffect(() => {
     if (savedData?.data) {
