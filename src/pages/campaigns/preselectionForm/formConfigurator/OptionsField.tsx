@@ -1,4 +1,10 @@
-import { Button, Field, FormLabel } from "@appquality/appquality-design-system";
+import {
+  Button,
+  Field,
+  FormLabel,
+  aqBootstrapTheme,
+  ErrorMessage,
+} from "@appquality/appquality-design-system";
 import React from "react";
 import { FieldArray, useFormikContext } from "formik";
 import { XLg } from "react-bootstrap-icons";
@@ -13,24 +19,33 @@ export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
       <FieldArray
         name={`fields.${index}.options`}
         render={(arrayHelpers) => (
-          <div>
+          <>
             <div>
               {fields[index].options?.map((option, i) => (
-                <div style={{ display: "flex" }} key={i}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr auto",
+                    gridColumnGap: aqBootstrapTheme.grid.spacing.default,
+                  }}
+                  key={i}
+                >
                   <Field name={`fields.${index}.options.${i}`} type="text" />
-                  <Button
-                    flat
-                    size="sm"
-                    style={{ padding: "0 10px", marginLeft: "1em" }}
-                    onClick={() => arrayHelpers.remove(i)}
-                  >
-                    <XLg />
-                  </Button>
+                  <div>
+                    <Button
+                      flat
+                      style={{ borderColor: aqBootstrapTheme.colors.gray400 }}
+                      onClick={() => arrayHelpers.remove(i)}
+                    >
+                      <XLg />
+                    </Button>
+                  </div>
                 </div>
               ))}
+              <ErrorMessage name={`fields.${index}.options`} />
             </div>
             <Button onClick={() => arrayHelpers.push("")}>Add an Option</Button>
-          </div>
+          </>
         )}
       />
     </>
