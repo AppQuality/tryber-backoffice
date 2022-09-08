@@ -23,6 +23,7 @@ export const FormConfigurator = () => {
                 field={field}
                 index={index}
                 move={arrayHelpers.move}
+                remove={arrayHelpers.remove}
                 key={field.fieldId}
               />
             ))}
