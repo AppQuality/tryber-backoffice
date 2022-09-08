@@ -16,6 +16,7 @@ import {
   useGetCampaignsFormsByFormIdQuery,
   useGetCustomUserFieldsQuery,
   usePostCampaignsFormsMutation,
+  usePutCampaignsFormsByFormIdMutation,
 } from "src/services/tryberApi";
 import useCufData from "src/pages/campaigns/preselectionForm/useCufData";
 import { useAppDispatch } from "src/store";
@@ -24,6 +25,7 @@ import { v4 as uuidv4 } from "uuid";
 
 function PreselectionForm() {
   const [createForm] = usePostCampaignsFormsMutation();
+  const [editForm] = usePutCampaignsFormsByFormIdMutation();
   const { getAllOptions } = useCufData();
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
@@ -35,6 +37,7 @@ function PreselectionForm() {
   const [cufList, setCufList] = useState<
     ApiComponents["schemas"]["CustomUserFieldsData"][]
   >([]);
+  const [saveEdit, setSaveEdit] = useState(false);
 
   const initialFieldValue: (AdditionalField | CustomUserField)[] = [];
   savedData.data?.fields.forEach((f) => {
@@ -122,7 +125,7 @@ function PreselectionForm() {
   return (
     <OpsUserContainer>
       <Formik
-        enableReinitialize
+        enableReinitialize={!saveEdit}
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
@@ -136,7 +139,7 @@ function PreselectionForm() {
               newField.options = field.options;
             }
             if ("selectedOptions" in field && field.selectedOptions) {
-              if (field.selectedOptions[0].value === "-1") {
+              if (field.selectedOptions[0]?.value === "-1") {
                 getAllOptions(field.cufId).then((res) => {
                   newField.options = res;
                 });
@@ -148,14 +151,27 @@ function PreselectionForm() {
             }
             return newField;
           });
-          const res = await createForm({
-            body: {
-              name: values.formTitle,
-              // @ts-ignore
-              fields: fieldsToSend,
-            },
-          });
-          console.log(res);
+          if (id) {
+            setSaveEdit(true);
+            const res = await editForm({
+              formId: id,
+              body: {
+                name: values.formTitle,
+                // @ts-ignore
+                fields: fieldsToSend,
+              },
+            });
+            console.log(res);
+          } else {
+            const res = await createForm({
+              body: {
+                name: values.formTitle,
+                // @ts-ignore
+                fields: fieldsToSend,
+              },
+            });
+            console.log(res);
+          }
         }}
       >
         <Form>
