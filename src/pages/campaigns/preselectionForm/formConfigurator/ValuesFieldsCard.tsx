@@ -1,16 +1,18 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { QuestionField } from "src/pages/campaigns/preselectionForm/formConfigurator/QuestionField";
 import { OptionsField } from "src/pages/campaigns/preselectionForm/formConfigurator/OptionsField";
 import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect";
-import { Card } from "@appquality/appquality-design-system";
+import { aqBootstrapTheme, Card } from "@appquality/appquality-design-system";
 import { useDrag } from "react-dnd";
 import { DropZone } from "src/pages/campaigns/preselectionForm/formConfigurator/DropZone";
+import { XLg } from "react-bootstrap-icons";
 
 export const ValuesFieldsCard: FC<{
   field: AdditionalField | CustomUserField;
   index: number;
   move: (from: number, to: number) => void;
-}> = ({ field, index, move }) => {
+  remove: (index: number) => void;
+}> = ({ field, index, move, remove }) => {
   const [{ currentlyDragging }, drag] = useDrag(() => {
     return {
       type: "field",
@@ -31,7 +33,23 @@ export const ValuesFieldsCard: FC<{
     <>
       {index === 0 && !currentlyDragging && <DropZone dropIndex={0} />}
       <div style={{ opacity: currentlyDragging ? 0.5 : 1 }} ref={drag}>
-        <Card key={field.fieldId} title={`${field.type} ${index}`}>
+        <Card
+          key={field.fieldId}
+          title={
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                gridColumnGap: aqBootstrapTheme.grid.spacing.default,
+              }}
+            >
+              {field.name}
+              <div style={{ cursor: "pointer" }} onClick={() => remove(index)}>
+                <XLg color="black" />
+              </div>
+            </div>
+          }
+        >
           <QuestionField name={`fields.${index}.question`} />
           {"options" in field && field.options && (
             <OptionsField index={index} />

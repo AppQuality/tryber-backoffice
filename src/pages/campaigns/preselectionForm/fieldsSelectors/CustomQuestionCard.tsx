@@ -12,7 +12,7 @@ export const CustomQuestionCard: React.FC<{
         type: selected,
         fieldId: uuidv4(),
         question: "",
-        name: "custom" + selected + "question",
+        name: "Custom " + selected + " question",
         ...(selected !== "text"
           ? { options: ["option 1", "option 2"] }
           : undefined),
