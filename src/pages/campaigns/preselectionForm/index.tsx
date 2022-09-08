@@ -12,6 +12,7 @@ import { FieldsSelectors } from "src/pages/campaigns/preselectionForm/fieldsSele
 import { FormConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator";
 import * as Yup from "yup";
 import {
+  PostCampaignsFormsApiArg,
   PreselectionFormQuestion,
   useGetCampaignsFormsByFormIdQuery,
   useGetCustomUserFieldsQuery,
@@ -101,11 +102,22 @@ function PreselectionForm() {
 
   const validationSchema = Yup.object({
     formTitle: Yup.string().required(),
-    fields: Yup.array(),
+    fields: Yup.array().of(
+      Yup.object().shape({
+        question: Yup.string().required(),
+        type: Yup.string().required(),
+        options: Yup.array().when("type", {
+          is: (type: string) =>
+            type === "radio" || type === "select" || type === "multiselect",
+          then: Yup.array().of(Yup.string().required()).min(2),
+        }),
+      })
+    ),
   });
   const initialValues: PreselectionFormValues = {
     formTitle: savedData.data?.name || "",
     fields: initialFieldValue,
+    campaign: { label: "", value: "" },
   };
 
   useEffect(() => {
@@ -163,14 +175,19 @@ function PreselectionForm() {
             });
             console.log(res);
           } else {
-            const res = await createForm({
+            const args: PostCampaignsFormsApiArg = {
               body: {
                 name: values.formTitle,
                 // @ts-ignore
                 fields: fieldsToSend,
               },
-            });
+            };
+            if (values.campaign?.value)
+              args.body.campaign = parseInt(values.campaign?.value);
+            const res = await createForm(args);
             console.log(res);
+            // @ts-ignore
+            alert("form submitted con id: " + res.data.id);
           }
         }}
       >
