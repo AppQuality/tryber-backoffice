@@ -6,9 +6,11 @@ interface PreselectionFormState {
   cufList: CufField[];
   customQuestionsList: CustomQuestion[];
   selectedFields: Array<ProfileField | CufField | CustomQuestion>;
+  isDragging: boolean;
 }
 
 const initialState: PreselectionFormState = {
+  isDragging: false,
   profileFieldsList: [
     {
       fieldData: {
@@ -44,6 +46,9 @@ const campaignPreselectionSlice = createSlice({
   name: "campaignPreselection",
   initialState: initialState,
   reducers: {
+    setDraggingField(state, action: PayloadAction<boolean>) {
+      state.isDragging = action.payload;
+    },
     toggleProfileField(state, action: PayloadAction<ProfileFieldType>) {
       state.profileFieldsList = state.profileFieldsList.map((field) => {
         if (field.fieldData.type === action.payload) {
@@ -110,7 +115,6 @@ export const {
   toggleProfileField,
   setCufList,
   toggleCufField,
-  addCustomQuestion,
-  removeCustomQuestion,
+  setDraggingField,
 } = actions;
 export default reducer;

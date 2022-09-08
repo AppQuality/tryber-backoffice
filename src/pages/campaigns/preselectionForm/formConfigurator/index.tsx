@@ -1,5 +1,5 @@
 import { Field, Button } from "@appquality/appquality-design-system";
-import { useFormikContext } from "formik";
+import { FieldArray, useFormikContext } from "formik";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ValuesFieldsCard } from "src/pages/campaigns/preselectionForm/formConfigurator/ValuesFieldsCard";
@@ -14,11 +14,21 @@ export const FormConfigurator = () => {
         placeholder="e.g. CP-3887 Preselection Form"
         label={"Form Title"}
       />
-      <div>
-        {values.fields.map((field, index) => (
-          <ValuesFieldsCard field={field} index={index} key={field.fieldId} />
-        ))}
-      </div>
+      <FieldArray
+        name="fields"
+        render={(arrayHelpers) => (
+          <>
+            {values.fields.map((field, index) => (
+              <ValuesFieldsCard
+                field={field}
+                index={index}
+                move={arrayHelpers.move}
+                key={field.fieldId}
+              />
+            ))}
+          </>
+        )}
+      />
       <Button htmlType="submit" type="primary">
         Save
       </Button>{" "}
