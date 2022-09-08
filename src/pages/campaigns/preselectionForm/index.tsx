@@ -24,6 +24,7 @@ const PreselectionForm = () => {
   const initialValues: PreselectionFormValues = {
     formTitle: "",
     fields: [],
+    campaign: { label: "", value: "" },
   };
   return (
     <OpsUserContainer>

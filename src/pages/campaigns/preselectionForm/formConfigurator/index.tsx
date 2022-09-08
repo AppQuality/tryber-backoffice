@@ -3,6 +3,7 @@ import { FieldArray, useFormikContext } from "formik";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ValuesFieldsCard } from "src/pages/campaigns/preselectionForm/formConfigurator/ValuesFieldsCard";
+import { CampaignSelect } from "./CampaignSelect";
 
 export const FormConfigurator = () => {
   const { values } = useFormikContext<PreselectionFormValues>();
@@ -14,6 +15,7 @@ export const FormConfigurator = () => {
         placeholder="e.g. CP-3887 Preselection Form"
         label={"Form Title"}
       />
+      <CampaignSelect name="campaign" label="Linked Campaign" />
       <FieldArray
         name="fields"
         render={(arrayHelpers) => (
