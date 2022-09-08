@@ -44,7 +44,7 @@ function PreselectionForm() {
       case "address":
       case "text":
         initialFieldValue.push({
-          fieldId: uuidv4(),
+          fieldId: f.type,
           question: f.question,
           type: f.type,
           name: f.type,
