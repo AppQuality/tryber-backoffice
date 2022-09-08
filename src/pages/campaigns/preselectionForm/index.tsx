@@ -19,7 +19,17 @@ const PreselectionForm = () => {
   const { getAllOptions } = useCufData();
   const validationSchema = Yup.object({
     formTitle: Yup.string().required(),
-    fields: Yup.array(),
+    fields: Yup.array().of(
+      Yup.object().shape({
+        question: Yup.string().required(),
+        type: Yup.string().required(),
+        options: Yup.array().when("type", {
+          is: (type: string) =>
+            type === "radio" || type === "select" || type === "multiselect",
+          then: Yup.array().of(Yup.string().required()).min(2),
+        }),
+      })
+    ),
   });
   const initialValues: PreselectionFormValues = {
     formTitle: "",

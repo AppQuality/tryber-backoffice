@@ -9,6 +9,7 @@ export const FieldsSelectors = () => {
       name="fields"
       render={(arrayHelpers) => (
         <>
+          <CustomQuestionCard add={arrayHelpers.push} />
           <ProfileFieldsSelectorCard
             add={arrayHelpers.push}
             remove={arrayHelpers.remove}
@@ -17,7 +18,6 @@ export const FieldsSelectors = () => {
             add={arrayHelpers.push}
             remove={arrayHelpers.remove}
           />
-          <CustomQuestionCard add={arrayHelpers.push} />
         </>
       )}
     />

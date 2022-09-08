@@ -13,7 +13,9 @@ export const CustomQuestionCard: React.FC<{
         fieldId: uuidv4(),
         question: "",
         name: "custom" + selected + "question",
-        ...(selected !== "text" ? { options: [] } : undefined),
+        ...(selected !== "text"
+          ? { options: ["option 1", "option 2"] }
+          : undefined),
       });
   };
 
@@ -33,7 +35,7 @@ export const CustomQuestionCard: React.FC<{
   };
 
   return (
-    <Card title={"Add a Custom Question"}>
+    <Card title={"Add a Custom Question"} className="aq-mb-3">
       <div className="aq-mb-3">
         <QuestionTypeRadio type="text" />
         <QuestionTypeRadio type="radio" />
