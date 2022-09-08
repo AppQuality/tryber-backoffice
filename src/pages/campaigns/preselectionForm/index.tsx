@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import {
   PostCampaignsFormsApiArg,
   PreselectionFormQuestion,
+  PutCampaignsFormsByFormIdApiArg,
   useGetCampaignsFormsByFormIdQuery,
   useGetCustomUserFieldsQuery,
   usePostCampaignsFormsMutation,
@@ -117,7 +118,12 @@ function PreselectionForm() {
   const initialValues: PreselectionFormValues = {
     formTitle: savedData.data?.name || "",
     fields: initialFieldValue,
-    campaign: { label: "", value: "" },
+    campaign: savedData.data?.campaign
+      ? {
+          label: savedData.data?.campaign.name,
+          value: savedData.data?.campaign.id.toString(),
+        }
+      : { label: "", value: "" },
   };
 
   useEffect(() => {
@@ -165,15 +171,18 @@ function PreselectionForm() {
           });
           if (id) {
             setSaveEdit(true);
-            const res = await editForm({
+            const args: PutCampaignsFormsByFormIdApiArg = {
               formId: id,
               body: {
                 name: values.formTitle,
                 // @ts-ignore
                 fields: fieldsToSend,
               },
-            });
-            console.log(res);
+            };
+            if (values.campaign?.value)
+              args.body.campaign = parseInt(values.campaign?.value);
+            await editForm(args);
+            alert(`form con id ${id} edited`);
           } else {
             const args: PostCampaignsFormsApiArg = {
               body: {
