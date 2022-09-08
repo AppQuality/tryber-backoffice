@@ -9,6 +9,7 @@ import { FieldsSelectors } from "src/pages/campaigns/preselectionForm/fieldsSele
 import { FormConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator";
 import * as Yup from "yup";
 import {
+  PostCampaignsFormsApiArg,
   PreselectionFormQuestion,
   usePostCampaignsFormsMutation,
 } from "src/services/tryberApi";
@@ -65,13 +66,16 @@ const PreselectionForm = () => {
             }
             return newField;
           });
-          const res = await createForm({
+          const args: PostCampaignsFormsApiArg = {
             body: {
               name: values.formTitle,
               // @ts-ignore
               fields: fieldsToSend,
             },
-          });
+          };
+          if (values.campaign?.value)
+            args.body.campaign = parseInt(values.campaign?.value);
+          const res = await createForm(args);
           console.log(res);
           // @ts-ignore
           alert("form submitted con id: " + res.data.id);
