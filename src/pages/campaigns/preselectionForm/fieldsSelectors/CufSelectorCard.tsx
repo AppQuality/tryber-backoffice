@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Card, Checkbox, Text } from "@appquality/appquality-design-system";
 import { useGetCustomUserFieldsQuery } from "src/services/tryberApi";
 import { useFormikContext } from "formik";
+import { useAppSelector } from "src/store";
 
 export const CufSelectorCard: FC<{
   add: (newField: CustomUserField) => void;
@@ -13,6 +14,7 @@ export const CufSelectorCard: FC<{
   const [cufList, setCufList] = useState<
     ApiComponents["schemas"]["CustomUserFieldsData"][]
   >([]);
+  const { loadedForm } = useAppSelector((state) => state.campaignPreselection);
 
   useEffect(() => {
     const list: ApiComponents["schemas"]["CustomUserFieldsData"][] = [];
@@ -21,6 +23,19 @@ export const CufSelectorCard: FC<{
     });
     setCufList(list);
   }, [data]);
+
+  useEffect(() => {
+    if (loadedForm?.fields && cufList) {
+      const s: number[] = [];
+      loadedForm.fields.forEach((f) => {
+        const cufId = parseInt(f.type.replace("cuf_", ""));
+        if (cufList.some((c) => c.id === cufId)) {
+          s.push(cufId);
+        }
+      });
+      setselected(s);
+    }
+  }, [loadedForm, cufList]);
 
   if (isLoading || isFetching) {
     return <Card>...loading</Card>;
@@ -70,18 +85,21 @@ export const CufSelectorCard: FC<{
         Attenzione, le risposte dell'utente a queste domande modificano il suo
         profilo su tryber.me
       </Text>
-      {cufList.map((f) => (
-        <Checkbox
-          key={f.id}
-          id={f.id.toString()}
-          label={f.name.it}
-          checked={false}
-          onChange={() => {
-            toggleCuf(f.id);
-          }}
-          className="aq-mb-2"
-        />
-      ))}
+      {cufList.map((f) => {
+        const isChecked = selected.indexOf(f.id) >= 0;
+        return (
+          <Checkbox
+            key={`${f.id}-${isChecked}`}
+            id={f.id.toString()}
+            label={f.name.it}
+            checked={isChecked}
+            onChange={() => {
+              toggleCuf(f.id);
+            }}
+            className="aq-mb-2"
+          />
+        );
+      })}
     </Card>
   );
 };
