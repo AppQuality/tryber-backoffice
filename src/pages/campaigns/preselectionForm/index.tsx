@@ -72,6 +72,8 @@ const PreselectionForm = () => {
             },
           });
           console.log(res);
+          // @ts-ignore
+          alert("form submitted con id: " + res.data.id);
         }}
       >
         <Form>
