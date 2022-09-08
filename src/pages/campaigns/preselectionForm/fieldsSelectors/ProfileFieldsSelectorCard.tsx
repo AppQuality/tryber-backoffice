@@ -37,7 +37,7 @@ export const ProfileFieldsSelectorCard: FC<{
       //remove
       let indexOfFieldToRemove = -1;
       values.fields.some((field, index) => {
-        if (field.fieldId === `cuf_${id}`) {
+        if (field.fieldId === id) {
           indexOfFieldToRemove = index;
           return true;
         }
