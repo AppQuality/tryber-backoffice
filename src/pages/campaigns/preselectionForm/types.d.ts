@@ -20,6 +20,7 @@ interface DragItem {
 
 type PreselectionFormValues = {
   formTitle: string;
+  campaign?: SelectOptionType;
   fields: Array<AdditionalField | CustomUserField>;
 };
 
