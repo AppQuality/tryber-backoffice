@@ -32,12 +32,6 @@ export const FormConfigurator = () => {
       <Button htmlType="submit" type="primary">
         Save
       </Button>{" "}
-      <Button htmlType="reset" type="warning" flat>
-        Reset
-      </Button>{" "}
-      <Button type="info" flat>
-        Preview
-      </Button>
     </DndProvider>
   );
 };
