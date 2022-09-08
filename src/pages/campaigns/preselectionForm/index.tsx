@@ -25,7 +25,7 @@ import { useAppDispatch } from "src/store";
 import { setLoadedForm } from "./preselectionSlice";
 import { v4 as uuidv4 } from "uuid";
 
-function PreselectionForm() {
+const PreselectionForm = () => {
   const [createForm] = usePostCampaignsFormsMutation();
   const [editForm] = usePutCampaignsFormsByFormIdMutation();
   const { getAllOptions } = useCufData();
@@ -219,6 +219,6 @@ function PreselectionForm() {
       </Formik>
     </OpsUserContainer>
   );
-}
+};
 
 export default PreselectionForm;
