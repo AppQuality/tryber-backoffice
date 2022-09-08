@@ -13,6 +13,11 @@ interface CustomUserField extends AdditionalField {
   selectedOptions?: { label: string; value: string }[];
 }
 
+interface DragItem {
+  field: AdditionalField;
+  index: number;
+}
+
 type PreselectionFormValues = {
   formTitle: string;
   fields: Array<AdditionalField | CustomUserField>;
