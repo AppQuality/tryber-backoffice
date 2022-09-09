@@ -188,8 +188,13 @@ const PreselectionForm = () => {
             };
             if (values.campaign?.value)
               args.body.campaign = parseInt(values.campaign?.value);
-            await editForm(args);
-            add({ type: "success", message: "Form saved" });
+            const res = await editForm(args);
+            if (res && "data" in res) {
+              history.push(`/backoffice/campaigns/preselection/${res.data.id}`);
+              add({ type: "success", message: "Form saved" });
+            } else {
+              add({ type: "danger", message: "There was an error" });
+            }
           } else {
             const args: PostCampaignsFormsApiArg = {
               body: {
@@ -205,7 +210,7 @@ const PreselectionForm = () => {
               history.push(`/backoffice/campaigns/preselection/${res.data.id}`);
               add({ type: "success", message: "Form saved" });
             } else {
-              add({ type: "success", message: "There was an error" });
+              add({ type: "danger", message: "There was an error" });
             }
           }
         }}
