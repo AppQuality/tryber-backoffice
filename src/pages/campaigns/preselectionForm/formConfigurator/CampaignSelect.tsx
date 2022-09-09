@@ -75,7 +75,7 @@ const useSelectOptions = () => {
   return {
     data: async (pageNumber: number, search?: string) => {
       const filteredOptions = options.filter((o) =>
-        o.label.includes(search || "")
+        o.label.toLowerCase().includes((search || "").toLowerCase())
       );
       const results = filteredOptions.slice(
         pageNumber * 10,
