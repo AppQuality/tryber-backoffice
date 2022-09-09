@@ -194,7 +194,7 @@ const PreselectionForm = () => {
             if (values.campaign?.value)
               args.body.campaign = parseInt(values.campaign?.value);
             const res = await createForm(args);
-            if (res && res.hasOwnProperty("data")) {
+            if (res && "data" in res) {
               history.push(`/backoffice/campaigns/preselection/${res.data.id}`);
             }
           }
