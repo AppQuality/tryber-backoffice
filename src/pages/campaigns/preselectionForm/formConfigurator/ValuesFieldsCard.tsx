@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { QuestionField } from "src/pages/campaigns/preselectionForm/formConfigurator/QuestionField";
 import { OptionsField } from "src/pages/campaigns/preselectionForm/formConfigurator/OptionsField";
 import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect";
 import { aqBootstrapTheme, Card } from "@appquality/appquality-design-system";
 import { useDrag } from "react-dnd";
 import { DropZone } from "src/pages/campaigns/preselectionForm/formConfigurator/DropZone";
-import { XLg } from "react-bootstrap-icons";
+import { XLg, GripVertical } from "react-bootstrap-icons";
 
 export const ValuesFieldsCard: FC<{
   field: AdditionalField | CustomUserField;
@@ -13,7 +13,7 @@ export const ValuesFieldsCard: FC<{
   move: (from: number, to: number) => void;
   remove: (index: number) => void;
 }> = ({ field, index, move, remove }) => {
-  const [{ currentlyDragging }, drag] = useDrag(() => {
+  const [{ currentlyDragging }, drag, preview] = useDrag(() => {
     return {
       type: "field",
       item: { field: { ...field }, index: index },
@@ -29,10 +29,11 @@ export const ValuesFieldsCard: FC<{
       }),
     };
   }, [index, field]);
+
   return (
     <>
       {index === 0 && !currentlyDragging && <DropZone dropIndex={0} />}
-      <div style={{ opacity: currentlyDragging ? 0.5 : 1 }} ref={drag}>
+      <div ref={preview} style={{ opacity: currentlyDragging ? 0.5 : 1 }}>
         <Card
           key={field.fieldId}
           title={
@@ -40,10 +41,16 @@ export const ValuesFieldsCard: FC<{
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr auto",
-                gridColumnGap: aqBootstrapTheme.grid.spacing.default,
+                gridColumnGap: aqBootstrapTheme.grid.sizes[1],
+                alignItems: "center",
               }}
             >
-              {field.name}
+              <div ref={drag} style={{ display: "flex", alignItems: "center" }}>
+                <GripVertical
+                  style={{ marginRight: aqBootstrapTheme.grid.sizes[1] }}
+                />
+                {field.name}
+              </div>
               <div style={{ cursor: "pointer" }} onClick={() => remove(index)}>
                 <XLg color="black" />
               </div>
