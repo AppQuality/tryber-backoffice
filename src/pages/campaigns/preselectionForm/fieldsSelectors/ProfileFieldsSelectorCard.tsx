@@ -68,6 +68,18 @@ export const ProfileFieldsSelectorCard: FC<{
     }
   }, [loadedForm]);
 
+  useEffect(() => {
+    if (selected.length) {
+      const newSelected = [...selected];
+      selected.forEach((s, index) => {
+        if (!values.fields.some((f) => f.fieldId === s)) {
+          newSelected.splice(index, 1);
+        }
+      });
+      setselected(newSelected);
+    }
+  }, [values.fields.length]);
+
   return (
     <Card title={"User Profile Fields"} className="aq-mb-3" shadow>
       <Text small color="danger" className="aq-mb-3">
@@ -82,6 +94,7 @@ export const ProfileFieldsSelectorCard: FC<{
             id={f.fieldId}
             label={f.type}
             checked={isChecked}
+            disabled={isChecked}
             onChange={() => {
               toggleField(f.fieldId);
             }}

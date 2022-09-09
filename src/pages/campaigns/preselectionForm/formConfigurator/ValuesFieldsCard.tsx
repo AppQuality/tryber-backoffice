@@ -44,17 +44,9 @@ export const ValuesFieldsCard: FC<{
               }}
             >
               {field.name}
-              {(field.type === "text" ||
-                field.type === "select" ||
-                field.type === "multiselect" ||
-                field.type === "radio") && (
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => remove(index)}
-                >
-                  <XLg color="black" />
-                </div>
-              )}
+              <div style={{ cursor: "pointer" }} onClick={() => remove(index)}>
+                <XLg color="black" />
+              </div>
             </div>
           }
         >

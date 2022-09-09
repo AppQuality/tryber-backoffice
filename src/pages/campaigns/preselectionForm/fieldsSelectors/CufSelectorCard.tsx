@@ -37,6 +37,18 @@ export const CufSelectorCard: FC<{
     }
   }, [loadedForm, cufList]);
 
+  useEffect(() => {
+    if (selected.length) {
+      const newSelected = [...selected];
+      selected.forEach((s, index) => {
+        if (!values.fields.some((f) => "cufId" in f && f.cufId === s)) {
+          newSelected.splice(index, 1);
+        }
+      });
+      setselected(newSelected);
+    }
+  }, [values.fields.length]);
+
   if (isLoading || isFetching) {
     return <Card>...loading</Card>;
   }
@@ -93,6 +105,7 @@ export const CufSelectorCard: FC<{
             id={f.id.toString()}
             label={f.name.it}
             checked={isChecked}
+            disabled={isChecked}
             onChange={() => {
               toggleCuf(f.id);
             }}
