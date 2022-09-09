@@ -106,12 +106,14 @@ const PreselectionForm = () => {
     formTitle: Yup.string().required(),
     fields: Yup.array().of(
       Yup.object().shape({
-        question: Yup.string().required(),
+        question: Yup.string().required("This is a required field"),
         type: Yup.string().required(),
         options: Yup.array().when("type", {
           is: (type: string) =>
             type === "radio" || type === "select" || type === "multiselect",
-          then: Yup.array().of(Yup.string().required()).min(2),
+          then: Yup.array()
+            .of(Yup.string().required("This is a required field"))
+            .min(2, "This field must have at least 2 items"),
         }),
       })
     ),
