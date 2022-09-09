@@ -22,11 +22,15 @@ import {
 } from "src/services/tryberApi";
 import useCufData from "src/pages/campaigns/preselectionForm/useCufData";
 import { useAppDispatch } from "src/store";
+import siteWideMessageStore from "src/redux/siteWideMessages";
+
 import { setLoadedForm } from "./preselectionSlice";
 import { v4 as uuidv4 } from "uuid";
 
 const PreselectionForm = () => {
   const history = useHistory();
+  const { add } = siteWideMessageStore();
+
   const [createForm] = usePostCampaignsFormsMutation();
   const [editForm] = usePutCampaignsFormsByFormIdMutation();
   const { getAllOptions } = useCufData();
@@ -184,7 +188,13 @@ const PreselectionForm = () => {
             };
             if (values.campaign?.value)
               args.body.campaign = parseInt(values.campaign?.value);
-            await editForm(args);
+            const res = await editForm(args);
+            if (res && "data" in res) {
+              history.push(`/backoffice/campaigns/preselection/${res.data.id}`);
+              add({ type: "success", message: "Form saved" });
+            } else {
+              add({ type: "danger", message: "There was an error" });
+            }
           } else {
             const args: PostCampaignsFormsApiArg = {
               body: {
@@ -198,6 +208,9 @@ const PreselectionForm = () => {
             const res = await createForm(args);
             if (res && "data" in res) {
               history.push(`/backoffice/campaigns/preselection/${res.data.id}`);
+              add({ type: "success", message: "Form saved" });
+            } else {
+              add({ type: "danger", message: "There was an error" });
             }
           }
         }}
