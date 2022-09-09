@@ -5,7 +5,7 @@ import {
   Form,
   Card,
 } from "@appquality/appquality-design-system";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 import { FieldsSelectors } from "src/pages/campaigns/preselectionForm/fieldsSelectors";
@@ -26,6 +26,7 @@ import { setLoadedForm } from "./preselectionSlice";
 import { v4 as uuidv4 } from "uuid";
 
 const PreselectionForm = () => {
+  const history = useHistory();
   const [createForm] = usePostCampaignsFormsMutation();
   const [editForm] = usePutCampaignsFormsByFormIdMutation();
   const { getAllOptions } = useCufData();
@@ -182,7 +183,6 @@ const PreselectionForm = () => {
             if (values.campaign?.value)
               args.body.campaign = parseInt(values.campaign?.value);
             await editForm(args);
-            alert(`form con id ${id} edited`);
           } else {
             const args: PostCampaignsFormsApiArg = {
               body: {
@@ -194,9 +194,9 @@ const PreselectionForm = () => {
             if (values.campaign?.value)
               args.body.campaign = parseInt(values.campaign?.value);
             const res = await createForm(args);
-            console.log(res);
-            // @ts-ignore
-            alert("form submitted con id: " + res.data.id);
+            if (res && res.hasOwnProperty("data")) {
+              history.push(`/backoffice/campaigns/preselection/${res.data.id}`);
+            }
           }
         }}
       >
