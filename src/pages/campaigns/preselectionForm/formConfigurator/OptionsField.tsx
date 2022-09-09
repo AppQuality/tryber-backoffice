@@ -34,6 +34,8 @@ export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
                   <div>
                     <Button
                       flat
+                      // @ts-ignore
+                      disabled={fields[index].options?.length <= 2}
                       style={{ borderColor: aqBootstrapTheme.colors.gray400 }}
                       onClick={() => arrayHelpers.remove(i)}
                     >
@@ -42,7 +44,6 @@ export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
                   </div>
                 </div>
               ))}
-              <ErrorMessage name={`fields.${index}.options`} />
             </div>
             <Button onClick={() => arrayHelpers.push("")}>Add an Option</Button>
           </>
