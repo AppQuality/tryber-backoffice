@@ -7,19 +7,19 @@ const profileFieldsList: AdditionalField[] = [
   {
     fieldId: "gender",
     type: "gender",
-    name: "Genere",
+    name: "Gender",
     question: "Seleziona  il tuo genere",
   },
   {
     fieldId: "phone",
     type: "phone_number",
-    name: "Telefono",
+    name: "Phone number",
     question: "qual è il tuo numero di telefono?",
   },
   {
     fieldId: "address",
     type: "address",
-    name: "Indirizzo",
+    name: "Address",
     question: "Seleziona Città e Nazione di residenza",
   },
 ];
@@ -83,8 +83,8 @@ export const ProfileFieldsSelectorCard: FC<{
   return (
     <Card title={"User Profile Fields"} className="aq-mb-3" shadow>
       <Text small color="danger" className="aq-mb-3">
-        Attenzione, le risposte dell'utente a queste domande modificano il suo
-        profilo su tryber.me
+        Watch out! Users' answers to these questions are going to update their
+        profile on tryber.me
       </Text>
       {profileFieldsList.map((f) => {
         const isChecked = selected.indexOf(f.fieldId) >= 0;
