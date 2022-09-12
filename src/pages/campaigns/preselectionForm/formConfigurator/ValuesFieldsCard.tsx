@@ -51,7 +51,16 @@ export const ValuesFieldsCard: FC<{
                 />
                 {field.name}
               </div>
-              <div style={{ cursor: "pointer" }} onClick={() => remove(index)}>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  if (
+                    window.confirm("Sei sicuro di voler rimuovere il campo?")
+                  ) {
+                    remove(index);
+                  }
+                }}
+              >
                 <XLg color="black" />
               </div>
             </div>
