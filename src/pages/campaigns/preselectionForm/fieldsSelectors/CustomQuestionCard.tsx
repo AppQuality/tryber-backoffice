@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Card, Radio } from "@appquality/appquality-design-system";
 import { v4 as uuidv4 } from "uuid";
+import { getCustomQuestionTypeLabel } from "../getCustomQuestionTypeLabel";
 
 export const CustomQuestionCard: React.FC<{
   add: (field: AdditionalField) => void;
@@ -12,7 +13,7 @@ export const CustomQuestionCard: React.FC<{
         type: selected,
         fieldId: uuidv4(),
         question: "",
-        name: "Custom " + selected + " question",
+        name: `Custom ${getCustomQuestionTypeLabel(selected)}`,
         ...(selected !== "text"
           ? { options: ["option 1", "option 2"] }
           : undefined),
@@ -25,7 +26,7 @@ export const CustomQuestionCard: React.FC<{
     return (
       <Radio
         onChange={(val) => setSelected(val as CustomQuestionType)}
-        label={type}
+        label={getCustomQuestionTypeLabel(type)}
         name="customQuestion"
         id={`customQuestion-${type}`}
         value={type}
