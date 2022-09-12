@@ -26,6 +26,7 @@ import siteWideMessageStore from "src/redux/siteWideMessages";
 
 import { setLoadedForm } from "./preselectionSlice";
 import { v4 as uuidv4 } from "uuid";
+import { getCustomQuestionTypeLabel } from "./getCustomQuestionTypeLabel";
 
 const PreselectionForm = () => {
   const history = useHistory();
@@ -57,7 +58,10 @@ const PreselectionForm = () => {
           fieldId: f.type,
           question: f.question,
           type: f.type,
-          name: f.type,
+          name:
+            f.type === "text"
+              ? `Custom ${getCustomQuestionTypeLabel(f.type)}`
+              : f.type,
         });
         break;
       case "radio":
@@ -70,7 +74,7 @@ const PreselectionForm = () => {
           options: f.options?.map((o) =>
             typeof o === "string" ? o : o.toString()
           ),
-          name: f.type,
+          name: `Custom ${getCustomQuestionTypeLabel(f.type)}`,
         });
         break;
       default:
@@ -98,7 +102,7 @@ const PreselectionForm = () => {
             fieldId: f.type,
             question: f.question,
             type: f.type,
-            name: cufToAdd?.name.it || f.type,
+            name: `${cufToAdd?.name.it} - ${f.type}`,
             availableOptions: cufToAdd?.options,
             selectedOptions,
           });
