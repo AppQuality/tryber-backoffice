@@ -39,17 +39,20 @@ export const FormTableCard = () => {
         campaignId: res.campaign || (
           <div className="aq-text-danger">No associated campaigns</div>
         ),
-        actions: (
-          <PencilSquare
-            size={"18"}
-            className={"aq-text-primaryVariant"}
-            title="Edit"
-            onClick={() =>
-              history.push(`/backoffice/campaigns/preselection/${res.id}`)
-            }
-            style={{ cursor: "pointer" }}
-          />
-        ),
+        actions: {
+          title: "",
+          content: (
+            <PencilSquare
+              size={"18"}
+              className={"aq-text-primaryVariant"}
+              title="Edit"
+              onClick={() =>
+                history.push(`/backoffice/campaigns/preselection/${res.id}`)
+              }
+              style={{ cursor: "pointer" }}
+            />
+          ),
+        },
       };
     });
     setRows(a || []);
