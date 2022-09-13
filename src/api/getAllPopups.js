@@ -7,17 +7,17 @@ export default (token = false) => {
 
   var requestOptions = {
     method: "GET",
-    headers: myHeaders
+    headers: myHeaders,
   };
 
-  return new Promise((resolve, reject) =>
+  return new Promise((resolve) =>
     fetch(process.env.REACT_APP_API_URL + "/popups/", requestOptions)
-      .then(response => {
-        if (response.status == 200) {
+      .then((response) => {
+        if (response.status === 200) {
           return response.json();
         }
-        return Promise.resolve([])
+        return Promise.resolve([]);
       })
-      .then(data => resolve(data))
+      .then((data) => resolve(data))
   );
 };
