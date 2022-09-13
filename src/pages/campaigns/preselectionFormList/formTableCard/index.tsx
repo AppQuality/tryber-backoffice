@@ -67,22 +67,24 @@ export const FormTableCard = () => {
   return (
     <Card title="Preselection Form List">
       <FormSearchCard />
-      <Table
-        dataSource={rows}
-        isLoading={isLoading || isFetching}
-        isStriped
-        i18n={{
-          loading: "Loading Data",
-          empty: "No data",
-        }}
-        columns={columns}
-      />
-      <Pagination
-        className="aq-pt-3"
-        onPageChange={setPage}
-        current={page}
-        maxPages={Math.ceil((data?.total || 0) / limit)}
-      />
+      <Card>
+        <Table
+          dataSource={rows}
+          isLoading={isLoading || isFetching}
+          isStriped
+          i18n={{
+            loading: "Loading Data",
+            empty: "No data",
+          }}
+          columns={columns}
+        />
+        <Pagination
+          className="aq-pt-3"
+          onPageChange={setPage}
+          current={page}
+          maxPages={Math.ceil((data?.total || 0) / limit)}
+        />
+      </Card>
     </Card>
   );
 };
