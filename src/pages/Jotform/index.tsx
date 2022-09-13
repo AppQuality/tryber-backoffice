@@ -1,10 +1,10 @@
-import { BSCol, BSGrid, Container } from "@appquality/appquality-design-system";
+import { BSCol, BSGrid } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { CufConfigurator } from "./CufConfigurator/CufConfigurator";
 import { CufListCard } from "./CufListCard";
 import { useAppSelector } from "src/store";
 import { JotformSuccessCard } from "src/pages/Jotform/JotformSuccessCard";
-import useUserData from "src/pages/Jotform/useUserData";
+import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 
 const StickyContainer = styled.div`
   @media (min-width: ${(p) => p.theme.grid.breakpoints.lg}) {
@@ -14,18 +14,9 @@ const StickyContainer = styled.div`
 `;
 
 export default function Jotform() {
-  const { isFetching, isError, data, isLoading } = useUserData();
   const { url } = useAppSelector((state) => state.jotform);
-  if (isLoading || isFetching) return <Container>loading...</Container>;
-  if (isError) return <Container>there was an error</Container>;
-  if (data?.role === "tester" || data?.role === "subscriber")
-    return (
-      <Container>
-        You can't see this page because you are not authorized
-      </Container>
-    );
   return (
-    <Container>
+    <OpsUserContainer>
       <BSGrid className="aq-mt-4">
         {url ? (
           <>
@@ -47,6 +38,6 @@ export default function Jotform() {
           </>
         )}
       </BSGrid>
-    </Container>
+    </OpsUserContainer>
   );
 }
