@@ -8,13 +8,13 @@ import { setSearchBy, setSearch } from "../preselectionListSlice";
 const StyledSearchBy = styled.div`
   display: flex;
   margin: 1rem 0.5rem 0 0.5rem;
-  max-width: 30%;
+  max-width: 30rem;
   align-items: center;
   justify-content: space-between;
 `;
 
 const searchByConfig: SearchByItem[] = [
-  { id: "id", label: "Id" },
+  { id: "id", label: "Form Id" },
   { id: "name", label: "Name" },
   { id: "campaignId", label: "Campaign Id" },
 ];
