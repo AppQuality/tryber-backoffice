@@ -14,9 +14,6 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
-    getProjects: build.query<GetProjectsApiResponse, GetProjectsApiArg>({
-      query: () => ({ url: `/projects` }),
-    }),
     getCustomers: build.query<GetCustomersApiResponse, GetCustomersApiArg>({
       query: () => ({ url: `/customers` }),
     }),
@@ -44,24 +41,6 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/customers/${queryArg.customer}`,
         method: "PUT",
         body: queryArg.body,
-      }),
-    }),
-    getCustomersByCustomerProjectsAndProjectCampaigns: build.query<
-      GetCustomersByCustomerProjectsAndProjectCampaignsApiResponse,
-      GetCustomersByCustomerProjectsAndProjectCampaignsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/customers/${queryArg.customer}/projects/${queryArg.project}/campaigns`,
-      }),
-    }),
-    postCustomersByCustomerProjectsAndProjectCampaigns: build.mutation<
-      PostCustomersByCustomerProjectsAndProjectCampaignsApiResponse,
-      PostCustomersByCustomerProjectsAndProjectCampaignsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/customers/${queryArg.customer}/projects/${queryArg.project}/campaigns`,
-        method: "POST",
-        body: queryArg.campaign,
       }),
     }),
     postCampaigns: build.mutation<
@@ -135,6 +114,7 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/campaigns/${queryArg.campaign}/candidates`,
         method: "POST",
         body: queryArg.body,
+        params: { device: queryArg.device },
       }),
     }),
     getPopups: build.query<GetPopupsApiResponse, GetPopupsApiArg>({
@@ -605,6 +585,32 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/users/me/campaigns/${queryArg.campaignId}/devices`,
       }),
     }),
+    getCampaignsFormsByFormId: build.query<
+      GetCampaignsFormsByFormIdApiResponse,
+      GetCampaignsFormsByFormIdApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/forms/${queryArg.formId}` }),
+    }),
+    putCampaignsFormsByFormId: build.mutation<
+      PutCampaignsFormsByFormIdApiResponse,
+      PutCampaignsFormsByFormIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/forms/${queryArg.formId}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
+    postCampaignsForms: build.mutation<
+      PostCampaignsFormsApiResponse,
+      PostCampaignsFormsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/forms`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -626,13 +632,6 @@ export type PostAuthenticateApiArg = {
     password: string;
   };
 };
-export type GetProjectsApiResponse =
-  /** status 200 A list of projects */ (Project & {
-    campaigns?: (Campaign & {
-      id?: number;
-    })[];
-  })[];
-export type GetProjectsApiArg = void;
 export type GetCustomersApiResponse =
   /** status 200 An array of Customer objects */ (Customer & {
     id?: number;
@@ -656,32 +655,6 @@ export type PutCustomersByCustomerApiArg = {
   /** The Customer data to edit */
   body: Customer;
 };
-export type GetCustomersByCustomerProjectsAndProjectCampaignsApiResponse =
-  /** status 200 A list of Campaigns with the Campaign id */ (Campaign & {
-    id: number;
-  })[];
-export type GetCustomersByCustomerProjectsAndProjectCampaignsApiArg = {
-  /** A customer id */
-  customer: string;
-  /** A project id */
-  project: string;
-};
-export type PostCustomersByCustomerProjectsAndProjectCampaignsApiResponse =
-  /** status 201 A single Campaigns with the Campaign id and Project data */ Campaign & {
-    id: number;
-  } & {
-    project?: Project & {
-      id?: number;
-    };
-  };
-export type PostCustomersByCustomerProjectsAndProjectCampaignsApiArg = {
-  /** A customer id */
-  customer: string;
-  /** A project id */
-  project: string;
-  /** The Campaign data to set on the newly created Campaign */
-  campaign: Campaign;
-};
 export type PostCampaignsApiResponse =
   /** status 201 A single Campaigns with the Campaign id and Project data */ Campaign & {
     id: number;
@@ -696,10 +669,10 @@ export type PostCampaignsApiArg = {
     project_id?: number;
   };
 };
-export type GetCampaignsApiResponse =
-  /** status 200 A list of Campaigns with the Campaign id */ (Campaign & {
-    id: number;
-  })[];
+export type GetCampaignsApiResponse = /** status 200 OK */ {
+  id?: number;
+  name?: string;
+}[];
 export type GetCampaignsApiArg = void;
 export type GetCampaignsByCampaignApiResponse =
   /** status 200 A single Campaigns with the Campaign id and Project data */ Campaign & {
@@ -771,6 +744,7 @@ export type PostCampaignsByCampaignCandidatesApiResponse =
 export type PostCampaignsByCampaignCandidatesApiArg = {
   /** A campaign id */
   campaign: string;
+  device?: string;
   body: {
     tester_id: number;
   };
@@ -1597,18 +1571,58 @@ export type GetUsersMeCampaignsByCampaignIdDevicesApiResponse =
 export type GetUsersMeCampaignsByCampaignIdDevicesApiArg = {
   campaignId: string;
 };
-export type Project = {
-  name?: string;
+export type GetCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  campaign?: {
+    id: number;
+    name: string;
+  };
+  fields: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
 };
-export type BugSeverity = {
-  id?: number;
-  name?: string;
+export type GetCampaignsFormsByFormIdApiArg = {
+  formId: string;
 };
-export type BugType = {
-  id?: number;
+export type PutCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  fields: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+  campaign?: {
+    id: number;
+    name: string;
+  };
 };
-export type Replicability = {
-  id?: string;
+export type PutCampaignsFormsByFormIdApiArg = {
+  formId: string;
+  body: {
+    name: string;
+    campaign?: number;
+    fields: ({
+      id?: number;
+    } & PreselectionFormQuestion)[];
+  };
+};
+export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
+  id: number;
+  name: string;
+  campaign?: {
+    id: number;
+    name: string;
+  };
+  fields?: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+};
+export type PostCampaignsFormsApiArg = {
+  body: {
+    name: string;
+    fields: PreselectionFormQuestion[];
+    campaign?: number;
+  };
 };
 export type User = {
   username?: string;
@@ -1620,6 +1634,19 @@ export type User = {
   wp_user_id?: number;
   role?: string;
   is_verified?: boolean;
+};
+export type Customer = User & {
+  customer_name?: string;
+};
+export type BugSeverity = {
+  id?: number;
+  name?: string;
+};
+export type BugType = {
+  id?: number;
+};
+export type Replicability = {
+  id?: string;
 };
 export type CampaignField = {
   id?: number;
@@ -1679,8 +1706,8 @@ export type CampaignRequired = {
   campaign_type: CampaignType;
 };
 export type Campaign = CampaignOptional & CampaignRequired;
-export type Customer = User & {
-  customer_name?: string;
+export type Project = {
+  name?: string;
 };
 export type TaskOptional = {
   name?: string;
@@ -1778,13 +1805,14 @@ export type RankingItem = {
   name: string;
   monthly_exp: number;
 };
+export type CustomUserFieldsType = "text" | "select" | "multiselect";
 export type CustomUserFieldsDataOption = {
   id: number;
   name: string;
 };
 export type CustomUserFieldsData = {
   id: number;
-  type: "select" | "multiselect" | "text";
+  type: CustomUserFieldsType;
   placeholder?: TranslatablePage;
   allow_other?: boolean;
   name: TranslatablePage;
@@ -1811,16 +1839,31 @@ export type CampaignAdditionalField = {
       regex: string;
     }
 );
+export type PreselectionFormQuestion = {
+  question: string;
+} & (
+  | {
+      type: "text";
+    }
+  | {
+      type: "multiselect" | "select" | "radio";
+      options: string[];
+    }
+  | {
+      type: string;
+      options?: number[];
+    }
+  | {
+      type: "gender" | "phone_number" | "address";
+    }
+);
 export const {
   useGetQuery,
   usePostAuthenticateMutation,
-  useGetProjectsQuery,
   useGetCustomersQuery,
   usePostCustomersMutation,
   useGetCustomersByCustomerQuery,
   usePutCustomersByCustomerMutation,
-  useGetCustomersByCustomerProjectsAndProjectCampaignsQuery,
-  usePostCustomersByCustomerProjectsAndProjectCampaignsMutation,
   usePostCampaignsMutation,
   useGetCampaignsQuery,
   useGetCampaignsByCampaignQuery,
@@ -1884,4 +1927,7 @@ export const {
   useGetUsersMeCampaignsByCampaignIdQuery,
   usePostUsersMeCampaignsByCampaignIdMediaMutation,
   useGetUsersMeCampaignsByCampaignIdDevicesQuery,
+  useGetCampaignsFormsByFormIdQuery,
+  usePutCampaignsFormsByFormIdMutation,
+  usePostCampaignsFormsMutation,
 } = injectedRtkApi;
