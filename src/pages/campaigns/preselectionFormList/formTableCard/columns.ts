@@ -3,7 +3,7 @@ import { TableType } from "@appquality/appquality-design-system";
 const Columns = (): TableType.Column[] => {
   return [
     {
-      title: "Id",
+      title: "Form Id",
       dataIndex: "id",
       key: "id",
       hideIndex: true,
