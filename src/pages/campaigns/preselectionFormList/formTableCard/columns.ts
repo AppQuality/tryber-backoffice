@@ -1,0 +1,33 @@
+import { TableType } from "@appquality/appquality-design-system";
+
+const Columns = (): TableType.Column[] => {
+  return [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+      hideIndex: true,
+      maxWidth: "8em",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Campaign Id",
+      dataIndex: "campaignId",
+      key: "campaignId",
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      align: "right",
+      maxWidth: "4em",
+      hideIndex: true,
+      role: "cta",
+    },
+  ];
+};
+export default Columns;

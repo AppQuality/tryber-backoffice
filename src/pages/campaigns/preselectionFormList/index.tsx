@@ -1,21 +1,12 @@
-import {
-  BSCol,
-  BSGrid,
-  Card,
-  Input,
-} from "@appquality/appquality-design-system";
+import { BSCol, BSGrid } from "@appquality/appquality-design-system";
 import { OpsUserContainer } from "../../../features/AuthorizedOnlyContainer";
-import { FormSearchCard } from "./formSearchCard";
 import { FormTableCard } from "./formTableCard";
 
 const PreselectionFormList = () => {
   return (
     <OpsUserContainer>
       <BSGrid className="aq-my-4">
-        <BSCol size="col-lg-4">
-          <FormSearchCard />
-        </BSCol>
-        <BSCol size="col-lg-8">
+        <BSCol size="col-lg-12" className="aq-mb-4">
           <FormTableCard />
         </BSCol>
       </BSGrid>

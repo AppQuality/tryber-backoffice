@@ -37,7 +37,7 @@ function App() {
               component={CampaignPreselection}
             />
             <Route
-              path="/backoffice/campaigns/preselection-list"
+              path="/backoffice/campaigns/preselection-form-list"
               component={CampaignPreselectionList}
             />
             <Route path={`/backoffice/:id`} component={Update} />
