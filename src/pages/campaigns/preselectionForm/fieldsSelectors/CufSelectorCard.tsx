@@ -94,8 +94,8 @@ export const CufSelectorCard: FC<{
   return (
     <Card title={"Custom User Fields (CUF)"} className="aq-mb-3" shadow>
       <Text small color="danger" className="aq-mb-3">
-        Attenzione, le risposte dell'utente a queste domande modificano il suo
-        profilo su tryber.me
+        Watch out! Users' answers to these questions are going to update their
+        profile on tryber.me
       </Text>
       {cufList.map((f) => {
         const isChecked = selected.indexOf(f.id) >= 0;

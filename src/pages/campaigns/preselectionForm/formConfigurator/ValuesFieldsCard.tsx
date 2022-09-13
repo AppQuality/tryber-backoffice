@@ -55,7 +55,9 @@ export const ValuesFieldsCard: FC<{
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   if (
-                    window.confirm("Sei sicuro di voler rimuovere il campo?")
+                    window.confirm(
+                      "Are you sure you want to remove this field?"
+                    )
                   ) {
                     remove(index);
                   }
