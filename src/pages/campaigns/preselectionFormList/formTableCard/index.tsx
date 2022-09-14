@@ -37,7 +37,7 @@ export const FormTableCard = () => {
         id: res.id,
         name: res.name,
         campaignId: res.campaign || (
-          <div title="No associated campaign" className="aq-text-danger">
+          <div title="No associated campaigns" className="aq-text-danger">
             No associated campaigns
           </div>
         ),
@@ -61,7 +61,9 @@ export const FormTableCard = () => {
   }, [data?.results]);
 
   useEffect(() => {
-    if (search) setPage(1);
+    if (search || search === "") {
+      setPage(1);
+    }
   }, [search, searchBy]);
 
   useEffect(() => {
