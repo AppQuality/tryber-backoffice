@@ -37,7 +37,9 @@ export const FormTableCard = () => {
         id: res.id,
         name: res.name,
         campaignId: res.campaign || (
-          <div className="aq-text-danger">No associated campaigns</div>
+          <div title="No associated campaign" className="aq-text-danger">
+            No associated campaigns
+          </div>
         ),
         actions: {
           title: "",
