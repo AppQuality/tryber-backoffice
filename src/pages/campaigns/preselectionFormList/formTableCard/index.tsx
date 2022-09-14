@@ -59,6 +59,10 @@ export const FormTableCard = () => {
   }, [data?.results]);
 
   useEffect(() => {
+    if (search) setPage(1);
+  }, [search, searchBy]);
+
+  useEffect(() => {
     return () => {
       dispatch(resetList());
     };

@@ -10,7 +10,7 @@ const Columns = (): TableType.Column[] => {
       maxWidth: "8em",
     },
     {
-      title: "Name",
+      title: "Form Title",
       dataIndex: "name",
       key: "name",
     },
