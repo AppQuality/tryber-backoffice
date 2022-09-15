@@ -1,4 +1,4 @@
-type SearchByType = "id" | "name" | "campaignId";
+type SearchByType = "id" | "name" | "campaign_id";
 
 interface SearchByItem {
   id: SearchByType;
