@@ -70,7 +70,7 @@ export const FormTableCard = () => {
   useEffect(() => {
     if (error)
       dispatch(
-        addMessage("An error has occurred.Please try again.", "danger", false)
+        addMessage("An error has occurred. Please try again.", "danger", false)
       );
   }, [error]);
 
