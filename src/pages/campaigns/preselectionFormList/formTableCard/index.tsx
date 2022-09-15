@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "src/store";
 import { resetList } from "../preselectionListSlice";
 import Columns from "./columns";
 import { FormSearchCard } from "./formSearchCard";
+import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 
 export const FormTableCard = () => {
   const { search, searchBy } = useAppSelector(
@@ -23,7 +24,7 @@ export const FormTableCard = () => {
   const [rows, setRows] = useState<TableType.Row[]>([]);
   const columns = Columns();
   const limit = 10;
-  const { data, isFetching, isLoading } = useGetCampaignsFormsQuery({
+  const { data, isFetching, isLoading, error } = useGetCampaignsFormsQuery({
     start: (page - 1) * limit,
     limit: limit,
     search,
@@ -65,6 +66,13 @@ export const FormTableCard = () => {
       setPage(1);
     }
   }, [search, searchBy]);
+
+  useEffect(() => {
+    if (error)
+      dispatch(
+        addMessage("An error has occurred.Please try again.", "danger", false)
+      );
+  }, [error]);
 
   useEffect(() => {
     return () => {
