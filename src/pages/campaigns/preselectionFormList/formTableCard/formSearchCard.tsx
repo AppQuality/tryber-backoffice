@@ -16,7 +16,7 @@ const StyledSearchBy = styled.div`
 const searchByConfig: SearchByItem[] = [
   { id: "id", label: "Form Id" },
   { id: "name", label: "Name" },
-  { id: "campaignId", label: "Campaign Id" },
+  { id: "campaign_id", label: "Campaign Id" },
 ];
 
 export const FormSearchCard = () => {

@@ -6,7 +6,7 @@ interface PreselectionListState {
 }
 
 const initialState: PreselectionListState = {
-  searchBy: ["id", "name", "campaignId"],
+  searchBy: ["id", "name", "campaign_id"],
 };
 
 const campaignPreselectionListSlice = createSlice({
