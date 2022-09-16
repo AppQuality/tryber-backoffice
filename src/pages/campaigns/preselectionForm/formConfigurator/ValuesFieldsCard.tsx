@@ -6,6 +6,7 @@ import { aqBootstrapTheme, Card } from "@appquality/appquality-design-system";
 import { useDrag } from "react-dnd";
 import { DropZone } from "src/pages/campaigns/preselectionForm/formConfigurator/DropZone";
 import { XLg, GripVertical } from "react-bootstrap-icons";
+import { ShortTitleField } from "./ShortTitleField";
 
 export const ValuesFieldsCard: FC<{
   field: AdditionalField | CustomUserField;
@@ -69,6 +70,7 @@ export const ValuesFieldsCard: FC<{
           }
         >
           <QuestionField name={`fields.${index}.question`} />
+          <ShortTitleField name={`fields.${index}.shortTitle`} />
           {"options" in field && field.options && (
             <OptionsField index={index} />
           )}
