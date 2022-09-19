@@ -15,9 +15,7 @@ import { FormSearchCard } from "./formSearchCard";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 
 export const FormTableCard = () => {
-  const { search, searchBy } = useAppSelector(
-    (state) => state.campaignPreselectionList
-  );
+  const { search } = useAppSelector((state) => state.campaignPreselectionList);
   const history = useHistory();
   const dispatch = useAppDispatch();
   const [page, setPage] = useState<number>(1);
@@ -28,7 +26,7 @@ export const FormTableCard = () => {
     start: (page - 1) * limit,
     limit: limit,
     search,
-    ...(search ? { searchBy: searchBy.join(",") } : {}),
+    searchBy: "name,campaign_id",
   });
 
   useEffect(() => {
@@ -65,7 +63,7 @@ export const FormTableCard = () => {
     if (search || search === "") {
       setPage(1);
     }
-  }, [search, searchBy]);
+  }, [search]);
 
   useEffect(() => {
     if (error)
