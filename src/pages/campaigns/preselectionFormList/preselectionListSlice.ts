@@ -2,12 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface PreselectionListState {
   search?: string;
-  searchBy: SearchByType[];
 }
 
-const initialState: PreselectionListState = {
-  searchBy: ["id", "name", "campaign_id"],
-};
+const initialState: PreselectionListState = {};
 
 const campaignPreselectionListSlice = createSlice({
   name: "campaignPreselectionList",
@@ -16,9 +13,6 @@ const campaignPreselectionListSlice = createSlice({
     setSearch(state, action: PayloadAction<string | undefined>) {
       state.search = action.payload;
     },
-    setSearchBy(state, action: PayloadAction<SearchByType[]>) {
-      state.searchBy = action.payload;
-    },
     resetList() {
       return initialState;
     },
@@ -26,5 +20,5 @@ const campaignPreselectionListSlice = createSlice({
 });
 
 const { actions, reducer } = campaignPreselectionListSlice;
-export const { setSearch, setSearchBy, resetList } = actions;
+export const { setSearch, resetList } = actions;
 export default reducer;
