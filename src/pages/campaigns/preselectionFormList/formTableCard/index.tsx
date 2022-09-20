@@ -80,8 +80,8 @@ export const FormTableCard = () => {
 
   return (
     <Card title="Preselection Form List">
-      <FormSearchCard />
       <Card>
+        <FormSearchCard />
         <Table
           dataSource={rows}
           isLoading={isLoading || isFetching}
