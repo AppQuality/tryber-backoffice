@@ -14,35 +14,6 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
-    getCustomers: build.query<GetCustomersApiResponse, GetCustomersApiArg>({
-      query: () => ({ url: `/customers` }),
-    }),
-    postCustomers: build.mutation<
-      PostCustomersApiResponse,
-      PostCustomersApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/customers`,
-        method: "POST",
-        body: queryArg.customer,
-      }),
-    }),
-    getCustomersByCustomer: build.query<
-      GetCustomersByCustomerApiResponse,
-      GetCustomersByCustomerApiArg
-    >({
-      query: (queryArg) => ({ url: `/customers/${queryArg.customer}` }),
-    }),
-    putCustomersByCustomer: build.mutation<
-      PutCustomersByCustomerApiResponse,
-      PutCustomersByCustomerApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/customers/${queryArg.customer}`,
-        method: "PUT",
-        body: queryArg.body,
-      }),
-    }),
     postCampaigns: build.mutation<
       PostCampaignsApiResponse,
       PostCampaignsApiArg
@@ -70,6 +41,17 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/campaigns/${queryArg.campaign}`,
         method: "PUT",
         body: queryArg.campaignOptional,
+      }),
+    }),
+    postCampaignsByCampaignCandidates: build.mutation<
+      PostCampaignsByCampaignCandidatesApiResponse,
+      PostCampaignsByCampaignCandidatesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/candidates`,
+        method: "POST",
+        body: queryArg.body,
+        params: { device: queryArg.device },
       }),
     }),
     getCampaignsByCampaignTasks: build.query<
@@ -106,15 +88,184 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.taskOptional,
       }),
     }),
-    postCampaignsByCampaignCandidates: build.mutation<
-      PostCampaignsByCampaignCandidatesApiResponse,
-      PostCampaignsByCampaignCandidatesApiArg
+    postCampaignsForms: build.mutation<
+      PostCampaignsFormsApiResponse,
+      PostCampaignsFormsApiArg
     >({
       query: (queryArg) => ({
-        url: `/campaigns/${queryArg.campaign}/candidates`,
+        url: `/campaigns/forms`,
         method: "POST",
         body: queryArg.body,
-        params: { device: queryArg.device },
+      }),
+    }),
+    getCampaignsForms: build.query<
+      GetCampaignsFormsApiResponse,
+      GetCampaignsFormsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/forms`,
+        params: {
+          searchBy: queryArg.searchBy,
+          search: queryArg.search,
+          limit: queryArg.limit,
+          start: queryArg.start,
+        },
+      }),
+    }),
+    getCampaignsFormsByFormId: build.query<
+      GetCampaignsFormsByFormIdApiResponse,
+      GetCampaignsFormsByFormIdApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/forms/${queryArg.formId}` }),
+    }),
+    putCampaignsFormsByFormId: build.mutation<
+      PutCampaignsFormsByFormIdApiResponse,
+      PutCampaignsFormsByFormIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/forms/${queryArg.formId}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
+    getCertifications: build.query<
+      GetCertificationsApiResponse,
+      GetCertificationsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/certifications`,
+        params: { filterBy: queryArg.filterBy },
+      }),
+    }),
+    getCountriesByCodeRegion: build.query<
+      GetCountriesByCodeRegionApiResponse,
+      GetCountriesByCodeRegionApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/countries/${queryArg.code}/region`,
+        params: { languageCode: queryArg.languageCode },
+      }),
+    }),
+    getCustomers: build.query<GetCustomersApiResponse, GetCustomersApiArg>({
+      query: () => ({ url: `/customers` }),
+    }),
+    postCustomers: build.mutation<
+      PostCustomersApiResponse,
+      PostCustomersApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/customers`,
+        method: "POST",
+        body: queryArg.customer,
+      }),
+    }),
+    getCustomersByCustomer: build.query<
+      GetCustomersByCustomerApiResponse,
+      GetCustomersByCustomerApiArg
+    >({
+      query: (queryArg) => ({ url: `/customers/${queryArg.customer}` }),
+    }),
+    putCustomersByCustomer: build.mutation<
+      PutCustomersByCustomerApiResponse,
+      PutCustomersByCustomerApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/customers/${queryArg.customer}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
+    getCustomUserFields: build.query<
+      GetCustomUserFieldsApiResponse,
+      GetCustomUserFieldsApiArg
+    >({
+      query: () => ({ url: `/custom_user_fields` }),
+    }),
+    getDevicesByDeviceTypeModels: build.query<
+      GetDevicesByDeviceTypeModelsApiResponse,
+      GetDevicesByDeviceTypeModelsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/devices/${queryArg.deviceType}/models`,
+        params: { filterBy: queryArg.filterBy },
+      }),
+    }),
+    getDevicesByDeviceTypeOperatingSystems: build.query<
+      GetDevicesByDeviceTypeOperatingSystemsApiResponse,
+      GetDevicesByDeviceTypeOperatingSystemsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/devices/${queryArg.deviceType}/operating_systems`,
+        params: { filterBy: queryArg.filterBy },
+      }),
+    }),
+    getDevicesByDeviceTypeOsVersions: build.query<
+      GetDevicesByDeviceTypeOsVersionsApiResponse,
+      GetDevicesByDeviceTypeOsVersionsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/devices/${queryArg.deviceType}/os_versions`,
+        params: { filterBy: queryArg.filterBy },
+      }),
+    }),
+    getEducation: build.query<GetEducationApiResponse, GetEducationApiArg>({
+      query: () => ({ url: `/education` }),
+    }),
+    getEmployments: build.query<
+      GetEmploymentsApiResponse,
+      GetEmploymentsApiArg
+    >({
+      query: () => ({ url: `/employments` }),
+    }),
+    getLanguages: build.query<GetLanguagesApiResponse, GetLanguagesApiArg>({
+      query: () => ({ url: `/languages` }),
+    }),
+    getLevels: build.query<GetLevelsApiResponse, GetLevelsApiArg>({
+      query: () => ({ url: `/levels` }),
+    }),
+    postMedia: build.mutation<PostMediaApiResponse, PostMediaApiArg>({
+      query: (queryArg) => ({
+        url: `/media`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    deleteMedia: build.mutation<DeleteMediaApiResponse, DeleteMediaApiArg>({
+      query: (queryArg) => ({
+        url: `/media`,
+        method: "DELETE",
+        body: queryArg.body,
+      }),
+    }),
+    getPayments: build.query<GetPaymentsApiResponse, GetPaymentsApiArg>({
+      query: (queryArg) => ({
+        url: `/payments`,
+        params: {
+          status: queryArg.status,
+          order: queryArg.order,
+          orderBy: queryArg.orderBy,
+          start: queryArg.start,
+          limit: queryArg.limit,
+          filterBy: queryArg.filterBy,
+        },
+      }),
+    }),
+    postPaymentsByPaymentId: build.mutation<
+      PostPaymentsByPaymentIdApiResponse,
+      PostPaymentsByPaymentIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/payments/${queryArg.paymentId}`,
+        method: "POST",
+      }),
+    }),
+    deletePaymentsByPaymentId: build.mutation<
+      DeletePaymentsByPaymentIdApiResponse,
+      DeletePaymentsByPaymentIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/payments/${queryArg.paymentId}`,
+        method: "DELETE",
       }),
     }),
     getPopups: build.query<GetPopupsApiResponse, GetPopupsApiArg>({
@@ -143,68 +294,6 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/popups/${queryArg.popup}`,
         method: "PATCH",
-        body: queryArg.body,
-      }),
-    }),
-    getDevicesByDeviceTypeModels: build.query<
-      GetDevicesByDeviceTypeModelsApiResponse,
-      GetDevicesByDeviceTypeModelsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/devices/${queryArg.deviceType}/models`,
-        params: { filterBy: queryArg.filterBy },
-      }),
-    }),
-    getCertifications: build.query<
-      GetCertificationsApiResponse,
-      GetCertificationsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/certifications`,
-        params: { filterBy: queryArg.filterBy },
-      }),
-    }),
-    getDevicesByDeviceTypeOperatingSystems: build.query<
-      GetDevicesByDeviceTypeOperatingSystemsApiResponse,
-      GetDevicesByDeviceTypeOperatingSystemsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/devices/${queryArg.deviceType}/operating_systems`,
-        params: { filterBy: queryArg.filterBy },
-      }),
-    }),
-    getDevicesByDeviceTypeOsVersions: build.query<
-      GetDevicesByDeviceTypeOsVersionsApiResponse,
-      GetDevicesByDeviceTypeOsVersionsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/devices/${queryArg.deviceType}/os_versions`,
-        params: { filterBy: queryArg.filterBy },
-      }),
-    }),
-    getLanguages: build.query<GetLanguagesApiResponse, GetLanguagesApiArg>({
-      query: () => ({ url: `/languages` }),
-    }),
-    getEmployments: build.query<
-      GetEmploymentsApiResponse,
-      GetEmploymentsApiArg
-    >({
-      query: () => ({ url: `/employments` }),
-    }),
-    getEducation: build.query<GetEducationApiResponse, GetEducationApiArg>({
-      query: () => ({ url: `/education` }),
-    }),
-    postMedia: build.mutation<PostMediaApiResponse, PostMediaApiArg>({
-      query: (queryArg) => ({
-        url: `/media`,
-        method: "POST",
-        body: queryArg.body,
-      }),
-    }),
-    deleteMedia: build.mutation<DeleteMediaApiResponse, DeleteMediaApiArg>({
-      query: (queryArg) => ({
-        url: `/media`,
-        method: "DELETE",
         body: queryArg.body,
       }),
     }),
@@ -248,6 +337,16 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    putUsersMeAdditionalsByFieldId: build.mutation<
+      PutUsersMeAdditionalsByFieldIdApiResponse,
+      PutUsersMeAdditionalsByFieldIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/additionals/${queryArg.fieldId}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
     getUsersMeBugs: build.query<
       GetUsersMeBugsApiResponse,
       GetUsersMeBugsApiArg
@@ -261,6 +360,118 @@ const injectedRtkApi = api.injectEndpoints({
           orderBy: queryArg.orderBy,
           order: queryArg.order,
         },
+      }),
+    }),
+    getUsersMeCampaigns: build.query<
+      GetUsersMeCampaignsApiResponse,
+      GetUsersMeCampaignsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns`,
+        params: {
+          start: queryArg.start,
+          limit: queryArg.limit,
+          filterBy: queryArg.filterBy,
+          locale: queryArg.locale,
+          order: queryArg.order,
+          orderBy: queryArg.orderBy,
+        },
+      }),
+    }),
+    getUsersMeCampaignsByCampaignId: build.query<
+      GetUsersMeCampaignsByCampaignIdApiResponse,
+      GetUsersMeCampaignsByCampaignIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}`,
+      }),
+    }),
+    postUsersMeCampaignsByCampaignIdBugs: build.mutation<
+      PostUsersMeCampaignsByCampaignIdBugsApiResponse,
+      PostUsersMeCampaignsByCampaignIdBugsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/bugs`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    getUsersMeCampaignsByCampaignIdDevices: build.query<
+      GetUsersMeCampaignsByCampaignIdDevicesApiResponse,
+      GetUsersMeCampaignsByCampaignIdDevicesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/devices`,
+      }),
+    }),
+    postUsersMeCampaignsByCampaignIdMedia: build.mutation<
+      PostUsersMeCampaignsByCampaignIdMediaApiResponse,
+      PostUsersMeCampaignsByCampaignIdMediaApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/media`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    postUsersMeCertifications: build.mutation<
+      PostUsersMeCertificationsApiResponse,
+      PostUsersMeCertificationsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/certifications`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    deleteUsersMeCertificationsByCertificationId: build.mutation<
+      DeleteUsersMeCertificationsByCertificationIdApiResponse,
+      DeleteUsersMeCertificationsByCertificationIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/certifications/${queryArg.certificationId}`,
+        method: "DELETE",
+      }),
+    }),
+    getUsersMeDevices: build.query<
+      GetUsersMeDevicesApiResponse,
+      GetUsersMeDevicesApiArg
+    >({
+      query: () => ({ url: `/users/me/devices` }),
+    }),
+    postUsersMeDevices: build.mutation<
+      PostUsersMeDevicesApiResponse,
+      PostUsersMeDevicesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/devices`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    getUsersMeDevicesByDeviceId: build.query<
+      GetUsersMeDevicesByDeviceIdApiResponse,
+      GetUsersMeDevicesByDeviceIdApiArg
+    >({
+      query: (queryArg) => ({ url: `/users/me/devices/${queryArg.deviceId}` }),
+    }),
+    patchUsersMeDevicesByDeviceId: build.mutation<
+      PatchUsersMeDevicesByDeviceIdApiResponse,
+      PatchUsersMeDevicesByDeviceIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/devices/${queryArg.deviceId}`,
+        method: "PATCH",
+        body: queryArg.body,
+      }),
+    }),
+    deleteUsersMeDevicesByDeviceId: build.mutation<
+      DeleteUsersMeDevicesByDeviceIdApiResponse,
+      DeleteUsersMeDevicesByDeviceIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/devices/${queryArg.deviceId}`,
+        method: "DELETE",
       }),
     }),
     getUsersMeExperience: build.query<
@@ -306,107 +517,6 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
-    getUsersMeCampaigns: build.query<
-      GetUsersMeCampaignsApiResponse,
-      GetUsersMeCampaignsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/campaigns`,
-        params: {
-          start: queryArg.start,
-          limit: queryArg.limit,
-          filterBy: queryArg.filterBy,
-          locale: queryArg.locale,
-          order: queryArg.order,
-          orderBy: queryArg.orderBy,
-        },
-      }),
-    }),
-    getUsersMePopups: build.query<
-      GetUsersMePopupsApiResponse,
-      GetUsersMePopupsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/popups`,
-        params: { showExpired: queryArg.showExpired, order: queryArg.order },
-      }),
-    }),
-    postUsersMeCampaignsByCampaignIdBugs: build.mutation<
-      PostUsersMeCampaignsByCampaignIdBugsApiResponse,
-      PostUsersMeCampaignsByCampaignIdBugsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/campaigns/${queryArg.campaignId}/bugs`,
-        method: "POST",
-        body: queryArg.body,
-      }),
-    }),
-    getUsersMePopupsByPopup: build.query<
-      GetUsersMePopupsByPopupApiResponse,
-      GetUsersMePopupsByPopupApiArg
-    >({
-      query: (queryArg) => ({ url: `/users/me/popups/${queryArg.popup}` }),
-    }),
-    getUsersMeDevices: build.query<
-      GetUsersMeDevicesApiResponse,
-      GetUsersMeDevicesApiArg
-    >({
-      query: () => ({ url: `/users/me/devices` }),
-    }),
-    postUsersMeDevices: build.mutation<
-      PostUsersMeDevicesApiResponse,
-      PostUsersMeDevicesApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/devices`,
-        method: "POST",
-        body: queryArg.body,
-      }),
-    }),
-    getUsersMeDevicesByDeviceId: build.query<
-      GetUsersMeDevicesByDeviceIdApiResponse,
-      GetUsersMeDevicesByDeviceIdApiArg
-    >({
-      query: (queryArg) => ({ url: `/users/me/devices/${queryArg.deviceId}` }),
-    }),
-    patchUsersMeDevicesByDeviceId: build.mutation<
-      PatchUsersMeDevicesByDeviceIdApiResponse,
-      PatchUsersMeDevicesByDeviceIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/devices/${queryArg.deviceId}`,
-        method: "PATCH",
-        body: queryArg.body,
-      }),
-    }),
-    deleteUsersMeDevicesByDeviceId: build.mutation<
-      DeleteUsersMeDevicesByDeviceIdApiResponse,
-      DeleteUsersMeDevicesByDeviceIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/devices/${queryArg.deviceId}`,
-        method: "DELETE",
-      }),
-    }),
-    postUsersMeCertifications: build.mutation<
-      PostUsersMeCertificationsApiResponse,
-      PostUsersMeCertificationsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/certifications`,
-        method: "POST",
-        body: queryArg.body,
-      }),
-    }),
-    deleteUsersMeCertificationsByCertificationId: build.mutation<
-      DeleteUsersMeCertificationsByCertificationIdApiResponse,
-      DeleteUsersMeCertificationsByCertificationIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/certifications/${queryArg.certificationId}`,
-        method: "DELETE",
-      }),
-    }),
     postUsersMeLanguages: build.mutation<
       PostUsersMeLanguagesApiResponse,
       PostUsersMeLanguagesApiArg
@@ -434,30 +544,6 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/users/me/languages/${queryArg.languageId}`,
         method: "DELETE",
-      }),
-    }),
-    putUsersMeAdditionalsByFieldId: build.mutation<
-      PutUsersMeAdditionalsByFieldIdApiResponse,
-      PutUsersMeAdditionalsByFieldIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/additionals/${queryArg.fieldId}`,
-        method: "PUT",
-        body: queryArg.body,
-      }),
-    }),
-    getUsersMePendingBooty: build.query<
-      GetUsersMePendingBootyApiResponse,
-      GetUsersMePendingBootyApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/pending_booty`,
-        params: {
-          start: queryArg.start,
-          limit: queryArg.limit,
-          orderBy: queryArg.orderBy,
-          order: queryArg.order,
-        },
       }),
     }),
     getUsersMePayments: build.query<
@@ -498,6 +584,35 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getUsersMePendingBooty: build.query<
+      GetUsersMePendingBootyApiResponse,
+      GetUsersMePendingBootyApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/pending_booty`,
+        params: {
+          start: queryArg.start,
+          limit: queryArg.limit,
+          orderBy: queryArg.orderBy,
+          order: queryArg.order,
+        },
+      }),
+    }),
+    getUsersMePopups: build.query<
+      GetUsersMePopupsApiResponse,
+      GetUsersMePopupsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/popups`,
+        params: { showExpired: queryArg.showExpired, order: queryArg.order },
+      }),
+    }),
+    getUsersMePopupsByPopup: build.query<
+      GetUsersMePopupsByPopupApiResponse,
+      GetUsersMePopupsByPopupApiArg
+    >({
+      query: (queryArg) => ({ url: `/users/me/popups/${queryArg.popup}` }),
+    }),
     getUsersMeRank: build.query<
       GetUsersMeRankApiResponse,
       GetUsersMeRankApiArg
@@ -509,107 +624,6 @@ const injectedRtkApi = api.injectEndpoints({
       GetUsersMeRankListApiArg
     >({
       query: () => ({ url: `/users/me/rank/list` }),
-    }),
-    getCustomUserFields: build.query<
-      GetCustomUserFieldsApiResponse,
-      GetCustomUserFieldsApiArg
-    >({
-      query: () => ({ url: `/custom_user_fields` }),
-    }),
-    getCountriesByCodeRegion: build.query<
-      GetCountriesByCodeRegionApiResponse,
-      GetCountriesByCodeRegionApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/countries/${queryArg.code}/region`,
-        params: { languageCode: queryArg.languageCode },
-      }),
-    }),
-    getPayments: build.query<GetPaymentsApiResponse, GetPaymentsApiArg>({
-      query: (queryArg) => ({
-        url: `/payments`,
-        params: {
-          status: queryArg.status,
-          order: queryArg.order,
-          orderBy: queryArg.orderBy,
-          start: queryArg.start,
-          limit: queryArg.limit,
-          filterBy: queryArg.filterBy,
-        },
-      }),
-    }),
-    postPaymentsByPaymentId: build.mutation<
-      PostPaymentsByPaymentIdApiResponse,
-      PostPaymentsByPaymentIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/payments/${queryArg.paymentId}`,
-        method: "POST",
-      }),
-    }),
-    deletePaymentsByPaymentId: build.mutation<
-      DeletePaymentsByPaymentIdApiResponse,
-      DeletePaymentsByPaymentIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/payments/${queryArg.paymentId}`,
-        method: "DELETE",
-      }),
-    }),
-    getLevels: build.query<GetLevelsApiResponse, GetLevelsApiArg>({
-      query: () => ({ url: `/levels` }),
-    }),
-    getUsersMeCampaignsByCampaignId: build.query<
-      GetUsersMeCampaignsByCampaignIdApiResponse,
-      GetUsersMeCampaignsByCampaignIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/campaigns/${queryArg.campaignId}`,
-      }),
-    }),
-    postUsersMeCampaignsByCampaignIdMedia: build.mutation<
-      PostUsersMeCampaignsByCampaignIdMediaApiResponse,
-      PostUsersMeCampaignsByCampaignIdMediaApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/campaigns/${queryArg.campaignId}/media`,
-        method: "POST",
-        body: queryArg.body,
-      }),
-    }),
-    getUsersMeCampaignsByCampaignIdDevices: build.query<
-      GetUsersMeCampaignsByCampaignIdDevicesApiResponse,
-      GetUsersMeCampaignsByCampaignIdDevicesApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/campaigns/${queryArg.campaignId}/devices`,
-      }),
-    }),
-    getCampaignsFormsByFormId: build.query<
-      GetCampaignsFormsByFormIdApiResponse,
-      GetCampaignsFormsByFormIdApiArg
-    >({
-      query: (queryArg) => ({ url: `/campaigns/forms/${queryArg.formId}` }),
-    }),
-    putCampaignsFormsByFormId: build.mutation<
-      PutCampaignsFormsByFormIdApiResponse,
-      PutCampaignsFormsByFormIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/campaigns/forms/${queryArg.formId}`,
-        method: "PUT",
-        body: queryArg.body,
-      }),
-    }),
-    postCampaignsForms: build.mutation<
-      PostCampaignsFormsApiResponse,
-      PostCampaignsFormsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/campaigns/forms`,
-        method: "POST",
-        body: queryArg.body,
-      }),
     }),
   }),
   overrideExisting: false,
@@ -631,29 +645,6 @@ export type PostAuthenticateApiArg = {
     username: string;
     password: string;
   };
-};
-export type GetCustomersApiResponse =
-  /** status 200 An array of Customer objects */ (Customer & {
-    id?: number;
-  })[];
-export type GetCustomersApiArg = void;
-export type PostCustomersApiResponse = /** status 201 Created */ undefined;
-export type PostCustomersApiArg = {
-  /** The customer you want to create */
-  customer: Customer;
-};
-export type GetCustomersByCustomerApiResponse =
-  /** status 200 The Customer data you requested */ Customer;
-export type GetCustomersByCustomerApiArg = {
-  /** A customer id */
-  customer: string;
-};
-export type PutCustomersByCustomerApiResponse = /** status 200 OK */ undefined;
-export type PutCustomersByCustomerApiArg = {
-  /** A customer id */
-  customer: string;
-  /** The Customer data to edit */
-  body: Customer;
 };
 export type PostCampaignsApiResponse =
   /** status 201 A single Campaigns with the Campaign id and Project data */ Campaign & {
@@ -700,6 +691,21 @@ export type PutCampaignsByCampaignApiArg = {
   /** The Campaign data to edit */
   campaignOptional: CampaignOptional;
 };
+export type PostCampaignsByCampaignCandidatesApiResponse =
+  /** status 200 OK */ {
+    tester_id: number;
+    accepted: boolean;
+    status: "ready" | "in-progress" | "completed" | "excluded" | "removed";
+    device: "any" | UserDevice;
+  };
+export type PostCampaignsByCampaignCandidatesApiArg = {
+  /** A campaign id */
+  campaign: string;
+  device?: string;
+  body: {
+    tester_id: number;
+  };
+};
 export type GetCampaignsByCampaignTasksApiResponse =
   /** status 200 A list of UseCase linked with the Campaign */ (Task & {
     id?: number;
@@ -734,20 +740,243 @@ export type PutCampaignsByCampaignTasksAndTaskApiArg = {
   /** The data to edit in the UseCase linked to the Campaign */
   taskOptional: TaskOptional;
 };
-export type PostCampaignsByCampaignCandidatesApiResponse =
-  /** status 200 OK */ {
-    tester_id: number;
-    accepted: boolean;
-    status: "ready" | "in-progress" | "completed" | "excluded" | "removed";
-    device: "any" | UserDevice;
+export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
+  id: number;
+  name: string;
+  campaign?: {
+    id: number;
+    name: string;
   };
-export type PostCampaignsByCampaignCandidatesApiArg = {
-  /** A campaign id */
-  campaign: string;
-  device?: string;
+  fields?: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+};
+export type PostCampaignsFormsApiArg = {
   body: {
-    tester_id: number;
+    name: string;
+    fields: PreselectionFormQuestion[];
+    campaign?: number;
   };
+};
+export type GetCampaignsFormsApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+    campaign?: number;
+  }[];
+  limit?: number;
+  start: number;
+  size: number;
+  total?: number;
+};
+export type GetCampaignsFormsApiArg = {
+  /** A comma separated list of fields which will be searched */
+  searchBy?: string;
+  /** The value to search for */
+  search?: string;
+  /** Max items to retrieve */
+  limit?: number;
+  /** Items to skip for pagination */
+  start?: number;
+};
+export type GetCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  campaign?: {
+    id: number;
+    name: string;
+  };
+  fields: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+};
+export type GetCampaignsFormsByFormIdApiArg = {
+  formId: string;
+};
+export type PutCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  fields: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+  campaign?: {
+    id: number;
+    name: string;
+  };
+};
+export type PutCampaignsFormsByFormIdApiArg = {
+  formId: string;
+  body: {
+    name: string;
+    campaign?: number;
+    fields: ({
+      id?: number;
+    } & PreselectionFormQuestion)[];
+  };
+};
+export type GetCertificationsApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  area: string;
+  institute: string;
+}[];
+export type GetCertificationsApiArg = {
+  /** Key-value Array for item filtering */
+  filterBy?: object;
+};
+export type GetCountriesByCodeRegionApiResponse = /** status 200 OK */ {
+  name: string;
+  value: string;
+}[];
+export type GetCountriesByCodeRegionApiArg = {
+  code: string;
+  languageCode?: string;
+};
+export type GetCustomersApiResponse =
+  /** status 200 An array of Customer objects */ (Customer & {
+    id?: number;
+  })[];
+export type GetCustomersApiArg = void;
+export type PostCustomersApiResponse = /** status 201 Created */ undefined;
+export type PostCustomersApiArg = {
+  /** The customer you want to create */
+  customer: Customer;
+};
+export type GetCustomersByCustomerApiResponse =
+  /** status 200 The Customer data you requested */ Customer;
+export type GetCustomersByCustomerApiArg = {
+  /** A customer id */
+  customer: string;
+};
+export type PutCustomersByCustomerApiResponse = /** status 200 OK */ undefined;
+export type PutCustomersByCustomerApiArg = {
+  /** A customer id */
+  customer: string;
+  /** The Customer data to edit */
+  body: Customer;
+};
+export type GetCustomUserFieldsApiResponse = /** status 200 OK */ {
+  group: {
+    id: number;
+    name: TranslatablePage;
+    description?: TranslatablePage;
+  };
+  fields?: CustomUserFieldsData[];
+}[];
+export type GetCustomUserFieldsApiArg = void;
+export type GetDevicesByDeviceTypeModelsApiResponse = /** status 200 OK */ {
+  manufacturer?: string;
+  models?: {
+    id?: number;
+    name?: string;
+  }[];
+}[];
+export type GetDevicesByDeviceTypeModelsApiArg = {
+  deviceType: string;
+  /** Key-value Array for item filtering */
+  filterBy?: object;
+};
+export type GetDevicesByDeviceTypeOperatingSystemsApiResponse =
+  /** status 200 OK */ {
+    id?: number;
+    name?: string;
+  }[];
+export type GetDevicesByDeviceTypeOperatingSystemsApiArg = {
+  deviceType: string;
+  /** Key-value Array for item filtering */
+  filterBy?: object;
+};
+export type GetDevicesByDeviceTypeOsVersionsApiResponse = /** status 200 OK */ {
+  id?: number;
+  name?: string;
+}[];
+export type GetDevicesByDeviceTypeOsVersionsApiArg = {
+  deviceType: string;
+  /** Key-value Array for item filtering */
+  filterBy?: object;
+};
+export type GetEducationApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+}[];
+export type GetEducationApiArg = void;
+export type GetEmploymentsApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+}[];
+export type GetEmploymentsApiArg = void;
+export type GetLanguagesApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+}[];
+export type GetLanguagesApiArg = void;
+export type GetLevelsApiResponse = /** status 200 OK */ LevelDefinition[];
+export type GetLevelsApiArg = void;
+export type PostMediaApiResponse = /** status 200 OK */ {
+  files: {
+    name: string;
+    path: string;
+  }[];
+  failed?: {
+    name: string;
+    errorCode: string;
+  }[];
+};
+export type PostMediaApiArg = {
+  body: {
+    media?: {} | Blob[];
+  };
+};
+export type DeleteMediaApiResponse = /** status 200 OK */ undefined;
+export type DeleteMediaApiArg = {
+  body: {
+    url: string;
+  };
+};
+export type GetPaymentsApiResponse = /** status 200 OK */ {
+  limit?: number;
+  size: number;
+  start: number;
+  total?: number;
+  items: {
+    created: string;
+    updated: string;
+    id: number;
+    amount: {
+      value: number;
+      currency: string;
+    };
+    type: "paypal" | "transferwise";
+    tryber: {
+      id: number;
+      name: string;
+      surname: string;
+    };
+    error?: string;
+  }[];
+};
+export type GetPaymentsApiArg = {
+  /** The status of the payment */
+  status?: "pending" | "failed";
+  /** How to order values (ASC, DESC) */
+  order?: "ASC" | "DESC";
+  /** The value to order by */
+  orderBy?: "created" | "updated" | "id";
+  /** Items to skip for pagination */
+  start?: number;
+  /** Max items to retrieve */
+  limit?: number;
+  /** Key-value Array for item filtering */
+  filterBy?: object;
+};
+export type PostPaymentsByPaymentIdApiResponse = /** status 200 OK */ undefined;
+export type PostPaymentsByPaymentIdApiArg = {
+  paymentId: string;
+};
+export type DeletePaymentsByPaymentIdApiResponse =
+  /** status 200 OK */ undefined;
+export type DeletePaymentsByPaymentIdApiArg = {
+  paymentId: string;
 };
 export type GetPopupsApiResponse = /** status 200 OK */ ({
   id?: number;
@@ -776,83 +1005,6 @@ export type PatchPopupsByPopupApiResponse = /** status 200 OK */ {
 export type PatchPopupsByPopupApiArg = {
   popup: number;
   body: Popup;
-};
-export type GetDevicesByDeviceTypeModelsApiResponse = /** status 200 OK */ {
-  manufacturer?: string;
-  models?: {
-    id?: number;
-    name?: string;
-  }[];
-}[];
-export type GetDevicesByDeviceTypeModelsApiArg = {
-  deviceType: string;
-  /** Key-value Array for item filtering */
-  filterBy?: object;
-};
-export type GetCertificationsApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-  area: string;
-  institute: string;
-}[];
-export type GetCertificationsApiArg = {
-  /** Key-value Array for item filtering */
-  filterBy?: object;
-};
-export type GetDevicesByDeviceTypeOperatingSystemsApiResponse =
-  /** status 200 OK */ {
-    id?: number;
-    name?: string;
-  }[];
-export type GetDevicesByDeviceTypeOperatingSystemsApiArg = {
-  deviceType: string;
-  /** Key-value Array for item filtering */
-  filterBy?: object;
-};
-export type GetDevicesByDeviceTypeOsVersionsApiResponse = /** status 200 OK */ {
-  id?: number;
-  name?: string;
-}[];
-export type GetDevicesByDeviceTypeOsVersionsApiArg = {
-  deviceType: string;
-  /** Key-value Array for item filtering */
-  filterBy?: object;
-};
-export type GetLanguagesApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-}[];
-export type GetLanguagesApiArg = void;
-export type GetEmploymentsApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-}[];
-export type GetEmploymentsApiArg = void;
-export type GetEducationApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-}[];
-export type GetEducationApiArg = void;
-export type PostMediaApiResponse = /** status 200 OK */ {
-  files: {
-    name: string;
-    path: string;
-  }[];
-  failed?: {
-    name: string;
-    errorCode: string;
-  }[];
-};
-export type PostMediaApiArg = {
-  body: {
-    media?: {} | Blob[];
-  };
-};
-export type DeleteMediaApiResponse = /** status 200 OK */ undefined;
-export type DeleteMediaApiArg = {
-  body: {
-    url: string;
-  };
 };
 export type GetUsersApiResponse = /** status 200 OK */ User[];
 export type GetUsersApiArg = void;
@@ -984,6 +1136,22 @@ export type DeleteUsersMeApiArg = {
     reason: string;
   };
 };
+export type PutUsersMeAdditionalsByFieldIdApiResponse =
+  /** status 200 OK */
+  AdditionalField[] | AdditionalField;
+export type PutUsersMeAdditionalsByFieldIdApiArg = {
+  /** The id of the field to edit */
+  fieldId: number;
+  body:
+    | {
+        value: string;
+        is_candidate?: boolean;
+      }[]
+    | {
+        value: string;
+        is_candidate?: boolean;
+      };
+};
 export type GetUsersMeBugsApiResponse = /** status 200 OK */ {
   results: ({
     id: number;
@@ -1004,6 +1172,204 @@ export type GetUsersMeBugsApiArg = {
   orderBy?: "title" | "campaign" | "status" | "id" | "severity";
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
+};
+export type GetUsersMeCampaignsApiResponse = /** status 200 OK */ {
+  results?: ({
+    id: number;
+  } & Campaign)[];
+  limit?: number;
+  size?: number;
+  start?: number;
+  total?: number;
+};
+export type GetUsersMeCampaignsApiArg = {
+  /** Items to skip for pagination */
+  start?: number;
+  /** Max items to retrieve */
+  limit?: number;
+  /** Key-value Array for item filtering */
+  filterBy?: object;
+  /** How to localize values */
+  locale?: "en" | "it";
+  /** How to order values (ASC, DESC) */
+  order?: "ASC" | "DESC";
+  /** The field for item order */
+  orderBy?: "name" | "start_date" | "end_date" | "close_date";
+};
+export type GetUsersMeCampaignsByCampaignIdApiResponse = /** status 200 OK */ {
+  id: number;
+  title: string;
+  language?: {
+    code: string;
+    message: string;
+  };
+  titleRule?: boolean;
+  minimumMedia: number;
+  useCases: {
+    id: number;
+    name: string;
+  }[];
+  additionalFields?: CampaignAdditionalField[];
+  bugTypes: {
+    valid: string[];
+    invalid: string[];
+  };
+  bugSeverity: {
+    valid: string[];
+    invalid: string[];
+  };
+  bugReplicability: {
+    valid: string[];
+    invalid: string[];
+  };
+  hasBugForm: boolean;
+  devices?: ({
+    id: number;
+  } & UserDevice)[];
+  validFileExtensions: string[];
+};
+export type GetUsersMeCampaignsByCampaignIdApiArg = {
+  campaignId: string;
+};
+export type PostUsersMeCampaignsByCampaignIdBugsApiResponse =
+  /** status 200 OK */ {
+    id: number;
+    internalId?: string;
+    testerId: number;
+    title: string;
+    description: string;
+    status: "PENDING" | "APPROVED" | "REFUSED" | "NEED-REVIEW";
+    expected: string;
+    current: string;
+    severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+    replicability: "ONCE" | "SOMETIMES" | "ALWAYS";
+    type:
+      | "CRASH"
+      | "GRAPHIC"
+      | "MALFUNCTION"
+      | "OTHER"
+      | "PERFORMANCE"
+      | "SECURITY"
+      | "TYPO"
+      | "USABILITY";
+    notes: string;
+    usecase: string;
+    device: UserDevice;
+    media: string[];
+    additional?: {
+      slug: string;
+      value: string;
+    }[];
+  };
+export type PostUsersMeCampaignsByCampaignIdBugsApiArg = {
+  /** the campaign id */
+  campaignId: string;
+  body: {
+    title: string;
+    description: string;
+    expected: string;
+    current: string;
+    severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+    replicability: "ONCE" | "SOMETIMES" | "ALWAYS";
+    type:
+      | "CRASH"
+      | "GRAPHIC"
+      | "MALFUNCTION"
+      | "OTHER"
+      | "PERFORMANCE"
+      | "SECURITY"
+      | "TYPO"
+      | "USABILITY";
+    notes: string;
+    lastSeen: string;
+    usecase: number;
+    device: number;
+    media: string[];
+    additional?: {
+      slug: string;
+      value: string;
+    }[];
+  };
+};
+export type GetUsersMeCampaignsByCampaignIdDevicesApiResponse =
+  /** status 200 OK */ UserDevice[];
+export type GetUsersMeCampaignsByCampaignIdDevicesApiArg = {
+  campaignId: string;
+};
+export type PostUsersMeCampaignsByCampaignIdMediaApiResponse =
+  /** status 200 OK */ {
+    files?: {
+      name: string;
+      path: string;
+    }[];
+    failed?: {
+      name: string;
+      errorCode: "FILE_TOO_BIG" | "INVALID_FILE_EXTENSION" | "GENERIC_ERROR";
+    }[];
+  };
+export type PostUsersMeCampaignsByCampaignIdMediaApiArg = {
+  campaignId: string;
+  body: {
+    media?: {} | string[];
+  };
+};
+export type PostUsersMeCertificationsApiResponse =
+  /** status 201 Created */
+  | Certification
+  | {
+      message: string;
+    };
+export type PostUsersMeCertificationsApiArg = {
+  body:
+    | {
+        certifications: boolean;
+      }
+    | {
+        certification_id: number;
+        achievement_date: string;
+      };
+};
+export type DeleteUsersMeCertificationsByCertificationIdApiResponse =
+  /** status 200 OK */ {
+    message?: string;
+  };
+export type DeleteUsersMeCertificationsByCertificationIdApiArg = {
+  /** The id of the certification */
+  certificationId: number;
+};
+export type GetUsersMeDevicesApiResponse = /** status 200 OK */ ({
+  id?: number;
+} & UserDevice)[];
+export type GetUsersMeDevicesApiArg = void;
+export type PostUsersMeDevicesApiResponse = /** status 201 Created */ {
+  id?: number;
+} & UserDevice;
+export type PostUsersMeDevicesApiArg = {
+  body: {
+    device: {} | {};
+    operating_system: number;
+  };
+};
+export type GetUsersMeDevicesByDeviceIdApiResponse = /** status 200 OK */ {
+  id?: number;
+} & UserDevice;
+export type GetUsersMeDevicesByDeviceIdApiArg = {
+  deviceId: number;
+};
+export type PatchUsersMeDevicesByDeviceIdApiResponse = /** status 200 OK */ {
+  id?: number;
+} & UserDevice;
+export type PatchUsersMeDevicesByDeviceIdApiArg = {
+  deviceId: number;
+  body: {
+    operating_system: number;
+  };
+};
+export type DeleteUsersMeDevicesByDeviceIdApiResponse = /** status 200 OK */ {
+  message?: string;
+};
+export type DeleteUsersMeDevicesByDeviceIdApiArg = {
+  deviceId: number;
 };
 export type GetUsersMeExperienceApiResponse = /** status 200 OK */ {
   results: {
@@ -1128,165 +1494,6 @@ export type PutUsersMeFiscalApiArg = {
     gender: "male" | "female";
   };
 };
-export type GetUsersMeCampaignsApiResponse = /** status 200 OK */ {
-  results?: ({
-    id: number;
-  } & Campaign)[];
-  limit?: number;
-  size?: number;
-  start?: number;
-  total?: number;
-};
-export type GetUsersMeCampaignsApiArg = {
-  /** Items to skip for pagination */
-  start?: number;
-  /** Max items to retrieve */
-  limit?: number;
-  /** Key-value Array for item filtering */
-  filterBy?: object;
-  /** How to localize values */
-  locale?: "en" | "it";
-  /** How to order values (ASC, DESC) */
-  order?: "ASC" | "DESC";
-  /** The field for item order */
-  orderBy?: "name" | "start_date" | "end_date" | "close_date";
-};
-export type GetUsersMePopupsApiResponse = /** status 200 OK */ {
-  id?: number;
-  title?: string;
-  content?: string;
-  once?: boolean;
-}[];
-export type GetUsersMePopupsApiArg = {
-  /** Show all popup history, expired popups included */
-  showExpired?: boolean;
-  /** How to order values (ASC, DESC) */
-  order?: "ASC" | "DESC";
-};
-export type PostUsersMeCampaignsByCampaignIdBugsApiResponse =
-  /** status 200 OK */ {
-    id: number;
-    internalId?: string;
-    testerId: number;
-    title: string;
-    description: string;
-    status: "PENDING" | "APPROVED" | "REFUSED" | "NEED-REVIEW";
-    expected: string;
-    current: string;
-    severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-    replicability: "ONCE" | "SOMETIMES" | "ALWAYS";
-    type:
-      | "CRASH"
-      | "GRAPHIC"
-      | "MALFUNCTION"
-      | "OTHER"
-      | "PERFORMANCE"
-      | "SECURITY"
-      | "TYPO"
-      | "USABILITY";
-    notes: string;
-    usecase: string;
-    device: UserDevice;
-    media: string[];
-    additional?: {
-      slug: string;
-      value: string;
-    }[];
-  };
-export type PostUsersMeCampaignsByCampaignIdBugsApiArg = {
-  /** the campaign id */
-  campaignId: string;
-  body: {
-    title: string;
-    description: string;
-    expected: string;
-    current: string;
-    severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-    replicability: "ONCE" | "SOMETIMES" | "ALWAYS";
-    type:
-      | "CRASH"
-      | "GRAPHIC"
-      | "MALFUNCTION"
-      | "OTHER"
-      | "PERFORMANCE"
-      | "SECURITY"
-      | "TYPO"
-      | "USABILITY";
-    notes: string;
-    lastSeen: string;
-    usecase: number;
-    device: number;
-    media: string[];
-    additional?: {
-      slug: string;
-      value: string;
-    }[];
-  };
-};
-export type GetUsersMePopupsByPopupApiResponse = /** status 200 OK */ {
-  id?: number;
-} & Popup;
-export type GetUsersMePopupsByPopupApiArg = {
-  popup: number;
-};
-export type GetUsersMeDevicesApiResponse = /** status 200 OK */ ({
-  id?: number;
-} & UserDevice)[];
-export type GetUsersMeDevicesApiArg = void;
-export type PostUsersMeDevicesApiResponse = /** status 201 Created */ {
-  id?: number;
-} & UserDevice;
-export type PostUsersMeDevicesApiArg = {
-  body: {
-    device: {} | {};
-    operating_system: number;
-  };
-};
-export type GetUsersMeDevicesByDeviceIdApiResponse = /** status 200 OK */ {
-  id?: number;
-} & UserDevice;
-export type GetUsersMeDevicesByDeviceIdApiArg = {
-  deviceId: number;
-};
-export type PatchUsersMeDevicesByDeviceIdApiResponse = /** status 200 OK */ {
-  id?: number;
-} & UserDevice;
-export type PatchUsersMeDevicesByDeviceIdApiArg = {
-  deviceId: number;
-  body: {
-    operating_system: number;
-  };
-};
-export type DeleteUsersMeDevicesByDeviceIdApiResponse = /** status 200 OK */ {
-  message?: string;
-};
-export type DeleteUsersMeDevicesByDeviceIdApiArg = {
-  deviceId: number;
-};
-export type PostUsersMeCertificationsApiResponse =
-  /** status 201 Created */
-  | Certification
-  | {
-      message: string;
-    };
-export type PostUsersMeCertificationsApiArg = {
-  body:
-    | {
-        certifications: boolean;
-      }
-    | {
-        certification_id: number;
-        achievement_date: string;
-      };
-};
-export type DeleteUsersMeCertificationsByCertificationIdApiResponse =
-  /** status 200 OK */ {
-    message?: string;
-  };
-export type DeleteUsersMeCertificationsByCertificationIdApiArg = {
-  /** The id of the certification */
-  certificationId: number;
-};
 export type PostUsersMeLanguagesApiResponse = /** status 201 Created */ {
   id: string;
   name: string;
@@ -1310,48 +1517,6 @@ export type DeleteUsersMeLanguagesByLanguageIdApiResponse =
 export type DeleteUsersMeLanguagesByLanguageIdApiArg = {
   /** The id of the language */
   languageId: number;
-};
-export type PutUsersMeAdditionalsByFieldIdApiResponse =
-  /** status 200 OK */
-  AdditionalField[] | AdditionalField;
-export type PutUsersMeAdditionalsByFieldIdApiArg = {
-  /** The id of the field to edit */
-  fieldId: number;
-  body:
-    | {
-        value: string;
-        is_candidate?: boolean;
-      }[]
-    | {
-        value: string;
-        is_candidate?: boolean;
-      };
-};
-export type GetUsersMePendingBootyApiResponse = /** status 200 OK */ {
-  results?: ({
-    id: number;
-  } & {
-    name: string;
-    amount: {
-      value?: number;
-      currency?: string;
-    };
-    attributionDate: string;
-  })[];
-  limit?: number;
-  size: number;
-  start: number;
-  total?: number;
-};
-export type GetUsersMePendingBootyApiArg = {
-  /** Items to skip for pagination */
-  start?: number;
-  /** Max items to retrieve */
-  limit?: number;
-  /** The field for item order */
-  orderBy?: "id" | "attributionDate" | "amount" | "activityName";
-  /** How to order values (ASC, DESC) */
-  order?: "ASC" | "DESC";
 };
 export type GetUsersMePaymentsApiResponse = /** status 200 OK */ {
   results?: ({
@@ -1430,6 +1595,50 @@ export type GetUsersMePaymentsByPaymentApiArg = {
   /** The value to order by */
   orderBy?: "amount" | "type" | "date" | "activity";
 };
+export type GetUsersMePendingBootyApiResponse = /** status 200 OK */ {
+  results?: ({
+    id: number;
+  } & {
+    name: string;
+    amount: {
+      value?: number;
+      currency?: string;
+    };
+    attributionDate: string;
+  })[];
+  limit?: number;
+  size: number;
+  start: number;
+  total?: number;
+};
+export type GetUsersMePendingBootyApiArg = {
+  /** Items to skip for pagination */
+  start?: number;
+  /** Max items to retrieve */
+  limit?: number;
+  /** The field for item order */
+  orderBy?: "id" | "attributionDate" | "amount" | "activityName";
+  /** How to order values (ASC, DESC) */
+  order?: "ASC" | "DESC";
+};
+export type GetUsersMePopupsApiResponse = /** status 200 OK */ {
+  id?: number;
+  title?: string;
+  content?: string;
+  once?: boolean;
+}[];
+export type GetUsersMePopupsApiArg = {
+  /** Show all popup history, expired popups included */
+  showExpired?: boolean;
+  /** How to order values (ASC, DESC) */
+  order?: "ASC" | "DESC";
+};
+export type GetUsersMePopupsByPopupApiResponse = /** status 200 OK */ {
+  id?: number;
+} & Popup;
+export type GetUsersMePopupsByPopupApiArg = {
+  popup: number;
+};
 export type GetUsersMeRankApiResponse = /** status 200 OK */ {
   level: MonthlyLevel;
   previousLevel: MonthlyLevel;
@@ -1450,179 +1659,15 @@ export type GetUsersMeRankListApiResponse = /** status 200 OK */ {
   peers: RankingItem[];
 };
 export type GetUsersMeRankListApiArg = void;
-export type GetCustomUserFieldsApiResponse = /** status 200 OK */ {
-  group: {
-    id: number;
-    name: TranslatablePage;
-    description?: TranslatablePage;
-  };
-  fields?: CustomUserFieldsData[];
-}[];
-export type GetCustomUserFieldsApiArg = void;
-export type GetCountriesByCodeRegionApiResponse = /** status 200 OK */ {
-  name: string;
-  value: string;
-}[];
-export type GetCountriesByCodeRegionApiArg = {
-  code: string;
-  languageCode?: string;
+export type BugSeverity = {
+  id?: number;
+  name?: string;
 };
-export type GetPaymentsApiResponse = /** status 200 OK */ {
-  limit?: number;
-  size: number;
-  start: number;
-  total?: number;
-  items: {
-    created: string;
-    updated: string;
-    id: number;
-    amount: {
-      value: number;
-      currency: string;
-    };
-    type: "paypal" | "transferwise";
-    tryber: {
-      id: number;
-      name: string;
-      surname: string;
-    };
-    error?: string;
-  }[];
+export type BugType = {
+  id?: number;
 };
-export type GetPaymentsApiArg = {
-  /** The status of the payment */
-  status?: "pending" | "failed";
-  /** How to order values (ASC, DESC) */
-  order?: "ASC" | "DESC";
-  /** The value to order by */
-  orderBy?: "created" | "updated" | "id";
-  /** Items to skip for pagination */
-  start?: number;
-  /** Max items to retrieve */
-  limit?: number;
-  /** Key-value Array for item filtering */
-  filterBy?: object;
-};
-export type PostPaymentsByPaymentIdApiResponse = /** status 200 OK */ undefined;
-export type PostPaymentsByPaymentIdApiArg = {
-  paymentId: string;
-};
-export type DeletePaymentsByPaymentIdApiResponse =
-  /** status 200 OK */ undefined;
-export type DeletePaymentsByPaymentIdApiArg = {
-  paymentId: string;
-};
-export type GetLevelsApiResponse = /** status 200 OK */ LevelDefinition[];
-export type GetLevelsApiArg = void;
-export type GetUsersMeCampaignsByCampaignIdApiResponse = /** status 200 OK */ {
-  id: number;
-  title: string;
-  language?: {
-    code: string;
-    message: string;
-  };
-  titleRule?: boolean;
-  minimumMedia: number;
-  useCases: {
-    id: number;
-    name: string;
-  }[];
-  additionalFields?: CampaignAdditionalField[];
-  bugTypes: {
-    valid: string[];
-    invalid: string[];
-  };
-  bugSeverity: {
-    valid: string[];
-    invalid: string[];
-  };
-  bugReplicability: {
-    valid: string[];
-    invalid: string[];
-  };
-  hasBugForm: boolean;
-  devices?: ({
-    id: number;
-  } & UserDevice)[];
-  validFileExtensions: string[];
-};
-export type GetUsersMeCampaignsByCampaignIdApiArg = {
-  campaignId: string;
-};
-export type PostUsersMeCampaignsByCampaignIdMediaApiResponse =
-  /** status 200 OK */ {
-    files?: {
-      name: string;
-      path: string;
-    }[];
-    failed?: {
-      name: string;
-      errorCode: "FILE_TOO_BIG" | "INVALID_FILE_EXTENSION" | "GENERIC_ERROR";
-    }[];
-  };
-export type PostUsersMeCampaignsByCampaignIdMediaApiArg = {
-  campaignId: string;
-  body: {
-    media?: {} | string[];
-  };
-};
-export type GetUsersMeCampaignsByCampaignIdDevicesApiResponse =
-  /** status 200 OK */ UserDevice[];
-export type GetUsersMeCampaignsByCampaignIdDevicesApiArg = {
-  campaignId: string;
-};
-export type GetCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-  campaign?: {
-    id: number;
-    name: string;
-  };
-  fields: ({
-    id: number;
-  } & PreselectionFormQuestion)[];
-};
-export type GetCampaignsFormsByFormIdApiArg = {
-  formId: string;
-};
-export type PutCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-  fields: ({
-    id: number;
-  } & PreselectionFormQuestion)[];
-  campaign?: {
-    id: number;
-    name: string;
-  };
-};
-export type PutCampaignsFormsByFormIdApiArg = {
-  formId: string;
-  body: {
-    name: string;
-    campaign?: number;
-    fields: ({
-      id?: number;
-    } & PreselectionFormQuestion)[];
-  };
-};
-export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
-  id: number;
-  name: string;
-  campaign?: {
-    id: number;
-    name: string;
-  };
-  fields?: ({
-    id: number;
-  } & PreselectionFormQuestion)[];
-};
-export type PostCampaignsFormsApiArg = {
-  body: {
-    name: string;
-    fields: PreselectionFormQuestion[];
-    campaign?: number;
-  };
+export type Replicability = {
+  id?: string;
 };
 export type User = {
   username?: string;
@@ -1634,19 +1679,6 @@ export type User = {
   wp_user_id?: number;
   role?: string;
   is_verified?: boolean;
-};
-export type Customer = User & {
-  customer_name?: string;
-};
-export type BugSeverity = {
-  id?: number;
-  name?: string;
-};
-export type BugType = {
-  id?: number;
-};
-export type Replicability = {
-  id?: string;
 };
 export type CampaignField = {
   id?: number;
@@ -1709,19 +1741,6 @@ export type Campaign = CampaignOptional & CampaignRequired;
 export type Project = {
   name?: string;
 };
-export type TaskOptional = {
-  name?: string;
-  content?: string;
-  campaign_id?: number;
-  group?: number;
-  allow_media?: boolean;
-};
-export type TaskRequired = {
-  name: string;
-  content: string;
-  campaign_id: number;
-};
-export type Task = TaskOptional & TaskRequired;
 export type UserDevice = {
   type: string;
   id: number;
@@ -1739,6 +1758,61 @@ export type UserDevice = {
     platform: string;
     version: string;
   };
+};
+export type TaskOptional = {
+  name?: string;
+  content?: string;
+  campaign_id?: number;
+  group?: number;
+  allow_media?: boolean;
+};
+export type TaskRequired = {
+  name: string;
+  content: string;
+  campaign_id: number;
+};
+export type Task = TaskOptional & TaskRequired;
+export type PreselectionFormQuestion = {
+  question: string;
+  short_name?: string;
+} & (
+  | {
+      type: "text";
+    }
+  | {
+      type: "multiselect" | "select" | "radio";
+      options: string[];
+    }
+  | {
+      type: string;
+      options?: number[];
+    }
+  | {
+      type: "gender" | "phone_number" | "address";
+    }
+);
+export type Customer = User & {
+  customer_name?: string;
+};
+export type CustomUserFieldsType = "text" | "select" | "multiselect";
+export type CustomUserFieldsDataOption = {
+  id: number;
+  name: string;
+};
+export type CustomUserFieldsData = {
+  id: number;
+  type: CustomUserFieldsType;
+  placeholder?: TranslatablePage;
+  allow_other?: boolean;
+  name: TranslatablePage;
+  format?: string;
+  options?: CustomUserFieldsDataOption[];
+};
+export type LevelDefinition = {
+  id: number;
+  name: string;
+  reach?: number;
+  hold?: number;
 };
 export type Popup = {
   profiles?:
@@ -1781,6 +1855,20 @@ export type Bug = {
   };
   title?: string;
 };
+export type CampaignAdditionalField = {
+  name: string;
+  slug: string;
+  error: string;
+} & (
+  | {
+      type: "select";
+      options: string[];
+    }
+  | {
+      type: "text";
+      regex: string;
+    }
+);
 export type FiscalType =
   | "withholding"
   | "witholding-extra"
@@ -1805,129 +1893,78 @@ export type RankingItem = {
   name: string;
   monthly_exp: number;
 };
-export type CustomUserFieldsType = "text" | "select" | "multiselect";
-export type CustomUserFieldsDataOption = {
-  id: number;
-  name: string;
-};
-export type CustomUserFieldsData = {
-  id: number;
-  type: CustomUserFieldsType;
-  placeholder?: TranslatablePage;
-  allow_other?: boolean;
-  name: TranslatablePage;
-  format?: string;
-  options?: CustomUserFieldsDataOption[];
-};
-export type LevelDefinition = {
-  id: number;
-  name: string;
-  reach?: number;
-  hold?: number;
-};
-export type CampaignAdditionalField = {
-  name: string;
-  slug: string;
-  error: string;
-} & (
-  | {
-      type: "select";
-      options: string[];
-    }
-  | {
-      type: "text";
-      regex: string;
-    }
-);
-export type PreselectionFormQuestion = {
-  question: string;
-} & (
-  | {
-      type: "text";
-    }
-  | {
-      type: "multiselect" | "select" | "radio";
-      options: string[];
-    }
-  | {
-      type: string;
-      options?: number[];
-    }
-  | {
-      type: "gender" | "phone_number" | "address";
-    }
-);
 export const {
   useGetQuery,
   usePostAuthenticateMutation,
-  useGetCustomersQuery,
-  usePostCustomersMutation,
-  useGetCustomersByCustomerQuery,
-  usePutCustomersByCustomerMutation,
   usePostCampaignsMutation,
   useGetCampaignsQuery,
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
+  usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignTasksQuery,
   usePostCampaignsByCampaignTasksMutation,
   useGetCampaignsByCampaignTasksAndTaskQuery,
   usePutCampaignsByCampaignTasksAndTaskMutation,
-  usePostCampaignsByCampaignCandidatesMutation,
+  usePostCampaignsFormsMutation,
+  useGetCampaignsFormsQuery,
+  useGetCampaignsFormsByFormIdQuery,
+  usePutCampaignsFormsByFormIdMutation,
+  useGetCertificationsQuery,
+  useGetCountriesByCodeRegionQuery,
+  useGetCustomersQuery,
+  usePostCustomersMutation,
+  useGetCustomersByCustomerQuery,
+  usePutCustomersByCustomerMutation,
+  useGetCustomUserFieldsQuery,
+  useGetDevicesByDeviceTypeModelsQuery,
+  useGetDevicesByDeviceTypeOperatingSystemsQuery,
+  useGetDevicesByDeviceTypeOsVersionsQuery,
+  useGetEducationQuery,
+  useGetEmploymentsQuery,
+  useGetLanguagesQuery,
+  useGetLevelsQuery,
+  usePostMediaMutation,
+  useDeleteMediaMutation,
+  useGetPaymentsQuery,
+  usePostPaymentsByPaymentIdMutation,
+  useDeletePaymentsByPaymentIdMutation,
   useGetPopupsQuery,
   usePostPopupsMutation,
   useGetPopupsByPopupQuery,
   usePatchPopupsByPopupMutation,
-  useGetDevicesByDeviceTypeModelsQuery,
-  useGetCertificationsQuery,
-  useGetDevicesByDeviceTypeOperatingSystemsQuery,
-  useGetDevicesByDeviceTypeOsVersionsQuery,
-  useGetLanguagesQuery,
-  useGetEmploymentsQuery,
-  useGetEducationQuery,
-  usePostMediaMutation,
-  useDeleteMediaMutation,
   useGetUsersQuery,
   usePostUsersMutation,
   useGetUsersMeQuery,
   usePutUsersMeMutation,
   usePatchUsersMeMutation,
   useDeleteUsersMeMutation,
+  usePutUsersMeAdditionalsByFieldIdMutation,
   useGetUsersMeBugsQuery,
-  useGetUsersMeExperienceQuery,
-  useGetUsersMeFiscalQuery,
-  usePostUsersMeFiscalMutation,
-  usePutUsersMeFiscalMutation,
   useGetUsersMeCampaignsQuery,
-  useGetUsersMePopupsQuery,
+  useGetUsersMeCampaignsByCampaignIdQuery,
   usePostUsersMeCampaignsByCampaignIdBugsMutation,
-  useGetUsersMePopupsByPopupQuery,
+  useGetUsersMeCampaignsByCampaignIdDevicesQuery,
+  usePostUsersMeCampaignsByCampaignIdMediaMutation,
+  usePostUsersMeCertificationsMutation,
+  useDeleteUsersMeCertificationsByCertificationIdMutation,
   useGetUsersMeDevicesQuery,
   usePostUsersMeDevicesMutation,
   useGetUsersMeDevicesByDeviceIdQuery,
   usePatchUsersMeDevicesByDeviceIdMutation,
   useDeleteUsersMeDevicesByDeviceIdMutation,
-  usePostUsersMeCertificationsMutation,
-  useDeleteUsersMeCertificationsByCertificationIdMutation,
+  useGetUsersMeExperienceQuery,
+  useGetUsersMeFiscalQuery,
+  usePostUsersMeFiscalMutation,
+  usePutUsersMeFiscalMutation,
   usePostUsersMeLanguagesMutation,
   usePutUsersMeLanguagesMutation,
   useDeleteUsersMeLanguagesByLanguageIdMutation,
-  usePutUsersMeAdditionalsByFieldIdMutation,
-  useGetUsersMePendingBootyQuery,
   useGetUsersMePaymentsQuery,
   usePostUsersMePaymentsMutation,
   useGetUsersMePaymentsByPaymentQuery,
+  useGetUsersMePendingBootyQuery,
+  useGetUsersMePopupsQuery,
+  useGetUsersMePopupsByPopupQuery,
   useGetUsersMeRankQuery,
   useGetUsersMeRankListQuery,
-  useGetCustomUserFieldsQuery,
-  useGetCountriesByCodeRegionQuery,
-  useGetPaymentsQuery,
-  usePostPaymentsByPaymentIdMutation,
-  useDeletePaymentsByPaymentIdMutation,
-  useGetLevelsQuery,
-  useGetUsersMeCampaignsByCampaignIdQuery,
-  usePostUsersMeCampaignsByCampaignIdMediaMutation,
-  useGetUsersMeCampaignsByCampaignIdDevicesQuery,
-  useGetCampaignsFormsByFormIdQuery,
-  usePutCampaignsFormsByFormIdMutation,
-  usePostCampaignsFormsMutation,
 } = injectedRtkApi;
