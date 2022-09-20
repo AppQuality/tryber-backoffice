@@ -14,13 +14,13 @@ export const FormSearchCard = () => {
   }, [debouncedSearch]);
 
   return (
-    <Card className="aq-mt-2 aq-mb-3">
+    <div className="aq-mt-2 aq-mb-3">
       <Input
         placeholder="Search by Form Title, Campaign Id"
         type="search"
         id="search"
         onChange={setCurrentSearch}
       />
-    </Card>
+    </div>
   );
 };
