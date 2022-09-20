@@ -47,9 +47,15 @@ export const FormTableCard = () => {
               size={"18"}
               className={"aq-text-primaryVariant"}
               title="Edit"
-              onClick={() =>
-                history.push(`/backoffice/campaigns/preselection/${res.id}`)
-              }
+              onClick={(e) => {
+                if (e.ctrlKey)
+                  window.open(
+                    `/backoffice/campaigns/preselection/${res.id}`,
+                    "_blank"
+                  );
+                else
+                  history.push(`/backoffice/campaigns/preselection/${res.id}`);
+              }}
               style={{ cursor: "pointer" }}
             />
           ),
