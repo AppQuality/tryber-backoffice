@@ -7,6 +7,19 @@ import { useDrag } from "react-dnd";
 import { DropZone } from "src/pages/campaigns/preselectionForm/formConfigurator/DropZone";
 import { XLg, GripVertical } from "react-bootstrap-icons";
 import { ShortTitleField } from "./ShortTitleField";
+import styled from "styled-components";
+
+const StyledInlineField = styled.div`
+  display: flex;
+  .leftField {
+    width: 70%;
+    margin-right: 8px;
+  }
+  .rightField {
+    width: 30%;
+    margin-left: 8px;
+  }
+`;
 
 export const ValuesFieldsCard: FC<{
   field: AdditionalField | CustomUserField;
@@ -69,8 +82,16 @@ export const ValuesFieldsCard: FC<{
             </div>
           }
         >
-          <QuestionField name={`fields.${index}.question`} />
-          <ShortTitleField name={`fields.${index}.shortTitle`} />
+          <StyledInlineField>
+            <QuestionField
+              name={`fields.${index}.question`}
+              className="leftField"
+            />
+            <ShortTitleField
+              name={`fields.${index}.shortTitle`}
+              className="rightField"
+            />
+          </StyledInlineField>
           {"options" in field && field.options && (
             <OptionsField index={index} />
           )}
