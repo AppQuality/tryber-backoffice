@@ -4,6 +4,7 @@ import oldReducers from "src/redux/reducer";
 import { combineReducers } from "redux";
 import jotformReducer from "src/pages/Jotform/jotformSlice";
 import campaignPreselectionReducer from "src/pages/campaigns/preselectionForm/preselectionSlice";
+import campaignPreselectionListReducer from "src/pages/campaigns/preselectionFormList/preselectionListSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
@@ -12,6 +13,7 @@ export const store = configureStore({
     ...oldReducers,
     jotform: jotformReducer,
     campaignPreselection: campaignPreselectionReducer,
+    campaignPreselectionList: campaignPreselectionListReducer,
     [tryberApi.reducerPath]: tryberApi.reducer,
   }),
   // Adding the api middleware enables caching, invalidation, polling,
