@@ -1,11 +1,29 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { QuestionField } from "src/pages/campaigns/preselectionForm/formConfigurator/QuestionField";
 import { OptionsField } from "src/pages/campaigns/preselectionForm/formConfigurator/OptionsField";
 import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect";
-import { aqBootstrapTheme, Card } from "@appquality/appquality-design-system";
+import {
+  aqBootstrapTheme,
+  Card,
+  TextareaField,
+} from "@appquality/appquality-design-system";
 import { useDrag } from "react-dnd";
 import { DropZone } from "src/pages/campaigns/preselectionForm/formConfigurator/DropZone";
 import { XLg, GripVertical } from "react-bootstrap-icons";
+import { ShortTitleField } from "./ShortTitleField";
+import styled from "styled-components";
+
+const StyledInlineField = styled.div`
+  display: flex;
+  .leftField {
+    width: 70%;
+    margin-right: 8px;
+  }
+  .rightField {
+    width: 30%;
+    margin-left: 8px;
+  }
+`;
 
 export const ValuesFieldsCard: FC<{
   field: AdditionalField | CustomUserField;
@@ -29,6 +47,15 @@ export const ValuesFieldsCard: FC<{
       }),
     };
   }, [index, field]);
+
+  // set textarea height in edit mode
+  useEffect(() => {
+    const element = document.getElementById(`fields.${index}.question`);
+    if (element) {
+      element.style.height = "1px";
+      element.style.height = element.scrollHeight + "px";
+    }
+  }, []);
 
   return (
     <>
@@ -68,7 +95,19 @@ export const ValuesFieldsCard: FC<{
             </div>
           }
         >
-          <QuestionField name={`fields.${index}.question`} />
+          <StyledInlineField>
+            <TextareaField
+              label={"Question"}
+              name={`fields.${index}.question`}
+              className="leftField"
+              height="2.643rem"
+              autoResize
+            />
+            <ShortTitleField
+              name={`fields.${index}.shortTitle`}
+              className="rightField"
+            />
+          </StyledInlineField>
           {"options" in field && field.options && (
             <OptionsField index={index} />
           )}
