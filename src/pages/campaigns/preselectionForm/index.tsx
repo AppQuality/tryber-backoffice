@@ -57,6 +57,7 @@ const PreselectionForm = () => {
         initialFieldValue.push({
           fieldId: f.type,
           question: f.question,
+          shortTitle: f.short_name,
           type: f.type,
           name:
             f.type === "text"
@@ -70,6 +71,7 @@ const PreselectionForm = () => {
         initialFieldValue.push({
           fieldId: uuidv4(),
           question: f.question,
+          shortTitle: f.short_name,
           type: f.type,
           options: f.options?.map((o) =>
             typeof o === "string" ? o : o.toString()
@@ -101,6 +103,7 @@ const PreselectionForm = () => {
             cufType: cufToAdd?.type,
             fieldId: f.type,
             question: f.question,
+            shortTitle: f.short_name,
             type: f.type,
             name: `${cufToAdd?.name.it} - ${f.type}`,
             availableOptions: cufToAdd?.options,
@@ -161,6 +164,7 @@ const PreselectionForm = () => {
           const fieldsToSend = values.fields.map((field) => {
             const newField: PreselectionFormQuestion = {
               question: field.question,
+              short_name: field.shortTitle,
               type: field.type,
             };
             if (field.options) {

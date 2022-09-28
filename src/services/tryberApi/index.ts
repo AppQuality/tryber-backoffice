@@ -1774,6 +1774,7 @@ export type TaskRequired = {
 export type Task = TaskOptional & TaskRequired;
 export type PreselectionFormQuestion = {
   question: string;
+  short_name?: string;
 } & (
   | {
       type: "text";

@@ -13,6 +13,7 @@ export const CustomQuestionCard: React.FC<{
         type: selected,
         fieldId: uuidv4(),
         question: "",
+        shortTitle: "",
         name: `Custom ${getCustomQuestionTypeLabel(selected)}`,
         ...(selected !== "text"
           ? { options: ["option 1", "option 2"] }

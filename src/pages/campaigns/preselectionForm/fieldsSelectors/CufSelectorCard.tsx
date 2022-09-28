@@ -78,6 +78,7 @@ export const CufSelectorCard: FC<{
         fieldId: `cuf_${cufToAdd.id}`,
         type: `cuf_${cufToAdd.id}`,
         question: "",
+        shortTitle: "",
         name: `${cufToAdd.name.it} - cuf_${cufToAdd.id} `,
         cufType: cufToAdd.type,
         cufId: cufToAdd.id,
