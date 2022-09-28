@@ -8,7 +8,10 @@ import {
 import React from "react";
 import { FieldProps } from "formik";
 
-export const QuestionField: React.FC<{ name: string }> = ({ name }) => {
+export const QuestionField: React.FC<{ name: string; className?: string }> = ({
+  name,
+  className,
+}) => {
   return (
     <FormikField
       name={name}
@@ -20,7 +23,7 @@ export const QuestionField: React.FC<{ name: string }> = ({ name }) => {
     >
       {({ field, meta }: FieldProps) => {
         return (
-          <FormGroup className="aq-mb-3">
+          <FormGroup className={`aq-mb-3 ${className || ""}`}>
             <FormLabel htmlFor={field.name} label={"Question"} />
             <div className="input-group">
               <Input
