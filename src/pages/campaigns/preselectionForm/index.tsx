@@ -203,7 +203,28 @@ const PreselectionForm = () => {
               );
               add({ type: "success", message: "Form saved" });
             } else {
-              add({ type: "danger", message: "There was an error" });
+              const errorCode =
+                "error" in res && "data" in res.error
+                  ? (res.error.data as { code: string }).code
+                  : false;
+              switch (errorCode) {
+                case "CAMPAIGN_ID_ALREADY_ASSIGNED":
+                  add({
+                    type: "danger",
+                    message: "This campaign already has a form assigned",
+                  });
+                  break;
+                case "NO_ACCESS_TO_CAMPAIGN":
+                  add({
+                    type: "danger",
+                    message:
+                      "You can't assign a form to a campaign you don't own",
+                  });
+                  break;
+                default:
+                  add({ type: "danger", message: "There was an error" });
+                  break;
+              }
             }
           } else {
             const args: PostCampaignsFormsApiArg = {
@@ -222,7 +243,28 @@ const PreselectionForm = () => {
               );
               add({ type: "success", message: "Form saved" });
             } else {
-              add({ type: "danger", message: "There was an error" });
+              const errorCode =
+                "error" in res && "data" in res.error
+                  ? (res.error.data as { code: string }).code
+                  : false;
+              switch (errorCode) {
+                case "CAMPAIGN_ID_ALREADY_ASSIGNED":
+                  add({
+                    type: "danger",
+                    message: "This campaign already has a form assigned",
+                  });
+                  break;
+                case "NO_ACCESS_TO_CAMPAIGN":
+                  add({
+                    type: "danger",
+                    message:
+                      "You can't assign a form to a campaign you don't own",
+                  });
+                  break;
+                default:
+                  add({ type: "danger", message: "There was an error" });
+                  break;
+              }
             }
           }
         }}
