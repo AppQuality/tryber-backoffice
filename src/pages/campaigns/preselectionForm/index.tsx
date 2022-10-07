@@ -51,7 +51,7 @@ const PreselectionForm = () => {
   savedData.data?.fields.forEach((f) => {
     switch (f.type) {
       case "gender":
-      case "phone":
+      case "phone_number":
       case "address":
       case "text":
         initialFieldValue.push({

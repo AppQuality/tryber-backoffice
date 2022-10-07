@@ -24,8 +24,8 @@ const initialState: PreselectionFormState = {
     },
     {
       fieldData: {
-        id: "phone",
-        type: "phone",
+        id: "phone_number",
+        type: "phone_number",
         name: "Numero di Telefono",
       },
       checked: false,
