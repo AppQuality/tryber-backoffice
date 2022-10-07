@@ -12,7 +12,7 @@ const profileFieldsList: AdditionalField[] = [
     shortTitle: "",
   },
   {
-    fieldId: "phone",
+    fieldId: "phone_number",
     type: "phone_number",
     name: "Phone number",
     question: "qual è il tuo numero di telefono?",
