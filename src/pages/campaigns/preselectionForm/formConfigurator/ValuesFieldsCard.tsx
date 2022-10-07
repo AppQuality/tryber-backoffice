@@ -5,6 +5,7 @@ import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect
 import {
   aqBootstrapTheme,
   Card,
+  Text,
   TextareaField,
 } from "@appquality/appquality-design-system";
 import { useDrag } from "react-dnd";
@@ -95,6 +96,12 @@ export const ValuesFieldsCard: FC<{
             </div>
           }
         >
+          {"fieldId" in field && field.fieldId === "address" && (
+            <Text small color="danger" className="aq-mb-2">
+              The tester must have Google services active in order to fill in
+              the address field
+            </Text>
+          )}
           <StyledInlineField>
             <TextareaField
               label={"Question"}
