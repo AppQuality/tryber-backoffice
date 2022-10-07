@@ -201,7 +201,7 @@ const PreselectionForm = () => {
               history.push(
                 `/backoffice/campaigns/preselection-forms/${res.data.id}`
               );
-              add({ type: "success", message: "Form saved" });
+              add({ type: "success", message: "Form saved", expire: false });
             } else {
               const errorCode =
                 "error" in res && "data" in res.error
@@ -212,6 +212,7 @@ const PreselectionForm = () => {
                   add({
                     type: "danger",
                     message: "This campaign already has a form assigned",
+                    expire: false,
                   });
                   break;
                 case "NO_ACCESS_TO_CAMPAIGN":
@@ -219,10 +220,15 @@ const PreselectionForm = () => {
                     type: "danger",
                     message:
                       "You can't assign a form to a campaign you don't own",
+                    expire: false,
                   });
                   break;
                 default:
-                  add({ type: "danger", message: "There was an error" });
+                  add({
+                    type: "danger",
+                    message: "There was an error",
+                    expire: false,
+                  });
                   break;
               }
             }
@@ -241,7 +247,7 @@ const PreselectionForm = () => {
               history.push(
                 `/backoffice/campaigns/preselection-forms/${res.data.id}`
               );
-              add({ type: "success", message: "Form saved" });
+              add({ type: "success", message: "Form saved", expire: false });
             } else {
               const errorCode =
                 "error" in res && "data" in res.error
@@ -252,6 +258,7 @@ const PreselectionForm = () => {
                   add({
                     type: "danger",
                     message: "This campaign already has a form assigned",
+                    expire: false,
                   });
                   break;
                 case "NO_ACCESS_TO_CAMPAIGN":
@@ -259,10 +266,15 @@ const PreselectionForm = () => {
                     type: "danger",
                     message:
                       "You can't assign a form to a campaign you don't own",
+                    expire: false,
                   });
                   break;
                 default:
-                  add({ type: "danger", message: "There was an error" });
+                  add({
+                    type: "danger",
+                    message: "There was an error",
+                    expire: false,
+                  });
                   break;
               }
             }
