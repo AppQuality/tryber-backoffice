@@ -386,6 +386,14 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/users/me/campaigns/${queryArg.campaignId}`,
       }),
     }),
+    getUsersMeCampaignsByCampaignCompatibleDevices: build.query<
+      GetUsersMeCampaignsByCampaignCompatibleDevicesApiResponse,
+      GetUsersMeCampaignsByCampaignCompatibleDevicesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaign}/compatible_devices`,
+      }),
+    }),
     postUsersMeCampaignsByCampaignIdBugs: build.mutation<
       PostUsersMeCampaignsByCampaignIdBugsApiResponse,
       PostUsersMeCampaignsByCampaignIdBugsApiArg
@@ -624,6 +632,24 @@ const injectedRtkApi = api.injectEndpoints({
       GetUsersMeRankListApiArg
     >({
       query: () => ({ url: `/users/me/rank/list` }),
+    }),
+    getUsersMeCampaignsByCampaignIdForms: build.query<
+      GetUsersMeCampaignsByCampaignIdFormsApiResponse,
+      GetUsersMeCampaignsByCampaignIdFormsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/forms`,
+      }),
+    }),
+    postUsersMeCampaignsByCampaignIdForms: build.mutation<
+      PostUsersMeCampaignsByCampaignIdFormsApiResponse,
+      PostUsersMeCampaignsByCampaignIdFormsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/forms`,
+        method: "POST",
+        body: queryArg.body,
+      }),
     }),
   }),
   overrideExisting: false,
@@ -1040,7 +1066,7 @@ export type GetUsersMeApiResponse = /** status 200 OK */ {
   }[];
   onboarding_completed?: boolean;
   additional?: AdditionalField[];
-  gender?: "male" | "female" | "not-specified" | "other";
+  gender?: Gender;
   birthDate?: string;
   phone?: string;
   education?: {
@@ -1230,6 +1256,12 @@ export type GetUsersMeCampaignsByCampaignIdApiResponse = /** status 200 OK */ {
 };
 export type GetUsersMeCampaignsByCampaignIdApiArg = {
   campaignId: string;
+};
+export type GetUsersMeCampaignsByCampaignCompatibleDevicesApiResponse =
+  /** status 200 OK */ UserDevice[];
+export type GetUsersMeCampaignsByCampaignCompatibleDevicesApiArg = {
+  /** A campaign id */
+  campaign: string;
 };
 export type PostUsersMeCampaignsByCampaignIdBugsApiResponse =
   /** status 200 OK */ {
@@ -1659,6 +1691,46 @@ export type GetUsersMeRankListApiResponse = /** status 200 OK */ {
   peers: RankingItem[];
 };
 export type GetUsersMeRankListApiArg = void;
+export type GetUsersMeCampaignsByCampaignIdFormsApiResponse =
+  /** status 200 OK */ (PreselectionFormQuestion & {
+    value?:
+      | number
+      | {
+          city?: string;
+          country?: string;
+        }
+      | number[]
+      | string;
+    validation?: {
+      regex: string;
+      error?: string;
+    };
+    id: number;
+  })[];
+export type GetUsersMeCampaignsByCampaignIdFormsApiArg = {
+  campaignId: string;
+};
+export type PostUsersMeCampaignsByCampaignIdFormsApiResponse =
+  /** status 200 OK */ undefined;
+export type PostUsersMeCampaignsByCampaignIdFormsApiArg = {
+  campaignId: string;
+  body: {
+    form?: {
+      value: {
+        id?: number | number[];
+        serialized?:
+          | string
+          | string[]
+          | {
+              city: string;
+              country: string;
+            };
+      };
+      question: number;
+    }[];
+    device?: number[];
+  };
+};
 export type BugSeverity = {
   id?: number;
   name?: string;
@@ -1725,16 +1797,11 @@ export type CampaignOptional = {
 export type CampaignType = {} | {};
 export type CampaignRequired = {
   name: string;
-  internal_id: string;
   dates: {
     start: string;
     end: string;
     close: string;
   };
-  devices: {
-    id: string;
-  }[];
-  projectManager: User;
   campaign_type: CampaignType;
 };
 export type Campaign = CampaignOptional & CampaignRequired;
@@ -1835,6 +1902,7 @@ export type AdditionalField = {
   text?: string;
   is_candidate?: boolean;
 };
+export type Gender = "male" | "female" | "not-specified" | "other";
 export type Certification = {
   id?: number;
   name: string;
@@ -1942,6 +2010,7 @@ export const {
   useGetUsersMeBugsQuery,
   useGetUsersMeCampaignsQuery,
   useGetUsersMeCampaignsByCampaignIdQuery,
+  useGetUsersMeCampaignsByCampaignCompatibleDevicesQuery,
   usePostUsersMeCampaignsByCampaignIdBugsMutation,
   useGetUsersMeCampaignsByCampaignIdDevicesQuery,
   usePostUsersMeCampaignsByCampaignIdMediaMutation,
@@ -1967,4 +2036,6 @@ export const {
   useGetUsersMePopupsByPopupQuery,
   useGetUsersMeRankQuery,
   useGetUsersMeRankListQuery,
+  useGetUsersMeCampaignsByCampaignIdFormsQuery,
+  usePostUsersMeCampaignsByCampaignIdFormsMutation,
 } = injectedRtkApi;
