@@ -24,7 +24,7 @@ export const CampaignSelect = ({
             isDisabled={isLoading || !selectedValueIsPresent}
             name={name}
             options={async (offset, search) => {
-              const options = await data(offset, search);
+              const options = await data(offset, field.value, search);
               return {
                 ...options,
                 results: selectedValueIsPresent
@@ -73,17 +73,31 @@ const useSelectOptions = () => {
   options.reverse();
 
   return {
-    data: async (pageNumber: number, search?: string) => {
-      const filteredOptions = options.filter((o) =>
-        o.label.toLowerCase().includes((search || "").toLowerCase())
+    data: async (
+      pageNumber: number,
+      value: SelectOptionType,
+      search?: string
+    ) => {
+      const filteredOptions = options.filter(
+        (o) =>
+          o.label.toLowerCase().includes((search || "").toLowerCase()) &&
+          o.value !== value.value
       );
       const results = filteredOptions.slice(
         pageNumber * 10,
         (pageNumber + 1) * 10
       );
+      let more = results.length === 10;
+      if (pageNumber === 0) {
+        const selectedOption = options.find((o) => o.value === value.value);
+        if (selectedOption) {
+          results.unshift(selectedOption);
+          more = results.length === 11;
+        }
+      }
       return {
         results,
-        more: results.length === 10,
+        more,
       };
     },
     isLoading,
