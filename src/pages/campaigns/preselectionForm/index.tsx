@@ -166,7 +166,7 @@ const PreselectionForm = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <span>New Preselection Form</span>
+          <span>{id ? "Edit Preselection Form" : "New Preselection Form"}</span>
           <CopyLinkButton id={id} />
         </div>
       </PageTitle>
