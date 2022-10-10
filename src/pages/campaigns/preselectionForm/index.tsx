@@ -201,7 +201,7 @@ const PreselectionForm = () => {
               history.push(
                 `/backoffice/campaigns/preselection-forms/${res.data.id}`
               );
-              add({ type: "success", message: "Form saved", expire: false });
+              add({ type: "success", message: "Form saved" });
             } else {
               const errorCode =
                 "error" in res && "data" in res.error
@@ -212,7 +212,6 @@ const PreselectionForm = () => {
                   add({
                     type: "danger",
                     message: "This campaign already has a form assigned",
-                    expire: false,
                   });
                   break;
                 case "NO_ACCESS_TO_CAMPAIGN":
@@ -220,14 +219,12 @@ const PreselectionForm = () => {
                     type: "danger",
                     message:
                       "You can't assign a form to a campaign you don't own",
-                    expire: false,
                   });
                   break;
                 default:
                   add({
                     type: "danger",
                     message: "There was an error",
-                    expire: false,
                   });
                   break;
               }
@@ -247,7 +244,7 @@ const PreselectionForm = () => {
               history.push(
                 `/backoffice/campaigns/preselection-forms/${res.data.id}`
               );
-              add({ type: "success", message: "Form saved", expire: false });
+              add({ type: "success", message: "Form saved" });
             } else {
               const errorCode =
                 "error" in res && "data" in res.error
@@ -258,7 +255,6 @@ const PreselectionForm = () => {
                   add({
                     type: "danger",
                     message: "This campaign already has a form assigned",
-                    expire: false,
                   });
                   break;
                 case "NO_ACCESS_TO_CAMPAIGN":
@@ -266,20 +262,26 @@ const PreselectionForm = () => {
                     type: "danger",
                     message:
                       "You can't assign a form to a campaign you don't own",
-                    expire: false,
                   });
                   break;
                 default:
                   add({
                     type: "danger",
                     message: "There was an error",
-                    expire: false,
                   });
                   break;
               }
             }
           }
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          // scroll to form title
+          const selector = `[id="formTitle"]`;
+          const formTitleElement = document.querySelector(
+            selector
+          ) as HTMLElement;
+          formTitleElement?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
         }}
       >
         <Form>
