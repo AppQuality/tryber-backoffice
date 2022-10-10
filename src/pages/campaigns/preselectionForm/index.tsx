@@ -28,6 +28,7 @@ import siteWideMessageStore from "src/redux/siteWideMessages";
 import { setLoadedForm } from "./preselectionSlice";
 import { v4 as uuidv4 } from "uuid";
 import { getCustomQuestionTypeLabel } from "./getCustomQuestionTypeLabel";
+import { CopyLinkButton } from "src/pages/campaigns/preselectionFormList/CopyLinkButton";
 
 const PreselectionForm = () => {
   const history = useHistory();
@@ -154,16 +155,19 @@ const PreselectionForm = () => {
       dispatch(setLoadedForm(savedData.data));
     }
   }, [savedData]);
-
   return (
     <OpsUserContainer>
       <PageTitle
+        size="regular"
         back={{
           text: "Back to list",
           navigation: "/backoffice/campaigns/preselection-forms",
         }}
       >
-        New Preselection Form
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span>New Preselection Form</span>
+          <CopyLinkButton id={id} />
+        </div>
       </PageTitle>
       <Formik
         enableReinitialize={!saveEdit}
