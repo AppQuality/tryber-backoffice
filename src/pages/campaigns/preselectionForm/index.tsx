@@ -159,7 +159,7 @@ const PreselectionForm = () => {
     <OpsUserContainer>
       <PageTitle
         back={{
-          text: "back",
+          text: "Back to list",
           navigation: "/backoffice/campaigns/preselection-forms",
         }}
       >
