@@ -29,6 +29,7 @@ import { setLoadedForm } from "./preselectionSlice";
 import { v4 as uuidv4 } from "uuid";
 import { getCustomQuestionTypeLabel } from "./getCustomQuestionTypeLabel";
 import { CopyLinkButton } from "src/pages/campaigns/preselectionFormList/CopyLinkButton";
+import { getProfileTypeLabel } from "./getProfileTypeLabel";
 
 const PreselectionForm = () => {
   const history = useHistory();
@@ -64,7 +65,7 @@ const PreselectionForm = () => {
           name:
             f.type === "text"
               ? `Custom ${getCustomQuestionTypeLabel(f.type)}`
-              : f.type,
+              : getProfileTypeLabel(f.type),
         });
         break;
       case "radio":

@@ -95,7 +95,7 @@ export const ProfileFieldsSelectorCard: FC<{
           <Checkbox
             key={`${f.fieldId}-${isChecked}`}
             id={f.fieldId}
-            label={f.type}
+            label={f.name}
             checked={isChecked}
             disabled={isChecked}
             onChange={() => {
