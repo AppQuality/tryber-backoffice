@@ -4,6 +4,7 @@ import {
   Formik,
   Form,
   Card,
+  PageTitle,
 } from "@appquality/appquality-design-system";
 import { useParams, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -156,6 +157,14 @@ const PreselectionForm = () => {
 
   return (
     <OpsUserContainer>
+      <PageTitle
+        back={{
+          text: "back",
+          navigation: "/backoffice/campaigns/preselection-forms",
+        }}
+      >
+        New Preselection Form
+      </PageTitle>
       <Formik
         enableReinitialize={!saveEdit}
         initialValues={initialValues}
