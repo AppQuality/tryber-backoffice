@@ -15,9 +15,7 @@ export const CustomQuestionCard: React.FC<{
         question: "",
         shortTitle: "",
         name: `Custom ${getCustomQuestionTypeLabel(selected)}`,
-        ...(selected !== "text"
-          ? { options: ["option 1", "option 2"] }
-          : undefined),
+        ...(selected !== "text" ? { options: ["", ""] } : undefined),
       });
   };
 
