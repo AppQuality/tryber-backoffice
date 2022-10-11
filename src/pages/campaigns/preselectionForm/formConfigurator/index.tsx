@@ -6,6 +6,7 @@ import { ValuesFieldsCard } from "src/pages/campaigns/preselectionForm/formConfi
 import { CampaignSelect } from "./CampaignSelect";
 
 export const FormConfigurator = () => {
+  const { values } = useFormikContext<PreselectionFormValues>();
   return (
     <DndProvider backend={HTML5Backend}>
       <Field
@@ -16,7 +17,12 @@ export const FormConfigurator = () => {
       />
       <CampaignSelect name="campaign" label="Linked Campaign" />
       <FieldsContainer />
-      <Button htmlType="submit" type="primary">
+      <Button
+        className={!values.fields.length ? "aq-mt-3" : ""}
+        htmlType="submit"
+        type="primary"
+        style={{ float: "right" }}
+      >
         Save
       </Button>{" "}
     </DndProvider>
