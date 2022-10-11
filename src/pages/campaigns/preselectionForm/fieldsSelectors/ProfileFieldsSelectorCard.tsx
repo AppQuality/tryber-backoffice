@@ -15,14 +15,14 @@ const profileFieldsList: AdditionalField[] = [
     fieldId: "phone_number",
     type: "phone_number",
     name: "Phone number",
-    question: "Qual è il tuo numero di telefono?",
+    question: "Qual è il tuo numero di telefono? (in formato +393456789101)",
     shortTitle: "",
   },
   {
     fieldId: "address",
     type: "address",
     name: "Address",
-    question: "Seleziona Città e Nazione di residenza",
+    question: "Seleziona Nazione di residenza e Città",
     shortTitle: "",
   },
 ];
