@@ -13,6 +13,9 @@ export const CopyLinkButton: FC<{ id: string }> = ({ id }) => {
 
   return (
     <Button
+      type="link-hover"
+      variant
+      size="sm"
       onClick={() => {
         copyToClipboard(
           `/wp-admin/admin.php?page=preselection_form_builder&backoffice_page=campaigns%2Fpreselection-forms%2F${id}`
@@ -20,7 +23,7 @@ export const CopyLinkButton: FC<{ id: string }> = ({ id }) => {
       }}
       className="aq-ml-4"
     >
-      copy link to share
+      <span>Copy link to clipboard</span>
     </Button>
   );
 };
