@@ -8,14 +8,14 @@ const profileFieldsList: AdditionalField[] = [
     fieldId: "gender",
     type: "gender",
     name: "Gender",
-    question: "Seleziona  il tuo genere",
+    question: "Seleziona il tuo genere",
     shortTitle: "",
   },
   {
     fieldId: "phone_number",
     type: "phone_number",
     name: "Phone number",
-    question: "qual è il tuo numero di telefono?",
+    question: "Qual è il tuo numero di telefono?",
     shortTitle: "",
   },
   {
