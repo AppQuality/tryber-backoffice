@@ -165,10 +165,8 @@ const PreselectionForm = () => {
           navigation: "/backoffice/campaigns/preselection-forms",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <span>{id ? "Edit Preselection Form" : "New Preselection Form"}</span>
-          <CopyLinkButton id={id} />
-        </div>
+        <span>{id ? "Edit Preselection Form" : "New Preselection Form"}</span>
+        <CopyLinkButton id={id} />
       </PageTitle>
       <Formik
         enableReinitialize={!saveEdit}
