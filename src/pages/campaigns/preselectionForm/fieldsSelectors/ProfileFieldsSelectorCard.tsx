@@ -8,21 +8,21 @@ const profileFieldsList: AdditionalField[] = [
     fieldId: "gender",
     type: "gender",
     name: "Gender",
-    question: "Seleziona  il tuo genere",
+    question: "Seleziona il tuo genere",
     shortTitle: "",
   },
   {
-    fieldId: "phone",
+    fieldId: "phone_number",
     type: "phone_number",
     name: "Phone number",
-    question: "qual è il tuo numero di telefono?",
+    question: "Qual è il tuo numero di telefono? (in formato +393456789101)",
     shortTitle: "",
   },
   {
     fieldId: "address",
     type: "address",
     name: "Address",
-    question: "Seleziona Città e Nazione di residenza",
+    question: "Seleziona Nazione di residenza e Città",
     shortTitle: "",
   },
 ];
@@ -95,7 +95,7 @@ export const ProfileFieldsSelectorCard: FC<{
           <Checkbox
             key={`${f.fieldId}-${isChecked}`}
             id={f.fieldId}
-            label={f.type}
+            label={f.name}
             checked={isChecked}
             disabled={isChecked}
             onChange={() => {

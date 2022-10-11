@@ -4,6 +4,7 @@ import {
   Formik,
   Form,
   Card,
+  PageTitle,
 } from "@appquality/appquality-design-system";
 import { useParams, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -27,6 +28,8 @@ import siteWideMessageStore from "src/redux/siteWideMessages";
 import { setLoadedForm } from "./preselectionSlice";
 import { v4 as uuidv4 } from "uuid";
 import { getCustomQuestionTypeLabel } from "./getCustomQuestionTypeLabel";
+import { CopyLinkButton } from "src/pages/campaigns/preselectionFormList/CopyLinkButton";
+import { getProfileTypeLabel } from "./getProfileTypeLabel";
 
 const PreselectionForm = () => {
   const history = useHistory();
@@ -51,7 +54,7 @@ const PreselectionForm = () => {
   savedData.data?.fields.forEach((f) => {
     switch (f.type) {
       case "gender":
-      case "phone":
+      case "phone_number":
       case "address":
       case "text":
         initialFieldValue.push({
@@ -62,7 +65,7 @@ const PreselectionForm = () => {
           name:
             f.type === "text"
               ? `Custom ${getCustomQuestionTypeLabel(f.type)}`
-              : f.type,
+              : getProfileTypeLabel(f.type),
         });
         break;
       case "radio":
@@ -153,9 +156,18 @@ const PreselectionForm = () => {
       dispatch(setLoadedForm(savedData.data));
     }
   }, [savedData]);
-
   return (
     <OpsUserContainer>
+      <PageTitle
+        size="regular"
+        back={{
+          text: "Back to list",
+          navigation: "/backoffice/campaigns/preselection-forms",
+        }}
+      >
+        <span>{id ? "Edit Preselection Form" : "New Preselection Form"}</span>
+        <CopyLinkButton id={id} />
+      </PageTitle>
       <Formik
         enableReinitialize={!saveEdit}
         initialValues={initialValues}
@@ -198,10 +210,36 @@ const PreselectionForm = () => {
               args.body.campaign = parseInt(values.campaign?.value);
             const res = await editForm(args);
             if (res && "data" in res) {
-              history.push(`/backoffice/campaigns/preselection/${res.data.id}`);
+              history.push(
+                `/backoffice/campaigns/preselection-forms/${res.data.id}`
+              );
               add({ type: "success", message: "Form saved" });
             } else {
-              add({ type: "danger", message: "There was an error" });
+              const errorCode =
+                "error" in res && "data" in res.error
+                  ? (res.error.data as { code: string }).code
+                  : false;
+              switch (errorCode) {
+                case "CAMPAIGN_ID_ALREADY_ASSIGNED":
+                  add({
+                    type: "danger",
+                    message: "This campaign already has a form assigned",
+                  });
+                  break;
+                case "NO_ACCESS_TO_CAMPAIGN":
+                  add({
+                    type: "danger",
+                    message:
+                      "You can't assign a form to a campaign you don't own",
+                  });
+                  break;
+                default:
+                  add({
+                    type: "danger",
+                    message: "There was an error",
+                  });
+                  break;
+              }
             }
           } else {
             const args: PostCampaignsFormsApiArg = {
@@ -215,12 +253,47 @@ const PreselectionForm = () => {
               args.body.campaign = parseInt(values.campaign?.value);
             const res = await createForm(args);
             if (res && "data" in res) {
-              history.push(`/backoffice/campaigns/preselection/${res.data.id}`);
+              history.push(
+                `/backoffice/campaigns/preselection-forms/${res.data.id}`
+              );
               add({ type: "success", message: "Form saved" });
             } else {
-              add({ type: "danger", message: "There was an error" });
+              const errorCode =
+                "error" in res && "data" in res.error
+                  ? (res.error.data as { code: string }).code
+                  : false;
+              switch (errorCode) {
+                case "CAMPAIGN_ID_ALREADY_ASSIGNED":
+                  add({
+                    type: "danger",
+                    message: "This campaign already has a form assigned",
+                  });
+                  break;
+                case "NO_ACCESS_TO_CAMPAIGN":
+                  add({
+                    type: "danger",
+                    message:
+                      "You can't assign a form to a campaign you don't own",
+                  });
+                  break;
+                default:
+                  add({
+                    type: "danger",
+                    message: "There was an error",
+                  });
+                  break;
+              }
             }
           }
+          // scroll to form title
+          const selector = `[id="formTitle"]`;
+          const formTitleElement = document.querySelector(
+            selector
+          ) as HTMLElement;
+          formTitleElement?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
         }}
       >
         <Form>
