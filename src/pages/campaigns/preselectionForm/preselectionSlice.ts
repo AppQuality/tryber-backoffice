@@ -24,8 +24,8 @@ const initialState: PreselectionFormState = {
     },
     {
       fieldData: {
-        id: "phone",
-        type: "phone",
+        id: "phone_number",
+        type: "phone_number",
         name: "Numero di Telefono",
       },
       checked: false,
@@ -89,9 +89,7 @@ const campaignPreselectionSlice = createSlice({
         fieldData: {
           id: uuidv4(),
           type: action.payload,
-          ...(action.payload !== "text"
-            ? { options: ["option 1", "option 2"] }
-            : undefined),
+          ...(action.payload !== "text" ? { options: ["", ""] } : undefined),
         },
       };
       state.customQuestionsList.push(newQuestion);

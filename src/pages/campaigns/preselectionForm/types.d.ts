@@ -1,7 +1,7 @@
 interface AdditionalField {
   fieldId: string;
   question: string;
-  type: string; // cuf_22 || text || select || multiselect || radio || gender || phone ||
+  type: string; // cuf_22 || text || select || multiselect || radio || gender || phone_number ||
   name: string;
   options?: string[];
   shortTitle?: string;
@@ -33,7 +33,7 @@ interface DropResult {
   name: string;
 }
 
-type ProfileFieldType = "gender" | "phone" | "address";
+type ProfileFieldType = "gender" | "phone_number" | "address";
 
 interface ProfileField {
   fieldData: {

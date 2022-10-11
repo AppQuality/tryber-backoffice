@@ -50,11 +50,13 @@ export const FormTableCard = () => {
               onClick={(e) => {
                 if (e.ctrlKey)
                   window.open(
-                    `/backoffice/campaigns/preselection/${res.id}`,
+                    `/backoffice/campaigns/preselection-forms/${res.id}`,
                     "_blank"
                   );
                 else
-                  history.push(`/backoffice/campaigns/preselection/${res.id}`);
+                  history.push(
+                    `/backoffice/campaigns/preselection-forms/${res.id}`
+                  );
               }}
               style={{ cursor: "pointer" }}
             />
@@ -85,26 +87,24 @@ export const FormTableCard = () => {
   }, []);
 
   return (
-    <Card title="Preselection Form List">
-      <Card>
-        <FormSearchCard />
-        <Table
-          dataSource={rows}
-          isLoading={isLoading || isFetching}
-          isStriped
-          i18n={{
-            loading: "Loading Data",
-            empty: "No data",
-          }}
-          columns={columns}
-        />
-        <Pagination
-          className="aq-pt-3"
-          onPageChange={setPage}
-          current={page}
-          maxPages={Math.ceil((data?.total || 0) / limit)}
-        />
-      </Card>
+    <Card>
+      <FormSearchCard />
+      <Table
+        dataSource={rows}
+        isLoading={isLoading || isFetching}
+        isStriped
+        i18n={{
+          loading: "Loading Data",
+          empty: "No data",
+        }}
+        columns={columns}
+      />
+      <Pagination
+        className="aq-pt-3"
+        onPageChange={setPage}
+        current={page}
+        maxPages={Math.ceil((data?.total || 0) / limit)}
+      />
     </Card>
   );
 };
