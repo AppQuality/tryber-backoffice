@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, PreloadedState } from "@reduxjs/toolkit";
 import { tryberApi } from "src/services/tryberApi";
 import oldReducers from "src/redux/reducer";
 import { combineReducers } from "redux";
@@ -8,24 +8,28 @@ import campaignPreselectionListReducer from "src/pages/campaigns/preselectionFor
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
-export const store = configureStore({
-  reducer: combineReducers({
-    ...oldReducers,
-    jotform: jotformReducer,
-    campaignPreselection: campaignPreselectionReducer,
-    campaignPreselectionList: campaignPreselectionListReducer,
-    [tryberApi.reducerPath]: tryberApi.reducer,
-  }),
+const rootReducer = combineReducers({
+  ...oldReducers,
+  jotform: jotformReducer,
+  campaignPreselection: campaignPreselectionReducer,
+  campaignPreselectionList: campaignPreselectionListReducer,
+  [tryberApi.reducerPath]: tryberApi.reducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware().concat(tryberApi.middleware),
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
+export function setupStore(preloadedState?: PreloadedState<RootState>) {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
+}
+
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore["dispatch"];
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch: () => AppDispatch = useDispatch;
