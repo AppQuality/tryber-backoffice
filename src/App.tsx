@@ -16,6 +16,7 @@ import { ThemeProvider } from "styled-components";
 import SiteWideMessages from "./features/SiteWideMessages";
 import Jotform from "./pages/Jotform";
 import CampaignPreselectionList from "./pages/campaigns/preselectionFormList";
+import SelectionPage from "./pages/campaigns/selection";
 
 function App() {
   return (
@@ -41,6 +42,11 @@ function App() {
             <Route
               path="/backoffice/campaigns/preselection-forms/:id"
               component={CampaignPreselection}
+            />
+            <Route
+              path="/backoffice/campaigns/selection"
+              exact
+              component={SelectionPage}
             />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
