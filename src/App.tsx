@@ -44,7 +44,7 @@ function App() {
               component={CampaignPreselection}
             />
             <Route
-              path="/backoffice/campaigns/selection"
+              path="/backoffice/campaigns/:id/selection"
               exact
               component={SelectionPage}
             />
