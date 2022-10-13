@@ -1,5 +1,5 @@
 const Counter = () => {
-  return <div>columns configurator</div>;
+  return <div>counter</div>;
 };
 
 export default Counter;
