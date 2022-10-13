@@ -16,7 +16,7 @@ const SelectionPage = () => {
         <PageTitle size="regular">Tester selection panel</PageTitle>
         <BSGrid className="aq-my-4">
           <BSCol size="col-lg-6">
-            <Card title="Add columns">
+            <Card title="Add columns" shadow>
               <ColumnsConfigurator />
             </Card>
           </BSCol>
