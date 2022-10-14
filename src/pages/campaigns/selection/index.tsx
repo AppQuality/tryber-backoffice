@@ -8,8 +8,10 @@ import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 import Counter from "./counter";
 import ColumnsConfigurator from "./editPanel/columnsConfigurator";
 import SelectionTable from "./SelectionTable";
+import { useParams } from "react-router-dom";
 
 const SelectionPage = () => {
+  const { id } = useParams<{ id: string }>();
   return (
     <div className="selection-page">
       <OpsUserContainer>
@@ -23,7 +25,7 @@ const SelectionPage = () => {
           <BSCol size="col-lg-12" className="aq-mt-3">
             <Card>
               <Counter />
-              <SelectionTable />
+              <SelectionTable id={id} />
             </Card>
           </BSCol>
         </BSGrid>
