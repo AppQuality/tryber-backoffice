@@ -26,4 +26,9 @@ export const columns: TableType.Column[] = [
     key: "devices",
     title: "Devices",
   },
+  {
+    dataIndex: "actions",
+    key: "actions",
+    title: "",
+  },
 ];

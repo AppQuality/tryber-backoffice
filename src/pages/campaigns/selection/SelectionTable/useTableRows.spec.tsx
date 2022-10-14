@@ -5,6 +5,8 @@ import { getCandidatesMock } from "src/pages/campaigns/selection/SelectionTable/
 import { setupStore } from "src/store";
 import { Provider } from "react-redux";
 import { FC } from "react";
+import { aqBootstrapTheme } from "@appquality/appquality-design-system";
+import { ThemeProvider } from "styled-components";
 
 rest.get(
   "https://dv-crowd.app-quality.com/api/campaigns/2/candidates",
@@ -16,7 +18,9 @@ rest.get(
 describe("useTableRows", () => {
   it("should return a list of rows", async function () {
     const wrapper: FC = ({ children }) => (
-      <Provider store={setupStore()}>{children}</Provider>
+      <ThemeProvider theme={aqBootstrapTheme}>
+        <Provider store={setupStore()}>{children}</Provider>
+      </ThemeProvider>
     );
     const { result, waitForNextUpdate } = renderHook(() => useTableRows("2"), {
       wrapper,
@@ -28,39 +32,39 @@ describe("useTableRows", () => {
     expect(result.current).toEqual(
       expect.objectContaining({
         rows: expect.arrayContaining([
-          {
+          expect.objectContaining({
             devices: "-",
             exp: "21541",
             key: "34463_0",
             level: "Diamond",
             nameId: "Sara Galasso T34463",
-            os: "Windows Windows 10 May 2021 Update (19043)",
-          },
-          {
+            os: "Windows 10 May 2021 Update (19043)",
+          }),
+          expect.objectContaining({
             devices: "Samsung Galaxy M31",
             key: "34463_1",
             os: "Android 12 (12)",
-          },
-          {
+          }),
+          expect.objectContaining({
             devices: "Apple iPad",
             key: "34463_2",
             os: "iOS iOS 15.6 (15.6)",
-          },
-          {
+          }),
+          expect.objectContaining({
             devices: "Apple iPhone SE (2020)",
             key: "34463_3",
             os: "iOS iOS 15.6 (15.6)",
-          },
-          {
+          }),
+          expect.objectContaining({
             devices: "-",
             key: "34463_4",
-            os: "Windows Windows 11",
-          },
-          {
+            os: "Windows 11",
+          }),
+          expect.objectContaining({
             devices: "Google Pixel 6",
             key: "34463_5",
             os: "Android 13(beta) (13(beta))",
-          },
+          }),
         ]),
       })
     );

@@ -5,6 +5,7 @@ import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableR
 
 const SelectionTable: FC<{ id: string }> = ({ id }) => {
   const { rows, isFetching, error } = useTableRows(id);
+
   return (
     <>
       <Table
