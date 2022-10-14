@@ -45,8 +45,10 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("columns configurator", () => {
-  it("should return a placeholder with campaign ID in the select", async () => {
-    const { findByText } = renderWithProviders(<ColumnsConfigurator />);
+  it("should show a multiselect label with campaign ID", async () => {
+    const { findByText } = renderWithProviders(
+      <ColumnsConfigurator id={"10"} />
+    );
     expect(await findByText("Add columns by Form Campaign 10")).toBeVisible();
   });
 
@@ -69,7 +71,7 @@ describe("columns configurator", () => {
 
   it("should show multiselect options with question", async () => {
     const { container, getByText } = renderWithProviders(
-      <ColumnsConfigurator />
+      <ColumnsConfigurator id={"10"} />
     );
     const columns = container.querySelector(".css-1hb7zxy-IndicatorsContainer");
     if (!columns) throw new Error("columns not found");
@@ -80,7 +82,7 @@ describe("columns configurator", () => {
 
   it("should show multiselect options with shortName", async () => {
     const { container, getByText } = renderWithProviders(
-      <ColumnsConfigurator />
+      <ColumnsConfigurator id={"10"} />
     );
     const columns = container.querySelector(".css-1hb7zxy-IndicatorsContainer");
     if (!columns) throw new Error("columns not found");
@@ -90,7 +92,9 @@ describe("columns configurator", () => {
   });
 
   it("should show apply button", async () => {
-    const { findByTestId } = renderWithProviders(<ColumnsConfigurator />);
+    const { findByTestId } = renderWithProviders(
+      <ColumnsConfigurator id={"10"} />
+    );
     expect(await findByTestId("columnsConfigurator_apply")).toBeVisible();
   });
 });
