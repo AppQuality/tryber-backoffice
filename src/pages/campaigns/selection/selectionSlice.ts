@@ -1,13 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface SelectionState {}
+interface SelectionState {
+  questionsId: number[];
+}
 
-const initialState: SelectionState = {};
+const initialState: SelectionState = {
+  questionsId: [],
+};
 
 const selectionSlice = createSlice({
   name: "selection",
   initialState: initialState,
   reducers: {
+    setQuestionsId(state, action: PayloadAction<number[]>) {
+      state.questionsId = action.payload;
+    },
     reset() {
       return initialState;
     },
@@ -15,5 +22,5 @@ const selectionSlice = createSlice({
 });
 
 const { actions, reducer } = selectionSlice;
-export const { reset } = actions;
+export const { setQuestionsId, reset } = actions;
 export default reducer;
