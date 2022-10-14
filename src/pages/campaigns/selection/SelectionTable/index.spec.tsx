@@ -15,8 +15,7 @@ const handlers = [
   rest.get(
     "https://dv-crowd.app-quality.com/api/campaigns/2/candidates",
     async (req, res, ctx) => {
-      const mock = await getCandidatesMock("example-2");
-      return res(ctx.json(mock), ctx.delay(50));
+      return res(ctx.json(await getCandidatesMock("example-2")), ctx.delay(50));
     }
   ),
 ];
