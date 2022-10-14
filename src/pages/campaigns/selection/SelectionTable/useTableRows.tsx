@@ -1,10 +1,12 @@
 import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
 import { TableType } from "@appquality/appquality-design-system";
+import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
 
 interface RowType extends TableType.Row {
   key: string;
   os: string;
   devices: string;
+  actions: JSX.Element;
   nameId?: string;
   exp?: string;
   level?: string;
@@ -20,10 +22,19 @@ const useTableRows = (id: string) => {
       user.devices.forEach((device, index) => {
         let row: RowType = {
           key: `${user.id.toString()}_${index}`,
-          os: `${device.os} ${device.osVersion}`,
+          os: `${device.os} ${device.osVersion}`.replace(
+            "Windows Windows",
+            "Windows"
+          ),
           devices: device.manufacturer
             ? `${device.manufacturer} ${device.model}`
             : "-",
+          actions: (
+            <DeviceCheckbox
+              userId={user.id.toString()}
+              deviceId={`${user.id.toString()}_${index}`}
+            />
+          ),
         };
         if (index === 0) {
           row = {
