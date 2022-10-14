@@ -22,11 +22,11 @@ const ColumnsConfigurator = ({ id }: ColumnsConfiguratorProps) => {
     <div>
       <Select
         name="addColumns"
-        label=""
+        label={`Add columns by Form Campaign ${id}`}
         options={mapCampaingFormData(data)}
         value={value}
         onChange={(v) => Array.isArray(v) && setValue(v)}
-        placeholder={`Add columns by Form Campaign ${id}`}
+        placeholder={"Select questions form"}
         noOptionsMessage={() => "No questions"}
         isMulti
       />
