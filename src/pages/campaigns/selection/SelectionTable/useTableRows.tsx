@@ -10,9 +10,10 @@ interface RowType extends TableType.Row {
   level?: string;
 }
 const useTableRows = (id: string) => {
-  const { data, isFetching, error } = useGetCampaignsByCampaignCandidatesQuery({
-    campaign: id,
-  });
+  const { data, isFetching, isLoading, error } =
+    useGetCampaignsByCampaignCandidatesQuery({
+      campaign: id,
+    });
   const rows: RowType[] = [];
   if (data && data.results) {
     data.results.forEach((user) =>
@@ -40,6 +41,7 @@ const useTableRows = (id: string) => {
   return {
     rows,
     isFetching,
+    isLoading,
     error,
   };
 };
