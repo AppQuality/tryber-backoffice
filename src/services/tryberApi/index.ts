@@ -54,6 +54,14 @@ const injectedRtkApi = api.injectEndpoints({
         params: { device: queryArg.device },
       }),
     }),
+    getCampaignsByCampaignCandidates: build.query<
+      GetCampaignsByCampaignCandidatesApiResponse,
+      GetCampaignsByCampaignCandidatesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/candidates`,
+      }),
+    }),
     getCampaignsByCampaignTasks: build.query<
       GetCampaignsByCampaignTasksApiResponse,
       GetCampaignsByCampaignTasksApiArg
@@ -127,6 +135,12 @@ const injectedRtkApi = api.injectEndpoints({
         method: "PUT",
         body: queryArg.body,
       }),
+    }),
+    getCampaignsByCampaignForms: build.query<
+      GetCampaignsByCampaignFormsApiResponse,
+      GetCampaignsByCampaignFormsApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/forms` }),
     }),
     getCertifications: build.query<
       GetCertificationsApiResponse,
@@ -732,6 +746,25 @@ export type PostCampaignsByCampaignCandidatesApiArg = {
     tester_id: number;
   };
 };
+export type GetCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */ {
+  results?: {
+    id: number;
+    name: string;
+    surname: string;
+    experience: number;
+    level: string;
+    devices: {
+      manufacturer?: string;
+      model?: string;
+      os: string;
+      osVersion: string;
+    }[];
+  }[];
+} & PaginationData;
+export type GetCampaignsByCampaignCandidatesApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
 export type GetCampaignsByCampaignTasksApiResponse =
   /** status 200 A list of UseCase linked with the Campaign */ (Task & {
     id?: number;
@@ -839,6 +872,14 @@ export type PutCampaignsFormsByFormIdApiArg = {
       id?: number;
     } & PreselectionFormQuestion)[];
   };
+};
+export type GetCampaignsByCampaignFormsApiResponse = /** status 200 OK */ {
+  id: number;
+  question: string;
+  shortName?: string;
+}[];
+export type GetCampaignsByCampaignFormsApiArg = {
+  campaign: string;
 };
 export type GetCertificationsApiResponse = /** status 200 OK */ {
   id: number;
@@ -1371,7 +1412,8 @@ export type DeleteUsersMeCertificationsByCertificationIdApiArg = {
 };
 export type GetUsersMeDevicesApiResponse = /** status 200 OK */ ({
   id?: number;
-} & UserDevice)[];
+} & UserDevice &
+  object)[];
 export type GetUsersMeDevicesApiArg = void;
 export type PostUsersMeDevicesApiResponse = /** status 201 Created */ {
   id?: number;
@@ -1826,6 +1868,12 @@ export type UserDevice = {
     version: string;
   };
 };
+export type PaginationData = {
+  start: number;
+  limit?: number;
+  size: number;
+  total?: number;
+};
 export type TaskOptional = {
   name?: string;
   content?: string;
@@ -1969,6 +2017,7 @@ export const {
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
   usePostCampaignsByCampaignCandidatesMutation,
+  useGetCampaignsByCampaignCandidatesQuery,
   useGetCampaignsByCampaignTasksQuery,
   usePostCampaignsByCampaignTasksMutation,
   useGetCampaignsByCampaignTasksAndTaskQuery,
@@ -1977,6 +2026,7 @@ export const {
   useGetCampaignsFormsQuery,
   useGetCampaignsFormsByFormIdQuery,
   usePutCampaignsFormsByFormIdMutation,
+  useGetCampaignsByCampaignFormsQuery,
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
   useGetCustomersQuery,
