@@ -1,6 +1,7 @@
 import {
   BSCol,
   BSGrid,
+  Button,
   Card,
   PageTitle,
 } from "@appquality/appquality-design-system";
@@ -23,9 +24,14 @@ const SelectionPage = () => {
             </Card>
           </BSCol>
           <BSCol size="col-lg-12" className="aq-mt-3">
-            <Card>
+            <Card className="aq-mb-3">
               <Counter />
               <SelectionTable id={id} />
+            </Card>
+            <Card>
+              <div style={{ textAlign: "right" }}>
+                <Button>Conferma selezioni</Button>
+              </div>
             </Card>
           </BSCol>
         </BSGrid>
