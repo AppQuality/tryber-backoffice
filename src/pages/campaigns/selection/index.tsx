@@ -7,9 +7,12 @@ import {
 import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 import Counter from "./counter";
 import ColumnsConfigurator from "./editPanel/columnsConfigurator";
+import SelectionFilters from "./editPanel/selectionFilters";
 import SelectionTable from "./SelectionTable";
+import { useParams } from "react-router-dom";
 
 const SelectionPage = () => {
+  const { id } = useParams<{ id: string }>();
   return (
     <div className="selection-page">
       <OpsUserContainer>
@@ -19,6 +22,9 @@ const SelectionPage = () => {
             <Card title="Add columns">
               <ColumnsConfigurator />
             </Card>
+          </BSCol>
+          <BSCol size="col-lg-6">
+            <SelectionFilters id={id} />
           </BSCol>
           <BSCol size="col-lg-12" className="aq-mt-3">
             <Card>
