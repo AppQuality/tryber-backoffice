@@ -5,6 +5,13 @@ import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableR
 import { Pagination } from "@appquality/appquality-design-system";
 import { useAppSelector, useAppDispatch } from "src/store";
 import { changeTablePage } from "src/pages/campaigns/selection/selectionSlice";
+import styled from "styled-components";
+
+const StyledTable = styled.div`
+  .cell.highlighted {
+    background-color: ${(p) => p.theme.colors.gray100};
+  }
+`;
 
 const SelectionTable: FC<{ id: string }> = ({ id }) => {
   const dispatch = useAppDispatch();
@@ -14,7 +21,7 @@ const SelectionTable: FC<{ id: string }> = ({ id }) => {
   );
 
   return (
-    <>
+    <StyledTable>
       <Table
         data-testid="selection-table"
         dataSource={rows}
@@ -29,7 +36,7 @@ const SelectionTable: FC<{ id: string }> = ({ id }) => {
           dispatch(changeTablePage({ newPage: page }));
         }}
       />
-    </>
+    </StyledTable>
   );
 };
 
