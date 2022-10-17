@@ -14,8 +14,7 @@ const DeviceCheckbox: FC<{ userId: string; deviceId: string }> = ({
   };
   const isChecked = selectedDevices[userId] === deviceId;
   return (
-    <input
-      type="checkbox"
+    <Checkbox
       name={userId}
       id={deviceId}
       checked={isChecked}
