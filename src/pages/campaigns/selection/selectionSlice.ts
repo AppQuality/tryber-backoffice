@@ -6,12 +6,14 @@ interface SelectionState {
   };
   currentPage: number;
   devicesPerPage: number;
+  isConfirmModalOpen: boolean;
 }
 
 const initialState: SelectionState = {
   selectedDevices: {},
   currentPage: 1,
   devicesPerPage: 50,
+  isConfirmModalOpen: false,
 };
 
 const selectionSlice = createSlice({
@@ -27,13 +29,29 @@ const selectionSlice = createSlice({
     ) {
       state.selectedDevices[action.payload.userId] = action.payload.deviceId;
     },
+    deselectDevice(state, action: PayloadAction<{ userId: string }>) {
+      delete state.selectedDevices[action.payload.userId];
+    },
     changeTablePage(state, action: PayloadAction<{ newPage: number }>) {
       if (action.payload.newPage > 0)
         state.currentPage = action.payload.newPage;
+    },
+    openConfirmModal(state) {
+      state.isConfirmModalOpen = true;
+    },
+    closeConfirmModal(state) {
+      state.isConfirmModalOpen = false;
     },
   },
 });
 
 const { actions, reducer } = selectionSlice;
-export const { reset, checkUserDevice, changeTablePage } = actions;
+export const {
+  reset,
+  checkUserDevice,
+  changeTablePage,
+  deselectDevice,
+  openConfirmModal,
+  closeConfirmModal,
+} = actions;
 export default reducer;

@@ -1,7 +1,10 @@
 import { Checkbox } from "@appquality/appquality-design-system";
 import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { checkUserDevice } from "src/pages/campaigns/selection/selectionSlice";
+import {
+  checkUserDevice,
+  deselectDevice,
+} from "src/pages/campaigns/selection/selectionSlice";
 
 const DeviceCheckbox: FC<{ userId: string; deviceId: string }> = ({
   userId,
@@ -10,7 +13,11 @@ const DeviceCheckbox: FC<{ userId: string; deviceId: string }> = ({
   const { selectedDevices } = useAppSelector((state) => state.selection);
   const dispatch = useAppDispatch();
   const onChange = () => {
-    dispatch(checkUserDevice({ userId, deviceId }));
+    if (isChecked) {
+      dispatch(deselectDevice({ userId }));
+    } else {
+      dispatch(checkUserDevice({ userId, deviceId }));
+    }
   };
   const isChecked = selectedDevices[userId] === deviceId;
   return (
