@@ -44,7 +44,7 @@ const ConfirmModal = () => {
   };
   return (
     <Modal
-      footer={Footer}
+      footer={<Footer />}
       size="small"
       isOpen={isConfirmModalOpen}
       onClose={close}
