@@ -25,10 +25,11 @@ const useTableRows = (id: string) => {
     });
   const rows: RowType[] = [];
   if (data && data.results) {
-    data.results.forEach((user) =>
-      user.devices.forEach((device, index) => {
+    data.results.forEach((user, userIndex) =>
+      user.devices.forEach((device, deviceIndex) => {
         let row: RowType = {
-          key: `${user.id.toString()}_${index}`,
+          key: `${user.id.toString()}_${deviceIndex}`,
+          highlighted: userIndex % 2 === 0,
           os: `${device.os} ${device.osVersion}`.replace(
             "Windows Windows",
             "Windows"
@@ -39,11 +40,11 @@ const useTableRows = (id: string) => {
           actions: (
             <DeviceCheckbox
               userId={user.id.toString()}
-              deviceId={`${user.id.toString()}_${index}`}
+              deviceId={`${user.id.toString()}_${deviceIndex}`}
             />
           ),
         };
-        if (index === 0) {
+        if (deviceIndex === 0) {
           row = {
             ...row,
             nameId: `${user.name} ${user.surname} T${user.id}`,
