@@ -1,6 +1,7 @@
 import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
 import { TableType } from "@appquality/appquality-design-system";
 import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
+import { useAppSelector } from "src/store";
 
 interface RowType extends TableType.Row {
   key: string;
@@ -11,10 +12,16 @@ interface RowType extends TableType.Row {
   exp?: string;
   level?: string;
 }
+
 const useTableRows = (id: string) => {
+  const { currentPage, devicesPerPage } = useAppSelector(
+    (state) => state.selection
+  );
   const { data, isFetching, isLoading, error } =
     useGetCampaignsByCampaignCandidatesQuery({
       campaign: id,
+      start: devicesPerPage * (currentPage - 1),
+      limit: devicesPerPage,
     });
   const rows: RowType[] = [];
   if (data && data.results) {
@@ -51,6 +58,7 @@ const useTableRows = (id: string) => {
 
   return {
     rows,
+    totalRows: data?.total || 0,
     isFetching,
     isLoading,
     error,
