@@ -47,7 +47,7 @@ const useTableRows = (id: string) => {
         if (deviceIndex === 0) {
           row = {
             ...row,
-            nameId: `${user.name} ${user.surname} T${user.id}`,
+            nameId: `T${user.id} ${user.name} ${user.surname}`,
             exp: user.experience.toString(),
             level: user.level,
           };

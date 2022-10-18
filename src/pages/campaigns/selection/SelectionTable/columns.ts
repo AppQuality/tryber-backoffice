@@ -17,14 +17,14 @@ export const columns: TableType.Column[] = [
     title: "Tot EXP",
   },
   {
-    dataIndex: "os",
-    key: "os",
-    title: "OS",
-  },
-  {
     dataIndex: "devices",
     key: "devices",
     title: "Devices",
+  },
+  {
+    dataIndex: "os",
+    key: "os",
+    title: "OS",
   },
   {
     dataIndex: "actions",
