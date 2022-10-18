@@ -1,60 +1,32 @@
-import { Button, Card } from "@appquality/appquality-design-system";
+import { Card, Form, Formik } from "@appquality/appquality-design-system";
+import { FormikProps } from "formik";
 import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
 import { useEffect, useState } from "react";
 import { useGetCampaignsByCampaignFormsQuery } from "src/services/tryberApi";
 import styled from "styled-components";
-import FilterRow from "./filterRow";
+import FilterRow from "./FilterRow";
 import { mapCampaingFormData } from "./mapData";
+import * as yup from "yup";
+import FilterCardHeader from "./FilterCardHeader";
 
 const StyledSelectionFilters = styled.div`
-  .aq-card-header {
-    padding: 3px 16px;
-  }
-  .aq-card-body {
-    height: 115px;
-    overflow: auto;
-
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-    ::-webkit-scrollbar {
-      display: none;
-    }
+  height: 110px;
+  overflow: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
-
-const StyledCardHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .filters-btn {
-    padding: 4px 30px;
-  }
-`;
-
-const FilterCardHeader = ({
-  onAdd,
-  onApply,
-}: {
-  onAdd: () => void;
-  onApply: () => void;
-}) => (
-  <StyledCardHeader>
-    <div>Add filters</div>
-    <div>
-      <Button className="filters-btn" type="link" onClick={onAdd}>
-        + Add new
-      </Button>
-      <Button className="filters-btn aq-ml-2" onClick={onApply} flat>
-        Apply
-      </Button>
-    </div>
-  </StyledCardHeader>
-);
 
 const filters: Option[] = [
   { label: "Os/Os version", value: "os" },
   { label: "Tester Id", value: "tester_id" },
+];
+
+const queryTypeOptions: Option[] = [
+  { label: "Include", value: "filteByInclude" },
+  { label: "Exclude", value: "filterByExclude" },
 ];
 
 interface SelectionFiltersProps {
@@ -68,6 +40,14 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
     { skip: !id }
   );
 
+  const initialFiltersValues: SelectionFiltersValues = {
+    filters: {},
+  };
+
+  const validationSchema = {
+    filters: yup.object(),
+  };
+
   useEffect(() => {
     if (data) {
       const questions = mapCampaingFormData(data);
@@ -76,33 +56,36 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
   }, [data]);
 
   return (
-    <StyledSelectionFilters>
-      <Card
-        title={
-          <FilterCardHeader
-            onAdd={() => console.info("onAdd")}
-            onApply={() => console.info("onApply")}
-          />
-        }
-      >
-        <FilterRow
-          filterByOptions={filterByList}
-          onRemove={() => console.info("remove row")}
-        />
-        <FilterRow
-          filterByOptions={filterByList}
-          onRemove={() => console.info("remove row")}
-        />
-        <FilterRow
-          filterByOptions={filterByList}
-          onRemove={() => console.info("remove row")}
-        />
-        <FilterRow
-          filterByOptions={filterByList}
-          onRemove={() => console.info("remove row")}
-        />
-      </Card>
-    </StyledSelectionFilters>
+    <Formik
+      validateOnBlur={false}
+      validateOnMount
+      initialValues={initialFiltersValues}
+      enableReinitialize
+      validationSchema={yup.object(validationSchema)}
+      onSubmit={async (values) => {
+        console.info("submit", values);
+      }}
+    >
+      {(formikProps: FormikProps<SelectionFiltersValues>) => {
+        return (
+          <Form id="selectionFilters">
+            <Card>
+              <FilterCardHeader queryTypeOptions={queryTypeOptions} />
+              <StyledSelectionFilters>
+                {formikProps.values.filters.row?.map((f: any, i: number) => (
+                  <FilterRow
+                    key={i}
+                    index={i}
+                    filterByOptions={filterByList}
+                    queryTypeOptions={queryTypeOptions}
+                  />
+                ))}
+              </StyledSelectionFilters>
+            </Card>
+          </Form>
+        );
+      }}
+    </Formik>
   );
 };
 
