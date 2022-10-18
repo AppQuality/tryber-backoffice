@@ -48,6 +48,9 @@ export const SelectFilter = ({
                 placeholder={placeholder}
                 value={field.value}
                 options={options}
+                onBlur={() => {
+                  form.setFieldTouched(name);
+                }}
                 onChange={(v) => {
                   if (v === null) {
                     v = { label: "", value: "" };

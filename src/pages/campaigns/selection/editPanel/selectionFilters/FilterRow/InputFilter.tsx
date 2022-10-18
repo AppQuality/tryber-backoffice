@@ -32,7 +32,7 @@ export const InputFilter = ({ name, placeholder }: InputFilterProps) => {
           }
         }}
       >
-        {({ field }: FieldProps) => {
+        {({ field, meta }: FieldProps) => {
           return (
             <FormGroup>
               <div className="input-group">
@@ -40,6 +40,7 @@ export const InputFilter = ({ name, placeholder }: InputFilterProps) => {
                   id={name}
                   type="text"
                   extra={{ ...field }}
+                  isInvalid={meta.touched && typeof meta.error == "string"}
                   placeholder={placeholder}
                 />
               </div>
