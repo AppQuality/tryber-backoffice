@@ -29,7 +29,7 @@ const SelectionPage = () => {
             </Card>
           </BSCol>
           <BSCol size="col-lg-12" className="aq-mt-3">
-            {error && "status" in error && error.status === 502 ? (
+            {error && "status" in error && error.status === 403 ? (
               <Card>
                 <ErrorUnauthorized />
               </Card>
