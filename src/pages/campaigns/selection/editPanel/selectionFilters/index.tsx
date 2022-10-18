@@ -57,8 +57,6 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
 
   return (
     <Formik
-      validateOnBlur={false}
-      validateOnMount
       initialValues={initialFiltersValues}
       enableReinitialize
       validationSchema={yup.object(validationSchema)}
