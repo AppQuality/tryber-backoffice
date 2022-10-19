@@ -8,6 +8,8 @@ import FilterRow from "./FilterRow";
 import { mapCampaingFormData } from "./mapData";
 import * as yup from "yup";
 import FilterCardHeader from "./FilterCardHeader";
+import { useAppDispatch } from "src/store";
+import { setDisableApplyFilters } from "../../selectionSlice";
 
 const StyledSelectionFilters = styled.div`
   height: 110px;
@@ -34,6 +36,7 @@ interface SelectionFiltersProps {
 }
 
 const SelectionFilters = ({ id }: SelectionFiltersProps) => {
+  const dispatch = useAppDispatch();
   const [filterByList, setFilterByList] = useState<Option[]>([]);
   const { data } = useGetCampaignsByCampaignFormsQuery(
     { campaign: id },
@@ -62,6 +65,7 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
       validationSchema={yup.object(validationSchema)}
       onSubmit={async (values) => {
         console.info("submit", values);
+        dispatch(setDisableApplyFilters(true));
       }}
     >
       {(formikProps: FormikProps<SelectionFiltersValues>) => {

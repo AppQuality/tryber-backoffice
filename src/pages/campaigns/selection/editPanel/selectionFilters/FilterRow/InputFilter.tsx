@@ -5,6 +5,8 @@ import {
 } from "@appquality/appquality-design-system";
 import { Field, FieldProps } from "formik";
 import styled from "styled-components";
+import { useAppDispatch } from "src/store";
+import { setDisableApplyFilters } from "../../../selectionSlice";
 
 const StyledInputFilter = styled.div`
   flex: 1 1 20px;
@@ -22,6 +24,8 @@ interface InputFilterProps {
 }
 
 export const InputFilter = ({ name, placeholder }: InputFilterProps) => {
+  const dispatch = useAppDispatch();
+
   return (
     <StyledInputFilter>
       <Field
@@ -32,14 +36,17 @@ export const InputFilter = ({ name, placeholder }: InputFilterProps) => {
           }
         }}
       >
-        {({ field, meta }: FieldProps) => {
+        {({ field, meta, form }: FieldProps) => {
           return (
             <FormGroup>
               <div className="input-group">
                 <Input
                   id={name}
                   type="text"
-                  extra={{ ...field }}
+                  onChange={(v) => {
+                    form.setFieldValue(name, v, true);
+                    dispatch(setDisableApplyFilters(false));
+                  }}
                   isInvalid={meta.touched && typeof meta.error == "string"}
                   placeholder={placeholder}
                 />

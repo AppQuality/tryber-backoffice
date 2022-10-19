@@ -4,6 +4,8 @@ import { ReactComponent as Trash } from "./assets/trash.svg";
 import { InputFilter } from "./InputFilter";
 import { SelectFilter } from "./SelectFilter";
 import { FieldArray } from "formik";
+import { useAppDispatch } from "src/store";
+import { setDisableApplyFilters } from "../../../selectionSlice";
 
 const StyledFilterRow = styled.div`
   display: flex;
@@ -25,6 +27,8 @@ const FilterRow = ({
   filterByOptions,
   queryTypeOptions,
 }: FilterRowProps) => {
+  const dispatch = useAppDispatch();
+
   return (
     <StyledFilterRow>
       <SelectFilter
@@ -45,7 +49,10 @@ const FilterRow = ({
         render={(arrayHelpers) => (
           <Trash
             className="filter-trash"
-            onClick={() => arrayHelpers.remove(index)}
+            onClick={() => {
+              arrayHelpers.remove(index);
+              dispatch(setDisableApplyFilters(false));
+            }}
           />
         )}
       />
