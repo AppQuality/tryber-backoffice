@@ -10,7 +10,7 @@ interface RowType extends TableType.Row {
   key: string;
   os: string;
   devices: string;
-  actions: JSX.Element;
+  actions: { title: string; content: JSX.Element };
   nameId?: string;
   exp?: string;
   level?: string;
@@ -59,12 +59,15 @@ const useTableRows = (id: string) => {
           devices: device.manufacturer
             ? `${device.manufacturer} ${device.model}`
             : "-",
-          actions: (
-            <DeviceCheckbox
-              userId={user.id.toString()}
-              deviceId={`${user.id.toString()}_${deviceIndex}`}
-            />
-          ),
+          actions: {
+            title: "select",
+            content: (
+              <DeviceCheckbox
+                userId={user.id.toString()}
+                deviceId={`${user.id.toString()}_${deviceIndex}`}
+              />
+            ),
+          },
         };
         if (deviceIndex === 0) {
           let fields: { [key: string]: any } = {};

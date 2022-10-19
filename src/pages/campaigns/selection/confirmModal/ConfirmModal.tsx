@@ -50,7 +50,7 @@ const ConfirmModal = () => {
       onClose={close}
     >
       sono stati selezionati {Object.keys(selectedDevices).length} tester, vuoi
-      procedere?
+      procedere con la selezione?
     </Modal>
   );
 };
