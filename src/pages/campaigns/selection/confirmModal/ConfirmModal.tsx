@@ -9,12 +9,14 @@ import { closeConfirmModal } from "src/pages/campaigns/selection/selectionSlice"
 import { usePostCampaignsByCampaignCandidatesMutation } from "src/services/tryberApi";
 import { FC } from "react";
 import siteWideMessageStore from "src/redux/siteWideMessages";
+import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableRows";
 
 const ConfirmModal: FC<{ id: string }> = ({ id }) => {
   const { add } = siteWideMessageStore();
   const { isConfirmModalOpen, selectedDevices } = useAppSelector(
     (state) => state.selection
   );
+  const { refetch } = useTableRows(id);
   const dispatch = useAppDispatch();
   const close = () => {
     dispatch(closeConfirmModal());
@@ -52,6 +54,8 @@ const ConfirmModal: FC<{ id: string }> = ({ id }) => {
         expire: false,
       });
     }
+    refetch();
+    close();
   };
   const Footer = () => {
     return (
