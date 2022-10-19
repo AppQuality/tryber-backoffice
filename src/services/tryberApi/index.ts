@@ -59,7 +59,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/campaigns/${queryArg.campaign}/candidates`,
-        params: { limit: queryArg.limit, start: queryArg.start },
+        params: {
+          limit: queryArg.limit,
+          start: queryArg.start,
+          fields: queryArg.fields,
+        },
       }),
     }),
     getCampaignsByCampaignTasks: build.query<
@@ -775,6 +779,11 @@ export type GetCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */ {
       osVersion: string;
       id: number;
     }[];
+    questions?: {
+      id?: string;
+      title?: string;
+      value?: string;
+    }[];
   }[];
 } & PaginationData;
 export type GetCampaignsByCampaignCandidatesApiArg = {
@@ -784,6 +793,8 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   limit?: number;
   /** Items to skip for pagination */
   start?: number;
+  /** The fields to add to the results */
+  fields?: string;
 };
 export type GetCampaignsByCampaignTasksApiResponse =
   /** status 200 A list of UseCase linked with the Campaign */ (Task & {
