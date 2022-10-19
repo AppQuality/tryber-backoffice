@@ -17,7 +17,7 @@ const useTableRows = (id: string) => {
   const { currentPage, devicesPerPage } = useAppSelector(
     (state) => state.selection
   );
-  const { data, isFetching, isLoading, error } =
+  const { data, isFetching, isLoading, error, refetch } =
     useGetCampaignsByCampaignCandidatesQuery({
       campaign: id,
       start: devicesPerPage * (currentPage - 1),
@@ -64,6 +64,7 @@ const useTableRows = (id: string) => {
     rows,
     totalRows: data?.total || 0,
     isFetching,
+    refetch,
     isLoading,
     error,
   };
