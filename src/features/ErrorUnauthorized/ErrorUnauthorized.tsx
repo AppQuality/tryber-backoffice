@@ -26,8 +26,7 @@ const ErrorUnauthorized = () => (
     <Text style={{ textAlign: "center" }}>
       <strong>Non c'è niente da vedere qui</strong>
       <br />
-      Sembrerebbe che tu non abbia i permessi per accedere alla selezione di
-      questa campagna
+      Sembrerebbe che tu non abbia i permessi per accedere a questa pagina
     </Text>
   </StyledError>
 );
