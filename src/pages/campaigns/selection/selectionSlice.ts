@@ -1,4 +1,6 @@
+import { TableType } from "@appquality/appquality-design-system";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { columns } from "./SelectionTable/columns";
 
 interface SelectionState {
   selectedDevices: {
@@ -7,6 +9,8 @@ interface SelectionState {
   currentPage: number;
   devicesPerPage: number;
   isConfirmModalOpen: boolean;
+  questionsId: string[];
+  tableColumns: TableType.Column[];
 }
 
 export const initialState: SelectionState = {
@@ -14,12 +18,20 @@ export const initialState: SelectionState = {
   currentPage: 1,
   devicesPerPage: 50,
   isConfirmModalOpen: false,
+  questionsId: [],
+  tableColumns: columns,
 };
 
 const selectionSlice = createSlice({
   name: "selection",
   initialState: initialState,
   reducers: {
+    setQuestionsId(state, action: PayloadAction<string[]>) {
+      state.questionsId = action.payload;
+    },
+    setTableColumns(state, action: PayloadAction<TableType.Column[]>) {
+      state.tableColumns = action.payload;
+    },
     reset() {
       return initialState;
     },
@@ -53,5 +65,7 @@ export const {
   deselectDevice,
   openConfirmModal,
   closeConfirmModal,
+  setQuestionsId,
+  setTableColumns,
 } = actions;
 export default reducer;
