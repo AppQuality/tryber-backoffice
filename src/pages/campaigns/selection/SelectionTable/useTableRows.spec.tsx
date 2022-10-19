@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { FC } from "react";
 import { aqBootstrapTheme } from "@appquality/appquality-design-system";
 import { ThemeProvider } from "styled-components";
+import { initialState } from "src/pages/campaigns/selection/selectionSlice";
 
 rest.get(
   "https://dv-crowd.app-quality.com/api/campaigns/2/candidates",
@@ -19,7 +20,13 @@ describe("useTableRows", () => {
   it("should return a list of rows", async function () {
     const wrapper: FC = ({ children }) => (
       <ThemeProvider theme={aqBootstrapTheme}>
-        <Provider store={setupStore()}>{children}</Provider>
+        <Provider
+          store={setupStore({
+            selection: initialState,
+          })}
+        >
+          {children}
+        </Provider>
       </ThemeProvider>
     );
     const { result, waitForNextUpdate } = renderHook(() => useTableRows("2"), {
