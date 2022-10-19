@@ -38,7 +38,7 @@ const useTableRows = (id: string) => {
         if (q.title && q.id)
           newColumns.splice(5 + i, 0, {
             dataIndex: q.title,
-            key: q.id,
+            key: q.id.toString(),
             title: q.title,
           });
       });
