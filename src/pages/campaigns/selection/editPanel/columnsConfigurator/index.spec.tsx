@@ -20,13 +20,6 @@ const mockedSelectedOptions = [
   { value: "6", label: "Quest_6" },
 ];
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: () => ({
-    id: "10",
-  }),
-}));
-
 export const handlers = [
   rest.get("http://localhost/campaigns/10/forms", (req, res, ctx) => {
     return res(ctx.json(mockedFormsResponse), ctx.delay(50));
@@ -66,7 +59,7 @@ describe("columns configurator", () => {
 
   it("should map selected columns (questions) and return array of id", () => {
     const result = mapSelectedQuestions(mockedSelectedOptions);
-    expect(result).toEqual([2, 5, 6]);
+    expect(result).toEqual(["question2", "question5", "question6"]);
   });
 
   it("should show multiselect options with question", async () => {

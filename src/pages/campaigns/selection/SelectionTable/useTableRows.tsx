@@ -14,7 +14,7 @@ interface RowType extends TableType.Row {
 }
 
 const useTableRows = (id: string) => {
-  const { currentPage, devicesPerPage } = useAppSelector(
+  const { currentPage, devicesPerPage, questionsId } = useAppSelector(
     (state) => state.selection
   );
   const { data, isFetching, isLoading, error } =
@@ -22,6 +22,7 @@ const useTableRows = (id: string) => {
       campaign: id,
       start: devicesPerPage * (currentPage - 1),
       limit: devicesPerPage,
+      ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
     });
   const rows: RowType[] = [];
   if (data && data.results) {

@@ -7,7 +7,7 @@ interface SelectionState {
   currentPage: number;
   devicesPerPage: number;
   isConfirmModalOpen: boolean;
-  questionsId: number[];
+  questionsId: string[];
 }
 
 const initialState: SelectionState = {
@@ -22,7 +22,7 @@ const selectionSlice = createSlice({
   name: "selection",
   initialState: initialState,
   reducers: {
-    setQuestionsId(state, action: PayloadAction<number[]>) {
+    setQuestionsId(state, action: PayloadAction<string[]>) {
       state.questionsId = action.payload;
     },
     reset() {
