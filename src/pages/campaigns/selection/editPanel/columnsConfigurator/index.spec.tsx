@@ -59,7 +59,7 @@ describe("columns configurator", () => {
 
   it("should map selected columns (questions) and return array of id", () => {
     const result = mapSelectedQuestions(mockedSelectedOptions);
-    expect(result).toEqual(["question2", "question5", "question6"]);
+    expect(result).toEqual(["question_2", "question_5", "question_6"]);
   });
 
   it("should show multiselect options with question", async () => {
