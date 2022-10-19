@@ -10,9 +10,9 @@ export const mapCampaingFormData = (
   })) || [];
 
 export const mapSelectedQuestions = (value: Option[]) => {
-  const ids: number[] = [];
+  const ids: string[] = [];
   value.forEach((v) => {
-    v.value && ids.push(parseInt(v.value));
+    v.value && ids.push(`question${v.value}`);
   });
   return ids;
 };

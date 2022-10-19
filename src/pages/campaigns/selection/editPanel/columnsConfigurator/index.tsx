@@ -13,6 +13,7 @@ interface ColumnsConfiguratorProps {
 const ColumnsConfigurator = ({ id }: ColumnsConfiguratorProps) => {
   const dispatch = useAppDispatch();
   const [value, setValue] = useState<Option[]>([]);
+  const [disableApply, setDisableApply] = useState(true);
   const { data } = useGetCampaignsByCampaignFormsQuery(
     { campaign: id },
     { skip: !id }
@@ -25,7 +26,10 @@ const ColumnsConfigurator = ({ id }: ColumnsConfiguratorProps) => {
         label={`Add columns by Form Campaign ${id}`}
         options={mapCampaingFormData(data)}
         value={value}
-        onChange={(v) => Array.isArray(v) && setValue(v)}
+        onChange={(v) => {
+          Array.isArray(v) && setValue(v);
+          setDisableApply(false);
+        }}
         placeholder={"Select questions form"}
         noOptionsMessage={() => "No questions"}
         isMulti
@@ -35,8 +39,10 @@ const ColumnsConfigurator = ({ id }: ColumnsConfiguratorProps) => {
         size="block"
         type="primary"
         data-testid="columnsConfigurator_apply"
+        disabled={disableApply}
         onClick={() => {
           dispatch(setQuestionsId(mapSelectedQuestions(value)));
+          setDisableApply(true);
         }}
       >
         Apply
