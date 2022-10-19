@@ -13,7 +13,7 @@ interface SelectionState {
   tableColumns: TableType.Column[];
 }
 
-const initialState: SelectionState = {
+export const initialState: SelectionState = {
   selectedDevices: {},
   currentPage: 1,
   devicesPerPage: 50,
