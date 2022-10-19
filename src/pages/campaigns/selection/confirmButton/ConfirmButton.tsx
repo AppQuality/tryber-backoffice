@@ -13,6 +13,8 @@ const ConfirmButton: FC = () => {
   return (
     <div style={{ textAlign: "right" }}>
       <Button
+        type="primary"
+        flat
         onClick={confirmSelection}
         disabled={Object.keys(selectedDevices).length < 1}
       >
