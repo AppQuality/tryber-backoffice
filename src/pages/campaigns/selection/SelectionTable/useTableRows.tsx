@@ -42,7 +42,7 @@ const useTableRows = (id: string) => {
             content: (
               <DeviceCheckbox
                 userId={user.id.toString()}
-                deviceId={`${user.id.toString()}_${deviceIndex}`}
+                deviceId={device.id.toString()}
               />
             ),
           },
