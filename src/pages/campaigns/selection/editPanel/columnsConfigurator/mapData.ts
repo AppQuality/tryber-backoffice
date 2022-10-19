@@ -12,7 +12,7 @@ export const mapCampaingFormData = (
 export const mapSelectedQuestions = (value: Option[]) => {
   const ids: string[] = [];
   value.forEach((v) => {
-    v.value && ids.push(`question${v.value}`);
+    v.value && ids.push(`question_${v.value}`);
   });
   return ids;
 };
