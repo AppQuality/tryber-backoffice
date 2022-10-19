@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "backoffice/",
   "dependencies": {
-    "@appquality/appquality-design-system": "^1.0.42",
+    "@appquality/appquality-design-system": "^1.0.43",
     "@appquality/craft-blocks": "^0.1.27",
     "@craco/craco": "^6.4.3",
     "@craftjs/core": "^0.2.0-beta.5",
