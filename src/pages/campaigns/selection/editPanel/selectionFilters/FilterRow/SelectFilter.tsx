@@ -6,6 +6,8 @@ import {
 import { Field, FieldProps } from "formik";
 import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
 import styled from "styled-components";
+import { useAppDispatch } from "src/store";
+import { setDisableApplyFilters } from "../../../selectionSlice";
 
 const StyledSelect = styled.div`
   flex: 1 1 0px;
@@ -28,6 +30,8 @@ export const SelectFilter = ({
   options,
   placeholder,
 }: SelectFilterProps) => {
+  const dispatch = useAppDispatch();
+
   return (
     <StyledSelect>
       <Field
@@ -57,6 +61,7 @@ export const SelectFilter = ({
                   }
                   field.onChange(v.value);
                   form.setFieldValue(name, v, true);
+                  dispatch(setDisableApplyFilters(false));
                 }}
                 isClearable={false}
                 menuTargetQuery="body"
