@@ -738,16 +738,16 @@ export type PutCampaignsByCampaignApiArg = {
 export type PostCampaignsByCampaignCandidatesApiResponse =
   /** status 200 OK */
   | {
-      tester_id?: number;
-      device?: "any" | number;
-      campaignId?: number;
-    }[]
+      results: {
+        tester_id: number;
+        device?: {} | {};
+        campaignId?: number;
+      }[];
+    }
   | /** status 207 Multi-Status (WebDAV) */ {
-      results?: {
-        tester_id?: number;
-        accepted?: boolean;
-        status?: "ready" | "removed" | "excluded" | "in-progress" | "completed";
-        device?: {} | number;
+      results: {
+        tester_id: number;
+        device?: "any" | number;
         campaignId?: number;
       }[];
       invalidTesters?: number[];
@@ -780,7 +780,7 @@ export type GetCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */ {
       id: number;
     }[];
     questions?: {
-      id?: string;
+      id?: number;
       title?: string;
       value?: string;
     }[];

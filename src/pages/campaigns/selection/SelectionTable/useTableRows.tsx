@@ -22,7 +22,7 @@ const useTableRows = (id: string) => {
   const { currentPage, devicesPerPage, questionsId } = useAppSelector(
     (state) => state.selection
   );
-  const { data, isFetching, isLoading, error } =
+  const { data, isFetching, isLoading, error, refetch } =
     useGetCampaignsByCampaignCandidatesQuery({
       campaign: id,
       start: devicesPerPage * (currentPage - 1),
@@ -38,7 +38,7 @@ const useTableRows = (id: string) => {
         if (q.title && q.id)
           newColumns.splice(5 + i, 0, {
             dataIndex: q.title,
-            key: q.id,
+            key: q.id.toString(),
             title: q.title,
           });
       });
@@ -64,7 +64,7 @@ const useTableRows = (id: string) => {
             content: (
               <DeviceCheckbox
                 userId={user.id.toString()}
-                deviceId={`${user.id.toString()}_${deviceIndex}`}
+                deviceId={device.id.toString()}
               />
             ),
           },
@@ -93,6 +93,7 @@ const useTableRows = (id: string) => {
     rows,
     totalRows: data?.total || 0,
     isFetching,
+    refetch,
     isLoading,
     error,
   };
