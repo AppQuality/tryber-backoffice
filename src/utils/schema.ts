@@ -906,7 +906,7 @@ export interface operations {
                 id: number;
               }[];
               questions?: {
-                id?: string;
+                id?: number;
                 title?: string;
                 value?: string;
               }[];
@@ -931,26 +931,20 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            tester_id?: number;
-            device?: "any" | number;
-            campaignId?: number;
-          }[];
+            results: {
+              tester_id: number;
+              device?: "any" | number;
+              campaignId?: number;
+            }[];
+          };
         };
       };
       /** Multi-Status (WebDAV) */
       207: {
         content: {
           "application/json": {
-            results?: {
-              tester_id?: number;
-              accepted?: boolean;
-              /** @enum {string} */
-              status?:
-                | "ready"
-                | "removed"
-                | "excluded"
-                | "in-progress"
-                | "completed";
+            results: {
+              tester_id: number;
               device?: "any" | number;
               campaignId?: number;
             }[];

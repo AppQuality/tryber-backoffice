@@ -17,7 +17,7 @@ const SelectionPage = () => {
   return (
     <div className="selection-page">
       <OpsUserContainer>
-        <ConfirmModal />
+        <ConfirmModal id={id} />
         <PageTitle size="regular">Tester selection panel</PageTitle>
         <BSGrid className="aq-my-4">
           <BSCol size="col-lg-6">
