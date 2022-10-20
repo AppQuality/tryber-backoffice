@@ -33,8 +33,9 @@ const useTableRows = (id: string) => {
 
   useEffect(() => {
     if (data?.results) {
+      console.log(data.results);
       const newColumns = [...columns];
-      data.results[0].questions?.forEach((q, i) => {
+      data.results[0]?.questions?.forEach((q, i) => {
         if (q.title && q.id)
           newColumns.splice(5 + i, 0, {
             dataIndex: q.title,
