@@ -12,7 +12,7 @@ import { useAppDispatch } from "src/store";
 import { setDisableApplyFilters } from "../../selectionSlice";
 
 const StyledSelectionFilters = styled.div`
-  height: 110px;
+  height: 122px;
   overflow: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
