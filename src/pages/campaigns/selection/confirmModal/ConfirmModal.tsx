@@ -5,7 +5,10 @@ import {
   Modal,
 } from "@appquality/appquality-design-system";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { closeConfirmModal } from "src/pages/campaigns/selection/selectionSlice";
+import {
+  clearSelectedDevice,
+  closeConfirmModal,
+} from "src/pages/campaigns/selection/selectionSlice";
 import { usePostCampaignsByCampaignCandidatesMutation } from "src/services/tryberApi";
 import { FC } from "react";
 import siteWideMessageStore from "src/redux/siteWideMessages";
@@ -53,6 +56,7 @@ const ConfirmModal: FC<{ id: string }> = ({ id }) => {
         message: `${response.data.results.length} tryber selezionati con successo`,
         expire: false,
       });
+      dispatch(clearSelectedDevice());
     }
     refetch();
     close();
