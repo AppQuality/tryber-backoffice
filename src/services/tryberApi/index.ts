@@ -59,7 +59,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/campaigns/${queryArg.campaign}/candidates`,
-        params: { limit: queryArg.limit, start: queryArg.start },
+        params: {
+          limit: queryArg.limit,
+          start: queryArg.start,
+          fields: queryArg.fields,
+        },
       }),
     }),
     getCampaignsByCampaignTasks: build.query<
@@ -734,18 +738,16 @@ export type PutCampaignsByCampaignApiArg = {
 export type PostCampaignsByCampaignCandidatesApiResponse =
   /** status 200 OK */
   | {
-      tester_id?: number;
-      accepted?: boolean;
-      status?: "ready" | "removed" | "excluded" | "in-progress" | "completed";
-      device?: "any" | UserDevice;
-      campaignId?: number;
-    }[]
+      results: {
+        tester_id: number;
+        device?: {} | {};
+        campaignId?: number;
+      }[];
+    }
   | /** status 207 Multi-Status (WebDAV) */ {
-      results?: {
-        tester_id?: number;
-        accepted?: boolean;
-        status?: "ready" | "removed" | "excluded" | "in-progress" | "completed";
-        device?: {} | UserDevice;
+      results: {
+        tester_id: number;
+        device?: "any" | number;
         campaignId?: number;
       }[];
       invalidTesters?: number[];
@@ -777,6 +779,11 @@ export type GetCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */ {
       osVersion: string;
       id: number;
     }[];
+    questions?: {
+      id?: number;
+      title?: string;
+      value?: string;
+    }[];
   }[];
 } & PaginationData;
 export type GetCampaignsByCampaignCandidatesApiArg = {
@@ -786,6 +793,8 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   limit?: number;
   /** Items to skip for pagination */
   start?: number;
+  /** The fields to add to the results */
+  fields?: string;
 };
 export type GetCampaignsByCampaignTasksApiResponse =
   /** status 200 A list of UseCase linked with the Campaign */ (Task & {
@@ -1872,24 +1881,6 @@ export type Campaign = CampaignOptional & CampaignRequired;
 export type Project = {
   name?: string;
 };
-export type UserDevice = {
-  type: string;
-  id: number;
-  device:
-    | {
-        manufacturer: string;
-        model: string;
-        id?: number;
-      }
-    | {
-        pc_type: string;
-      };
-  operating_system: {
-    id: number;
-    platform: string;
-    version: string;
-  };
-};
 export type PaginationData = {
   start: number;
   limit?: number;
@@ -2007,6 +1998,24 @@ export type CampaignAdditionalField = {
       regex: string;
     }
 );
+export type UserDevice = {
+  type: string;
+  id: number;
+  device:
+    | {
+        manufacturer: string;
+        model: string;
+        id?: number;
+      }
+    | {
+        pc_type: string;
+      };
+  operating_system: {
+    id: number;
+    platform: string;
+    version: string;
+  };
+};
 export type FiscalType =
   | "withholding"
   | "witholding-extra"

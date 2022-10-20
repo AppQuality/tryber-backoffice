@@ -10,26 +10,32 @@ import ColumnsConfigurator from "./editPanel/columnsConfigurator";
 import SelectionFilters from "./editPanel/selectionFilters";
 import SelectionTable from "./SelectionTable";
 import { useParams } from "react-router-dom";
+import ConfirmButton from "src/pages/campaigns/selection/confirmButton/ConfirmButton";
+import ConfirmModal from "src/pages/campaigns/selection/confirmModal/ConfirmModal";
 
 const SelectionPage = () => {
   const { id } = useParams<{ id: string }>();
   return (
     <div className="selection-page">
       <OpsUserContainer>
+        <ConfirmModal id={id} />
         <PageTitle size="regular">Tester selection panel</PageTitle>
         <BSGrid className="aq-my-4">
           <BSCol size="col-lg-6">
-            <Card title="Add columns">
-              <ColumnsConfigurator />
+            <Card title="Add columns" shadow>
+              <ColumnsConfigurator id={id} />
             </Card>
           </BSCol>
           <BSCol size="col-lg-6">
             <SelectionFilters id={id} />
           </BSCol>
           <BSCol size="col-lg-12" className="aq-mt-3">
-            <Card>
+            <Card className="aq-mb-3">
               <Counter />
-              <SelectionTable />
+              <SelectionTable id={id} />
+            </Card>
+            <Card>
+              <ConfirmButton />
             </Card>
           </BSCol>
         </BSGrid>

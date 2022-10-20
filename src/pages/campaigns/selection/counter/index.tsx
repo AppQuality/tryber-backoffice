@@ -1,5 +1,8 @@
+import { useAppSelector } from "src/store";
+
 const Counter = () => {
-  return <div>counter</div>;
+  const { selectedDevices } = useAppSelector((state) => state.selection);
+  return <div>{Object.keys(selectedDevices).length} Tester selezionati</div>;
 };
 
 export default Counter;

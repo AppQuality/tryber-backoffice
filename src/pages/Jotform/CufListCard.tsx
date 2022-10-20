@@ -25,7 +25,7 @@ export const CufListCard = () => {
           key={f.fieldData.id}
           id={f.fieldData.id.toString()}
           label={f.fieldData.name.it}
-          checked={f.checked}
+          defaultChecked={f.checked}
           onChange={() => {
             const newFields = [...fields];
             newFields[i] = {

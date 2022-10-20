@@ -883,6 +883,8 @@ export interface operations {
         limit?: components["parameters"]["limit"];
         /** Items to skip for pagination */
         start?: components["parameters"]["start"];
+        /** The fields to add to the results */
+        fields?: string;
       };
     };
     responses: {
@@ -902,6 +904,11 @@ export interface operations {
                 os: string;
                 osVersion: string;
                 id: number;
+              }[];
+              questions?: {
+                id?: number;
+                title?: string;
+                value?: string;
               }[];
             }[];
           } & components["schemas"]["PaginationData"];
@@ -924,35 +931,21 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            tester_id?: number;
-            accepted?: boolean;
-            /** @enum {string} */
-            status?:
-              | "ready"
-              | "removed"
-              | "excluded"
-              | "in-progress"
-              | "completed";
-            device?: "any" | components["schemas"]["UserDevice"];
-            campaignId?: number;
-          }[];
+            results: {
+              tester_id: number;
+              device?: "any" | number;
+              campaignId?: number;
+            }[];
+          };
         };
       };
       /** Multi-Status (WebDAV) */
       207: {
         content: {
           "application/json": {
-            results?: {
-              tester_id?: number;
-              accepted?: boolean;
-              /** @enum {string} */
-              status?:
-                | "ready"
-                | "removed"
-                | "excluded"
-                | "in-progress"
-                | "completed";
-              device?: "any" | components["schemas"]["UserDevice"];
+            results: {
+              tester_id: number;
+              device?: "any" | number;
               campaignId?: number;
             }[];
             invalidTesters?: number[];
