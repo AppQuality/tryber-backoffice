@@ -13,7 +13,7 @@ const SelectionTable: FC<{ id: string }> = ({ id }) => {
     (state) => state.selection
   );
   return (
-    <StyledSelectionTable>
+    <StyledSelectionTable columns={tableColumns.length}>
       <Table
         data-testid="selection-table"
         dataSource={rows}
