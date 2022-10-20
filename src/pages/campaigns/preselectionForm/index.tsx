@@ -58,6 +58,7 @@ const PreselectionForm = () => {
       case "address":
       case "text":
         initialFieldValue.push({
+          questionId: f.id,
           fieldId: f.type,
           question: f.question,
           shortTitle: f.short_name,
@@ -72,6 +73,7 @@ const PreselectionForm = () => {
       case "select":
       case "multiselect":
         initialFieldValue.push({
+          questionId: f.id,
           fieldId: uuidv4(),
           question: f.question,
           shortTitle: f.short_name,
@@ -102,6 +104,7 @@ const PreselectionForm = () => {
             });
           }
           initialFieldValue.push({
+            questionId: f.id,
             cufId,
             cufType: cufToAdd?.type,
             fieldId: f.type,
@@ -174,7 +177,8 @@ const PreselectionForm = () => {
         validationSchema={validationSchema}
         onSubmit={async (values) => {
           const fieldsToSend = values.fields.map((field) => {
-            const newField: PreselectionFormQuestion = {
+            const newField: PreselectionFormQuestion & { id?: number } = {
+              ...(field.questionId ? { id: field.questionId } : {}),
               question: field.question,
               short_name: field.shortTitle,
               type: field.type,
