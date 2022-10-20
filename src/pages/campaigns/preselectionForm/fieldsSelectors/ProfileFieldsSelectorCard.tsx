@@ -96,7 +96,7 @@ export const ProfileFieldsSelectorCard: FC<{
             key={`${f.fieldId}-${isChecked}`}
             id={f.fieldId}
             label={f.name}
-            checked={isChecked}
+            defaultChecked={isChecked}
             disabled={isChecked}
             onChange={() => {
               toggleField(f.fieldId);

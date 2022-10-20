@@ -105,7 +105,7 @@ export const CufSelectorCard: FC<{
             key={`${f.id}-${isChecked}`}
             id={f.id.toString()}
             label={f.name.it}
-            checked={isChecked}
+            defaultChecked={isChecked}
             disabled={isChecked}
             onChange={() => {
               toggleCuf(f.id);

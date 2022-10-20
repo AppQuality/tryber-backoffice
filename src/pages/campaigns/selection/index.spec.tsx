@@ -3,6 +3,13 @@ import SelectionPage from "./index";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+  useParams: () => ({
+    id: "2",
+  }),
+}));
+
 jest.mock(
   "src/pages/campaigns/selection/editPanel/columnsConfigurator/index.tsx",
   () => () => <div data-testid="ColumnsConfigurator" />
