@@ -49,6 +49,9 @@ const selectionSlice = createSlice({
     deselectDevice(state, action: PayloadAction<{ userId: string }>) {
       delete state.selectedDevices[action.payload.userId];
     },
+    clearSelectedDevice(state) {
+      state.selectedDevices = {};
+    },
     changeTablePage(state, action: PayloadAction<{ newPage: number }>) {
       if (action.payload.newPage > 0)
         state.currentPage = action.payload.newPage;
@@ -68,6 +71,7 @@ export const {
   checkUserDevice,
   changeTablePage,
   deselectDevice,
+  clearSelectedDevice,
   openConfirmModal,
   closeConfirmModal,
   setQuestionsId,

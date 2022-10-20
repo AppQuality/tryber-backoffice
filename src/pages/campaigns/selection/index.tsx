@@ -12,6 +12,12 @@ import SelectionTable from "./SelectionTable";
 import { useParams } from "react-router-dom";
 import ConfirmButton from "src/pages/campaigns/selection/confirmButton/ConfirmButton";
 import ConfirmModal from "src/pages/campaigns/selection/confirmModal/ConfirmModal";
+import styled from "styled-components";
+
+const StickyToBottomContainer = styled.div`
+  position: sticky;
+  bottom: 0;
+`;
 
 const SelectionPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,9 +40,11 @@ const SelectionPage = () => {
               <Counter />
               <SelectionTable id={id} />
             </Card>
-            <Card>
-              <ConfirmButton />
-            </Card>
+            <StickyToBottomContainer>
+              <Card>
+                <ConfirmButton />
+              </Card>
+            </StickyToBottomContainer>
           </BSCol>
         </BSGrid>
       </OpsUserContainer>
