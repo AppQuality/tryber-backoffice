@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledSelectionTable = styled.div`
+export const StyledSelectionTable = styled.div<{ columns: number }>`
   .cell.highlighted {
     background-color: ${(p) => p.theme.colors.gray100};
   }
@@ -8,7 +8,10 @@ export const StyledSelectionTable = styled.div`
   .table-scrollable {
     overflow: auto;
     .thead {
-      min-width: max-content;
+      min-width: 250px;
+      &:nth-child(${(p) => p.columns}) {
+        min-width: 55px;
+      }
     }
   }
 
@@ -28,7 +31,7 @@ export const StyledSelectionTable = styled.div`
           min-width: 180px;
         }
         &:nth-child(5) {
-          min-width: 330px;
+          min-width: 250px;
         }
       }
     }
@@ -53,7 +56,7 @@ export const StyledSelectionTable = styled.div`
           min-width: 150px;
         }
         &:nth-child(5) {
-          min-width: 300px;
+          min-width: 250px;
         }
       }
     }
@@ -76,7 +79,7 @@ export const StyledSelectionTable = styled.div`
           min-width: 120px;
         }
         &:nth-child(5) {
-          min-width: 275px;
+          min-width: 250px;
         }
       }
     }
