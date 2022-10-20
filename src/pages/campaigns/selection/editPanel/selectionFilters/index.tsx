@@ -5,11 +5,14 @@ import { useEffect, useState } from "react";
 import { useGetCampaignsByCampaignFormsQuery } from "src/services/tryberApi";
 import styled from "styled-components";
 import FilterRow from "./FilterRow";
-import { mapCampaingFormData } from "./mapData";
+import { mapCampaingFormData } from "../columnsConfigurator/mapData";
 import * as yup from "yup";
 import FilterCardHeader from "./FilterCardHeader";
 import { useAppDispatch } from "src/store";
-import { setDisableApplyFilters } from "../../selectionSlice";
+import {
+  clearSelectedDevice,
+  setDisableApplyFilters,
+} from "../../selectionSlice";
 
 const StyledSelectionFilters = styled.div`
   height: 122px;
@@ -66,6 +69,7 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
       onSubmit={async (values) => {
         console.info("submit", values);
         dispatch(setDisableApplyFilters(true));
+        dispatch(clearSelectedDevice());
       }}
     >
       {(formikProps: FormikProps<SelectionFiltersValues>) => {
