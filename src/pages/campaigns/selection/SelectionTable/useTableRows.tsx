@@ -37,8 +37,8 @@ const useTableRows = (id: string) => {
       data.results[0]?.questions?.forEach((q, i) => {
         if (q.title && q.id)
           newColumns.splice(5 + i, 0, {
-            dataIndex: q.title,
-            key: q.id.toString(),
+            dataIndex: `${q.id}-${i}`,
+            key: `${q.id}-${i}`,
             title: q.title,
           });
       });
@@ -71,10 +71,8 @@ const useTableRows = (id: string) => {
         };
         if (deviceIndex === 0) {
           let fields: { [key: string]: any } = {};
-          user.questions?.forEach((a) => {
-            if (a.title) {
-              fields = { ...fields, ...{ [a.title]: a.value } };
-            }
+          user.questions?.forEach((q, i) => {
+            fields = { ...fields, ...{ [`${q.id}-${i}`]: q.value || "-" } };
           });
           row = {
             ...row,
