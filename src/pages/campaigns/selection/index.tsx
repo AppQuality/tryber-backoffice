@@ -15,7 +15,7 @@ import styled from "styled-components";
 
 const StickyToBottomContainer = styled.div`
   position: sticky;
-  bottom: 16px;
+  bottom: 0;
 `;
 
 const SelectionPage = () => {
