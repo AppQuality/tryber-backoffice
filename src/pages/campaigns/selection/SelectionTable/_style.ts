@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 export const StyledSelectionTable = styled.div<{ columns: number }>`
+  .selection-title {
+    padding: 16px 16px 8px;
+    border-bottom: 1px solid ${(p) => p.theme.colors.gray300};
+  }
+
   .cell.highlighted {
     background-color: ${(p) => p.theme.colors.gray100};
   }
