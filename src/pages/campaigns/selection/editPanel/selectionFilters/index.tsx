@@ -10,6 +10,7 @@ import * as yup from "yup";
 import FilterCardHeader from "./FilterCardHeader";
 import { useAppDispatch } from "src/store";
 import {
+  changeTablePage,
   clearSelectedDevice,
   setDisableApplyFilters,
 } from "../../selectionSlice";
@@ -68,6 +69,7 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
       validationSchema={yup.object(validationSchema)}
       onSubmit={async (values) => {
         console.info("submit", values);
+        dispatch(changeTablePage({ newPage: 1 }));
         dispatch(setDisableApplyFilters(true));
         dispatch(clearSelectedDevice());
       }}
