@@ -25,6 +25,7 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
       position: sticky;
       top: 0;
       background: white;
+      z-index: 1;
 
       &:nth-child(${(p) => p.columns}) {
         min-width: 55px;
