@@ -5,6 +5,13 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
     background-color: ${(p) => p.theme.colors.gray100};
   }
 
+  .lastRowCell,
+  .lastHeadCell {
+    position: sticky;
+    right: 0;
+    background: white;
+  }
+
   .table-scrollable {
     overflow: auto;
     .thead {
