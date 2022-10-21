@@ -18,19 +18,19 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
   @media (min-width: ${(p) => p.theme.grid.breakpoints.xxl}) {
     .table-scrollable {
       .thead {
-        &:nth-child(1) {
+        &:nth-child(${(p) => p.columns - 5}) {
           min-width: 310px;
         }
-        &:nth-child(2) {
+        &:nth-child(${(p) => p.columns - 4}) {
           min-width: 148px;
         }
-        &:nth-child(3) {
+        &:nth-child(${(p) => p.columns - 3}) {
           min-width: 155px;
         }
-        &:nth-child(4) {
+        &:nth-child(${(p) => p.columns - 2}) {
           min-width: 180px;
         }
-        &:nth-child(5) {
+        &:nth-child(${(p) => p.columns - 1}) {
           min-width: 250px;
         }
       }
@@ -43,19 +43,19 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
     .table-scrollable {
       overflow: auto;
       .thead {
-        &:nth-child(1) {
+        &:nth-child(${(p) => p.columns - 5}) {
           min-width: 280px;
         }
-        &:nth-child(2) {
+        &:nth-child(${(p) => p.columns - 4}) {
           min-width: 120px;
         }
-        &:nth-child(3) {
+        &:nth-child(${(p) => p.columns - 3}) {
           min-width: 125px;
         }
-        &:nth-child(4) {
+        &:nth-child(${(p) => p.columns - 2}) {
           min-width: 150px;
         }
-        &:nth-child(5) {
+        &:nth-child(${(p) => p.columns - 1}) {
           min-width: 250px;
         }
       }
@@ -66,19 +66,19 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
     .table-scrollable {
       overflow: auto;
       .thead {
-        &:nth-child(1) {
+        &:nth-child(${(p) => p.columns - 5}) {
           min-width: 250px;
         }
-        &:nth-child(2) {
+        &:nth-child(${(p) => p.columns - 4}) {
           min-width: 90px;
         }
-        &:nth-child(3) {
+        &:nth-child(${(p) => p.columns - 3}) {
           min-width: 95px;
         }
-        &:nth-child(4) {
+        &:nth-child(${(p) => p.columns - 2}) {
           min-width: 120px;
         }
-        &:nth-child(5) {
+        &:nth-child(${(p) => p.columns - 1}) {
           min-width: 250px;
         }
       }
