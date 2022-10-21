@@ -40,21 +40,19 @@ const ConfirmModal: FC<{ id: string }> = ({ id }) => {
         // @ts-ignore
         message += `: ${response.error.data?.message}`;
       }
-      add({ type: "danger", message, expire: false });
+      add({ type: "danger", message });
     }
     if ("data" in response) {
       if ("invalidTesters" in response.data) {
         add({
           type: "warning",
           message: `${response.data.invalidTesters?.length} tryber non sono stati aggiunti per un errore`,
-          expire: false,
         });
         console.warn(response.data.invalidTesters);
       }
       add({
         type: "success",
         message: `${response.data.results.length} tryber selezionati con successo`,
-        expire: false,
       });
       dispatch(clearSelectedDevice());
     }
