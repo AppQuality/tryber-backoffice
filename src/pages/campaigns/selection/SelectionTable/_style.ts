@@ -14,8 +14,13 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
 
   .table-scrollable {
     overflow: auto;
+    height: 500px;
     .thead {
       min-width: 250px;
+      position: sticky;
+      top: 0;
+      background: white;
+
       &:nth-child(${(p) => p.columns}) {
         min-width: 55px;
       }
