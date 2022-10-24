@@ -23,12 +23,14 @@ interface SelectFilterProps {
   name: string;
   options: Option[];
   placeholder?: string;
+  index?: number;
 }
 
 export const SelectFilter = ({
   name,
   options,
   placeholder,
+  index,
 }: SelectFilterProps) => {
   const dispatch = useAppDispatch();
 
@@ -43,6 +45,18 @@ export const SelectFilter = ({
         }}
       >
         {({ field, form }: FieldProps) => {
+          const newOptions = [...options];
+          if (index !== undefined) {
+            const selectedValues: string[] = [];
+            form.values.filters.row?.forEach(
+              (r: any, i: number) =>
+                i !== index && selectedValues.push(r.filterBy.value)
+            );
+            selectedValues.forEach((s: any) => {
+              const index = newOptions.findIndex((o) => o.value === s);
+              index !== -1 && newOptions.splice(index, 1);
+            });
+          }
           return (
             <FormGroup>
               <Select
@@ -51,7 +65,7 @@ export const SelectFilter = ({
                 name={name}
                 placeholder={placeholder}
                 value={field.value}
-                options={options}
+                options={newOptions}
                 onBlur={() => {
                   form.setFieldTouched(name);
                 }}

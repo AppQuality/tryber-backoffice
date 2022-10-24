@@ -35,6 +35,7 @@ const FilterRow = ({
         name={`filters.row.${index}.filterBy`}
         options={filterByOptions}
         placeholder={"Filter by"}
+        index={index}
       />
       <SelectFilter
         name={`filters.row.${index}.queryType`}
