@@ -13,6 +13,7 @@ import {
   changeTablePage,
   clearSelectedDevice,
   setDisableApplyFilters,
+  setFilters,
 } from "../../selectionSlice";
 
 const StyledSelectionFilters = styled.div`
@@ -68,10 +69,18 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
       enableReinitialize
       validationSchema={yup.object(validationSchema)}
       onSubmit={async (values) => {
-        console.info("submit", values);
+        let filtersToAdd: { [key: string]: any } = {};
+        values.filters.row?.forEach((r: any) => {
+          let key = r.queryType.value;
+          r.filterBy.value === "os" || r.filterBy.value === "tester_id"
+            ? (key += `[${r.filterBy.value}]=`)
+            : (key += `[question_${r.filterBy.value}]=`);
+          filtersToAdd = { ...filtersToAdd, ...{ [key]: r.search } };
+        });
         dispatch(changeTablePage({ newPage: 1 }));
         dispatch(setDisableApplyFilters(true));
         dispatch(clearSelectedDevice());
+        dispatch(setFilters(filtersToAdd));
       }}
     >
       {(formikProps: FormikProps<SelectionFiltersValues>) => {
