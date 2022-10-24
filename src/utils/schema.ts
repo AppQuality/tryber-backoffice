@@ -32,6 +32,7 @@ export interface paths {
     };
   };
   "/campaigns/{campaign}/candidates": {
+    get: operations["get-campaigns-campaign-candidates"];
     /** The Tryber will be inserted as a candidate Tryber on a specific Campaign */
     post: operations["post-campaigns-campaign-candidates"];
     parameters: {
@@ -78,6 +79,14 @@ export interface paths {
     parameters: {
       path: {
         formId: string;
+      };
+    };
+  };
+  "/campaigns/{campaign}/forms": {
+    get: operations["get-campaigns-campaign-forms"];
+    parameters: {
+      path: {
+        campaign: string;
       };
     };
   };
@@ -248,6 +257,15 @@ export interface paths {
       };
     };
   };
+  "/users/me/campaigns/{campaign}/compatible_devices": {
+    get: operations["get-users-me-campaigns-campaignId-compatible-devices"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+  };
   "/users/me/campaigns/{campaignId}/bugs": {
     /** Send a user bug on a specific campaign */
     post: operations["post-users-me-campaigns-campaign-bugs"];
@@ -373,6 +391,15 @@ export interface paths {
   "/users/me/rank/list": {
     get: operations["get-users-me-rank-list"];
   };
+  "/users/me/campaigns/{campaignId}/forms": {
+    get: operations["get-users-me-campaign-campaignId-forms"];
+    post: operations["post-users-me-campaigns-campaignId-forms"];
+    parameters: {
+      path: {
+        campaignId: string;
+      };
+    };
+  };
 }
 
 export interface components {
@@ -472,16 +499,11 @@ export interface components {
     };
     CampaignRequired: {
       name: string;
-      internal_id: string;
       dates: {
         start: string;
         end: string;
         close: string;
       };
-      devices: {
-        id: string;
-      }[];
-      projectManager: components["schemas"]["User"];
       campaign_type: components["schemas"]["CampaignType"];
     };
     CampaignType: string | number;
@@ -649,6 +671,18 @@ export interface components {
         version: string;
       };
     };
+    /**
+     * Gender
+     * @enum {string}
+     */
+    Gender: "male" | "female" | "not-specified" | "other";
+    /** PaginationData */
+    PaginationData: {
+      start: number;
+      limit?: number;
+      size: number;
+      total?: number;
+    };
   };
   responses: {
     /** A user */
@@ -688,6 +722,7 @@ export interface components {
           element: string;
           id: number;
           message: string;
+          code?: string;
         };
       };
     };
@@ -704,6 +739,7 @@ export interface components {
       content: {
         "application/json": {
           message?: string;
+          code?: string;
         };
       };
     };
@@ -836,15 +872,19 @@ export interface operations {
       };
     };
   };
-  /** The Tryber will be inserted as a candidate Tryber on a specific Campaign */
-  "post-campaigns-campaign-candidates": {
+  "get-campaigns-campaign-candidates": {
     parameters: {
       path: {
         /** A campaign id */
         campaign: string;
       };
       query: {
-        device?: string;
+        /** Max items to retrieve */
+        limit?: components["parameters"]["limit"];
+        /** Items to skip for pagination */
+        start?: components["parameters"]["start"];
+        /** The fields to add to the results */
+        fields?: string;
       };
     };
     responses: {
@@ -852,16 +892,63 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            tester_id: number;
-            accepted: boolean;
-            /** @enum {string} */
-            status:
-              | "ready"
-              | "in-progress"
-              | "completed"
-              | "excluded"
-              | "removed";
-            device: "any" | components["schemas"]["UserDevice"];
+            results?: {
+              id: number;
+              name: string;
+              surname: string;
+              experience: number;
+              level: string;
+              devices: {
+                manufacturer?: string;
+                model?: string;
+                os: string;
+                osVersion: string;
+                id: number;
+              }[];
+              questions?: {
+                id?: number;
+                title?: string;
+                value?: string;
+              }[];
+            }[];
+          } & components["schemas"]["PaginationData"];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  /** The Tryber will be inserted as a candidate Tryber on a specific Campaign */
+  "post-campaigns-campaign-candidates": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            results: {
+              tester_id: number;
+              device?: "any" | number;
+              campaignId?: number;
+            }[];
+          };
+        };
+      };
+      /** Multi-Status (WebDAV) */
+      207: {
+        content: {
+          "application/json": {
+            results: {
+              tester_id: number;
+              device?: "any" | number;
+              campaignId?: number;
+            }[];
+            invalidTesters?: number[];
           };
         };
       };
@@ -870,9 +957,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": {
-          tester_id: number;
-        };
+        "application/json":
+          | {
+              tester_id: number;
+              device?: number | "random";
+            }[]
+          | {
+              tester_id: number;
+              device?: number | "random";
+            };
       };
     };
   };
@@ -1096,6 +1189,27 @@ export interface operations {
           } & components["schemas"]["PreselectionFormQuestion"])[];
         };
       };
+    };
+  };
+  "get-campaigns-campaign-forms": {
+    parameters: {
+      path: {
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            question: string;
+            shortName?: string;
+          }[];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
     };
   };
   /** Get all certificatio */
@@ -1692,8 +1806,7 @@ export interface operations {
             }[];
             onboarding_completed?: boolean;
             additional?: components["schemas"]["AdditionalField"][];
-            /** @enum {string} */
-            gender?: "male" | "female" | "not-specified" | "other";
+            gender?: components["schemas"]["Gender"];
             /** Format: date */
             birthDate?: string;
             phone?: string;
@@ -1990,6 +2103,24 @@ export interface operations {
       };
     };
   };
+  "get-users-me-campaigns-campaignId-compatible-devices": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserDevice"][];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+  };
   /** Send a user bug on a specific campaign */
   "post-users-me-campaigns-campaign-bugs": {
     parameters: {
@@ -2184,7 +2315,9 @@ export interface operations {
         content: {
           "application/json": ({
             id?: number;
-          } & components["schemas"]["UserDevice"])[];
+          } & components["schemas"]["UserDevice"] & {
+              [key: string]: unknown;
+            })[];
         };
       };
       403: components["responses"]["NotAuthorized"];
@@ -2790,6 +2923,70 @@ export interface operations {
       };
       403: components["responses"]["NotAuthorized"];
       404: components["responses"]["NotFound"];
+    };
+  };
+  "get-users-me-campaign-campaignId-forms": {
+    parameters: {
+      path: {
+        campaignId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": (components["schemas"]["PreselectionFormQuestion"] & {
+            value?:
+              | number
+              | {
+                  city?: string;
+                  country?: string;
+                }
+              | number[]
+              | string;
+            validation?: {
+              regex: string;
+              error?: string;
+            };
+            id: number;
+          })[];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  "post-users-me-campaigns-campaignId-forms": {
+    parameters: {
+      path: {
+        campaignId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: unknown;
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          form?: {
+            value: {
+              id?: number | number[];
+              serialized?:
+                | string
+                | string[]
+                | {
+                    city: string;
+                    country: string;
+                  };
+            };
+            question: number;
+          }[];
+          device?: number[];
+        };
+      };
     };
   };
 }

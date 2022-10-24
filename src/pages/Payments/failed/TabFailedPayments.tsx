@@ -88,7 +88,7 @@ export const TabFailedPayments = () => {
             title: "select",
             content: (
               <Checkbox
-                checked={selectedReqs.indexOf(req.id) >= 0}
+                defaultChecked={selectedReqs.indexOf(req.id) >= 0}
                 onChange={() => changeSelectedReqs(req.id)}
               />
             ),
