@@ -56,7 +56,7 @@ export const TabPendingPayments = () => {
             title: "select",
             content: (
               <Checkbox
-                checked={selected.indexOf(req.id) >= 0}
+                defaultChecked={selected.indexOf(req.id) >= 0}
                 onChange={() => dispatch(selectRequest(req.id))}
               />
             ),

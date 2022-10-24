@@ -6,23 +6,24 @@ const apifetch = async ({
   body,
   params,
   token,
+  headers,
 }: {
   endpoint: string;
   method?: string;
-  body?: {
-    [key: string]:
-      | string
-      | {
-          [key: string]: string;
-        };
-  };
+  body?: object;
   params?: object;
   token?: string;
+  headers?: { [key: string]: string };
 }) => {
   if (process.env.REACT_APP_DEFAULT_TOKEN)
     token = process.env.REACT_APP_DEFAULT_TOKEN;
   const requestHeaders: HeadersInit = new Headers();
   requestHeaders.set("Content-Type", "application/json");
+  if (headers) {
+    Object.keys(headers).forEach((key) => {
+      requestHeaders.set(key, headers[key]);
+    });
+  }
   if (token) {
     requestHeaders.set("Authorization", "Bearer " + token);
   }
@@ -57,25 +58,7 @@ const apifetch = async ({
     return await res.json();
   } else {
     const json = await res.json();
-    if (typeof json.message === "string") {
-      throw new HttpError(
-        res.status,
-        res.statusText,
-        json.message || json.err.message
-      );
-    } else if (
-      typeof json.message === "object" &&
-      "code" in json.message &&
-      "data" in json.message
-    ) {
-      throw new HttpError(
-        res.status,
-        json.message.code,
-        json.message.data || json.err.message
-      );
-    } else {
-      throw new HttpError(res.status, res.statusText, "Unknown Error");
-    }
+    throw new HttpError(res.status, res.statusText, json.message || json.err);
   }
 };
 
