@@ -36,7 +36,7 @@ const useTableRows = (id: string) => {
       const newColumns = [...columns];
       data.results[0]?.questions?.forEach((q, i) => {
         if (q.title && q.id)
-          newColumns.splice(5 + i, 0, {
+          newColumns.splice(1 + i, 0, {
             dataIndex: `${q.id}-${i}`,
             key: `${q.id}-${i}`,
             title: q.title,
