@@ -12,6 +12,7 @@ interface SelectionState {
   questionsId: string[];
   tableColumns: TableType.Column[];
   disableApplyFilters: boolean;
+  filters: { [key: string]: any };
 }
 
 export const initialState: SelectionState = {
@@ -22,6 +23,7 @@ export const initialState: SelectionState = {
   questionsId: [],
   tableColumns: columns,
   disableApplyFilters: true,
+  filters: {},
 };
 
 const selectionSlice = createSlice({
@@ -36,6 +38,9 @@ const selectionSlice = createSlice({
     },
     setDisableApplyFilters(state, action: PayloadAction<boolean>) {
       state.disableApplyFilters = action.payload;
+    },
+    setFilters(state, action: PayloadAction<{ [key: string]: any }>) {
+      state.filters = action.payload;
     },
     reset() {
       return initialState;
@@ -77,5 +82,6 @@ export const {
   setQuestionsId,
   setTableColumns,
   setDisableApplyFilters,
+  setFilters,
 } = actions;
 export default reducer;
