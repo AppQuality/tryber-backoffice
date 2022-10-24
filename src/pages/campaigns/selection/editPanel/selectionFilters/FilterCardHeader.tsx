@@ -34,6 +34,7 @@ const FilterCardHeader = ({ queryTypeOptions }: FilterCardHeaderProps) => {
             <Button
               className="header-btn"
               type="link-hover"
+              data-testid="selectionFilters_add"
               onClick={() => {
                 arrayHelpers.push({
                   filterBy: { label: "", value: "" },
@@ -51,6 +52,7 @@ const FilterCardHeader = ({ queryTypeOptions }: FilterCardHeaderProps) => {
           className="header-btn aq-ml-2"
           htmlType="submit"
           disabled={disableApplyFilters}
+          data-testid="selectionFilters_apply"
           flat
         >
           Apply

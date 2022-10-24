@@ -50,6 +50,7 @@ const FilterRow = ({
         render={(arrayHelpers) => (
           <Trash
             className="filter-trash"
+            data-testid="filterRow_delete"
             onClick={() => {
               arrayHelpers.remove(index);
               dispatch(setDisableApplyFilters(false));
