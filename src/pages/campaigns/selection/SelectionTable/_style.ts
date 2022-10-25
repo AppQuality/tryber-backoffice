@@ -17,6 +17,10 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
     background: white;
   }
 
+  .lastHeadCell {
+    z-index: 1;
+  }
+
   .table-scrollable {
     overflow: auto;
     height: 500px;
@@ -25,7 +29,6 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
       position: sticky;
       top: 0;
       background: white;
-      z-index: 1;
 
       &:nth-child(${(p) => p.columns}) {
         min-width: 55px;
@@ -36,7 +39,7 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
   @media (min-width: ${(p) => p.theme.grid.breakpoints.xxl}) {
     .table-scrollable {
       .thead {
-        &:nth-child(${(p) => p.columns - 5}) {
+        &:nth-child(1) {
           min-width: 310px;
         }
         &:nth-child(${(p) => p.columns - 4}) {
@@ -61,7 +64,7 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
     .table-scrollable {
       overflow: auto;
       .thead {
-        &:nth-child(${(p) => p.columns - 5}) {
+        &:nth-child(1) {
           min-width: 280px;
         }
         &:nth-child(${(p) => p.columns - 4}) {
@@ -84,7 +87,7 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
     .table-scrollable {
       overflow: auto;
       .thead {
-        &:nth-child(${(p) => p.columns - 5}) {
+        &:nth-child(1) {
           min-width: 250px;
         }
         &:nth-child(${(p) => p.columns - 4}) {
