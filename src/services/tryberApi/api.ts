@@ -27,7 +27,7 @@ export const api = createApi({
       });
       return urlps.toString();
     },
-    prepareHeaders: (headers) => {
+    prepareHeaders: (headers, { endpoint }) => {
       if (process.env.REACT_APP_DEFAULT_TOKEN) {
         const token = process.env.REACT_APP_DEFAULT_TOKEN;
         headers.set("Authorization", `Bearer ${token}`);

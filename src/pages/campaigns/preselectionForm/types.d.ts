@@ -5,6 +5,7 @@ interface AdditionalField {
   name: string;
   options?: string[];
   shortTitle?: string;
+  questionId?: number;
 }
 
 interface CustomUserField extends AdditionalField {
