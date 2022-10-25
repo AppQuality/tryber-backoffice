@@ -11,15 +11,16 @@ import List from "src/pages/Popups/List";
 import Update from "src/pages/Popups/Update";
 import CampaignPreselection from "src/pages/campaigns/preselectionForm";
 import { Provider } from "react-redux";
-import { store } from "src/store";
+import { setupStore } from "src/store";
 import { ThemeProvider } from "styled-components";
 import SiteWideMessages from "./features/SiteWideMessages";
 import Jotform from "./pages/Jotform";
 import CampaignPreselectionList from "./pages/campaigns/preselectionFormList";
+import SelectionPage from "./pages/campaigns/selection";
 
 function App() {
   return (
-    <Provider store={store}>
+    <Provider store={setupStore()}>
       <ThemeProvider theme={aqBootstrapTheme}>
         <GlobalStyle />
         <SiteWideMessages />
@@ -41,6 +42,11 @@ function App() {
             <Route
               path="/backoffice/campaigns/preselection-forms/:id"
               component={CampaignPreselection}
+            />
+            <Route
+              path="/backoffice/campaigns/:id/selection"
+              exact
+              component={SelectionPage}
             />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />

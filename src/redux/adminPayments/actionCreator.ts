@@ -65,7 +65,15 @@ export const fetchPaymentRequests =
           });
         }
       } else {
-        return dispatch(addMessage(error.message, "danger", false));
+        return dispatch(
+          addMessage(
+            error.message && typeof error.message === "string"
+              ? error.message
+              : "There was an error",
+            "danger",
+            false
+          )
+        );
       }
     }
   };
