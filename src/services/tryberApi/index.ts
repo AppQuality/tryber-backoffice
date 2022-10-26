@@ -63,6 +63,8 @@ const injectedRtkApi = api.injectEndpoints({
           limit: queryArg.limit,
           start: queryArg.start,
           fields: queryArg.fields,
+          filterByInclude: queryArg.filterByInclude,
+          filterByExclude: queryArg.filterByExclude,
         },
       }),
     }),
@@ -795,6 +797,10 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   start?: number;
   /** The fields to add to the results */
   fields?: string;
+  /** Key-value Array for item filtering */
+  filterByInclude?: any;
+  /** Key-value Array for item filtering */
+  filterByExclude?: any;
 };
 export type GetCampaignsByCampaignTasksApiResponse =
   /** status 200 A list of UseCase linked with the Campaign */ (Task & {
