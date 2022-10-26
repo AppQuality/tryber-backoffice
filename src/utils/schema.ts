@@ -885,6 +885,10 @@ export interface operations {
         start?: components["parameters"]["start"];
         /** The fields to add to the results */
         fields?: string;
+        /** Key-value Array for item filtering */
+        filterByInclude?: unknown;
+        /** Key-value Array for item filtering */
+        filterByExclude?: unknown;
       };
     };
     responses: {
