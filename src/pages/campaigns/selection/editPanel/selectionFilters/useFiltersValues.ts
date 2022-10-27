@@ -6,9 +6,11 @@ import {
   setDisableApplyFilters,
   setFilters,
 } from "../../selectionSlice";
+import useSelectionQueryTypeOptions from "./useSelectionQueryTypeOptions";
 
 export const useFiltersValues = () => {
   const dispatch = useAppDispatch();
+  const queryTypeOptions = useSelectionQueryTypeOptions();
 
   const addFilter = (
     filter: { [key: string]: string[] },
@@ -31,7 +33,7 @@ export const useFiltersValues = () => {
     let filterByInclude: { [key: string]: string[] } = {};
     let filterByExclude: { [key: string]: string[] } = {};
     values.filters.rows?.forEach((r: SelectionFilterRow) => {
-      if (r.queryType.value === "filterByInclude")
+      if (r.queryType.value === queryTypeOptions[0].value)
         filterByInclude = addFilter(filterByInclude, r);
       else filterByExclude = addFilter(filterByExclude, r);
     });

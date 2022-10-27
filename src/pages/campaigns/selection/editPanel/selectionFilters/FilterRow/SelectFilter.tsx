@@ -50,10 +50,10 @@ export const SelectFilter = ({
           // if (index !== undefined) {
           //   const selectedValues: string[] = [];
           //   form.values.filters.rows?.forEach(
-          //     (r: any, i: number) =>
-          //       i !== index && selectedValues.push(r.filterBy.value)
+          //     (r: SelectionFilterRow, i: number) =>
+          //       i !== index && r.filterBy.value && selectedValues.push(r.filterBy.value)
           //   );
-          //   selectedValues.forEach((s: any) => {
+          //   selectedValues.forEach((s) => {
           //     const index = newOptions.findIndex((o) => o.value === s);
           //     index !== -1 && newOptions.splice(index, 1);
           //   });
