@@ -9,12 +9,7 @@ import { mapCampaingFormData } from "../columnsConfigurator/mapData";
 import * as yup from "yup";
 import FilterCardHeader from "./FilterCardHeader";
 import { useAppDispatch } from "src/store";
-import {
-  changeTablePage,
-  clearSelectedDevice,
-  setDisableApplyFilters,
-  setFilters,
-} from "../../selectionSlice";
+import { useFiltersValues } from "./useFiltersValues";
 
 const StyledSelectionFilters = styled.div`
   height: 122px;
@@ -57,6 +52,8 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
     filters: yup.object(),
   };
 
+  const { applyFilters } = useFiltersValues();
+
   // useEffect(() => {
   //   if (data) {
   //     const questions = mapCampaingFormData(data);
@@ -69,39 +66,7 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
       initialValues={initialFiltersValues}
       enableReinitialize
       validationSchema={yup.object(validationSchema)}
-      onSubmit={async (values) => {
-        let filterByInclude: { [key: string]: string[] } = {};
-        let filterByExclude: { [key: string]: string[] } = {};
-        values.filters.row?.forEach((r: any) => {
-          if (r.queryType.value === "filterByInclude") {
-            if (
-              Object.keys(filterByInclude).some((k) => k === r.filterBy.value)
-            ) {
-              filterByInclude[r.filterBy.value].push(r.search);
-            } else {
-              filterByInclude = {
-                ...filterByInclude,
-                ...{ [r.filterBy.value]: [r.search] },
-              };
-            }
-          } else {
-            if (
-              Object.keys(filterByExclude).some((k) => k === r.filterBy.value)
-            ) {
-              filterByExclude[r.filterBy.value].push(r.search);
-            } else {
-              filterByExclude = {
-                ...filterByExclude,
-                ...{ [r.filterBy.value]: [r.search] },
-              };
-            }
-          }
-        });
-        dispatch(changeTablePage({ newPage: 1 }));
-        dispatch(setDisableApplyFilters(true));
-        dispatch(clearSelectedDevice());
-        dispatch(setFilters({ filterByInclude, filterByExclude }));
-      }}
+      onSubmit={applyFilters}
     >
       {(formikProps: FormikProps<SelectionFiltersValues>) => {
         return (
