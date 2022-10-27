@@ -12,7 +12,10 @@ interface SelectionState {
   questionsId: string[];
   tableColumns: TableType.Column[];
   disableApplyFilters: boolean;
-  filters: { [key: string]: any };
+  filters: {
+    filterByInclude?: { [key: string]: string[] };
+    filterByExclude?: { [key: string]: string[] };
+  };
 }
 
 export const initialState: SelectionState = {
@@ -39,7 +42,13 @@ const selectionSlice = createSlice({
     setDisableApplyFilters(state, action: PayloadAction<boolean>) {
       state.disableApplyFilters = action.payload;
     },
-    setFilters(state, action: PayloadAction<{ [key: string]: any }>) {
+    setFilters(
+      state,
+      action: PayloadAction<{
+        filterByInclude?: { [key: string]: string[] };
+        filterByExclude?: { [key: string]: string[] };
+      }>
+    ) {
       state.filters = action.payload;
     },
     reset() {

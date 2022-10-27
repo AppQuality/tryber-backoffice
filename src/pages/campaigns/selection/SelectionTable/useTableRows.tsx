@@ -22,13 +22,15 @@ const useTableRows = (id: string) => {
   const { currentPage, devicesPerPage, questionsId, filters } = useAppSelector(
     (state) => state.selection
   );
+  const { filterByInclude, filterByExclude } = filters;
   const { data, isFetching, isLoading, error, refetch } =
     useGetCampaignsByCampaignCandidatesQuery({
       campaign: id,
       start: devicesPerPage * (currentPage - 1),
       limit: devicesPerPage,
       ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
-      ...filters,
+      filterByInclude,
+      filterByExclude,
     });
   const rows: RowType[] = [];
 
