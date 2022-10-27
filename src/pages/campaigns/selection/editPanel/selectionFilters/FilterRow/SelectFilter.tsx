@@ -45,18 +45,19 @@ export const SelectFilter = ({
         }}
       >
         {({ field, form }: FieldProps) => {
-          const newOptions = [...options];
-          if (index !== undefined) {
-            const selectedValues: string[] = [];
-            form.values.filters.row?.forEach(
-              (r: any, i: number) =>
-                i !== index && selectedValues.push(r.filterBy.value)
-            );
-            selectedValues.forEach((s: any) => {
-              const index = newOptions.findIndex((o) => o.value === s);
-              index !== -1 && newOptions.splice(index, 1);
-            });
-          }
+          // Remove the option from the select if it is selected in another select
+          // const newOptions = [...options];
+          // if (index !== undefined) {
+          //   const selectedValues: string[] = [];
+          //   form.values.filters.row?.forEach(
+          //     (r: any, i: number) =>
+          //       i !== index && selectedValues.push(r.filterBy.value)
+          //   );
+          //   selectedValues.forEach((s: any) => {
+          //     const index = newOptions.findIndex((o) => o.value === s);
+          //     index !== -1 && newOptions.splice(index, 1);
+          //   });
+          // }
           return (
             <FormGroup>
               <Select
@@ -65,7 +66,8 @@ export const SelectFilter = ({
                 name={name}
                 placeholder={placeholder}
                 value={field.value}
-                options={newOptions}
+                // options={newOptions}
+                options={options}
                 onBlur={() => {
                   form.setFieldTouched(name);
                 }}

@@ -28,11 +28,11 @@ const StyledSelectionFilters = styled.div`
 
 const filters: Option[] = [
   { label: "Os/Os version", value: "os" },
-  { label: "Tester Id", value: "tester_id" },
+  // { label: "Tester Id", value: "tester_id" },
 ];
 
 const queryTypeOptions: Option[] = [
-  { label: "Include", value: "filteByInclude" },
+  { label: "Include", value: "filterByInclude" },
   { label: "Exclude", value: "filterByExclude" },
 ];
 
@@ -42,11 +42,12 @@ interface SelectionFiltersProps {
 
 const SelectionFilters = ({ id }: SelectionFiltersProps) => {
   const dispatch = useAppDispatch();
-  const [filterByList, setFilterByList] = useState<Option[]>([]);
-  const { data } = useGetCampaignsByCampaignFormsQuery(
-    { campaign: id },
-    { skip: !id }
-  );
+  const [filterByList, setFilterByList] = useState<Option[]>(filters);
+  // const [filterByList, setFilterByList] = useState<Option[]>([]);
+  // const { data } = useGetCampaignsByCampaignFormsQuery(
+  //   { campaign: id },
+  //   { skip: !id }
+  // );
 
   const initialFiltersValues: SelectionFiltersValues = {
     filters: {},
@@ -56,12 +57,12 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
     filters: yup.object(),
   };
 
-  useEffect(() => {
-    if (data) {
-      const questions = mapCampaingFormData(data);
-      setFilterByList([...filters, ...questions]);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     const questions = mapCampaingFormData(data);
+  //     setFilterByList([...filters, ...questions]);
+  //   }
+  // }, [data]);
 
   return (
     <Formik
@@ -69,18 +70,37 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
       enableReinitialize
       validationSchema={yup.object(validationSchema)}
       onSubmit={async (values) => {
-        let filtersToAdd: { [key: string]: any } = {};
+        let filterByInclude: { [key: string]: string[] } = {};
+        let filterByExclude: { [key: string]: string[] } = {};
         values.filters.row?.forEach((r: any) => {
-          let key = r.queryType.value;
-          r.filterBy.value === "os" || r.filterBy.value === "tester_id"
-            ? (key += `[${r.filterBy.value}]=`)
-            : (key += `[question_${r.filterBy.value}]=`);
-          filtersToAdd = { ...filtersToAdd, ...{ [key]: r.search } };
+          if (r.queryType.value === "filterByInclude") {
+            if (
+              Object.keys(filterByInclude).some((k) => k === r.filterBy.value)
+            ) {
+              filterByInclude[r.filterBy.value].push(r.search);
+            } else {
+              filterByInclude = {
+                ...filterByInclude,
+                ...{ [r.filterBy.value]: [r.search] },
+              };
+            }
+          } else {
+            if (
+              Object.keys(filterByExclude).some((k) => k === r.filterBy.value)
+            ) {
+              filterByExclude[r.filterBy.value].push(r.search);
+            } else {
+              filterByExclude = {
+                ...filterByExclude,
+                ...{ [r.filterBy.value]: [r.search] },
+              };
+            }
+          }
         });
         dispatch(changeTablePage({ newPage: 1 }));
         dispatch(setDisableApplyFilters(true));
         dispatch(clearSelectedDevice());
-        dispatch(setFilters(filtersToAdd));
+        dispatch(setFilters({ filterByInclude, filterByExclude }));
       }}
     >
       {(formikProps: FormikProps<SelectionFiltersValues>) => {
