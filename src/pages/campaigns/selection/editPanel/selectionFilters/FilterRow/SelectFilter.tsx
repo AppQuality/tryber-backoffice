@@ -49,7 +49,7 @@ export const SelectFilter = ({
           // const newOptions = [...options];
           // if (index !== undefined) {
           //   const selectedValues: string[] = [];
-          //   form.values.filters.row?.forEach(
+          //   form.values.filters.rows?.forEach(
           //     (r: any, i: number) =>
           //       i !== index && selectedValues.push(r.filterBy.value)
           //   );

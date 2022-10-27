@@ -32,21 +32,21 @@ const FilterRow = ({
   return (
     <StyledFilterRow>
       <SelectFilter
-        name={`filters.row.${index}.filterBy`}
+        name={`filters.rows.${index}.filterBy`}
         options={filterByOptions}
         placeholder={"Filter by"}
         index={index}
       />
       <SelectFilter
-        name={`filters.row.${index}.queryType`}
+        name={`filters.rows.${index}.queryType`}
         options={queryTypeOptions}
       />
       <InputFilter
-        name={`filters.row.${index}.search`}
+        name={`filters.rows.${index}.search`}
         placeholder={"Search"}
       />
       <FieldArray
-        name="filters.row"
+        name="filters.rows"
         render={(arrayHelpers) => (
           <Trash
             className="filter-trash"

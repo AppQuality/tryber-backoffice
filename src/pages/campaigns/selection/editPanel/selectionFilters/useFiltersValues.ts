@@ -10,14 +10,17 @@ import {
 export const useFiltersValues = () => {
   const dispatch = useAppDispatch();
 
-  const addFilter = (filter: { [key: string]: string[] }, row: any) => {
+  const addFilter = (
+    filter: { [key: string]: string[] },
+    row: SelectionFilterRow
+  ) => {
     if (Object.keys(filter).some((k) => k === row.filterBy.value)) {
-      filter[row.filterBy.value].push(row.search);
+      row.filterBy.value && filter[row.filterBy.value].push(row.search);
       return filter;
     } else
       return {
         ...filter,
-        ...{ [row.filterBy.value]: [row.search] },
+        ...(row.filterBy.value ? { [row.filterBy.value]: [row.search] } : {}),
       };
   };
 
@@ -27,7 +30,7 @@ export const useFiltersValues = () => {
   ) => {
     let filterByInclude: { [key: string]: string[] } = {};
     let filterByExclude: { [key: string]: string[] } = {};
-    values.filters.row?.forEach((r: any) => {
+    values.filters.rows?.forEach((r: SelectionFilterRow) => {
       if (r.queryType.value === "filterByInclude")
         filterByInclude = addFilter(filterByInclude, r);
       else filterByExclude = addFilter(filterByExclude, r);
