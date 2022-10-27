@@ -30,7 +30,7 @@ const FilterCardHeader = ({ queryTypeOptions }: FilterCardHeaderProps) => {
       <Title size="ms">Add filters</Title>
       <div>
         <FieldArray
-          name="filters.row"
+          name="filters.rows"
           render={(arrayHelpers) => (
             <Button
               className="header-btn"

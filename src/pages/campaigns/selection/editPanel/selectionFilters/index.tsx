@@ -74,14 +74,16 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
             <Card>
               <FilterCardHeader queryTypeOptions={queryTypeOptions} />
               <StyledSelectionFilters>
-                {formikProps.values.filters.row?.map((r: any, i: number) => (
-                  <FilterRow
-                    key={r.id}
-                    index={i}
-                    filterByOptions={filterByList}
-                    queryTypeOptions={queryTypeOptions}
-                  />
-                ))}
+                {formikProps.values.filters.rows?.map(
+                  (r: SelectionFilterRow, i: number) => (
+                    <FilterRow
+                      key={r.id}
+                      index={i}
+                      filterByOptions={filterByList}
+                      queryTypeOptions={queryTypeOptions}
+                    />
+                  )
+                )}
               </StyledSelectionFilters>
             </Card>
           </Form>
