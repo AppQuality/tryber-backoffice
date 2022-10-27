@@ -4,6 +4,7 @@ import { FieldArray } from "formik";
 import styled from "styled-components";
 import { useAppSelector, useAppDispatch } from "src/store";
 import { setDisableApplyFilters } from "../../selectionSlice";
+import { v4 as uuidv4 } from "uuid";
 
 const StyledCardHeader = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const FilterCardHeader = ({ queryTypeOptions }: FilterCardHeaderProps) => {
               data-testid="selectionFilters_add"
               onClick={() => {
                 arrayHelpers.push({
+                  id: uuidv4(),
                   filterBy: { label: "", value: "" },
                   queryType: queryTypeOptions[0],
                   search: "",
