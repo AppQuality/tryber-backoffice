@@ -10,6 +10,8 @@ import * as yup from "yup";
 import FilterCardHeader from "./FilterCardHeader";
 import { useAppDispatch } from "src/store";
 import { useFiltersValues } from "./useFiltersValues";
+import useSelectionQueryTypeOptions from "./useSelectionQueryTypeOptions";
+import useSelectionBaseFilters from "./useSelectionBaseFilters";
 
 const StyledSelectionFilters = styled.div`
   height: 122px;
@@ -21,24 +23,15 @@ const StyledSelectionFilters = styled.div`
   }
 `;
 
-const filters: Option[] = [
-  { label: "Os/Os version", value: "os" },
-  // { label: "Tester Id", value: "tester_id" },
-];
-
-const queryTypeOptions: Option[] = [
-  { label: "Include", value: "filterByInclude" },
-  { label: "Exclude", value: "filterByExclude" },
-];
-
 interface SelectionFiltersProps {
   id: string;
 }
 
 const SelectionFilters = ({ id }: SelectionFiltersProps) => {
   const dispatch = useAppDispatch();
-  const [filterByList, setFilterByList] = useState<Option[]>(filters);
-  // const [filterByList, setFilterByList] = useState<Option[]>([]);
+  const queryTypeOptions = useSelectionQueryTypeOptions();
+  const baseFilters = useSelectionBaseFilters();
+  const [filterByList, setFilterByList] = useState<Option[]>(baseFilters);
   // const { data } = useGetCampaignsByCampaignFormsQuery(
   //   { campaign: id },
   //   { skip: !id }
@@ -57,7 +50,7 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
   // useEffect(() => {
   //   if (data) {
   //     const questions = mapCampaingFormData(data);
-  //     setFilterByList([...filters, ...questions]);
+  //     setFilterByList([...baseFilters, ...questions]);
   //   }
   // }, [data]);
 
