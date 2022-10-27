@@ -21,9 +21,12 @@ const mockedSelectedOptions = [
 ];
 
 export const handlers = [
-  rest.get("http://localhost/campaigns/10/forms", (req, res, ctx) => {
-    return res(ctx.json(mockedFormsResponse), ctx.delay(50));
-  }),
+  rest.get(
+    "https://dv-crowd.app-quality.com/api/campaigns/10/forms",
+    (req, res, ctx) => {
+      return res(ctx.json(mockedFormsResponse), ctx.delay(50));
+    }
+  ),
 ];
 
 const server = setupServer(...handlers);

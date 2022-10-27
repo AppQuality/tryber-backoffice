@@ -1,6 +1,5 @@
 import { renderWithProviders, setupMatchMediaMock } from "src/utils/test-utils";
 import SelectionTable from "src/pages/campaigns/selection/SelectionTable/index";
-import { findByTestId, findByText } from "@testing-library/react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import { getCandidatesMock } from "src/pages/campaigns/selection/SelectionTable/_mocked_data_";
