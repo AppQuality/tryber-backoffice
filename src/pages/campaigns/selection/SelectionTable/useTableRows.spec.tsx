@@ -70,12 +70,12 @@ describe("useTableRows", () => {
           expect.objectContaining({
             devices: "Apple iPad",
             key: "34463_2",
-            os: "iOS iOS 15.6 (15.6)",
+            os: "iOS 15.6 (15.6)",
           }),
           expect.objectContaining({
             devices: "Apple iPhone SE (2020)",
             key: "34463_3",
-            os: "iOS iOS 15.6 (15.6)",
+            os: "iOS 15.6 (15.6)",
           }),
           expect.objectContaining({
             devices: "-",
