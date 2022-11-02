@@ -39,7 +39,7 @@ const FilterCardHeader = ({ queryTypeOptions }: FilterCardHeaderProps) => {
               onClick={() => {
                 arrayHelpers.push({
                   id: uuidv4(),
-                  filterBy: { label: "", value: "" },
+                  filterBy: { label: "", value: "os" },
                   queryType: queryTypeOptions[0],
                   search: "",
                 });
