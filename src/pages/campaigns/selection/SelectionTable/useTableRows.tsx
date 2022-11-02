@@ -60,7 +60,7 @@ const useTableRows = (id: string) => {
             os: `${device.os} ${device.osVersion}`
               .replace("Windows Windows", "Windows")
               .replace("iOS iOS", "iOS")
-              .replace("MacOS Mac OS", "MacOS"),
+              .replace("MacOS Mac OS", "Mac OS"),
             devices: device.manufacturer
               ? `${device.manufacturer} ${device.model}`
               : "-",
