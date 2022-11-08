@@ -7,6 +7,7 @@ import {
 import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 import Counter from "./counter";
 import ColumnsConfigurator from "./editPanel/columnsConfigurator";
+import SelectionFilters from "./editPanel/selectionFilters";
 import SelectionTable from "./SelectionTable";
 import { useParams } from "react-router-dom";
 import ConfirmButton from "src/pages/campaigns/selection/confirmButton/ConfirmButton";
@@ -30,6 +31,9 @@ const SelectionPage = () => {
             <Card title="Add columns" shadow>
               <ColumnsConfigurator id={id} />
             </Card>
+          </BSCol>
+          <BSCol size="col-lg-6">
+            <SelectionFilters id={id} />
           </BSCol>
           <BSCol size="col-lg-12" className="aq-mt-3">
             <Card className="aq-mb-3">

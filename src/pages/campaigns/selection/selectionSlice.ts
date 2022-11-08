@@ -11,6 +11,11 @@ interface SelectionState {
   isConfirmModalOpen: boolean;
   questionsId: string[];
   tableColumns: TableType.Column[];
+  disableApplyFilters: boolean;
+  filters: {
+    filterByInclude?: { [key: string]: string[] };
+    filterByExclude?: { [key: string]: string[] };
+  };
 }
 
 export const initialState: SelectionState = {
@@ -20,6 +25,8 @@ export const initialState: SelectionState = {
   isConfirmModalOpen: false,
   questionsId: [],
   tableColumns: columns,
+  disableApplyFilters: true,
+  filters: {},
 };
 
 const selectionSlice = createSlice({
@@ -31,6 +38,18 @@ const selectionSlice = createSlice({
     },
     setTableColumns(state, action: PayloadAction<TableType.Column[]>) {
       state.tableColumns = action.payload;
+    },
+    setDisableApplyFilters(state, action: PayloadAction<boolean>) {
+      state.disableApplyFilters = action.payload;
+    },
+    setFilters(
+      state,
+      action: PayloadAction<{
+        filterByInclude?: { [key: string]: string[] };
+        filterByExclude?: { [key: string]: string[] };
+      }>
+    ) {
+      state.filters = action.payload;
     },
     reset() {
       return initialState;
@@ -71,5 +90,7 @@ export const {
   closeConfirmModal,
   setQuestionsId,
   setTableColumns,
+  setDisableApplyFilters,
+  setFilters,
 } = actions;
 export default reducer;

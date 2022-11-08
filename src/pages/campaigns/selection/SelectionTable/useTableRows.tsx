@@ -4,7 +4,7 @@ import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/compone
 import { useAppDispatch, useAppSelector } from "src/store";
 import { setTableColumns } from "../selectionSlice";
 import { columns } from "./columns";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface RowType extends TableType.Row {
   key: string;
@@ -19,17 +19,20 @@ interface RowType extends TableType.Row {
 
 const useTableRows = (id: string) => {
   const dispatch = useAppDispatch();
-  const { currentPage, devicesPerPage, questionsId } = useAppSelector(
+  const { currentPage, devicesPerPage, questionsId, filters } = useAppSelector(
     (state) => state.selection
   );
+  const [rows, setRows] = useState<RowType[]>([]);
+  const { filterByInclude, filterByExclude } = filters;
   const { data, isFetching, isLoading, error, refetch } =
     useGetCampaignsByCampaignCandidatesQuery({
       campaign: id,
       start: devicesPerPage * (currentPage - 1),
       limit: devicesPerPage,
       ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
+      filterByInclude,
+      filterByExclude,
     });
-  const rows: RowType[] = [];
 
   useEffect(() => {
     if (data?.results) {
@@ -44,48 +47,52 @@ const useTableRows = (id: string) => {
       });
       dispatch(setTableColumns(newColumns));
     }
-  }, [data]);
+  }, [data, dispatch]);
 
-  if (data && data.results) {
-    data.results.forEach((user, userIndex) =>
-      user.devices.forEach((device, deviceIndex) => {
-        let row: RowType = {
-          key: `${user.id.toString()}_${deviceIndex}`,
-          highlighted: userIndex % 2 === 0,
-          os: `${device.os} ${device.osVersion}`.replace(
-            "Windows Windows",
-            "Windows"
-          ),
-          devices: device.manufacturer
-            ? `${device.manufacturer} ${device.model}`
-            : "-",
-          actions: {
-            title: "select",
-            content: (
-              <DeviceCheckbox
-                userId={user.id.toString()}
-                deviceId={device.id.toString()}
-              />
-            ),
-          },
-        };
-        if (deviceIndex === 0) {
-          let fields: { [key: string]: any } = {};
-          user.questions?.forEach((q, i) => {
-            fields = { ...fields, ...{ [`${q.id}-${i}`]: q.value || "-" } };
-          });
-          row = {
-            ...row,
-            nameId: `T${user.id} ${user.name} ${user.surname}`,
-            exp: user.experience.toString(),
-            level: user.level,
-            ...fields,
+  useEffect(() => {
+    const newRows: RowType[] = [];
+    if (data && data.results) {
+      data.results.forEach((user, userIndex) =>
+        user.devices.forEach((device, deviceIndex) => {
+          let row: RowType = {
+            key: `${user.id.toString()}_${deviceIndex}`,
+            highlighted: userIndex % 2 === 0,
+            os: `${device.os} ${device.osVersion}`
+              .replace("Windows Windows", "Windows")
+              .replace("iOS iOS", "iOS")
+              .replace("MacOS Mac OS", "Mac OS"),
+            devices: device.manufacturer
+              ? `${device.manufacturer} ${device.model}`
+              : "-",
+            actions: {
+              title: "select",
+              content: (
+                <DeviceCheckbox
+                  userId={user.id.toString()}
+                  deviceId={device.id.toString()}
+                />
+              ),
+            },
           };
-        }
-        rows.push(row);
-      })
-    );
-  }
+          if (deviceIndex === 0) {
+            let fields: { [key: string]: any } = {};
+            user.questions?.forEach((q, i) => {
+              fields = { ...fields, ...{ [`${q.id}-${i}`]: q.value || "-" } };
+            });
+            row = {
+              ...row,
+              nameId: `T${user.id} ${user.name} ${user.surname}`,
+              exp: user.experience.toString(),
+              level: user.level,
+              ...fields,
+            };
+          }
+          newRows.push(row);
+        })
+      );
+    }
+    setRows(newRows);
+  }, [data]);
 
   return {
     rows,
