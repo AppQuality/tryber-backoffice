@@ -15,9 +15,15 @@ export const api = createApi({
         }
         // iterate over nested objects
         if (typeof value === "object") {
-          Object.entries(params[key]).forEach(([key, value]) => {
-            if (typeof value === "string") {
-              urlps.set(`filterBy[${key}]`, value);
+          Object.entries(params[key]).forEach(([subKey, subValue]) => {
+            if (typeof subValue === "string") {
+              urlps.set(`${key}[${subKey}]`, subValue);
+            } else if (Array.isArray(subValue)) {
+              subValue.forEach(
+                (s, i) =>
+                  typeof s === "string" &&
+                  urlps.set(`${key}[${subKey}][${i}]`, s)
+              );
             }
           });
           return;

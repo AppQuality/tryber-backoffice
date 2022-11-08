@@ -25,7 +25,7 @@ jest.mock(
 );
 
 const handlers = [
-  rest.get("http://localhost/users/me", (req, res, ctx) => {
+  rest.get("https://dv-crowd.app-quality.com/api/users/me", (req, res, ctx) => {
     return res(
       ctx.json({
         role: "administrator",
