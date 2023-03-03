@@ -1,5 +1,5 @@
 import { configureStore, PreloadedState } from "@reduxjs/toolkit";
-import { tryberApi } from "src/services/tryberApi";
+import { tryberApiSlice } from "src/services/tryberApi/apiTags";
 import oldReducers from "src/redux/reducer";
 import { combineReducers } from "redux";
 import jotformReducer from "src/pages/Jotform/jotformSlice";
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   campaignPreselection: campaignPreselectionReducer,
   campaignPreselectionList: campaignPreselectionListReducer,
   selection: selectionReducer,
-  [tryberApi.reducerPath]: tryberApi.reducer,
+  [tryberApiSlice.reducerPath]: tryberApiSlice.reducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   // middleware: (getDefaultMiddleware) =>

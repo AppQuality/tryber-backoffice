@@ -33,7 +33,7 @@ export const api = createApi({
       });
       return urlps.toString();
     },
-    prepareHeaders: (headers, { endpoint }) => {
+    prepareHeaders: (headers) => {
       if (process.env.REACT_APP_DEFAULT_TOKEN) {
         const token = process.env.REACT_APP_DEFAULT_TOKEN;
         headers.set("Authorization", `Bearer ${token}`);
@@ -41,5 +41,19 @@ export const api = createApi({
       return headers;
     },
   }),
+  tagTypes: [
+    "Bugs",
+    "Campaigns",
+    "Customers",
+    "CustomUserFields",
+    "ExperiencePoints",
+    "Users",
+    "Media",
+    "Payments",
+    "Popups",
+    "Devices",
+    "Languages",
+    "Levels",
+  ],
   endpoints: () => ({}), // auto generated npm run generate-api
 });
