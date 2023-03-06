@@ -43,6 +43,22 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.campaignOptional,
       }),
     }),
+    getCampaignsByCampaignBugs: build.query<
+      GetCampaignsByCampaignBugsApiResponse,
+      GetCampaignsByCampaignBugsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/bugs`,
+        params: {
+          limit: queryArg.limit,
+          start: queryArg.start,
+          search: queryArg.search,
+          order: queryArg.order,
+          orderBy: queryArg.orderBy,
+          filterBy: queryArg.filterBy,
+        },
+      }),
+    }),
     postCampaignsByCampaignCandidates: build.mutation<
       PostCampaignsByCampaignCandidatesApiResponse,
       PostCampaignsByCampaignCandidatesApiArg
@@ -736,6 +752,46 @@ export type PutCampaignsByCampaignApiArg = {
   campaign: string;
   /** The Campaign data to edit */
   campaignOptional: CampaignOptional;
+};
+export type GetCampaignsByCampaignBugsApiResponse = /** status 200 OK */ {
+  items: {
+    id: number;
+    title: string;
+    internalId: string;
+    status: {
+      id: number;
+      name: string;
+    };
+    type: {
+      id: number;
+      name: string;
+    };
+    severity: {
+      id: number;
+      name: string;
+    };
+    tester: {
+      id: number;
+      name: string;
+      surname: string;
+    };
+  }[];
+} & PaginationData;
+export type GetCampaignsByCampaignBugsApiArg = {
+  /** A campaign id */
+  campaign: string;
+  /** Max items to retrieve */
+  limit?: number;
+  /** Items to skip for pagination */
+  start?: number;
+  /** The value to search for */
+  search?: string;
+  /** How to order values (ASC, DESC) */
+  order?: "ASC" | "DESC";
+  /** Order values by STATUS, TESTERID, SEVERITY */
+  orderBy?: "severity" | "testerId" | "status";
+  /** Key-value Array for item filtering */
+  filterBy?: object;
 };
 export type PostCampaignsByCampaignCandidatesApiResponse =
   /** status 200 OK */
@@ -2053,6 +2109,7 @@ export const {
   useGetCampaignsQuery,
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
+  useGetCampaignsByCampaignBugsQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignCandidatesQuery,
   useGetCampaignsByCampaignTasksQuery,
