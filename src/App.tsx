@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import AdminPayments from "src/pages/Payments";
 import Create from "src/pages/Popups/Create";
 import List from "src/pages/Popups/List";
+import BugsList from "src/pages/BugsList";
 import Update from "src/pages/Popups/Update";
 import CampaignPreselection from "src/pages/campaigns/preselectionForm";
 import { Provider } from "react-redux";
@@ -26,6 +27,10 @@ function App() {
         <SiteWideMessages />
         <BrowserRouter>
           <Switch>
+            <Route
+              path={`/backoffice/campaigns/:id/bugs`}
+              component={BugsList}
+            />
             <Route path={`/backoffice/new`} component={Create} />
             <Route path="/backoffice/payments" component={AdminPayments} />
             <Route path="/backoffice/jotform" component={Jotform} />
