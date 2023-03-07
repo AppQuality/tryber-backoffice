@@ -1,10 +1,10 @@
 import { Table, Pagination } from "@appquality/appquality-design-system";
-import { useState } from "react";
 import { useGetCampaignsByCampaignBugsQuery } from "src/services/tryberApi";
 import { useFiltersCardContext } from "../FilterContext";
 import Button from "./TableButton";
 import Severity from "./Severity";
 import Status from "./Status";
+import Type from "./Type";
 
 const LIMIT = 100;
 
@@ -44,6 +44,10 @@ const BugsTable = ({ id }: { id: string }) => {
           status: {
             title: r.status.name,
             content: <Status status={r.status} />,
+          },
+          type: {
+            title: r.type.name,
+            content: <Type type={r.type} />,
           },
           tester: `T${r.tester.id}`,
           action: {
@@ -113,6 +117,12 @@ const BugsTable = ({ id }: { id: string }) => {
             dataIndex: "severity",
             key: "severity",
             maxWidth: "10ch",
+          },
+          {
+            title: "Type",
+            dataIndex: "type",
+            key: "type",
+            maxWidth: "12ch",
           },
           {
             title: "",
