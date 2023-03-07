@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 
 type Filters = {
   severities?: number[];
+  status?: number[];
   search?: string;
 };
 const Context = createContext<{

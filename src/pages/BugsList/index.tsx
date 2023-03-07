@@ -7,20 +7,22 @@ import { useParams } from "react-router-dom";
 const BugsList = () => {
   const { id } = useParams<{ id: string }>();
   return (
-    <FilterContext>
-      <BSGrid>
-        <BSCol size="col-lg-9 ">
-          <Card className="aq-mb-3" bodyClass="">
-            <Table id={id} />
-          </Card>
-        </BSCol>
-        <BSCol size="col-lg-3">
-          <Card className="aq-mb-3" bodyClass="">
-            <Filters id={id} />
-          </Card>
-        </BSCol>
-      </BSGrid>
-    </FilterContext>
+    <div style={{ width: "100%", overflow: "hidden" }}>
+      <FilterContext>
+        <BSGrid>
+          <BSCol size="col-lg-9 ">
+            <Card className="aq-mb-3" bodyClass="">
+              <Table id={id} />
+            </Card>
+          </BSCol>
+          <BSCol size="col-lg-3">
+            <Card className="aq-mb-3" title="Filters">
+              <Filters id={id} />
+            </Card>
+          </BSCol>
+        </BSGrid>
+      </FilterContext>
+    </div>
   );
 };
 
