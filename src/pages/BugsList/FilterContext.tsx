@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
 
-type Filters = any;
+type Filters = {
+  severities?: number[];
+};
 const Context = createContext<{
   filters: Filters;
   setFilters: (filters: Filters) => void;
