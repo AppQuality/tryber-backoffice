@@ -18,6 +18,7 @@ const BugsTable = ({ id }: { id: string }) => {
     filterBy: {
       severities: filters.severities ? filters.severities.join(",") : undefined,
       status: filters.status ? filters.status.join(",") : undefined,
+      tags: filters.tags ? filters.tags.join(",") : undefined,
     },
     search: filters.search ? filters.search : undefined,
   });

@@ -772,9 +772,9 @@ export type GetCampaignsByCampaignBugsApiResponse = /** status 200 OK */ {
     };
     tester: {
       id: number;
-      name: string;
-      surname: string;
     };
+    tags?: BugTag[];
+    duplication: "father" | "unique" | "duplicated";
   }[];
 } & PaginationData;
 export type GetCampaignsByCampaignBugsApiArg = {
@@ -1942,6 +1942,10 @@ export type CampaignRequired = {
 export type Campaign = CampaignOptional & CampaignRequired;
 export type Project = {
   name?: string;
+};
+export type BugTag = {
+  id: number;
+  name: string;
 };
 export type PaginationData = {
   start: number;
