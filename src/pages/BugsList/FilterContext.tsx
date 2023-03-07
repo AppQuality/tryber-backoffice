@@ -20,7 +20,8 @@ const FiltersContext = ({ children }: { children: React.ReactNode }) => {
     <Context.Provider
       value={{
         filters,
-        setFilters,
+        setFilters: (newFilters: Filters) =>
+          setFilters({ ...filters, ...newFilters }),
       }}
     >
       {children}
