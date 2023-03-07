@@ -1,18 +1,9 @@
-import { Button } from "@appquality/appquality-design-system";
-import { useFiltersCardContext } from "../FilterContext";
+import SeverityFilter from "./SeverityFilter";
 
-const Filters = () => {
-  const value = useFiltersCardContext();
+const Filters = ({ id }: { id: string }) => {
   return (
     <>
-      <Button
-        onClick={() => {
-          value.setFilters({ test: 1 });
-        }}
-      >
-        Set filter
-      </Button>
-      Filters
+      <SeverityFilter id={id} />
     </>
   );
 };
