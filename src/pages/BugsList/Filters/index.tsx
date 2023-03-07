@@ -1,3 +1,4 @@
+import StatusFilter from "./StatusFilter";
 import SeverityFilter from "./SeverityFilter";
 import Search from "./Search";
 
@@ -6,6 +7,7 @@ const Filters = ({ id }: { id: string }) => {
     <>
       <Search />
       <SeverityFilter id={id} />
+      <StatusFilter id={id} />
     </>
   );
 };
