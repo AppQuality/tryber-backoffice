@@ -6,14 +6,15 @@ import Button from "./TableButton";
 import Severity from "./Severity";
 import Status from "./Status";
 
+const LIMIT = 100;
+
 const BugsTable = ({ id }: { id: string }) => {
-  const { filters } = useFiltersCardContext();
-  const [page, setPage] = useState(1);
+  const { filters, page, setPage } = useFiltersCardContext();
 
   const { data, isLoading } = useGetCampaignsByCampaignBugsQuery({
     campaign: id,
-    limit: 100,
-    start: (page - 1) * 10,
+    limit: LIMIT,
+    start: (page - 1) * LIMIT,
     filterBy: {
       severities: filters.severities ? filters.severities.join(",") : undefined,
       status: filters.status ? filters.status.join(",") : undefined,
