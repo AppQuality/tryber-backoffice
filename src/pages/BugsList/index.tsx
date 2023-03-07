@@ -10,7 +10,7 @@ const BugsList = () => {
     <div style={{ width: "100%", overflow: "hidden" }}>
       <FilterContext>
         <BSGrid>
-          <BSCol size="col-lg-9 ">
+          <BSCol size="col-lg-9">
             <Card className="aq-mb-3" bodyClass="">
               <Table id={id} />
             </Card>
