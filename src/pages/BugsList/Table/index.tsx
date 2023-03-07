@@ -9,6 +9,7 @@ import Status from "./Status";
 const BugsTable = ({ id }: { id: string }) => {
   const { filters } = useFiltersCardContext();
   const [page, setPage] = useState(1);
+
   const { data, isLoading } = useGetCampaignsByCampaignBugsQuery({
     campaign: id,
     limit: 100,
@@ -47,8 +48,36 @@ const BugsTable = ({ id }: { id: string }) => {
             title: "",
             content: (
               <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-                <Button style={{ margin: "0 4px 0 0" }}>Review</Button>
-                <Button> Show</Button>
+                <Button
+                  onClick={(event) => {
+                    window.parent.postMessage(
+                      JSON.stringify({
+                        type: "open-review",
+                        newTab: event.ctrlKey ? true : false,
+                        id: r.id,
+                      }),
+                      "*"
+                    );
+                  }}
+                  style={{ margin: "0 4px 0 0" }}
+                >
+                  Review
+                </Button>
+                <Button
+                  onClick={(event) => {
+                    window.parent.postMessage(
+                      JSON.stringify({
+                        type: "open-bug",
+                        newTab: event.ctrlKey ? true : false,
+                        id: r.id,
+                      }),
+                      "*"
+                    );
+                  }}
+                >
+                  {" "}
+                  Show
+                </Button>
               </div>
             ),
           },

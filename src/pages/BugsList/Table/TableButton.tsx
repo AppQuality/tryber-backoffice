@@ -20,7 +20,7 @@ const TableButton = ({
 }: {
   children: React.ReactNode;
   style?: React.CSSProperties;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }) => {
   return (
     <StyledButton
