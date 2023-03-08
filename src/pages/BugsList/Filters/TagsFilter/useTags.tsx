@@ -19,10 +19,13 @@ const useTags = (id: string) => {
   }, [] as NonNullable<(typeof data)["items"][number]["tags"]>[number][]);
   const options = tags
     .filter((o, i) => tags.findIndex((oo) => oo.id === o.id) === i)
-    .sort((a, b) => b.id - a.id)
     .map((o) => {
       const tagCount = tags.filter((t) => t.id === o.id).length;
-      return { id: o.id.toString(), name: `${o.name} (${tagCount})` };
+      return { id: o.id.toString(), name: `${o.name}`, count: tagCount };
+    })
+    .sort((a, b) => b.count - a.count)
+    .map((o) => {
+      return { id: o.id.toString(), name: `${o.name} (${o.count})` };
     });
 
   if (options.length < 2)

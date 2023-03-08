@@ -1,28 +1,30 @@
 import StatusFilter from "./StatusFilter";
 import SeverityFilter from "./SeverityFilter";
 import Search from "./Search";
-import TagsFilter from "./TagsFilter";
 import DuplicationFilter from "./DuplicationFilter";
+import { BSCol, BSGrid } from "@appquality/appquality-design-system";
+import styled from "styled-components";
+
+const Grid = styled(BSGrid)`
+  align-items: flex-end;
+`;
 
 const Filters = ({ id }: { id: string }) => {
   return (
-    <>
-      <div className="aq-mb-3">
+    <Grid>
+      <BSCol>
         <Search />
-      </div>
-      <div className="aq-mb-3">
+      </BSCol>
+      <BSCol>
         <SeverityFilter id={id} />
-      </div>
-      <div className="aq-mb-3">
+      </BSCol>
+      <BSCol>
         <StatusFilter id={id} />
-      </div>
-      <div className="aq-mb-3">
-        <TagsFilter id={id} />
-      </div>
-      <div>
+      </BSCol>
+      <BSCol>
         <DuplicationFilter id={id} />
-      </div>
-    </>
+      </BSCol>
+    </Grid>
   );
 };
 
