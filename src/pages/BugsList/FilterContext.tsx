@@ -4,6 +4,7 @@ type Filters = {
   severities?: number[];
   status?: number[];
   tags?: string[];
+  duplication?: string[];
   search?: string;
 };
 const Context = createContext<{
