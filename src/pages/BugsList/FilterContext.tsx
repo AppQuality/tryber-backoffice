@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 
 type Filters = {
   severities?: number[];
+  types?: number[];
   status?: number[];
   tags?: string[];
   duplication?: string[];

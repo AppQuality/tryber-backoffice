@@ -2,6 +2,7 @@ import StatusFilter from "./StatusFilter";
 import SeverityFilter from "./SeverityFilter";
 import Search from "./Search";
 import DuplicationFilter from "./DuplicationFilter";
+import TypeFilter from "./TypeFilter";
 import { BSCol, BSGrid } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 
@@ -23,6 +24,9 @@ const Filters = ({ id }: { id: string }) => {
       </BSCol>
       <BSCol>
         <DuplicationFilter id={id} />
+      </BSCol>
+      <BSCol>
+        <TypeFilter id={id} />
       </BSCol>
     </Grid>
   );
