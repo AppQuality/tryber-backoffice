@@ -11,6 +11,13 @@ const LIMIT = 100;
 const BugsTable = ({ id }: { id: string }) => {
   const { filters, page, setPage, order, setOrder } = useFiltersCardContext();
 
+  let orderBy: "id" | "type" | "severity" | "testerId" | "status" = "id";
+  if (order.field === "internalId") orderBy = "id";
+  if (order.field === "tester") orderBy = "testerId";
+  if (order.field === "type") orderBy = "type";
+  if (order.field === "severity") orderBy = "severity";
+  if (order.field === "status") orderBy = "status";
+
   const { data, isLoading } = useGetCampaignsByCampaignBugsQuery({
     campaign: id,
     limit: LIMIT,
@@ -24,6 +31,8 @@ const BugsTable = ({ id }: { id: string }) => {
         : undefined,
     },
     search: filters.search ? filters.search : undefined,
+    orderBy: orderBy,
+    order: order ? order.direction : undefined,
   });
 
   if (isLoading) {
@@ -150,13 +159,13 @@ const BugsTable = ({ id }: { id: string }) => {
           },
         ]}
       />
-      {data.total && data.limit && (
+      {data.total && data.limit ? (
         <Pagination
           onPageChange={(newPage) => setPage(newPage)}
           current={page}
           maxPages={Math.ceil(data.total / data.limit)}
         />
-      )}
+      ) : null}
     </>
   );
 };
