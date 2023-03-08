@@ -775,6 +775,7 @@ export type GetCampaignsByCampaignBugsApiResponse = /** status 200 OK */ {
     };
     tags?: BugTag[];
     duplication: "father" | "unique" | "duplicated";
+    isFavourite: boolean;
   }[];
 } & PaginationData;
 export type GetCampaignsByCampaignBugsApiArg = {
