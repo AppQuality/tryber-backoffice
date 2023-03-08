@@ -4,6 +4,7 @@ import Table from "./Table";
 import FilterContext from "./FilterContext";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import TagsFilter from "./Filters/TagsFilter";
 
 const StickyCol = styled(BSCol)`
   position: sticky;
@@ -15,17 +16,18 @@ const BugsList = () => {
   return (
     <div>
       <FilterContext>
+        <div className="aq-my-3">
+          <Filters id={id} />
+        </div>
+        <div className="aq-mb-4">
+          <TagsFilter id={id} />
+        </div>
         <BSGrid>
-          <BSCol size="col-lg-9">
+          <BSCol size="col-lg-12">
             <Card className="aq-mb-3" bodyClass="">
               <Table id={id} />
             </Card>
           </BSCol>
-          <StickyCol>
-            <Card className="aq-mb-3" title="Filters">
-              <Filters id={id} />
-            </Card>
-          </StickyCol>
         </BSGrid>
       </FilterContext>
     </div>

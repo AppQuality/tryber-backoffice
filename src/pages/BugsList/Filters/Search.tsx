@@ -1,4 +1,4 @@
-import { Input } from "@appquality/appquality-design-system";
+import { Input, FormLabel } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import { useFiltersCardContext } from "../FilterContext";
 import useDebounce from "src/hooks/useDebounce";
@@ -16,6 +16,7 @@ const Search = () => {
 
   return (
     <>
+      <FormLabel label="Search" htmlFor="" />
       <Input
         type="search"
         id="search"

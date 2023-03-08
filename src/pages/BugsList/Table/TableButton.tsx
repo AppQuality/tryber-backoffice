@@ -5,11 +5,12 @@ import { Button } from "@appquality/appquality-design-system";
 const StyledButton = styled(Button)`
   border: none;
   padding: 0;
+  background-color: transparent;
   :hover {
     border: none;
     text-decoration: underline;
     background-color: transparent;
-    color: ${(props) => props.theme.palette.primary};
+    color: ${(props) => props.theme.palette.secondary};
   }
 `;
 

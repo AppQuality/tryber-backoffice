@@ -1,4 +1,4 @@
-import { Select } from "@appquality/appquality-design-system";
+import { Card, Select } from "@appquality/appquality-design-system";
 import useTags from "./useTags";
 import { useFiltersCardContext } from "../../FilterContext";
 import { useEffect } from "react";
@@ -31,23 +31,21 @@ const TagsFilter = ({ id }: { id: string }) => {
   if (options.length < 2) return null;
 
   return (
-    <>
-      <Select
-        placeholder={"Filter by tags"}
-        isMulti
-        menuTargetQuery={"body"}
-        name={"tags"}
-        options={options}
-        label={`Tags (${total})`}
-        value={options.filter((o) => filters.tags?.includes(o.value))}
-        onChange={(newOptions) => {
-          setFilters({
-            tags: newOptions.map((o: { value: string }) => o.value),
-          });
-        }}
-        noOptionsMessage={() => "No options"}
-      />
-    </>
+    <Select
+      placeholder={"Filter by tags"}
+      isMulti
+      menuTargetQuery={"body"}
+      name={"tags"}
+      label={`Tags (${total})`}
+      options={options}
+      value={options.filter((o) => filters.tags?.includes(o.value))}
+      onChange={(newOptions) => {
+        setFilters({
+          tags: newOptions.map((o: { value: string }) => o.value),
+        });
+      }}
+      noOptionsMessage={() => "No options"}
+    />
   );
 };
 
