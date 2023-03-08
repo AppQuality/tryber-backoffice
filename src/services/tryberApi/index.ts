@@ -788,8 +788,8 @@ export type GetCampaignsByCampaignBugsApiArg = {
   search?: string;
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
-  /** Order values by STATUS, TESTERID, SEVERITY */
-  orderBy?: "severity" | "testerId" | "status";
+  /** Order values by STATUS, TESTERID, SEVERITY, TYPE, ID */
+  orderBy?: "severity" | "testerId" | "status" | "type" | "id";
   /** Key-value Array for item filtering */
   filterBy?: object;
 };
