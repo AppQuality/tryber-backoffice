@@ -24,9 +24,7 @@ const BugsList = () => {
         </div>
         <BSGrid>
           <BSCol size="col-lg-12">
-            <Card className="aq-mb-3" bodyClass="">
-              <Table id={id} />
-            </Card>
+            <Table id={id} />
           </BSCol>
         </BSGrid>
       </FilterContext>

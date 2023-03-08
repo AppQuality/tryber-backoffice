@@ -1,5 +1,8 @@
-import { Table, Pagination } from "@appquality/appquality-design-system";
-import { useGetCampaignsByCampaignBugsQuery } from "src/services/tryberApi";
+import { Table, Pagination, Card } from "@appquality/appquality-design-system";
+import {
+  useGetCampaignsByCampaignBugsQuery,
+  GetCampaignsByCampaignBugsApiArg,
+} from "src/services/tryberApi";
 import { useFiltersCardContext } from "../FilterContext";
 import Button from "./TableButton";
 import Severity from "./Severity";
@@ -11,7 +14,7 @@ const LIMIT = 100;
 const BugsTable = ({ id }: { id: string }) => {
   const { filters, page, setPage, order, setOrder } = useFiltersCardContext();
 
-  let orderBy: "id" | "type" | "severity" | "testerId" | "status" = "id";
+  let orderBy: GetCampaignsByCampaignBugsApiArg["orderBy"] = "id";
   if (order.field === "internalId") orderBy = "id";
   if (order.field === "tester") orderBy = "testerId";
   if (order.field === "type") orderBy = "type";
@@ -44,7 +47,7 @@ const BugsTable = ({ id }: { id: string }) => {
   }
 
   return (
-    <>
+    <Card className="aq-mb-3" bodyClass="" title={`${data.total} Bugs`}>
       <Table
         isStriped
         dataSource={data.items.map((r) => ({
@@ -151,7 +154,7 @@ const BugsTable = ({ id }: { id: string }) => {
           maxPages={Math.ceil(data.total / data.limit)}
         />
       ) : null}
-    </>
+    </Card>
   );
 };
 
