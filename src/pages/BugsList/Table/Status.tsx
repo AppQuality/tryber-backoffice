@@ -5,7 +5,6 @@ const StyledStatus = styled.span<{ statusId: number }>`
   ${({ statusId: id, theme }) => id === 2 && `color: ${theme.palette.success};`}
 ${({ statusId: id, theme }) => id === 3 && `color: ${theme.palette.info};`}
 ${({ statusId: id, theme }) => id === 4 && `color: ${theme.palette.warning};`}
-font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   text-transform: capitalize;
 `;
 
