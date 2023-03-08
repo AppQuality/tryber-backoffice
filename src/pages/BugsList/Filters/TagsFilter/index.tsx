@@ -1,37 +1,35 @@
 import { Select } from "@appquality/appquality-design-system";
-import { useGetCampaignsByCampaignBugsQuery } from "src/services/tryberApi";
-import { useFiltersCardContext } from "../FilterContext";
+import useTags from "./useTags";
+import { useFiltersCardContext } from "../../FilterContext";
+import { useEffect } from "react";
 
 const TagsFilter = ({ id }: { id: string }) => {
   const { filters, setFilters } = useFiltersCardContext();
-  const { data, isLoading } = useGetCampaignsByCampaignBugsQuery({
-    campaign: id,
-  });
+  const { tags, isLoading, isError, total } = useTags(id);
+
+  useEffect(() => {
+    if (tags.length) {
+      setFilters({
+        tags: tags.map((o) => o.id.toString()),
+      });
+    }
+  }, [tags.length]);
 
   if (isLoading) {
     return <>Loading</>;
   }
 
-  if (!data) {
+  if (isError) {
     return <>Error</>;
   }
 
-  const tags = data.items
-    .reduce((carry, i) => {
-      if (!i.tags) return carry;
-      return [...carry, ...i.tags];
-    }, [] as NonNullable<(typeof data)["items"][number]["tags"]>[number][])
-    .map((i) => ({
-      label: i.name,
-      value: i.id.toString(),
-    }));
-  const options = tags
-    .filter((o, i) => tags.findIndex((oo) => oo.value === o.value) === i)
-    .sort((a, b) => parseInt(b.value) - parseInt(a.value));
+  const options = tags.map((i) => ({
+    label: i.name,
+    value: i.id.toString(),
+  }));
 
   if (options.length < 2) return null;
 
-  options.unshift({ label: "No tags", value: "none" });
   return (
     <>
       <Select
@@ -40,7 +38,7 @@ const TagsFilter = ({ id }: { id: string }) => {
         menuTargetQuery={"body"}
         name={"tags"}
         options={options}
-        label={"Tags"}
+        label={`Tags (${total})`}
         value={options.filter((o) => filters.tags?.includes(o.value))}
         onChange={(newOptions) => {
           setFilters({
