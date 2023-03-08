@@ -7,20 +7,37 @@ type Filters = {
   duplication?: string[];
   search?: string;
 };
+
+const DefaultOrder: {
+  field: string;
+  direction: "ASC" | "DESC";
+} = {
+  field: "internalId",
+  direction: "DESC",
+};
+
 const Context = createContext<{
   filters: Filters;
   setFilters: (filters: Filters) => void;
   page: number;
   setPage: (page: number) => void;
+  order: typeof DefaultOrder;
+  setOrder: (
+    field: (typeof DefaultOrder)["field"],
+    direction: (typeof DefaultOrder)["direction"]
+  ) => void;
 }>({
   filters: {},
   setFilters: () => {},
   page: 1,
   setPage: () => {},
+  order: DefaultOrder,
+  setOrder: () => {},
 });
 
 const FiltersContext = ({ children }: { children: React.ReactNode }) => {
   const [filters, setFilters] = useState({});
+  const [order, setOrder] = useState<typeof DefaultOrder>(DefaultOrder);
   const [page, setPage] = useState(1);
 
   return (
@@ -33,6 +50,13 @@ const FiltersContext = ({ children }: { children: React.ReactNode }) => {
         },
         page,
         setPage,
+        order,
+        setOrder: (
+          field: (typeof DefaultOrder)["field"],
+          direction: (typeof DefaultOrder)["direction"]
+        ) => {
+          setOrder({ field, direction });
+        },
       }}
     >
       {children}
