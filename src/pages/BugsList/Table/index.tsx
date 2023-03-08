@@ -9,7 +9,7 @@ import Type from "./Type";
 const LIMIT = 100;
 
 const BugsTable = ({ id }: { id: string }) => {
-  const { filters, page, setPage } = useFiltersCardContext();
+  const { filters, page, setPage, order, setOrder } = useFiltersCardContext();
 
   const { data, isLoading } = useGetCampaignsByCampaignBugsQuery({
     campaign: id,
@@ -37,6 +37,7 @@ const BugsTable = ({ id }: { id: string }) => {
   return (
     <>
       <Table
+        isStriped
         dataSource={data.items.map((r) => ({
           key: r.id,
           internalId: r.internalId,
@@ -92,18 +93,24 @@ const BugsTable = ({ id }: { id: string }) => {
             ),
           },
         }))}
+        orderBy={order.field}
+        order={order.direction}
         columns={[
           {
             title: "Id",
             dataIndex: "internalId",
             key: "internalId",
             maxWidth: "20ch",
+            isSortable: true,
+            onSort: (newSort) => setOrder("internalId", newSort),
           },
           {
             title: "Tester",
             dataIndex: "tester",
             key: "tester",
             maxWidth: "10ch",
+            isSortable: true,
+            onSort: (newSort) => setOrder("tester", newSort),
           },
           {
             title: "Title",
@@ -115,18 +122,24 @@ const BugsTable = ({ id }: { id: string }) => {
             dataIndex: "status",
             key: "status",
             maxWidth: "10ch",
+            isSortable: true,
+            onSort: (newSort) => setOrder("status", newSort),
           },
           {
             title: "Severity",
             dataIndex: "severity",
             key: "severity",
             maxWidth: "10ch",
+            isSortable: true,
+            onSort: (newSort) => setOrder("severity", newSort),
           },
           {
             title: "Type",
             dataIndex: "type",
             key: "type",
             maxWidth: "12ch",
+            isSortable: true,
+            onSort: (newSort) => setOrder("type", newSort),
           },
           {
             title: "",
