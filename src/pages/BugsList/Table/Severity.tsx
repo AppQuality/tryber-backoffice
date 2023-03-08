@@ -5,7 +5,6 @@ const StyledSeverity = styled.span<{ severityId: number }>`
   ${({ severityId: id }) => id === 3 && `color: #C78430;`}
 ${({ severityId: id }) => id === 2 && `color: #024780;`}
 ${({ severityId: id }) => id === 1 && `color: #02807A;`}
-font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   text-transform: capitalize;
 `;
 
