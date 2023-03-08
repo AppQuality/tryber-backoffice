@@ -3,11 +3,17 @@ import Filters from "./Filters";
 import Table from "./Table";
 import FilterContext from "./FilterContext";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
 
+const StickyCol = styled(BSCol)`
+  position: sticky;
+  top: 0;
+  z-index: 1;
+`;
 const BugsList = () => {
   const { id } = useParams<{ id: string }>();
   return (
-    <div style={{ width: "100%", overflow: "hidden" }}>
+    <div>
       <FilterContext>
         <BSGrid>
           <BSCol size="col-lg-9">
@@ -15,11 +21,11 @@ const BugsList = () => {
               <Table id={id} />
             </Card>
           </BSCol>
-          <BSCol size="col-lg-3">
+          <StickyCol>
             <Card className="aq-mb-3" title="Filters">
               <Filters id={id} />
             </Card>
-          </BSCol>
+          </StickyCol>
         </BSGrid>
       </FilterContext>
     </div>
