@@ -83,21 +83,6 @@ const BugsTable = ({ id }: { id: string }) => {
                 >
                   Review
                 </Button>
-                <Button
-                  onClick={(event) => {
-                    window.parent.postMessage(
-                      JSON.stringify({
-                        type: "open-bug",
-                        newTab: event.ctrlKey ? true : false,
-                        id: r.id,
-                      }),
-                      "*"
-                    );
-                  }}
-                >
-                  {" "}
-                  Show
-                </Button>
               </div>
             ),
           },
@@ -154,7 +139,7 @@ const BugsTable = ({ id }: { id: string }) => {
             title: "",
             dataIndex: "action",
             key: "action",
-            maxWidth: "20ch",
+            maxWidth: "10ch",
             align: "right",
           },
         ]}
