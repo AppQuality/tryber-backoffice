@@ -27,6 +27,7 @@ const BugsTable = ({ id }: { id: string }) => {
     start: (page - 1) * LIMIT,
     filterBy: {
       severities: filters.severities ? filters.severities.join(",") : undefined,
+      types: filters.types ? filters.types.join(",") : undefined,
       status: filters.status ? filters.status.join(",") : undefined,
       tags: filters.tags ? filters.tags.join(",") : undefined,
       duplication: filters.duplication
