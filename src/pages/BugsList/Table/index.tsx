@@ -1,4 +1,9 @@
-import { Table, Pagination, Card } from "@appquality/appquality-design-system";
+import {
+  Table,
+  Pagination,
+  Card,
+  icons,
+} from "@appquality/appquality-design-system";
 import {
   useGetCampaignsByCampaignBugsQuery,
   GetCampaignsByCampaignBugsApiArg,
@@ -10,6 +15,8 @@ import Status from "./Status";
 import Type from "./Type";
 
 const LIMIT = 100;
+
+const StarFill = icons.StarFill;
 
 const BugsTable = ({ id }: { id: string }) => {
   const { filters, page, setPage, order, setOrder } = useFiltersCardContext();
@@ -54,7 +61,15 @@ const BugsTable = ({ id }: { id: string }) => {
         dataSource={data.items.map((r) => ({
           key: r.id,
           internalId: r.internalId,
-          title: r.title,
+          title: {
+            title: r.title,
+            content: (
+              <>
+                {r.isFavourite ? <StarFill className="aq-mx-2" /> : null}
+                {r.title}
+              </>
+            ),
+          },
           severity: {
             title: r.severity.name,
             content: <Severity severity={r.severity} />,
