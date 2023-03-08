@@ -139,20 +139,20 @@ const BugsTable = ({ id }: { id: string }) => {
             onSort: (newSort) => setOrder("status", newSort),
           },
           {
-            title: "Severity",
-            dataIndex: "severity",
-            key: "severity",
-            maxWidth: "10ch",
-            isSortable: true,
-            onSort: (newSort) => setOrder("severity", newSort),
-          },
-          {
             title: "Type",
             dataIndex: "type",
             key: "type",
             maxWidth: "12ch",
             isSortable: true,
             onSort: (newSort) => setOrder("type", newSort),
+          },
+          {
+            title: "Severity",
+            dataIndex: "severity",
+            key: "severity",
+            maxWidth: "10ch",
+            isSortable: true,
+            onSort: (newSort) => setOrder("severity", newSort),
           },
           {
             title: "",
