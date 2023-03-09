@@ -156,7 +156,7 @@ const BugsTable = ({ id }: { id: string }) => {
             title: "Type",
             dataIndex: "type",
             key: "type",
-            maxWidth: "12ch",
+            maxWidth: "13ch",
             isSortable: true,
             onSort: (newSort) => setOrder("type", newSort),
           },
