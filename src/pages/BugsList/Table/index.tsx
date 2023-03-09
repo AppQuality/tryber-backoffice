@@ -3,6 +3,7 @@ import {
   Pagination,
   Card,
   icons,
+  aqBootstrapTheme as theme,
 } from "@appquality/appquality-design-system";
 import {
   useGetCampaignsByCampaignBugsQuery,
@@ -11,7 +12,6 @@ import {
 import { useFiltersCardContext } from "../FilterContext";
 import Button from "./TableButton";
 import Severity from "./Severity";
-import Status from "./Status";
 import Type from "./Type";
 
 const LIMIT = 100;
@@ -58,54 +58,68 @@ const BugsTable = ({ id }: { id: string }) => {
     <Card className="aq-mb-3" bodyClass="" title={`${data.total} Bugs`}>
       <Table
         isStriped
-        dataSource={data.items.map((r) => ({
-          key: r.id,
-          internalId: r.internalId,
-          title: {
-            title: r.title,
-            content: (
-              <>
-                {r.isFavourite ? <StarFill className="aq-mx-2" /> : null}
-                {r.title}
-              </>
-            ),
-          },
-          severity: {
-            title: r.severity.name,
-            content: <Severity severity={r.severity} />,
-          },
-          status: {
-            title: r.status.name,
-            content: <Status status={r.status} />,
-          },
-          type: {
-            title: r.type.name,
-            content: <Type type={r.type} />,
-          },
-          tester: `T${r.tester.id}`,
-          action: {
-            title: "",
-            content: (
-              <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-                <Button
-                  onClick={(event) => {
-                    window.parent.postMessage(
-                      JSON.stringify({
-                        type: "open-review",
-                        newTab: event.ctrlKey ? true : false,
-                        id: r.id,
-                      }),
-                      "*"
-                    );
-                  }}
-                  style={{ margin: "0 4px 0 0" }}
+        dataSource={data.items.map((r) => {
+          let statusColor = theme.palette.primary;
+          if (r.status.id === 1) statusColor = theme.palette.danger;
+          if (r.status.id === 2) statusColor = theme.palette.success;
+          if (r.status.id === 3) statusColor = theme.palette.info;
+          if (r.status.id === 4) statusColor = theme.palette.warning;
+          return {
+            key: r.id,
+            internalId: r.internalId,
+            title: {
+              title: r.title,
+              content: (
+                <>
+                  {r.isFavourite ? <StarFill className="aq-mx-2" /> : null}
+                  {r.title}
+                </>
+              ),
+            },
+            severity: {
+              title: r.severity.name,
+              content: <Severity severity={r.severity} />,
+            },
+            status: {
+              title: r.status.name,
+              content: r.status.name,
+              style: {
+                backgroundColor: statusColor,
+                fontWeight: theme.typography.fontWeight.bold,
+                color: theme.colors.white,
+              },
+            },
+            type: {
+              title: r.type.name,
+              content: <Type type={r.type} />,
+            },
+            tester: `T${r.tester.id}`,
+            action: {
+              title: "",
+              content: (
+                <div
+                  style={{ display: "flex", justifyContent: "space-evenly" }}
                 >
-                  Review
-                </Button>
-              </div>
-            ),
-          },
-        }))}
+                  <Button
+                    onClick={(event) => {
+                      window.parent.postMessage(
+                        JSON.stringify({
+                          type: "open-review",
+                          newTab: event.ctrlKey ? true : false,
+                          id: r.id,
+                        }),
+                        "*"
+                      );
+                    }}
+                    style={{ margin: "0 4px 0 0" }}
+                  >
+                    Review
+                  </Button>
+                </div>
+              ),
+            },
+          };
+        })}
         orderBy={order.field}
         order={order.direction}
         columns={[
