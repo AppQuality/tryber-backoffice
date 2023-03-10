@@ -1,5 +1,13 @@
-import { Modal, ModalBody, Table } from "@appquality/appquality-design-system";
-import { useGetCampaignsByCampaignBugsQuery } from "src/services/tryberApi";
+import {
+  Modal,
+  ModalBody,
+  Table,
+  Text,
+  Button,
+} from "@appquality/appquality-design-system";
+import useCampaignStats from "./useCampaignStats";
+import useCopyStatus from "./copyStatus";
+import useCopyResume from "./copyResume";
 
 const Stats = ({
   id,
@@ -10,9 +18,9 @@ const Stats = ({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
-  const { data, isLoading } = useGetCampaignsByCampaignBugsQuery({
-    campaign: id,
-  });
+  const { data, isLoading } = useCampaignStats(id);
+  const copyStatus = useCopyStatus(id);
+  const copyResume = useCopyResume(id);
   if (isLoading) {
     return <>Loading</>;
   }
@@ -22,42 +30,32 @@ const Stats = ({
   }
 
   const allBugs = {
+    ...data.allBugs,
     key: 1,
     cross: "Tutti",
-    total: 0,
-    approved: 0,
-    review: 0,
-    refused: 0,
-    pending: 0,
   };
 
   const uniqueBugs = {
+    ...data.allBugs,
     key: 2,
     cross: "Unici",
-    total: 0,
-    approved: 0,
-    review: 0,
-    refused: 0,
-    pending: 0,
   };
 
-  data.items.forEach((bug) => {
-    allBugs.total++;
-    if (bug.status.id === 1) allBugs.refused++;
-    if (bug.status.id === 2) allBugs.approved++;
-    if (bug.status.id === 3) allBugs.pending++;
-    if (bug.status.id === 4) allBugs.review++;
-    if (bug.duplication !== "duplicated") {
-      uniqueBugs.total++;
-      if (bug.status.id === 1) uniqueBugs.refused++;
-      if (bug.status.id === 2) uniqueBugs.approved++;
-      if (bug.status.id === 3) uniqueBugs.pending++;
-      if (bug.status.id === 4) uniqueBugs.review++;
-    }
-  });
-
   return (
-    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      footer={
+        <div className="aq-float-right">
+          <Button onClick={() => copyStatus()} className="aq-mx-2">
+            Get Status
+          </Button>
+          <Button onClick={() => copyResume()} className="aq-mx-2">
+            Get Final Resume
+          </Button>
+        </div>
+      }
+    >
       <ModalBody>
         <Table
           dataSource={[allBugs, uniqueBugs]}
@@ -94,6 +92,10 @@ const Stats = ({
             },
           ]}
         ></Table>
+        <Text>
+          Tester con bug: {data.activeTesters} / {data.totalTesters} (
+          {data.activeTestersPercent}%)
+        </Text>
       </ModalBody>
     </Modal>
   );

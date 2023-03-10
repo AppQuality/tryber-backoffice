@@ -2,7 +2,6 @@ import {
   BSCol,
   BSGrid,
   Button,
-  Container,
   Title,
 } from "@appquality/appquality-design-system";
 import Filters from "./Filters";
@@ -14,8 +13,10 @@ import { useState } from "react";
 import Stats from "./Stats";
 import styled from "styled-components";
 
-const FluidContainer = styled(Container)`
-  max-width: 90%;
+const FluidContainer = styled.div`
+    max-width: 90%;
+    margin: 0 auto;
+  }
 `;
 
 const HeaderButton = (props: Parameters<typeof Button>[0]) => {
