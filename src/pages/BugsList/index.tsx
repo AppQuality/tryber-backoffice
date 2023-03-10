@@ -1,4 +1,10 @@
-import { BSCol, BSGrid, Button } from "@appquality/appquality-design-system";
+import {
+  BSCol,
+  BSGrid,
+  Button,
+  Container,
+  Title,
+} from "@appquality/appquality-design-system";
 import Filters from "./Filters";
 import Table from "./Table";
 import FilterContext from "./FilterContext";
@@ -6,19 +12,42 @@ import { useParams } from "react-router-dom";
 import TagsFilter from "./Filters/TagsFilter";
 import { useState } from "react";
 import Stats from "./Stats";
+import styled from "styled-components";
+
+const FluidContainer = styled(Container)`
+  max-width: 90%;
+`;
+
+const HeaderButton = (props: Parameters<typeof Button>[0]) => {
+  return <Button {...props} size="sm" type="link-hover" />;
+};
 
 const BugsList = () => {
   const { id } = useParams<{ id: string }>();
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
 
   return (
-    <div>
+    <FluidContainer>
+      <Title size="m">Bug List - CP-{id}</Title>
       <Stats
         id={id}
         isOpen={isStatsModalOpen}
         setIsOpen={setIsStatsModalOpen}
       />
-      <Button onClick={() => setIsStatsModalOpen(true)}>Stats</Button>
+      <HeaderButton
+        as="a"
+        href={`/wp-admin/admin.php?page=mvc_campaigns`}
+        type="secondary"
+        className="aq-mr-2"
+      >
+        {"<"} To Campaign List
+      </HeaderButton>
+      <HeaderButton as="a" href={`/campaigns/${id}`} className="aq-mr-2">
+        {"<"} To Dashboard
+      </HeaderButton>
+      <HeaderButton onClick={() => setIsStatsModalOpen(true)}>
+        Stats
+      </HeaderButton>
       <FilterContext>
         <div className="aq-my-3">
           <Filters id={id} />
@@ -32,7 +61,7 @@ const BugsList = () => {
           </BSCol>
         </BSGrid>
       </FilterContext>
-    </div>
+    </FluidContainer>
   );
 };
 

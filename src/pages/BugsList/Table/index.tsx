@@ -101,16 +101,7 @@ const BugsTable = ({ id }: { id: string }) => {
                   style={{ display: "flex", justifyContent: "space-evenly" }}
                 >
                   <Button
-                    onClick={(event) => {
-                      window.parent.postMessage(
-                        JSON.stringify({
-                          type: "open-review",
-                          newTab: event.ctrlKey ? true : false,
-                          id: r.id,
-                        }),
-                        "*"
-                      );
-                    }}
+                    href={`/wp-admin/admin.php?page=mvc_bugs-edit&id=${r.id}`}
                     style={{ margin: "0 4px 0 0" }}
                   >
                     Review

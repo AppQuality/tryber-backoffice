@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Button } from "@appquality/appquality-design-system";
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(({ children, style, href, ...rest }) => (
+  <Button as="a" style={style} href={href} {...rest}>
+    {children}
+  </Button>
+))`
   border: none;
   padding: 0;
   background-color: transparent;
@@ -17,15 +21,15 @@ const StyledButton = styled(Button)`
 const TableButton = ({
   children,
   style,
-  onClick,
+  href,
 }: {
   children: React.ReactNode;
   style?: React.CSSProperties;
-  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  href: string;
 }) => {
   return (
     <StyledButton
-      onClick={onClick}
+      href={href}
       style={style}
       size="sm"
       type="primary"
