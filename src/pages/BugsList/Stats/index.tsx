@@ -36,7 +36,7 @@ const Stats = ({
   };
 
   const uniqueBugs = {
-    ...data.allBugs,
+    ...data.uniqueBugs,
     key: 2,
     cross: "Unici",
   };
