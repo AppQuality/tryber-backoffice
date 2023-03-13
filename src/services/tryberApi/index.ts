@@ -43,6 +43,22 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.campaignOptional,
       }),
     }),
+    getCampaignsByCampaignBugs: build.query<
+      GetCampaignsByCampaignBugsApiResponse,
+      GetCampaignsByCampaignBugsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/bugs`,
+        params: {
+          limit: queryArg.limit,
+          start: queryArg.start,
+          search: queryArg.search,
+          order: queryArg.order,
+          orderBy: queryArg.orderBy,
+          filterBy: queryArg.filterBy,
+        },
+      }),
+    }),
     postCampaignsByCampaignCandidates: build.mutation<
       PostCampaignsByCampaignCandidatesApiResponse,
       PostCampaignsByCampaignCandidatesApiArg
@@ -147,6 +163,12 @@ const injectedRtkApi = api.injectEndpoints({
       GetCampaignsByCampaignFormsApiArg
     >({
       query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/forms` }),
+    }),
+    getCampaignsByCampaignStats: build.query<
+      GetCampaignsByCampaignStatsApiResponse,
+      GetCampaignsByCampaignStatsApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/stats` }),
     }),
     getCertifications: build.query<
       GetCertificationsApiResponse,
@@ -737,6 +759,47 @@ export type PutCampaignsByCampaignApiArg = {
   /** The Campaign data to edit */
   campaignOptional: CampaignOptional;
 };
+export type GetCampaignsByCampaignBugsApiResponse = /** status 200 OK */ {
+  items: {
+    id: number;
+    title: string;
+    internalId: string;
+    status: {
+      id: number;
+      name: string;
+    };
+    type: {
+      id: number;
+      name: string;
+    };
+    severity: {
+      id: number;
+      name: string;
+    };
+    tester: {
+      id: number;
+    };
+    tags?: BugTag[];
+    duplication: "father" | "unique" | "duplicated";
+    isFavourite: boolean;
+  }[];
+} & PaginationData;
+export type GetCampaignsByCampaignBugsApiArg = {
+  /** A campaign id */
+  campaign: string;
+  /** Max items to retrieve */
+  limit?: number;
+  /** Items to skip for pagination */
+  start?: number;
+  /** The value to search for */
+  search?: string;
+  /** How to order values (ASC, DESC) */
+  order?: "ASC" | "DESC";
+  /** Order values by STATUS, TESTERID, SEVERITY, TYPE, ID */
+  orderBy?: "severity" | "testerId" | "status" | "type" | "id";
+  /** Key-value Array for item filtering */
+  filterBy?: object;
+};
 export type PostCampaignsByCampaignCandidatesApiResponse =
   /** status 200 OK */
   | {
@@ -916,6 +979,12 @@ export type GetCampaignsByCampaignFormsApiResponse = /** status 200 OK */ {
   shortName?: string;
 }[];
 export type GetCampaignsByCampaignFormsApiArg = {
+  campaign: string;
+};
+export type GetCampaignsByCampaignStatsApiResponse = /** status 200 OK */ {
+  selected: number;
+};
+export type GetCampaignsByCampaignStatsApiArg = {
   campaign: string;
 };
 export type GetCertificationsApiResponse = /** status 200 OK */ {
@@ -1887,6 +1956,10 @@ export type Campaign = CampaignOptional & CampaignRequired;
 export type Project = {
   name?: string;
 };
+export type BugTag = {
+  id: number;
+  name: string;
+};
 export type PaginationData = {
   start: number;
   limit?: number;
@@ -2053,6 +2126,7 @@ export const {
   useGetCampaignsQuery,
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
+  useGetCampaignsByCampaignBugsQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignCandidatesQuery,
   useGetCampaignsByCampaignTasksQuery,
@@ -2064,6 +2138,7 @@ export const {
   useGetCampaignsFormsByFormIdQuery,
   usePutCampaignsFormsByFormIdMutation,
   useGetCampaignsByCampaignFormsQuery,
+  useGetCampaignsByCampaignStatsQuery,
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
   useGetCustomersQuery,
