@@ -21,7 +21,7 @@ const Search = () => {
         type="search"
         id="search"
         onChange={setCurrentSearch}
-        placeholder="Search by title, tag or id"
+        placeholder="Search by title, tag, id or tester id"
       />
     </>
   );
