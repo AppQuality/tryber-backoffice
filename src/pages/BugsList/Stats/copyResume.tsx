@@ -12,48 +12,57 @@ const useCopyResume = (id: string) => {
   }
   return () => {
     copyToClipboard(`Ciao,
-al momento sono presenti ${
+ti confermo che il test si è concluso il {inserire giorno}, di seguito trovi un riepilogo con qualche dato sulla campagna di test:
+- ${
       data.allBugs.approved
-    } bug approvati nella campagna, di cui ${
+    } bug sono stati accettati e sono visibili lato vostro in piattaforma, di cui ${
       data.uniqueBugs.approved
-    } sono unici. I bug unici segnalati fino a questo momento sono distribuiti come segue:
-${data.bugsByType
-  .map((bug) => `- ${bug.type}: ${bug.value} (${bug.percent}%)`)
-  .join("\n")}
-La severità dei bug finora segnalati è la seguente:
-- LOW: ${
-      "LOW" in data.bugsBySeverity
-        ? `${data.bugsBySeverity["LOW"]} (${Math.round(
-            (data.bugsBySeverity["LOW"] / data.uniqueBugs.approved) * 100
-          )}%)`
-        : `0 (0%)`
-    }
-- MEDIUM: ${
-      "MEDIUM" in data.bugsBySeverity
-        ? `${data.bugsBySeverity["MEDIUM"]} (${Math.round(
-            (data.bugsBySeverity["MEDIUM"] / data.uniqueBugs.approved) * 100
-          )}%)`
-        : `0 (0%)`
-    }
-- HIGH: ${
-      "HIGH" in data.bugsBySeverity
-        ? `${data.bugsBySeverity["HIGH"]} (${Math.round(
-            (data.bugsBySeverity["HIGH"] / data.uniqueBugs.approved) * 100
-          )}%)`
-        : `0 (0%)`
-    }
-- CRITICAL: ${
+    } sono risultati univoci
+${
+  data.bugsByType.length
+    ? `- il ${data.bugsByType[0].percent}% dei bug unici riguarda problemi di tipo ${data.bugsByType[0].type}`
+    : ""
+}      
+${
+  data.bugsByType.length > 0
+    ? `- il ${data.bugsByType[1].percent}% dei bug unici riguarda problemi di tipo ${data.bugsByType[1].type}`
+    : ""
+}      
+${
+  data.bugsByType.length > 1
+    ? `- il ${data.bugsByType[2].percent}% dei bug unici riguarda problemi di tipo ${data.bugsByType[2].type}`
+    : ""
+}      
+- il ${
       "CRITICAL" in data.bugsBySeverity
-        ? `${data.bugsBySeverity["CRITICAL"]} (${Math.round(
+        ? Math.round(
             (data.bugsBySeverity["CRITICAL"] / data.uniqueBugs.approved) * 100
-          )}%)`
-        : `0 (0%)`
-    }
-Fino a questo momento un totale di ${data.activeTesters} / ${
-      data.totalTesters
-    } (${
-      data.activeTestersPercent
-    }%) tester si sono attivati e hanno caricato almeno un bug.`);
+          )
+        : 0
+    }% dei bug unici è stato segnalato con severità critica
+- il ${
+      "HIGH" in data.bugsBySeverity
+        ? Math.round(
+            (data.bugsBySeverity["HIGH"] / data.uniqueBugs.approved) * 100
+          )
+        : 0
+    }% dei bug unici è stato segnalato con severità alta
+- il ${
+      "MEDIUM" in data.bugsBySeverity
+        ? Math.round(
+            (data.bugsBySeverity["MEDIUM"] / data.uniqueBugs.approved) * 100
+          )
+        : 0
+    }% dei bug unici è stato segnalato con severità media
+- il ${
+      "LOW" in data.bugsBySeverity
+        ? Math.round(
+            (data.bugsBySeverity["LOW"] / data.uniqueBugs.approved) * 100
+          )
+        : 0
+    }% dei bug unici è stato segnalato con severità bassa
+Puoi trovare di seguito alcuni dei bug più rilevanti:
+${data.favorites.join("\n")}`);
   };
 };
 
