@@ -18,6 +18,7 @@ import SiteWideMessages from "./features/SiteWideMessages";
 import Jotform from "./pages/Jotform";
 import CampaignPreselectionList from "./pages/campaigns/preselectionFormList";
 import SelectionPage from "./pages/campaigns/selection";
+import Prospect from "./pages/Prospect";
 
 function App() {
   return (
@@ -30,6 +31,10 @@ function App() {
             <Route
               path={`/backoffice/campaigns/:id/bugs`}
               component={BugsList}
+            />
+            <Route
+              path={`/backoffice/campaigns/:id/prospect`}
+              component={Prospect}
             />
             <Route path={`/backoffice/new`} component={Create} />
             <Route path="/backoffice/payments" component={AdminPayments} />

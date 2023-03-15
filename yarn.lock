@@ -1868,6 +1868,13 @@
     swagger2openapi "^7.0.7"
     typescript "^4.1.2"
 
+"@silevis/reactgrid@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@silevis/reactgrid/-/reactgrid-4.0.4.tgz#20092d8a8f27e5b48d9683beebb1b5921a4bbac7"
+  integrity sha512-kP6w5zPv5xUMRJwcvMph8fFaNpXybm4EqZ68O0h2D5AqGvwt0H3Y8zsstqT/4nYcuGidCemX7gU65vjMkRF/3g==
+  dependencies:
+    tslib "^2.3.1"
+
 "@sinclair/typebox@^0.25.16":
   version "0.25.24"
   resolved "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.25.24.tgz"
@@ -12333,7 +12340,7 @@ tslib@^1.10.0, tslib@^1.8.1:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.3, tslib@^2.1.0:
+tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.1:
   version "2.5.0"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.5.0.tgz"
   integrity sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==
