@@ -84,6 +84,12 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getCampaignsByCampaignPayouts: build.query<
+      GetCampaignsByCampaignPayoutsApiResponse,
+      GetCampaignsByCampaignPayoutsApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/payouts` }),
+    }),
     getCampaignsByCampaignTasks: build.query<
       GetCampaignsByCampaignTasksApiResponse,
       GetCampaignsByCampaignTasksApiArg
@@ -163,6 +169,14 @@ const injectedRtkApi = api.injectEndpoints({
       GetCampaignsByCampaignFormsApiArg
     >({
       query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/forms` }),
+    }),
+    getCampaignsByCampaignProspect: build.query<
+      GetCampaignsByCampaignProspectApiResponse,
+      GetCampaignsByCampaignProspectApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/prospect`,
+      }),
     }),
     getCampaignsByCampaignStats: build.query<
       GetCampaignsByCampaignStatsApiResponse,
@@ -865,6 +879,13 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   /** Key-value Array for item filtering */
   filterByExclude?: any;
 };
+export type GetCampaignsByCampaignPayoutsApiResponse = /** status 200 OK */ {
+  maxBonusBug: number;
+};
+export type GetCampaignsByCampaignPayoutsApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
 export type GetCampaignsByCampaignTasksApiResponse =
   /** status 200 A list of UseCase linked with the Campaign */ (Task & {
     id?: number;
@@ -979,6 +1000,40 @@ export type GetCampaignsByCampaignFormsApiResponse = /** status 200 OK */ {
   shortName?: string;
 }[];
 export type GetCampaignsByCampaignFormsApiArg = {
+  campaign: string;
+};
+export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
+  items: {
+    tester: {
+      id: number;
+      name: string;
+      surname: string;
+    };
+    usecases: {
+      completed: number;
+      required: number;
+    };
+    bugs: {
+      critical: number;
+      high: number;
+      medium: number;
+      low: number;
+    };
+    payout: {
+      completion: number;
+      bug: number;
+      refund: number;
+      extra: number;
+    };
+    experience: {
+      completion: number;
+      extra: number;
+    };
+    note: string;
+    status: "pending" | "done";
+  }[];
+};
+export type GetCampaignsByCampaignProspectApiArg = {
   campaign: string;
 };
 export type GetCampaignsByCampaignStatsApiResponse = /** status 200 OK */ {
@@ -2129,6 +2184,7 @@ export const {
   useGetCampaignsByCampaignBugsQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignCandidatesQuery,
+  useGetCampaignsByCampaignPayoutsQuery,
   useGetCampaignsByCampaignTasksQuery,
   usePostCampaignsByCampaignTasksMutation,
   useGetCampaignsByCampaignTasksAndTaskQuery,
@@ -2138,6 +2194,7 @@ export const {
   useGetCampaignsFormsByFormIdQuery,
   usePutCampaignsFormsByFormIdMutation,
   useGetCampaignsByCampaignFormsQuery,
+  useGetCampaignsByCampaignProspectQuery,
   useGetCampaignsByCampaignStatsQuery,
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
