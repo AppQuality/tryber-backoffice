@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import EdiTable from "./EdiTable";
 import { useEffect, useState } from "react";
 import { useGetCampaignsByCampaignProspectQuery } from "src/services/tryberApi";
+import { Button } from "@appquality/appquality-design-system";
 
 type Row = {
   testerId: string;
@@ -69,6 +70,13 @@ const Prospect = () => {
           completionExperience: d.experience.completion,
           extraExperience: d.experience.extra,
           notes: d.note,
+          style:
+            d.bugs.critical + d.bugs.high + d.bugs.medium + d.bugs.low < 2
+              ? {
+                  backgroundColor: "pink",
+                  borderColor: "red",
+                }
+              : {},
         };
       });
       setItems(items);
@@ -131,12 +139,19 @@ const Prospect = () => {
         }}
         onChange={(changes) => {}}
         columns={[
-          { name: "TID", key: "testerId", type: "uneditable" },
+          {
+            name: "TID",
+            key: "testerId",
+            type: "uneditable",
+            children: (
+              <Button onClick={() => alert("Clicked on TID")}>TID</Button>
+            ),
+          },
           { name: "Name", key: "tester", width: 150, type: "uneditable" },
           { name: "Done", key: "useCaseCompleted", type: "uneditable" },
           { name: "Required", key: "useCaseTotal", type: "uneditable" },
           {
-            name: "Bug Trovati  ",
+            name: "Bug Trovati",
             key: "totalBugs",
             width: 90,
             type: "uneditable",
@@ -146,6 +161,18 @@ const Prospect = () => {
             key: "criticalBugs",
             width: 65,
             type: "uneditable",
+            children: (
+              <div
+                style={{
+                  backgroundColor: "pink",
+                  height: "100%",
+                  display: "grid",
+                  alignItems: "center",
+                }}
+              >
+                Critical
+              </div>
+            ),
           },
           { name: "High", key: "highBugs", width: 65, type: "uneditable" },
           { name: "Medium", key: "mediumBugs", width: 65, type: "uneditable" },
