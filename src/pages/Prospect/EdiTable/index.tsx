@@ -6,11 +6,18 @@ import {
   Row,
 } from "@silevis/reactgrid";
 import "@silevis/reactgrid/styles.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { UneditableCell, UneditableCellTemplate } from "./UneditableCell";
 
 const TableWrapper = styled.div`
+  .reactgrid-content .rg-pane .rg-cell.subheader,
+  .rg-cell {
+    font-family: ${({ theme }) => theme.typography.fontFamily.mono};
+  }
+  .rg-cell.rg-header-cell {
+    font-family: ${({ theme }) => theme.typography.fontFamily.serif};
+  }
   .rg-celleditor,
   .rg-celleditor-input,
   .rg-celleditor input {
@@ -18,17 +25,13 @@ const TableWrapper = styled.div`
   }
 
   .reactgrid-content .rg-pane .rg-cell.headercell {
-    font-weight: bold;
     display: grid;
-    text-align: center;
   }
-  .reactgrid-content .rg-pane .rg-cell.header {
-    background-color: red !important;
-    color: white;
-  }
+  .reactgrid-content .rg-pane .rg-cell.header,
   .reactgrid-content .rg-pane .rg-cell.topheader {
-    background-color: green !important;
-    color: white;
+  }
+  .reactgrid-content .rg-pane .rg-cell.subheader {
+    text-align: right;
   }
 `;
 
@@ -36,6 +39,7 @@ function EdiTable<T extends { [key: string]: string | number }>({
   columnHeaders,
   columns,
   bottom,
+  subHeader,
   data,
   onRowChange,
   onChange,
@@ -47,12 +51,16 @@ function EdiTable<T extends { [key: string]: string | number }>({
     type?: "number" | "text" | "uneditable";
     width?: number;
   }[];
+  subHeader?: Record<keyof T, string>[];
   bottom?: Record<keyof T, string>[];
   data: T[];
   onRowChange?: (row: T) => void;
   onChange?: (changes: CellChange[]) => void;
 }) {
-  const [items, setItems] = useState<T[]>(data);
+  const [items, setItems] = useState<T[]>([]);
+  useEffect(() => {
+    setItems(data);
+  }, [data]);
 
   const columnItems = columns.map((c) => ({
     columnId: c.name,
@@ -102,6 +110,25 @@ function EdiTable<T extends { [key: string]: string | number }>({
         className: "header headercell",
       })),
     },
+    ...(subHeader
+      ? subHeader.map((b, idx) => ({
+          rowId: `subheader-${idx}`,
+          cells: columns.map((column, idx) => {
+            if (Object.keys(b).includes(column.key)) {
+              return {
+                type: "header",
+                text:
+                  typeof b[column.key as keyof typeof b] === "number"
+                    ? `${b[column.key as keyof typeof b]}`
+                    : b[column.key as keyof typeof b],
+                columnId: column.key,
+                className: "subheader headercell",
+              };
+            }
+            throw new Error("Unknown column");
+          }),
+        }))
+      : []),
     ...items.map<Row<DefaultCellTypes | UneditableCell>>((item, idx) => ({
       rowId: idx,
       cells: columns.map((column, idx) => {
