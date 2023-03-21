@@ -27,6 +27,10 @@ export class UneditableCellTemplate implements CellTemplate<UneditableCell> {
     return { ...uncertainCell, text, value, placeholder };
   }
 
+  isFocusable() {
+    return false;
+  }
+
   getClassName(cell: Compatible<UneditableCell>): string {
     const isValid = cell.validator ? cell.validator(cell.text) : true;
     const className = cell.className ? cell.className : "";

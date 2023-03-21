@@ -6,8 +6,9 @@ import {
   Row,
 } from "@silevis/reactgrid";
 import "@silevis/reactgrid/styles.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { CustomHeader } from "./customHeader";
 import { UneditableCell, UneditableCellTemplate } from "./UneditableCell";
 
 const TableWrapper = styled.div`
@@ -35,6 +36,8 @@ const TableWrapper = styled.div`
   }
 `;
 
+type CellStyle = { style?: { backgroundColor: string; borderColor: string } };
+
 function EdiTable<T extends { [key: string]: string | number }>({
   columnHeaders,
   columns,
@@ -50,14 +53,15 @@ function EdiTable<T extends { [key: string]: string | number }>({
     key: Exclude<keyof T, number | symbol>;
     type?: "number" | "text" | "uneditable";
     width?: number;
+    children?: React.ReactNode;
   }[];
   subHeader?: Record<keyof T, string>[];
   bottom?: Record<keyof T, string>[];
-  data: T[];
+  data: (T & CellStyle)[];
   onRowChange?: (row: T) => void;
   onChange?: (changes: CellChange[]) => void;
 }) {
-  const [items, setItems] = useState<T[]>([]);
+  const [items, setItems] = useState<(T & CellStyle)[]>([]);
   useEffect(() => {
     setItems(data);
   }, [data]);
@@ -104,8 +108,9 @@ function EdiTable<T extends { [key: string]: string | number }>({
       rowId: "header",
       height: 40,
       cells: columns.map((column, idx) => ({
-        type: "header",
+        type: "customHeader",
         text: column.name,
+        children: column.children,
         columnId: column.key,
         className: "header headercell",
       })),
@@ -138,18 +143,21 @@ function EdiTable<T extends { [key: string]: string | number }>({
             return {
               type: "uneditable",
               text: value,
+              style: item.style || {},
             };
           } else if (typeof value === "number") {
             return {
               type: "number",
               value,
               groupId: column.key,
+              style: item.style || {},
             };
           } else if (typeof value === "string") {
             return {
               type: "text",
               text: value,
               groupId: column.key,
+              style: item.style || {},
             };
           }
           throw new Error("Unknown type");
@@ -207,7 +215,10 @@ function EdiTable<T extends { [key: string]: string | number }>({
         stickyTopRows={columnHeaders ? 2 : 1}
         rows={rows}
         columns={columnItems}
-        customCellTemplates={{ uneditable: new UneditableCellTemplate() }}
+        customCellTemplates={{
+          uneditable: new UneditableCellTemplate(),
+          customHeader: new CustomHeader(),
+        }}
       />
     </TableWrapper>
   );
