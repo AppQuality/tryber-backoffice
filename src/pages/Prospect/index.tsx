@@ -179,25 +179,28 @@ const Prospect = () => {
               note: row.notes,
               completed: true,
             },
-          });
-          setItems((oldItems) => {
-            const index = oldItems.findIndex(
-              (i) => i.testerId === row.testerId
-            );
-            if (row.bugPayout > campaignData.maxBonusBug) {
-              row.bugPayout = campaignData.maxBonusBug;
-            }
-            oldItems[index].totalPayout = `${
-              row.completionPayout +
-              row.bugPayout +
-              row.refundPayout +
-              row.extraPayout
-            }`;
-            oldItems[index].totalExperience = `${
-              row.completionExperience + row.extraExperience
-            }`;
-            return [...oldItems];
-          });
+          })
+            .unwrap()
+            .then((res) => {
+              setItems((oldItems) => {
+                const index = oldItems.findIndex(
+                  (i) => i.testerId === row.testerId
+                );
+                if (row.bugPayout > campaignData.maxBonusBug) {
+                  row.bugPayout = campaignData.maxBonusBug;
+                }
+                oldItems[index].totalPayout = `${
+                  row.completionPayout +
+                  row.bugPayout +
+                  row.refundPayout +
+                  row.extraPayout
+                }`;
+                oldItems[index].totalExperience = `${
+                  row.completionExperience + row.extraExperience
+                }`;
+                return [...oldItems];
+              });
+            });
         }}
         onChange={(changes) => {}}
         columns={[
