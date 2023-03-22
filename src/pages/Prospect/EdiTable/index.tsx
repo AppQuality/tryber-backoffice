@@ -11,6 +11,7 @@ import { UneditableCell, UneditableCellTemplate } from "./UneditableCell";
 import { Column, Item } from "./types";
 import { TableWrapper } from "./TableWrapper";
 import { StarCell, StarCellTemplate } from "./StarCell";
+import { DropdownCellTemplate } from "./DropdownCell";
 
 function EdiTable<T extends { [key: string]: string | number | boolean }>({
   columnHeaders,
@@ -56,6 +57,10 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
                 prevItems[index][fieldName] = change.newCell
                   .value as T[keyof T];
               }
+              if (change.newCell.type === "dropdown") {
+                prevItems[index][fieldName] = change.newCell
+                  .selectedValue as T[keyof T];
+              }
               const row = prevItems[index];
               onRowChange && onRowChange(row);
             });
@@ -88,6 +93,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
           uneditable: new UneditableCellTemplate(),
           customHeader: new CustomHeader(),
           star: new StarCellTemplate(),
+          dropdown: new DropdownCellTemplate(),
         }}
       />
     </TableWrapper>
@@ -117,6 +123,16 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
               type: "star",
               value: value ? 1 : 0,
               text: "",
+              style: item.style || {},
+            };
+          } else if (column.type === "dropdown" && typeof value === "string") {
+            return {
+              type: "dropdown",
+              values: column.values.map((v) => ({
+                value: v,
+                label: v,
+              })),
+              selectedValue: value,
               style: item.style || {},
             };
           } else if (typeof value === "number") {
