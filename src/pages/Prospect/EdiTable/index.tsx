@@ -43,83 +43,86 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   }, [data]);
 
   return (
-    <TableWrapper className={className}>
-      <ReactGrid
-        enableRangeSelection
-        enableFillHandle
-        onCellsChanged={(changes) => {
-          onChange && onChange(changes);
-          setItems((prevItems) => {
-            changes.forEach((change) => {
-              const column = columns.find((c) => c.name === change.columnId);
-              if (!column) return;
-              const index = change.rowId as number;
-              const fieldName = column.key as keyof T;
-              if (change.newCell.type === "text") {
-                prevItems[index][fieldName] = change.newCell.text as T[keyof T];
-              }
-              if (change.newCell.type === "number") {
-                prevItems[index][fieldName] = change.newCell
-                  .value as T[keyof T];
-              }
-              const row = prevItems[index];
-              onRowChange && onRowChange(row);
+    <div style={{ display: "flex" }}>
+      <TableWrapper className={className}>
+        <ReactGrid
+          enableRangeSelection
+          enableFillHandle
+          onCellsChanged={(changes) => {
+            onChange && onChange(changes);
+            setItems((prevItems) => {
+              changes.forEach((change) => {
+                const column = columns.find((c) => c.name === change.columnId);
+                if (!column) return;
+                const index = change.rowId as number;
+                const fieldName = column.key as keyof T;
+                if (change.newCell.type === "text") {
+                  prevItems[index][fieldName] = change.newCell
+                    .text as T[keyof T];
+                }
+                if (change.newCell.type === "number") {
+                  prevItems[index][fieldName] = change.newCell
+                    .value as T[keyof T];
+                }
+                const row = prevItems[index];
+                onRowChange && onRowChange(row);
+              });
+              return [...prevItems];
             });
-            return [...prevItems];
-          });
-        }}
-        stickyTopRows={columnHeaders ? 2 : 1}
-        rows={[
-          ...getTopHeader(columnHeaders),
-          {
-            rowId: "header",
-            height: 35,
-            cells: columns.map((column, idx) => ({
-              type: "customHeader",
-              text: column.name,
-              children: column.children,
-              columnId: column.key,
-              className: "header headercell",
-            })),
-          },
-          ...getSubHeader<T>(columns, subHeader),
-          ...getRowItems<T>(columns, items),
-          ...getBottomItems<T>(columns, bottom),
-        ]}
-        columns={columns.map((c) => ({
-          columnId: c.name,
-          width: c.width ? c.width : 75,
-        }))}
-        customCellTemplates={{
-          uneditable: new UneditableCellTemplate(),
-          customHeader: new CustomHeader(),
-          star: new StarCellTemplate(),
-        }}
-        onContextMenu={
-          contextMenu
-            ? (
-                selectedRowIds: Id[],
-                selectedColIds: Id[],
-                selectionMode: SelectionMode,
-                menuOptions: MenuOption[],
-                selectedRanges: CellLocation[][]
-              ): MenuOption[] => {
-                const rows = Array.from(
-                  new Set(...[selectedRanges.flat().map((r) => r.rowId)])
-                );
-                const selectedData = rows.map((r) => data[r as number]);
-                return contextMenu.map((item) => ({
-                  id: item.label,
-                  label: item.label,
-                  handler: () => {
-                    item.handler(selectedData);
-                  },
-                }));
-              }
-            : undefined
-        }
-      />
-    </TableWrapper>
+          }}
+          stickyTopRows={columnHeaders ? 2 : 1}
+          rows={[
+            ...getTopHeader(columnHeaders),
+            {
+              rowId: "header",
+              height: 35,
+              cells: columns.map((column, idx) => ({
+                type: "customHeader",
+                text: column.name,
+                children: column.children,
+                columnId: column.key,
+                className: "header headercell",
+              })),
+            },
+            ...getSubHeader<T>(columns, subHeader),
+            ...getRowItems<T>(columns, items),
+            ...getBottomItems<T>(columns, bottom),
+          ]}
+          columns={columns.map((c) => ({
+            columnId: c.name,
+            width: c.width ? c.width : 75,
+          }))}
+          customCellTemplates={{
+            uneditable: new UneditableCellTemplate(),
+            customHeader: new CustomHeader(),
+            star: new StarCellTemplate(),
+          }}
+          onContextMenu={
+            contextMenu
+              ? (
+                  selectedRowIds: Id[],
+                  selectedColIds: Id[],
+                  selectionMode: SelectionMode,
+                  menuOptions: MenuOption[],
+                  selectedRanges: CellLocation[][]
+                ): MenuOption[] => {
+                  const rows = Array.from(
+                    new Set(...[selectedRanges.flat().map((r) => r.rowId)])
+                  );
+                  const selectedData = rows.map((r) => data[r as number]);
+                  return contextMenu.map((item) => ({
+                    id: item.label,
+                    label: item.label,
+                    handler: () => {
+                      item.handler(selectedData);
+                    },
+                  }));
+                }
+              : undefined
+          }
+        />
+      </TableWrapper>
+    </div>
   );
 }
 

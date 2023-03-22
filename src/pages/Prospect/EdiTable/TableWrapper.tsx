@@ -1,7 +1,11 @@
 import styled from "styled-components";
 
 export const TableWrapper = styled.div`
-  .reactgrid {
+  height: 80vh;
+  overflow-y: scroll;
+  float: left;
+  .reactgrid .reactgrid-content {
+    background: ${({ theme }) => theme.colors.white};
   }
   .reactgrid-content .rg-pane .rg-cell.subheader,
   .rg-cell {
