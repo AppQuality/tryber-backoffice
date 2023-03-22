@@ -236,7 +236,6 @@ const Prospect = () => {
             name: "Esito",
             key: "completed",
             type: "uneditable",
-            width: 140,
             children: (
               <Button
                 type="link-hover"
