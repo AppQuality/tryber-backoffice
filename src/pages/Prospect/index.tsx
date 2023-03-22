@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom";
 import EdiTable from "./EdiTable";
 import { useEffect, useState } from "react";
-import { useGetCampaignsByCampaignProspectQuery } from "src/services/tryberApi";
+import {
+  useGetCampaignsByCampaignProspectQuery,
+  usePutCampaignsByCampaignProspectAndTesterIdMutation,
+} from "src/services/tryberApi";
 import {
   Button,
   Title,
@@ -70,6 +73,7 @@ const Prospect = () => {
   const { data, isLoading } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
   });
+  const [updateTester] = usePutCampaignsByCampaignProspectAndTesterIdMutation();
 
   const [totals, setTotals] = useState<Record<string, number>>({});
   const [items, setItems] = useState<Row[]>([]);
@@ -158,6 +162,24 @@ const Prospect = () => {
       </Title>
       <MyEdiTable
         onRowChange={(row) => {
+          updateTester({
+            campaign: id,
+            testerId: row.testerId.replace("T", ""),
+            body: {
+              payout: {
+                completion: row.completionPayout,
+                bugs: row.bugPayout,
+                refund: row.refundPayout,
+                extra: row.extraPayout,
+              },
+              experience: {
+                completion: row.completionExperience,
+                extra: row.extraExperience,
+              },
+              note: row.notes,
+              completed: true,
+            },
+          });
           setItems((oldItems) => {
             const index = oldItems.findIndex(
               (i) => i.testerId === row.testerId
