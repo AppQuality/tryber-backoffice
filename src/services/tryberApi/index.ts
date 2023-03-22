@@ -1031,6 +1031,9 @@ export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
     };
     note: string;
     status: "pending" | "done";
+    weightedBugs: number;
+    isCompleted: boolean;
+    isTopTester: boolean;
   }[];
 };
 export type GetCampaignsByCampaignProspectApiArg = {

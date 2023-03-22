@@ -12,6 +12,7 @@ const FluidContainer = styled.div`
 `;
 
 type Row = {
+  isTopTester: boolean;
   testerId: string;
   tester: string;
   useCaseCompleted: string;
@@ -52,6 +53,7 @@ const Prospect = () => {
     if (data) {
       const items = data.items.map((d) => {
         return {
+          isTopTester: d.isTopTester,
           testerId: `T${d.tester.id}`,
           tester: `${d.tester.name} ${d.tester.surname.charAt(0)}.`,
           useCaseCompleted: `${d.usecases.completed}`,
@@ -77,13 +79,12 @@ const Prospect = () => {
           completionExperience: d.experience.completion,
           extraExperience: d.experience.extra,
           notes: d.note,
-          style:
-            d.bugs.critical + d.bugs.high + d.bugs.medium + d.bugs.low < 2
-              ? {
-                  backgroundColor: "pink",
-                  borderColor: "red",
-                }
-              : {},
+          style: !d.isCompleted
+            ? {
+                backgroundColor: "pink",
+                borderColor: "red",
+              }
+            : {},
         };
       });
       setItems(items);
@@ -150,6 +151,13 @@ const Prospect = () => {
         }}
         onChange={(changes) => {}}
         columns={[
+          {
+            name: "★",
+            key: "isTopTester",
+            type: "star",
+            children: <span style={{ fontSize: "24px" }}>★</span>,
+            width: 25,
+          },
           {
             name: "TID",
             key: "testerId",
@@ -275,6 +283,7 @@ const Prospect = () => {
         ]}
         subHeader={[
           {
+            isTopTester: false,
             testerId: "TOTAL",
             tester: "",
             useCaseCompleted: "",
@@ -285,13 +294,13 @@ const Prospect = () => {
             mediumBugs: "",
             lowBugs: "",
             totalPayout: `${totals.totalPayout}`,
-            completionPayout: `${totals.completionPayout}`,
-            bugPayout: `${totals.bugPayout}`,
-            refundPayout: `${totals.refundPayout}`,
-            extraPayout: `${totals.extraPayout}`,
+            completionPayout: totals.completionPayout,
+            bugPayout: totals.bugPayout,
+            refundPayout: totals.refundPayout,
+            extraPayout: totals.extraPayout,
             totalExperience: `${totals.totalExperience}`,
-            completionExperience: `${totals.completionExperience}`,
-            extraExperience: `${totals.extraExperience}`,
+            completionExperience: totals.completionExperience,
+            extraExperience: totals.extraExperience,
             notes: "",
           },
         ]}
