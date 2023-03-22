@@ -20,6 +20,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   data,
   onRowChange,
   onChange,
+  className,
 }: {
   columnHeaders?: { height?: number; items: { name: string; span?: number }[] };
   columns: Column<T>[];
@@ -28,6 +29,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   data: Item<T>[];
   onRowChange?: (row: T) => void;
   onChange?: (changes: CellChange[]) => void;
+  className?: string;
 }) {
   const [items, setItems] = useState<Item<T>[]>([]);
   useEffect(() => {
@@ -35,7 +37,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   }, [data]);
 
   return (
-    <TableWrapper>
+    <TableWrapper className={className}>
       <ReactGrid
         enableRangeSelection
         enableFillHandle
@@ -65,7 +67,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
           ...getTopHeader(columnHeaders),
           {
             rowId: "header",
-            height: 40,
+            height: 35,
             cells: columns.map((column, idx) => ({
               type: "customHeader",
               text: column.name,

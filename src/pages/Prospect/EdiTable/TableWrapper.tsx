@@ -10,6 +10,7 @@ export const TableWrapper = styled.div`
   .rg-cell.rg-customHeader-cell,
   .rg-cell.rg-header-cell {
     font-family: ${({ theme }) => theme.typography.fontFamily.serif};
+    padding: 0;
   }
   .rg-celleditor,
   .rg-celleditor-input,
