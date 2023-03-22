@@ -1,10 +1,13 @@
 import styled from "styled-components";
 
 export const TableWrapper = styled.div`
+  .reactgrid {
+  }
   .reactgrid-content .rg-pane .rg-cell.subheader,
   .rg-cell {
     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
   }
+  .rg-cell.rg-customHeader-cell,
   .rg-cell.rg-header-cell {
     font-family: ${({ theme }) => theme.typography.fontFamily.serif};
   }

@@ -37,7 +37,6 @@ function EdiTable<T extends { [key: string]: string | number }>({
     <TableWrapper>
       <ReactGrid
         enableRangeSelection
-        enableFullWidthHeader
         enableFillHandle
         onCellsChanged={(changes) => {
           onChange && onChange(changes);
