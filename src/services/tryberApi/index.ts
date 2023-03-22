@@ -170,6 +170,16 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/forms` }),
     }),
+    putCampaignsByCampaignProspectAndTesterId: build.mutation<
+      PutCampaignsByCampaignProspectAndTesterIdApiResponse,
+      PutCampaignsByCampaignProspectAndTesterIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/prospect/${queryArg.testerId}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
     getCampaignsByCampaignProspect: build.query<
       GetCampaignsByCampaignProspectApiResponse,
       GetCampaignsByCampaignProspectApiArg
@@ -1001,6 +1011,40 @@ export type GetCampaignsByCampaignFormsApiResponse = /** status 200 OK */ {
 }[];
 export type GetCampaignsByCampaignFormsApiArg = {
   campaign: string;
+};
+export type PutCampaignsByCampaignProspectAndTesterIdApiResponse =
+  /** status 200 OK */ {
+    payout: {
+      completion: number;
+      bugs: number;
+      refund: number;
+      extra: number;
+    };
+    experience: {
+      completion: number;
+      extra: number;
+    };
+    note: string;
+    completed: boolean;
+  };
+export type PutCampaignsByCampaignProspectAndTesterIdApiArg = {
+  /** A campaign id */
+  campaign: string;
+  testerId: string;
+  body: {
+    payout: {
+      completion: number;
+      bugs: number;
+      refund: number;
+      extra: number;
+    };
+    experience: {
+      completion: number;
+      extra: number;
+    };
+    note: string;
+    completed: boolean;
+  };
 };
 export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
   items: {
@@ -2197,6 +2241,7 @@ export const {
   useGetCampaignsFormsByFormIdQuery,
   usePutCampaignsFormsByFormIdMutation,
   useGetCampaignsByCampaignFormsQuery,
+  usePutCampaignsByCampaignProspectAndTesterIdMutation,
   useGetCampaignsByCampaignProspectQuery,
   useGetCampaignsByCampaignStatsQuery,
   useGetCertificationsQuery,
