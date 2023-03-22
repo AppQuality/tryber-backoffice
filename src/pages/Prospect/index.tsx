@@ -2,7 +2,11 @@ import { useParams } from "react-router-dom";
 import EdiTable from "./EdiTable";
 import { useEffect, useState } from "react";
 import { useGetCampaignsByCampaignProspectQuery } from "src/services/tryberApi";
-import { Button, Title } from "@appquality/appquality-design-system";
+import {
+  Button,
+  Title,
+  aqBootstrapTheme,
+} from "@appquality/appquality-design-system";
 import styled from "styled-components";
 
 const FluidContainer = styled.div`
@@ -35,7 +39,25 @@ type Row = {
   status: string;
 };
 
-const MyEdiTable = EdiTable<Row>;
+const EdiTableWithType = EdiTable<Row>;
+
+const MyEdiTable = styled(EdiTableWithType)`
+  .subheader {
+    background-color: ${({ theme }) => theme.colors.purple100} !important;
+  }
+  .rg-customHeader-cell {
+    background-color: ${({ theme }) => theme.colors.white} !important;
+  }
+`;
+
+const ColoredCell = styled.div<{
+  color: keyof (typeof aqBootstrapTheme)["colors"];
+}>`
+  background-color: ${({ theme, color }) => theme.colors[color]};
+  height: 100%;
+  display: grid;
+  align-items: center;
+`;
 
 const Prospect = () => {
   const { id } = useParams<{ id: string }>();
@@ -86,8 +108,9 @@ const Prospect = () => {
           status: d.status,
           style: !d.isCompleted
             ? {
-                backgroundColor: "pink",
-                borderColor: "red",
+                backgroundColor: aqBootstrapTheme.colors.red100,
+                borderColor: aqBootstrapTheme.colors.red200,
+                color: aqBootstrapTheme.colors.red800,
               }
             : {},
         };
@@ -208,18 +231,20 @@ const Prospect = () => {
             width: 90,
             type: "uneditable",
             children: (
-              <Button
-                type="link-hover"
-                className="aq-p-1"
-                onClick={() =>
-                  setExpanded({
-                    ...expanded,
-                    bugs: !expanded.bugs,
-                  })
-                }
-              >
-                Bug Trovati
-              </Button>
+              <ColoredCell color="orange200">
+                <Button
+                  type="link-hover"
+                  className="aq-p-1"
+                  onClick={() =>
+                    setExpanded({
+                      ...expanded,
+                      bugs: !expanded.bugs,
+                    })
+                  }
+                >
+                  Bug Trovati
+                </Button>
+              </ColoredCell>
             ),
           },
           ...(expanded.bugs
@@ -230,16 +255,7 @@ const Prospect = () => {
                   width: 65,
                   type: "uneditable" as const,
                   children: (
-                    <div
-                      style={{
-                        backgroundColor: "pink",
-                        height: "100%",
-                        display: "grid",
-                        alignItems: "center",
-                      }}
-                    >
-                      Critical
-                    </div>
+                    <ColoredCell color="orange100">Critical</ColoredCell>
                   ),
                 },
                 {
@@ -247,18 +263,21 @@ const Prospect = () => {
                   key: "highBugs" as const,
                   width: 65,
                   type: "uneditable" as const,
+                  children: <ColoredCell color="orange100">High</ColoredCell>,
                 },
                 {
                   name: "Medium",
                   key: "mediumBugs" as const,
                   width: 65,
                   type: "uneditable" as const,
+                  children: <ColoredCell color="orange100">Medium</ColoredCell>,
                 },
                 {
                   name: "Low",
                   key: "lowBugs" as const,
                   width: 65,
                   type: "uneditable" as const,
+                  children: <ColoredCell color="orange100">Low</ColoredCell>,
                 },
               ]
             : []),
@@ -268,26 +287,49 @@ const Prospect = () => {
             width: 90,
             type: "uneditable",
             children: (
-              <Button
-                type="link-hover"
-                className="aq-p-1"
-                onClick={() =>
-                  setExpanded({
-                    ...expanded,
-                    payout: !expanded.payout,
-                  })
-                }
-              >
-                Paga Totale
-              </Button>
+              <ColoredCell color="green200">
+                <Button
+                  type="link-hover"
+                  className="aq-p-1"
+                  onClick={() =>
+                    setExpanded({
+                      ...expanded,
+                      payout: !expanded.payout,
+                    })
+                  }
+                >
+                  Paga Totale
+                </Button>
+              </ColoredCell>
             ),
           },
           ...(expanded.payout
             ? [
-                { name: "Test", key: "completionPayout" as const },
-                { name: "Bonus Bug", width: 90, key: "bugPayout" as const },
-                { name: "Rimborso", key: "refundPayout" as const },
-                { name: "Extra", key: "extraPayout" as const },
+                {
+                  name: "Test",
+                  key: "completionPayout" as const,
+                  children: <ColoredCell color="green100">Test</ColoredCell>,
+                },
+                {
+                  name: "Bonus Bug",
+                  width: 90,
+                  key: "bugPayout" as const,
+                  children: (
+                    <ColoredCell color="green100">Bonus Bug</ColoredCell>
+                  ),
+                },
+                {
+                  name: "Rimborso",
+                  key: "refundPayout" as const,
+                  children: (
+                    <ColoredCell color="green100">Rimborso</ColoredCell>
+                  ),
+                },
+                {
+                  name: "Extra",
+                  key: "extraPayout" as const,
+                  children: <ColoredCell color="green100">Extra</ColoredCell>,
+                },
               ]
             : []),
           {
@@ -295,24 +337,34 @@ const Prospect = () => {
             key: "totalExperience",
             type: "uneditable",
             children: (
-              <Button
-                type="link-hover"
-                className="aq-p-1"
-                onClick={() =>
-                  setExpanded({
-                    ...expanded,
-                    experience: !expanded.experience,
-                  })
-                }
-              >
-                XP Totali
-              </Button>
+              <ColoredCell color="blue200">
+                <Button
+                  type="link-hover"
+                  className="aq-p-1"
+                  onClick={() =>
+                    setExpanded({
+                      ...expanded,
+                      experience: !expanded.experience,
+                    })
+                  }
+                >
+                  XP Totali
+                </Button>
+              </ColoredCell>
             ),
           },
           ...(expanded.experience
             ? [
-                { name: "XP Base", key: "completionExperience" as const },
-                { name: "Extra XP", key: "extraExperience" as const },
+                {
+                  name: "XP Base",
+                  key: "completionExperience" as const,
+                  children: <ColoredCell color="blue100">XP Base</ColoredCell>,
+                },
+                {
+                  name: "Extra XP",
+                  key: "extraExperience" as const,
+                  children: <ColoredCell color="blue100">Extra</ColoredCell>,
+                },
               ]
             : []),
           { name: "Note", key: "notes", width: 200 },
