@@ -2,7 +2,14 @@ import { useParams } from "react-router-dom";
 import EdiTable from "./EdiTable";
 import { useEffect, useState } from "react";
 import { useGetCampaignsByCampaignProspectQuery } from "src/services/tryberApi";
-import { Button } from "@appquality/appquality-design-system";
+import { Button, Title } from "@appquality/appquality-design-system";
+import styled from "styled-components";
+
+const FluidContainer = styled.div`
+    max-width: 90%;
+    margin: 0 auto;
+  }
+`;
 
 type Row = {
   testerId: string;
@@ -25,15 +32,15 @@ type Row = {
   notes: string;
 };
 
-const round = (num: number) => {
-  return Math.round((num + Number.EPSILON) * 100) / 100;
-};
-
 const MyEdiTable = EdiTable<Row>;
 
 const Prospect = () => {
   const { id } = useParams<{ id: string }>();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState({
+    bugs: false,
+    payout: false,
+    experience: false,
+  });
   const { data, isLoading } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
   });
@@ -115,7 +122,11 @@ const Prospect = () => {
   };
 
   return (
-    <>
+    <FluidContainer>
+      <Title size="xl">Prospect</Title>
+      <Title size="mt" className="aq-mb-3">
+        Campaign {id}
+      </Title>
       <MyEdiTable
         onRowChange={(row) => {
           setItems((oldItems) => {
@@ -143,9 +154,6 @@ const Prospect = () => {
             name: "TID",
             key: "testerId",
             type: "uneditable",
-            children: (
-              <Button onClick={() => alert("Clicked on TID")}>TID</Button>
-            ),
           },
           { name: "Name", key: "tester", width: 150, type: "uneditable" },
           { name: "Done", key: "useCaseCompleted", type: "uneditable" },
@@ -155,41 +163,114 @@ const Prospect = () => {
             key: "totalBugs",
             width: 90,
             type: "uneditable",
-          },
-          {
-            name: "Critical",
-            key: "criticalBugs",
-            width: 65,
-            type: "uneditable",
             children: (
-              <div
-                style={{
-                  backgroundColor: "pink",
-                  height: "100%",
-                  display: "grid",
-                  alignItems: "center",
-                }}
+              <Button
+                type="link-hover"
+                className="aq-p-1"
+                onClick={() =>
+                  setExpanded({
+                    ...expanded,
+                    bugs: !expanded.bugs,
+                  })
+                }
               >
-                Critical
-              </div>
+                Bug Trovati
+              </Button>
             ),
           },
-          { name: "High", key: "highBugs", width: 65, type: "uneditable" },
-          { name: "Medium", key: "mediumBugs", width: 65, type: "uneditable" },
-          { name: "Low", key: "lowBugs", width: 65, type: "uneditable" },
+          ...(expanded.bugs
+            ? [
+                {
+                  name: "Critical",
+                  key: "criticalBugs" as const,
+                  width: 65,
+                  type: "uneditable" as const,
+                  children: (
+                    <div
+                      style={{
+                        backgroundColor: "pink",
+                        height: "100%",
+                        display: "grid",
+                        alignItems: "center",
+                      }}
+                    >
+                      Critical
+                    </div>
+                  ),
+                },
+                {
+                  name: "High",
+                  key: "highBugs" as const,
+                  width: 65,
+                  type: "uneditable" as const,
+                },
+                {
+                  name: "Medium",
+                  key: "mediumBugs" as const,
+                  width: 65,
+                  type: "uneditable" as const,
+                },
+                {
+                  name: "Low",
+                  key: "lowBugs" as const,
+                  width: 65,
+                  type: "uneditable" as const,
+                },
+              ]
+            : []),
           {
             name: "Paga Totale",
             key: "totalPayout",
             width: 90,
             type: "uneditable",
+            children: (
+              <Button
+                type="link-hover"
+                className="aq-p-1"
+                onClick={() =>
+                  setExpanded({
+                    ...expanded,
+                    payout: !expanded.payout,
+                  })
+                }
+              >
+                Paga Totale
+              </Button>
+            ),
           },
-          { name: "Test", key: "completionPayout" },
-          { name: "Bonus Bug", width: 90, key: "bugPayout" },
-          { name: "Rimborso", key: "refundPayout" },
-          { name: "Extra", key: "extraPayout" },
-          { name: "XP Totali", key: "totalExperience", type: "uneditable" },
-          { name: "XP Base", key: "completionExperience" },
-          { name: "Extra XP", key: "extraExperience" },
+          ...(expanded.payout
+            ? [
+                { name: "Test", key: "completionPayout" as const },
+                { name: "Bonus Bug", width: 90, key: "bugPayout" as const },
+                { name: "Rimborso", key: "refundPayout" as const },
+                { name: "Extra", key: "extraPayout" as const },
+              ]
+            : []),
+          {
+            name: "XP Totali",
+            key: "totalExperience",
+            type: "uneditable",
+            children: (
+              <Button
+                type="link-hover"
+                className="aq-p-1"
+                onClick={() =>
+                  setExpanded({
+                    ...expanded,
+                    experience: !expanded.experience,
+                  })
+                }
+              >
+                XP Totali
+              </Button>
+            ),
+          },
+          ...(expanded.experience
+            ? [
+                { name: "XP Base", key: "completionExperience" as const },
+                { name: "Extra XP", key: "extraExperience" as const },
+              ]
+            : []),
           { name: "Note", key: "notes", width: 200 },
         ]}
         subHeader={[
@@ -217,7 +298,7 @@ const Prospect = () => {
         data={items}
       />
       MAX BONUS BUG: {campaignData.maxBonusBug}
-    </>
+    </FluidContainer>
   );
 };
 
