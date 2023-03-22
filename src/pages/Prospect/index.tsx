@@ -79,6 +79,27 @@ const Prospect = () => {
   const [totals, setTotals] = useState<Record<string, number>>({});
   const [items, setItems] = useState<(Row & CellStyle)[]>([]);
 
+  function updateTotals(oldItem: Row & CellStyle, newItem: Row) {
+    oldItem.totalPayout = `${
+      newItem.completionPayout +
+      newItem.bugPayout +
+      newItem.refundPayout +
+      newItem.extraPayout
+    }`;
+    oldItem.totalExperience = `${
+      newItem.completionExperience + newItem.extraExperience
+    }`;
+
+    oldItem.style =
+      newItem.completed === "Pagabile"
+        ? {}
+        : {
+            backgroundColor: aqBootstrapTheme.colors.red100,
+            borderColor: aqBootstrapTheme.colors.red200,
+            color: aqBootstrapTheme.colors.red800,
+          };
+  }
+
   useEffect(() => {
     if (data) {
       const items = data.items.map((d) => {
@@ -190,24 +211,8 @@ const Prospect = () => {
                 if (row.bugPayout > campaignData.maxBonusBug) {
                   row.bugPayout = campaignData.maxBonusBug;
                 }
-                oldItems[index].totalPayout = `${
-                  row.completionPayout +
-                  row.bugPayout +
-                  row.refundPayout +
-                  row.extraPayout
-                }`;
-                oldItems[index].totalExperience = `${
-                  row.completionExperience + row.extraExperience
-                }`;
-
-                oldItems[index].style =
-                  row.completed === "Pagabile"
-                    ? {}
-                    : {
-                        backgroundColor: aqBootstrapTheme.colors.red100,
-                        borderColor: aqBootstrapTheme.colors.red200,
-                        color: aqBootstrapTheme.colors.red800,
-                      };
+                const oldItem = oldItems[index];
+                updateTotals(oldItem, row);
                 return [...oldItems];
               });
             });
@@ -230,9 +235,8 @@ const Prospect = () => {
           {
             name: "Esito",
             key: "completed",
-            type: "dropdown",
+            type: "uneditable",
             width: 140,
-            values: ["Pagabile", "No"],
             children: (
               <Button
                 type="link-hover"
@@ -439,6 +443,90 @@ const Prospect = () => {
           },
         ]}
         data={items}
+        contextMenu={[
+          {
+            label: "Segna come pagati",
+            handler: (items) => {
+              const completionPayout = 10000;
+              const completionExperience = 10000;
+              for (const row of items) {
+                updateTester({
+                  campaign: id,
+                  testerId: row.testerId.replace("T", ""),
+                  body: {
+                    payout: {
+                      completion: completionPayout,
+                      bugs: row.bugPayout,
+                      refund: row.refundPayout,
+                      extra: row.extraPayout,
+                    },
+                    experience: {
+                      completion: completionExperience,
+                      extra: row.extraExperience,
+                    },
+                    note: row.notes,
+                    completed: true,
+                  },
+                })
+                  .unwrap()
+                  .then((res) => {
+                    setItems((oldItems) => {
+                      const index = oldItems.findIndex(
+                        (i) => i.testerId === row.testerId
+                      );
+                      const oldItem = oldItems[index];
+                      oldItem.completionPayout = completionPayout;
+                      oldItem.completionExperience = completionExperience;
+                      oldItem.completed = "Pagabile";
+                      updateTotals(oldItem, oldItem);
+                      return [...oldItems];
+                    });
+                  });
+              }
+            },
+          },
+          {
+            label: "Segna come da non pagare",
+            handler: (items) => {
+              const completionPayout = 0;
+              const completionExperience = -1000;
+              for (const row of items) {
+                updateTester({
+                  campaign: id,
+                  testerId: row.testerId.replace("T", ""),
+                  body: {
+                    payout: {
+                      completion: completionPayout,
+                      bugs: row.bugPayout,
+                      refund: row.refundPayout,
+                      extra: row.extraPayout,
+                    },
+                    experience: {
+                      completion: completionExperience,
+                      extra: row.extraExperience,
+                    },
+                    note: row.notes,
+                    completed: true,
+                  },
+                })
+                  .unwrap()
+                  .then((res) => {
+                    setItems((oldItems) => {
+                      const index = oldItems.findIndex(
+                        (i) => i.testerId === row.testerId
+                      );
+                      const oldItem = oldItems[index];
+                      oldItem.completionPayout = completionPayout;
+                      oldItem.completionExperience = completionExperience;
+                      oldItem.completed = "No";
+                      updateTotals(oldItem, oldItem);
+                      return [...oldItems];
+                    });
+                  });
+              }
+            },
+          },
+        ]}
       />
       MAX BONUS BUG: {campaignData.maxBonusBug}
     </FluidContainer>
