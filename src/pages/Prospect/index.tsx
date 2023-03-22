@@ -11,6 +11,7 @@ import {
   aqBootstrapTheme,
 } from "@appquality/appquality-design-system";
 import styled from "styled-components";
+import { CellStyle } from "./EdiTable/types";
 
 const FluidContainer = styled.div`
     max-width: 90%;
@@ -76,7 +77,7 @@ const Prospect = () => {
   const [updateTester] = usePutCampaignsByCampaignProspectAndTesterIdMutation();
 
   const [totals, setTotals] = useState<Record<string, number>>({});
-  const [items, setItems] = useState<Row[]>([]);
+  const [items, setItems] = useState<(Row & CellStyle)[]>([]);
 
   useEffect(() => {
     if (data) {
@@ -177,7 +178,7 @@ const Prospect = () => {
                 extra: row.extraExperience,
               },
               note: row.notes,
-              completed: true,
+              completed: row.completed === "Pagabile" ? true : false,
             },
           })
             .unwrap()
@@ -198,6 +199,15 @@ const Prospect = () => {
                 oldItems[index].totalExperience = `${
                   row.completionExperience + row.extraExperience
                 }`;
+
+                oldItems[index].style =
+                  row.completed === "Pagabile"
+                    ? {}
+                    : {
+                        backgroundColor: aqBootstrapTheme.colors.red100,
+                        borderColor: aqBootstrapTheme.colors.red200,
+                        color: aqBootstrapTheme.colors.red800,
+                      };
                 return [...oldItems];
               });
             });
@@ -220,7 +230,9 @@ const Prospect = () => {
           {
             name: "Esito",
             key: "completed",
-            type: "uneditable",
+            type: "dropdown",
+            width: 140,
+            values: ["Pagabile", "No"],
             children: (
               <Button
                 type="link-hover"
@@ -332,11 +344,13 @@ const Prospect = () => {
             ? [
                 {
                   name: "Test",
+                  type: "number" as const,
                   key: "completionPayout" as const,
                   children: <ColoredCell color="green100">Test</ColoredCell>,
                 },
                 {
                   name: "Bonus Bug",
+                  type: "number" as const,
                   width: 90,
                   key: "bugPayout" as const,
                   children: (
@@ -345,6 +359,7 @@ const Prospect = () => {
                 },
                 {
                   name: "Rimborso",
+                  type: "number" as const,
                   key: "refundPayout" as const,
                   children: (
                     <ColoredCell color="green100">Rimborso</ColoredCell>
@@ -352,6 +367,7 @@ const Prospect = () => {
                 },
                 {
                   name: "Extra",
+                  type: "number" as const,
                   key: "extraPayout" as const,
                   children: <ColoredCell color="green100">Extra</ColoredCell>,
                 },
@@ -382,17 +398,19 @@ const Prospect = () => {
             ? [
                 {
                   name: "XP Base",
+                  type: "number" as const,
                   key: "completionExperience" as const,
                   children: <ColoredCell color="blue100">XP Base</ColoredCell>,
                 },
                 {
                   name: "Extra XP",
+                  type: "number" as const,
                   key: "extraExperience" as const,
                   children: <ColoredCell color="blue100">Extra</ColoredCell>,
                 },
               ]
             : []),
-          { name: "Note", key: "notes", width: 200 },
+          { name: "Note", type: "text", key: "notes", width: 200 },
           { name: "Status", key: "status", type: "uneditable" },
         ]}
         subHeader={[
