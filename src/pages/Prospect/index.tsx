@@ -33,7 +33,7 @@ const MyEdiTable = EdiTable<Row>;
 
 const Prospect = () => {
   const { id } = useParams<{ id: string }>();
-
+  const [expanded, setExpanded] = useState(false);
   const { data, isLoading } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
   });
