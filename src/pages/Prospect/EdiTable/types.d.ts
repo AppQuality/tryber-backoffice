@@ -1,7 +1,7 @@
 export type Column<T> = {
   name: string;
   key: Exclude<keyof T, number | symbol>;
-  type?: "number" | "text" | "uneditable" | undefined;
+  type?: "number" | "text" | "uneditable" | "star" | undefined;
   width?: number | undefined;
   children?: React.ReactNode;
 };
