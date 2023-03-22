@@ -15,6 +15,7 @@ type Row = {
   isTopTester: boolean;
   testerId: string;
   tester: string;
+  completed: string;
   useCaseCompleted: string;
   useCaseTotal: string;
   totalBugs: string;
@@ -31,6 +32,7 @@ type Row = {
   completionExperience: number;
   extraExperience: number;
   notes: string;
+  status: string;
 };
 
 const MyEdiTable = EdiTable<Row>;
@@ -38,6 +40,7 @@ const MyEdiTable = EdiTable<Row>;
 const Prospect = () => {
   const { id } = useParams<{ id: string }>();
   const [expanded, setExpanded] = useState({
+    usecases: false,
     bugs: false,
     payout: false,
     experience: false,
@@ -56,8 +59,9 @@ const Prospect = () => {
           isTopTester: d.isTopTester,
           testerId: `T${d.tester.id}`,
           tester: `${d.tester.name} ${d.tester.surname.charAt(0)}.`,
-          useCaseCompleted: `${d.usecases.completed}`,
-          useCaseTotal: `${d.usecases.required}`,
+          completed: d.isCompleted ? "Pagabile" : "No",
+          useCaseCompleted: `${d.usecases.completed}/`,
+          useCaseTotal: `${d.usecases.required} UC`,
           totalBugs: `${
             d.bugs.critical + d.bugs.high + d.bugs.medium + d.bugs.low
           }`,
@@ -79,6 +83,7 @@ const Prospect = () => {
           completionExperience: d.experience.completion,
           extraExperience: d.experience.extra,
           notes: d.note,
+          status: d.status,
           style: !d.isCompleted
             ? {
                 backgroundColor: "pink",
@@ -164,8 +169,39 @@ const Prospect = () => {
             type: "uneditable",
           },
           { name: "Name", key: "tester", width: 150, type: "uneditable" },
-          { name: "Done", key: "useCaseCompleted", type: "uneditable" },
-          { name: "Required", key: "useCaseTotal", type: "uneditable" },
+          {
+            name: "Esito",
+            key: "completed",
+            type: "uneditable",
+            children: (
+              <Button
+                type="link-hover"
+                className="aq-p-1"
+                onClick={() =>
+                  setExpanded({
+                    ...expanded,
+                    usecases: !expanded.usecases,
+                  })
+                }
+              >
+                Esito
+              </Button>
+            ),
+          },
+          ...(expanded.usecases
+            ? [
+                {
+                  name: "Done",
+                  key: "useCaseCompleted" as const,
+                  type: "uneditable" as const,
+                },
+                {
+                  name: "Required",
+                  key: "useCaseTotal" as const,
+                  type: "uneditable" as const,
+                },
+              ]
+            : []),
           {
             name: "Bug Trovati",
             key: "totalBugs",
@@ -280,12 +316,14 @@ const Prospect = () => {
               ]
             : []),
           { name: "Note", key: "notes", width: 200 },
+          { name: "Status", key: "status", type: "uneditable" },
         ]}
         subHeader={[
           {
             isTopTester: false,
             testerId: "TOTAL",
             tester: "",
+            completed: "",
             useCaseCompleted: "",
             useCaseTotal: "",
             totalBugs: "",
@@ -302,6 +340,7 @@ const Prospect = () => {
             completionExperience: totals.completionExperience,
             extraExperience: totals.extraExperience,
             notes: "",
+            status: "",
           },
         ]}
         data={items}
