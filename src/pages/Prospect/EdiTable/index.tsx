@@ -1,42 +1,15 @@
 import {
-  Cell,
   CellChange,
   DefaultCellTypes,
   ReactGrid,
   Row,
 } from "@silevis/reactgrid";
 import "@silevis/reactgrid/styles.css";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { CustomHeader } from "./customHeader";
 import { UneditableCell, UneditableCellTemplate } from "./UneditableCell";
-
-const TableWrapper = styled.div`
-  .reactgrid-content .rg-pane .rg-cell.subheader,
-  .rg-cell {
-    font-family: ${({ theme }) => theme.typography.fontFamily.mono};
-  }
-  .rg-cell.rg-header-cell {
-    font-family: ${({ theme }) => theme.typography.fontFamily.serif};
-  }
-  .rg-celleditor,
-  .rg-celleditor-input,
-  .rg-celleditor input {
-    border: none;
-  }
-
-  .reactgrid-content .rg-pane .rg-cell.headercell {
-    display: grid;
-  }
-  .reactgrid-content .rg-pane .rg-cell.header,
-  .reactgrid-content .rg-pane .rg-cell.topheader {
-  }
-  .reactgrid-content .rg-pane .rg-cell.subheader {
-    text-align: right;
-  }
-`;
-
-type CellStyle = { style?: { backgroundColor: string; borderColor: string } };
+import { Column, Item } from "./types";
+import { TableWrapper } from "./TableWrapper";
 
 function EdiTable<T extends { [key: string]: string | number }>({
   columnHeaders,
@@ -48,143 +21,18 @@ function EdiTable<T extends { [key: string]: string | number }>({
   onChange,
 }: {
   columnHeaders?: { height?: number; items: { name: string; span?: number }[] };
-  columns: {
-    name: string;
-    key: Exclude<keyof T, number | symbol>;
-    type?: "number" | "text" | "uneditable";
-    width?: number;
-    children?: React.ReactNode;
-  }[];
+  columns: Column<T>[];
   subHeader?: Record<keyof T, string>[];
   bottom?: Record<keyof T, string>[];
-  data: (T & CellStyle)[];
+  data: Item<T>[];
   onRowChange?: (row: T) => void;
   onChange?: (changes: CellChange[]) => void;
 }) {
-  const [items, setItems] = useState<(T & CellStyle)[]>([]);
+  const [items, setItems] = useState<Item<T>[]>([]);
   useEffect(() => {
     setItems(data);
   }, [data]);
 
-  const columnItems = columns.map((c) => ({
-    columnId: c.name,
-    width: c.width ? c.width : 75,
-  }));
-
-  let topHeader: {
-    rowId: string;
-    height?: number;
-    cells: DefaultCellTypes[];
-  }[] = [];
-  if (columnHeaders) {
-    topHeader = [
-      {
-        rowId: "topheader",
-        height: columnHeaders.height,
-        cells: [],
-      },
-    ];
-    columnHeaders.items.forEach((h) => {
-      topHeader[0].cells.push({
-        type: "header",
-        text: h.name,
-        colspan: h.span,
-        className: "topheader headercell",
-      });
-      if (h.span) {
-        for (let i = 1; i < h.span; i++) {
-          topHeader[0].cells.push({
-            type: "header",
-            text: "",
-          });
-        }
-      }
-    });
-  }
-
-  const rows: Row<Cell>[] = [
-    ...topHeader,
-    {
-      rowId: "header",
-      height: 40,
-      cells: columns.map((column, idx) => ({
-        type: "customHeader",
-        text: column.name,
-        children: column.children,
-        columnId: column.key,
-        className: "header headercell",
-      })),
-    },
-    ...(subHeader
-      ? subHeader.map((b, idx) => ({
-          rowId: `subheader-${idx}`,
-          cells: columns.map((column, idx) => {
-            if (Object.keys(b).includes(column.key)) {
-              return {
-                type: "header",
-                text:
-                  typeof b[column.key as keyof typeof b] === "number"
-                    ? `${b[column.key as keyof typeof b]}`
-                    : b[column.key as keyof typeof b],
-                columnId: column.key,
-                className: "subheader headercell",
-              };
-            }
-            throw new Error("Unknown column");
-          }),
-        }))
-      : []),
-    ...items.map<Row<DefaultCellTypes | UneditableCell>>((item, idx) => ({
-      rowId: idx,
-      cells: columns.map((column, idx) => {
-        if (Object.keys(item).includes(column.key)) {
-          const value = item[column.key as keyof typeof item];
-          if (column.type === "uneditable" && typeof value === "string") {
-            return {
-              type: "uneditable",
-              text: value,
-              style: item.style || {},
-            };
-          } else if (typeof value === "number") {
-            return {
-              type: "number",
-              value,
-              groupId: column.key,
-              style: item.style || {},
-            };
-          } else if (typeof value === "string") {
-            return {
-              type: "text",
-              text: value,
-              groupId: column.key,
-              style: item.style || {},
-            };
-          }
-          throw new Error("Unknown type");
-        }
-        throw new Error("Unknown column");
-      }),
-    })),
-    ...(bottom
-      ? bottom.map((b, idx) => ({
-          rowId: `bottom-${idx}`,
-          cells: columns.map((column, idx) => {
-            if (Object.keys(b).includes(column.key)) {
-              return {
-                type: "header",
-                text:
-                  typeof b[column.key as keyof typeof b] === "number"
-                    ? `${b[column.key as keyof typeof b]}`
-                    : b[column.key as keyof typeof b],
-                columnId: column.key,
-                className: "bottom headercell",
-              };
-            }
-            throw new Error("Unknown column");
-          }),
-        }))
-      : []),
-  ];
   return (
     <TableWrapper>
       <ReactGrid
@@ -213,8 +61,27 @@ function EdiTable<T extends { [key: string]: string | number }>({
           });
         }}
         stickyTopRows={columnHeaders ? 2 : 1}
-        rows={rows}
-        columns={columnItems}
+        rows={[
+          ...getTopHeader(columnHeaders),
+          {
+            rowId: "header",
+            height: 40,
+            cells: columns.map((column, idx) => ({
+              type: "customHeader",
+              text: column.name,
+              children: column.children,
+              columnId: column.key,
+              className: "header headercell",
+            })),
+          },
+          ...getSubHeader<T>(columns, subHeader),
+          ...getRowItems<T>(columns, items),
+          ...getBottomItems<T>(columns, bottom),
+        ]}
+        columns={columns.map((c) => ({
+          columnId: c.name,
+          width: c.width ? c.width : 75,
+        }))}
         customCellTemplates={{
           uneditable: new UneditableCellTemplate(),
           customHeader: new CustomHeader(),
@@ -225,3 +92,125 @@ function EdiTable<T extends { [key: string]: string | number }>({
 }
 
 export default EdiTable;
+
+function getRowItems<T extends { [key: string]: string | number }>(
+  columns: Column<T>[],
+  items: Item<T>[]
+) {
+  return items.map<Row<DefaultCellTypes | UneditableCell>>((item, idx) => ({
+    rowId: idx,
+    cells: columns.map((column, idx) => {
+      if (Object.keys(item).includes(column.key)) {
+        const value = item[column.key as keyof typeof item];
+        if (column.type === "uneditable" && typeof value === "string") {
+          return {
+            type: "uneditable",
+            text: value,
+            style: item.style || {},
+          };
+        } else if (typeof value === "number") {
+          return {
+            type: "number",
+            value,
+            groupId: column.key,
+            style: item.style || {},
+          };
+        } else if (typeof value === "string") {
+          return {
+            type: "text",
+            text: value,
+            groupId: column.key,
+            style: item.style || {},
+          };
+        }
+        throw new Error("Unknown type");
+      }
+      throw new Error("Unknown column");
+    }),
+  }));
+}
+
+function getBottomItems<T extends { [key: string]: string | number }>(
+  columns: Column<T>[],
+  bottom?: Record<keyof T, string>[]
+) {
+  return bottom
+    ? bottom.map((b, idx) => ({
+        rowId: `bottom-${idx}`,
+        cells: columns.map((column, idx) => {
+          if (Object.keys(b).includes(column.key)) {
+            return {
+              type: "header",
+              text:
+                typeof b[column.key as keyof typeof b] === "number"
+                  ? `${b[column.key as keyof typeof b]}`
+                  : b[column.key as keyof typeof b],
+              columnId: column.key,
+              className: "bottom headercell",
+            };
+          }
+          throw new Error("Unknown column");
+        }),
+      }))
+    : [];
+}
+
+function getSubHeader<T extends { [key: string]: string | number }>(
+  columns: Column<T>[],
+  subHeader?: Record<keyof T, string>[]
+) {
+  return subHeader
+    ? subHeader.map((b, idx) => ({
+        rowId: `subheader-${idx}`,
+        cells: columns.map((column, idx) => {
+          if (Object.keys(b).includes(column.key)) {
+            return {
+              type: "header",
+              text:
+                typeof b[column.key as keyof typeof b] === "number"
+                  ? `${b[column.key as keyof typeof b]}`
+                  : b[column.key as keyof typeof b],
+              columnId: column.key,
+              className: "subheader headercell",
+            };
+          }
+          throw new Error("Unknown column");
+        }),
+      }))
+    : [];
+}
+
+function getTopHeader(columnHeaders?: {
+  height?: number;
+  items: { name: string; span?: number }[];
+}) {
+  if (!columnHeaders) return [];
+  const topHeader: {
+    rowId: string;
+    height?: number;
+    cells: DefaultCellTypes[];
+  }[] = [
+    {
+      rowId: "topheader",
+      height: columnHeaders.height,
+      cells: [],
+    },
+  ];
+  columnHeaders.items.forEach((h) => {
+    topHeader[0].cells.push({
+      type: "header",
+      text: h.name,
+      colspan: h.span,
+      className: "topheader headercell",
+    });
+    if (h.span) {
+      for (let i = 1; i < h.span; i++) {
+        topHeader[0].cells.push({
+          type: "header",
+          text: "",
+        });
+      }
+    }
+  });
+  return topHeader;
+}
