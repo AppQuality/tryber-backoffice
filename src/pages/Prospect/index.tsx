@@ -505,7 +505,7 @@ const Prospect = () => {
                       extra: row.extraExperience,
                     },
                     note: row.notes,
-                    completed: true,
+                    completed: false,
                   },
                 })
                   .unwrap()
