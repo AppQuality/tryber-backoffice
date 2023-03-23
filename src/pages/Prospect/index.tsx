@@ -13,7 +13,7 @@ import {
   aqBootstrapTheme,
 } from "@appquality/appquality-design-system";
 import styled from "styled-components";
-import { CellStyle, Item } from "./EdiTable/types";
+import { CellStyle } from "./EdiTable/types";
 import { MessageWrapper } from "./MessageWrapper";
 import { Row } from "./types";
 import euroRenderer from "./euroRenderer";
@@ -226,11 +226,11 @@ const Prospect = () => {
                 extra: i.extraExperience,
                 refund: i.refundPayout,
               },
+              note: i.notes,
             }))
             .filter((i) => i.tester.id > 0);
           if (
-            // eslint-disable-next-line no-restricted-globals
-            confirm(
+            window.confirm(
               `You are about to pay ${testerToPay.length} testers. Are you sure?`
             )
           ) {
