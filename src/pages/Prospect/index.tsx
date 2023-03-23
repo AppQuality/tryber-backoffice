@@ -5,6 +5,7 @@ import {
   useGetCampaignsByCampaignProspectQuery,
   usePutCampaignsByCampaignProspectAndTesterIdMutation,
   useGetCampaignsByCampaignPayoutsQuery,
+  usePatchCampaignsByCampaignProspectMutation,
 } from "src/services/tryberApi";
 import {
   Button,
@@ -13,6 +14,7 @@ import {
 } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { CellStyle } from "./EdiTable/types";
+import { MessageWrapper } from "./MessageWrapper";
 
 const FluidContainer = styled.div`
     max-width: 90%;
@@ -70,13 +72,14 @@ const ColoredCell = styled.div<{
 
 const Prospect = () => {
   const { id } = useParams<{ id: string }>();
+  const [isPaying, setIsPaying] = useState(false);
   const [expanded, setExpanded] = useState({
     usecases: false,
     bugs: false,
     payout: false,
     experience: false,
   });
-  const { data, isLoading } = useGetCampaignsByCampaignProspectQuery({
+  const { data, isLoading, error } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
   });
   const { data: payouts, isLoading: isLoadingPayouts } =
@@ -84,6 +87,7 @@ const Prospect = () => {
       campaign: id,
     });
   const [updateTester] = usePutCampaignsByCampaignProspectAndTesterIdMutation();
+  const [payTesters] = usePatchCampaignsByCampaignProspectMutation();
 
   const [totals, setTotals] = useState<Record<string, number>>({});
   const [items, setItems] = useState<(Row & CellStyle)[]>([]);
@@ -179,12 +183,24 @@ const Prospect = () => {
     });
   }, [items]);
   if (isLoading || isLoadingPayouts) {
-    return <div>Loading...</div>;
+    return <MessageWrapper>Loading...</MessageWrapper>;
   }
 
-  if (!payouts) {
-    return <div>There was an error loading campaign data</div>;
+  if (error && "status" in error && error.status === 412) {
+    return (
+      <MessageWrapper>
+        It looks like there's an edit on the old prospect
+      </MessageWrapper>
+    );
   }
+
+  if (!payouts || !data) {
+    return (
+      <MessageWrapper>There was an error loading campaign data</MessageWrapper>
+    );
+  }
+
+  const isDone = data.items.some((p) => p.status === "done");
 
   return (
     <FluidContainer>
@@ -214,6 +230,51 @@ const Prospect = () => {
       <Title size="mt" className="aq-mb-3">
         Campaign {id}
       </Title>
+      <Button
+        type="primary"
+        onClick={() => {
+          const testerToPay = items
+            .map((i) => ({
+              tester: {
+                id: Number(i.testerId.replace("T", "")),
+              },
+              experience: {
+                completion: i.completionExperience,
+                extra: i.extraExperience,
+              },
+              payout: {
+                completion: i.completionExperience,
+                bug: i.bugPayout,
+                extra: i.extraExperience,
+                refund: i.refundPayout,
+              },
+            }))
+            .filter((i) => i.tester.id > 0);
+          if (
+            // eslint-disable-next-line no-restricted-globals
+            confirm(
+              `You are about to pay ${testerToPay.length} testers. Are you sure?`
+            )
+          ) {
+            setIsPaying(true);
+            payTesters({
+              campaign: id,
+              body: {
+                status: "done",
+                items: testerToPay,
+              },
+            })
+              .unwrap()
+              .then(() => {})
+              .finally(() => {
+                setIsPaying(false);
+              });
+          }
+        }}
+        disabled={isPaying || isDone}
+      >
+        {isPaying ? "Paying..." : "Pay Testers"}
+      </Button>
       <MyEdiTable
         onRowChange={(row) => {
           updateTester({

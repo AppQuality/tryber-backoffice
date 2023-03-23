@@ -54,6 +54,7 @@ export const api = createApi({
     "Devices",
     "Languages",
     "Levels",
+    "Prospect",
   ],
   endpoints: () => ({}), // auto generated npm run generate-api
 });
