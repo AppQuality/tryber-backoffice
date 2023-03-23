@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   useGetCampaignsByCampaignProspectQuery,
   usePutCampaignsByCampaignProspectAndTesterIdMutation,
+  useGetCampaignsByCampaignPayoutsQuery,
 } from "src/services/tryberApi";
 import {
   Button,
@@ -78,6 +79,10 @@ const Prospect = () => {
   const { data, isLoading } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
   });
+  const { data: payouts, isLoading: isLoadingPayouts } =
+    useGetCampaignsByCampaignPayoutsQuery({
+      campaign: id,
+    });
   const [updateTester] = usePutCampaignsByCampaignProspectAndTesterIdMutation();
 
   const [totals, setTotals] = useState<Record<string, number>>({});
@@ -173,12 +178,13 @@ const Prospect = () => {
       ),
     });
   }, [items]);
-  if (isLoading) {
+  if (isLoading || isLoadingPayouts) {
     return <div>Loading...</div>;
   }
-  const campaignData = {
-    maxBonusBug: 15,
-  };
+
+  if (!payouts) {
+    return <div>There was an error loading campaign data</div>;
+  }
 
   return (
     <FluidContainer>
@@ -234,8 +240,8 @@ const Prospect = () => {
                 const index = oldItems.findIndex(
                   (i) => i.testerId === row.testerId
                 );
-                if (row.bugPayout > campaignData.maxBonusBug) {
-                  row.bugPayout = campaignData.maxBonusBug;
+                if (row.bugPayout > payouts.maxBonusBug) {
+                  row.bugPayout = payouts.maxBonusBug;
                 }
                 const oldItem = oldItems[index];
                 updateTotals(oldItem, row);
@@ -472,21 +478,19 @@ const Prospect = () => {
           {
             label: "Segna come pagati",
             handler: (items) => {
-              const completionPayout = 10000;
-              const completionExperience = 10000;
               for (const row of items) {
                 updateTester({
                   campaign: id,
                   testerId: row.testerId.replace("T", ""),
                   body: {
                     payout: {
-                      completion: completionPayout,
+                      completion: payouts.testSuccess.payout,
                       bugs: row.bugPayout,
                       refund: row.refundPayout,
                       extra: row.extraPayout,
                     },
                     experience: {
-                      completion: completionExperience,
+                      completion: payouts.testSuccess.points,
                       extra: row.extraExperience,
                     },
                     note: row.notes,
@@ -500,8 +504,8 @@ const Prospect = () => {
                         (i) => i.testerId === row.testerId
                       );
                       const oldItem = oldItems[index];
-                      oldItem.completionPayout = completionPayout;
-                      oldItem.completionExperience = completionExperience;
+                      oldItem.completionPayout = payouts.testSuccess.payout;
+                      oldItem.completionExperience = payouts.testSuccess.points;
                       oldItem.completed = "Pagabile";
                       updateTotals(oldItem, oldItem);
                       return [...oldItems];
@@ -513,21 +517,19 @@ const Prospect = () => {
           {
             label: "Segna come da non pagare",
             handler: (items) => {
-              const completionPayout = 0;
-              const completionExperience = -1000;
               for (const row of items) {
                 updateTester({
                   campaign: id,
                   testerId: row.testerId.replace("T", ""),
                   body: {
                     payout: {
-                      completion: completionPayout,
+                      completion: payouts.testFailure.payout,
                       bugs: row.bugPayout,
                       refund: row.refundPayout,
                       extra: row.extraPayout,
                     },
                     experience: {
-                      completion: completionExperience,
+                      completion: payouts.testFailure.points,
                       extra: row.extraExperience,
                     },
                     note: row.notes,
@@ -541,8 +543,8 @@ const Prospect = () => {
                         (i) => i.testerId === row.testerId
                       );
                       const oldItem = oldItems[index];
-                      oldItem.completionPayout = completionPayout;
-                      oldItem.completionExperience = completionExperience;
+                      oldItem.completionPayout = payouts.testFailure.payout;
+                      oldItem.completionExperience = payouts.testFailure.points;
                       oldItem.completed = "No";
                       updateTotals(oldItem, oldItem);
                       return [...oldItems];
@@ -553,7 +555,7 @@ const Prospect = () => {
           },
         ]}
       />
-      MAX BONUS BUG: {campaignData.maxBonusBug}
+      MAX BONUS BUG: {payouts.maxBonusBug}
     </FluidContainer>
   );
 };
