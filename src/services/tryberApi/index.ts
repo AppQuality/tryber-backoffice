@@ -188,6 +188,16 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/campaigns/${queryArg.campaign}/prospect`,
       }),
     }),
+    patchCampaignsByCampaignProspect: build.mutation<
+      PatchCampaignsByCampaignProspectApiResponse,
+      PatchCampaignsByCampaignProspectApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/prospect`,
+        method: "PATCH",
+        body: queryArg.body,
+      }),
+    }),
     getCampaignsByCampaignStats: build.query<
       GetCampaignsByCampaignStatsApiResponse,
       GetCampaignsByCampaignStatsApiArg
@@ -891,6 +901,14 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
 };
 export type GetCampaignsByCampaignPayoutsApiResponse = /** status 200 OK */ {
   maxBonusBug: number;
+  testSuccess: {
+    payout: number;
+    points: number;
+  };
+  testFailure: {
+    payout: number;
+    points: number;
+  };
 };
 export type GetCampaignsByCampaignPayoutsApiArg = {
   /** A campaign id */
@@ -1082,6 +1100,28 @@ export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
 };
 export type GetCampaignsByCampaignProspectApiArg = {
   campaign: string;
+};
+export type PatchCampaignsByCampaignProspectApiResponse = unknown;
+export type PatchCampaignsByCampaignProspectApiArg = {
+  campaign: string;
+  body: {
+    status: "done";
+    items: {
+      tester: {
+        id: number;
+      };
+      experience: {
+        completion: number;
+        extra: number;
+      };
+      payout: {
+        completion: number;
+        bug: number;
+        extra: number;
+        refund: number;
+      };
+    }[];
+  };
 };
 export type GetCampaignsByCampaignStatsApiResponse = /** status 200 OK */ {
   selected: number;
@@ -2243,6 +2283,7 @@ export const {
   useGetCampaignsByCampaignFormsQuery,
   usePutCampaignsByCampaignProspectAndTesterIdMutation,
   useGetCampaignsByCampaignProspectQuery,
+  usePatchCampaignsByCampaignProspectMutation,
   useGetCampaignsByCampaignStatsQuery,
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
