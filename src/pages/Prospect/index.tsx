@@ -11,40 +11,21 @@ import {
   Button,
   Title,
   aqBootstrapTheme,
+  icons,
 } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { CellStyle } from "./EdiTable/types";
 import { MessageWrapper } from "./MessageWrapper";
+import { Row } from "./types";
+import euroRenderer from "./euroRenderer";
+
+const { TrophyFill } = icons;
 
 const FluidContainer = styled.div`
     max-width: 90%;
     margin: 0 auto;
   }
 `;
-
-type Row = {
-  isTopTester: boolean;
-  testerId: string;
-  tester: string;
-  completed: string;
-  useCaseCompleted: string;
-  useCaseTotal: string;
-  totalBugs: string;
-  criticalBugs: string;
-  highBugs: string;
-  mediumBugs: string;
-  lowBugs: string;
-  totalPayout: string;
-  completionPayout: number;
-  bugPayout: number;
-  refundPayout: number;
-  extraPayout: number;
-  totalExperience: string;
-  completionExperience: number;
-  extraExperience: number;
-  notes: string;
-  status: string;
-};
 
 const HeaderButton = (props: Parameters<typeof Button>[0]) => {
   return <Button {...props} size="sm" type="link-hover" />;
@@ -243,16 +224,17 @@ const Prospect = () => {
                 extra: i.extraExperience,
               },
               payout: {
-                completion: i.completionExperience,
+                completion: i.completionPayout,
                 bug: i.bugPayout,
-                extra: i.extraExperience,
+                extra: i.extraPayout,
                 refund: i.refundPayout,
               },
+              note: i.notes,
+              completed: i.completed === "Pagabile",
             }))
             .filter((i) => i.tester.id > 0);
           if (
-            // eslint-disable-next-line no-restricted-globals
-            confirm(
+            window.confirm(
               `You are about to pay ${testerToPay.length} testers. Are you sure?`
             )
           ) {
@@ -265,7 +247,6 @@ const Prospect = () => {
               },
             })
               .unwrap()
-              .then(() => {})
               .finally(() => {
                 setIsPaying(false);
               });
@@ -316,7 +297,18 @@ const Prospect = () => {
             name: "★",
             key: "isTopTester",
             type: "star",
-            children: <span style={{ fontSize: "24px" }}>★</span>,
+            children: (
+              <div
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  display: "grid",
+                }}
+              >
+                <TrophyFill />
+              </div>
+            ),
             width: 25,
           },
           {
@@ -383,20 +375,11 @@ const Prospect = () => {
           ...(expanded.bugs
             ? [
                 {
-                  name: "Critical",
-                  key: "criticalBugs" as const,
+                  name: "Low",
+                  key: "lowBugs" as const,
                   width: 65,
                   type: "uneditable" as const,
-                  children: (
-                    <ColoredCell color="orange100">Critical</ColoredCell>
-                  ),
-                },
-                {
-                  name: "High",
-                  key: "highBugs" as const,
-                  width: 65,
-                  type: "uneditable" as const,
-                  children: <ColoredCell color="orange100">High</ColoredCell>,
+                  children: <ColoredCell color="orange100">Low</ColoredCell>,
                 },
                 {
                   name: "Medium",
@@ -406,11 +389,20 @@ const Prospect = () => {
                   children: <ColoredCell color="orange100">Medium</ColoredCell>,
                 },
                 {
-                  name: "Low",
-                  key: "lowBugs" as const,
+                  name: "High",
+                  key: "highBugs" as const,
                   width: 65,
                   type: "uneditable" as const,
-                  children: <ColoredCell color="orange100">Low</ColoredCell>,
+                  children: <ColoredCell color="orange100">High</ColoredCell>,
+                },
+                {
+                  name: "Critical",
+                  key: "criticalBugs" as const,
+                  width: 65,
+                  type: "uneditable" as const,
+                  children: (
+                    <ColoredCell color="orange100">Critical</ColoredCell>
+                  ),
                 },
               ]
             : []),
@@ -419,6 +411,7 @@ const Prospect = () => {
             key: "totalPayout",
             width: 90,
             type: "uneditable",
+            renderer: euroRenderer,
             children: (
               <ColoredCell color="green200">
                 <Button
@@ -442,6 +435,7 @@ const Prospect = () => {
                   name: "Test",
                   type: "number" as const,
                   key: "completionPayout" as const,
+                  renderer: euroRenderer,
                   children: <ColoredCell color="green100">Test</ColoredCell>,
                 },
                 {
@@ -449,6 +443,7 @@ const Prospect = () => {
                   type: "number" as const,
                   width: 90,
                   key: "bugPayout" as const,
+                  renderer: euroRenderer,
                   children: (
                     <ColoredCell color="green100">Bonus Bug</ColoredCell>
                   ),
@@ -457,6 +452,7 @@ const Prospect = () => {
                   name: "Rimborso",
                   type: "number" as const,
                   key: "refundPayout" as const,
+                  renderer: euroRenderer,
                   children: (
                     <ColoredCell color="green100">Rimborso</ColoredCell>
                   ),
@@ -465,6 +461,7 @@ const Prospect = () => {
                   name: "Extra",
                   type: "number" as const,
                   key: "extraPayout" as const,
+                  renderer: euroRenderer,
                   children: <ColoredCell color="green100">Extra</ColoredCell>,
                 },
               ]

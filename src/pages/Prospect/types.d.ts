@@ -1,0 +1,23 @@
+export type Row = {
+  isTopTester: boolean;
+  testerId: string;
+  tester: string;
+  completed: "Pagabile" | "No" | "";
+  useCaseCompleted: string;
+  useCaseTotal: string;
+  totalBugs: string;
+  criticalBugs: string;
+  highBugs: string;
+  mediumBugs: string;
+  lowBugs: string;
+  totalPayout: string;
+  completionPayout: number;
+  bugPayout: number;
+  refundPayout: number;
+  extraPayout: number;
+  totalExperience: string;
+  completionExperience: number;
+  extraExperience: number;
+  notes: string;
+  status: string;
+};
