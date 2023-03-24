@@ -527,6 +527,7 @@ const Table = ({
                       const oldItem = oldItems[index];
                       oldItem.completionPayout = payouts.testSuccess.payout;
                       oldItem.completionExperience = payouts.testSuccess.points;
+                      oldItem.notes = payouts.testSuccess.message;
                       oldItem.completed = "Pagabile";
                       updateTotals(oldItem, oldItem);
                       return [...oldItems];
@@ -566,6 +567,7 @@ const Table = ({
                       const oldItem = oldItems[index];
                       oldItem.completionPayout = payouts.testFailure.payout;
                       oldItem.completionExperience = payouts.testFailure.points;
+                      oldItem.notes = payouts.testFailure.message;
                       oldItem.completed = "No";
                       updateTotals(oldItem, oldItem);
                       return [...oldItems];

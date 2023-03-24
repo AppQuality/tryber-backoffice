@@ -904,10 +904,12 @@ export type GetCampaignsByCampaignPayoutsApiResponse = /** status 200 OK */ {
   testSuccess: {
     payout: number;
     points: number;
+    message: string;
   };
   testFailure: {
     payout: number;
     points: number;
+    message: string;
   };
 };
 export type GetCampaignsByCampaignPayoutsApiArg = {
