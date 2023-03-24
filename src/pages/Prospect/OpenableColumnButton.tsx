@@ -1,4 +1,4 @@
-import { Button, icons } from "@appquality/appquality-design-system";
+import { icons } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 
 const { ChevronCompactRight } = icons;
