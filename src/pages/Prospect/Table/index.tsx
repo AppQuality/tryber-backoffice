@@ -497,7 +497,7 @@ const Table = ({
         data={items}
         contextMenu={[
           {
-            label: "Segna come pagati",
+            label: "Segna come pagabili",
             handler: (items) => {
               for (const row of items) {
                 updateTester({
