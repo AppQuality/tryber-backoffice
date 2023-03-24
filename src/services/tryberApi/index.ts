@@ -1121,6 +1121,7 @@ export type PatchCampaignsByCampaignProspectApiArg = {
         refund: number;
       };
       note?: string;
+      completed: boolean;
     }[];
   };
 };

@@ -2,7 +2,7 @@ export type Row = {
   isTopTester: boolean;
   testerId: string;
   tester: string;
-  completed: string;
+  completed: "Pagabile" | "No" | "";
   useCaseCompleted: string;
   useCaseTotal: string;
   totalBugs: string;
