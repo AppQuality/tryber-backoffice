@@ -41,7 +41,13 @@ const ColoredCell = styled.div<{
   align-items: center;
 `;
 
-const Table = ({ id }: { id: string }) => {
+const Table = ({
+  id,
+  containerWidth,
+}: {
+  id: string;
+  containerWidth: number;
+}) => {
   const [isPaying, setIsPaying] = useState(false);
   const [expanded, setExpanded] = useState({
     usecases: false,
@@ -152,6 +158,7 @@ const Table = ({ id }: { id: string }) => {
       ),
     });
   }, [items]);
+
   if (isLoading || isLoadingPayouts) {
     return <MessageWrapper>Loading...</MessageWrapper>;
   }

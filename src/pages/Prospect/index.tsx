@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import Table from "./Table";
 import { Button, Title } from "@appquality/appquality-design-system";
 import styled from "styled-components";
+import { useContainerDimensions } from "src/hooks/useContainerDimensions";
+import { useRef } from "react";
 
 const FluidContainer = styled.div`
   max-width: 90%;
@@ -14,8 +16,10 @@ const HeaderButton = (props: Parameters<typeof Button>[0]) => {
 
 const Prospect = () => {
   const { id } = useParams<{ id: string }>();
+  const tablewrapper = useRef<HTMLDivElement>(null);
+  const { width } = useContainerDimensions(tablewrapper);
   return (
-    <FluidContainer>
+    <FluidContainer ref={tablewrapper}>
       <Title size="xl">Prospect</Title>
       <HeaderButton
         as="a"
@@ -42,7 +46,7 @@ const Prospect = () => {
       <Title size="mt" className="aq-mb-3">
         Campaign {id}
       </Title>
-      <Table id={id} />
+      <Table id={id} containerWidth={width} />
     </FluidContainer>
   );
 };
