@@ -375,20 +375,11 @@ const Prospect = () => {
           ...(expanded.bugs
             ? [
                 {
-                  name: "Critical",
-                  key: "criticalBugs" as const,
+                  name: "Low",
+                  key: "lowBugs" as const,
                   width: 65,
                   type: "uneditable" as const,
-                  children: (
-                    <ColoredCell color="orange100">Critical</ColoredCell>
-                  ),
-                },
-                {
-                  name: "High",
-                  key: "highBugs" as const,
-                  width: 65,
-                  type: "uneditable" as const,
-                  children: <ColoredCell color="orange100">High</ColoredCell>,
+                  children: <ColoredCell color="orange100">Low</ColoredCell>,
                 },
                 {
                   name: "Medium",
@@ -398,11 +389,20 @@ const Prospect = () => {
                   children: <ColoredCell color="orange100">Medium</ColoredCell>,
                 },
                 {
-                  name: "Low",
-                  key: "lowBugs" as const,
+                  name: "High",
+                  key: "highBugs" as const,
                   width: 65,
                   type: "uneditable" as const,
-                  children: <ColoredCell color="orange100">Low</ColoredCell>,
+                  children: <ColoredCell color="orange100">High</ColoredCell>,
+                },
+                {
+                  name: "Critical",
+                  key: "criticalBugs" as const,
+                  width: 65,
+                  type: "uneditable" as const,
+                  children: (
+                    <ColoredCell color="orange100">Critical</ColoredCell>
+                  ),
                 },
               ]
             : []),
