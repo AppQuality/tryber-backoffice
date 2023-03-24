@@ -50,6 +50,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
       <TableWrapper className={className}>
         <ReactGrid
           enableRangeSelection
+          enableRowSelection
           enableFillHandle
           onCellsChanged={(changes) => {
             onChange && onChange(changes);
