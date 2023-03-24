@@ -341,8 +341,8 @@ const Table = ({
           {
             name: "Esito",
             key: "completed",
-            type: "select",
-            width: 90,
+            type: isDone ? "uneditable" : "select",
+            width: 100,
             values: ["Pagabile", "No"],
             onChange: (row, newValue) => {
               if (newValue === "Pagabile") {
