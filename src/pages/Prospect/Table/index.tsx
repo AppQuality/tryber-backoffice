@@ -1,4 +1,4 @@
-import EdiTable from "./EdiTable";
+import EdiTable from "../EdiTable";
 import { useEffect, useState } from "react";
 import {
   useGetCampaignsByCampaignProspectQuery,
@@ -12,11 +12,12 @@ import {
   icons,
 } from "@appquality/appquality-design-system";
 import styled from "styled-components";
-import { CellStyle } from "./EdiTable/types";
+import { CellStyle } from "../EdiTable/types";
 import { MessageWrapper } from "./MessageWrapper";
-import { Row } from "./types";
+import { Row } from "../types";
 import euroRenderer from "./euroRenderer";
 import OpenableColumnButton from "./OpenableColumnButton";
+import ErrorHandler from "./ErrorHandler";
 
 const { TrophyFill } = icons;
 
@@ -155,12 +156,8 @@ const Table = ({ id }: { id: string }) => {
     return <MessageWrapper>Loading...</MessageWrapper>;
   }
 
-  if (error && "status" in error && error.status === 412) {
-    return (
-      <MessageWrapper>
-        It looks like there's an edit on the old prospect
-      </MessageWrapper>
-    );
+  if (error && "status" in error) {
+    return <ErrorHandler error={error} />;
   }
 
   if (!payouts || !data) {
