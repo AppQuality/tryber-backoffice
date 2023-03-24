@@ -44,7 +44,9 @@ export class SelectCellTemplate implements CellTemplate<SelectCell> {
     cell: Compatible<SelectCell>,
     cellToMerge: UncertainCompatible<SelectCell>
   ): Compatible<SelectCell> {
-    cell.onChange && cell.onChange(cellToMerge.text);
+    if (cell.onChange && cell.text !== cellToMerge.text) {
+      cell.onChange(cellToMerge.text);
+    }
     return this.getCompatibleCell({
       ...cell,
       text: cellToMerge.text,
