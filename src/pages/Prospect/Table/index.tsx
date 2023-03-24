@@ -89,6 +89,55 @@ const Table = ({
           };
   }
 
+  function setToPaymentStatus(rows: Row[], success: boolean) {
+    if (!payouts) return;
+    const payoutData = success
+      ? {
+          payout: payouts.testSuccess.payout,
+          experience: payouts.testSuccess.points,
+          note: payouts.testSuccess.message,
+        }
+      : {
+          payout: payouts.testFailure.payout,
+          experience: payouts.testFailure.points,
+          note: payouts.testFailure.message,
+        };
+    for (const row of rows) {
+      updateTester({
+        campaign: id,
+        testerId: row.testerId.replace("T", ""),
+        body: {
+          payout: {
+            completion: payoutData.payout,
+            bugs: row.bugPayout,
+            refund: row.refundPayout,
+            extra: row.extraPayout,
+          },
+          experience: {
+            completion: payoutData.experience,
+            extra: row.extraExperience,
+          },
+          note: payoutData.note,
+          completed: success,
+        },
+      })
+        .unwrap()
+        .then((res) => {
+          setItems((oldItems) => {
+            const index = oldItems.findIndex(
+              (i) => i.testerId === row.testerId
+            );
+            const oldItem = oldItems[index];
+            oldItem.completionPayout = payoutData.payout;
+            oldItem.completionExperience = payoutData.experience;
+            oldItem.notes = payoutData.note;
+            oldItem.completed = success ? "Pagabile" : "No";
+            updateTotals(oldItem, oldItem);
+            return [...oldItems];
+          });
+        });
+    }
+  }
   useEffect(() => {
     if (data) {
       const items = data.items.map((d) => {
@@ -288,7 +337,15 @@ const Table = ({
           {
             name: "Esito",
             key: "completed",
-            type: "uneditable",
+            type: "select",
+            values: ["Pagabile", "No"],
+            onChange: (row, newValue) => {
+              if (newValue === "Pagabile") {
+                setToPaymentStatus([row], true);
+              } else {
+                setToPaymentStatus([row], false);
+              }
+            },
             children: (
               <OpenableColumnButton
                 isOpen={expanded.usecases}
@@ -506,81 +563,13 @@ const Table = ({
           {
             label: "Segna come pagabili",
             handler: (items) => {
-              for (const row of items) {
-                updateTester({
-                  campaign: id,
-                  testerId: row.testerId.replace("T", ""),
-                  body: {
-                    payout: {
-                      completion: payouts.testSuccess.payout,
-                      bugs: row.bugPayout,
-                      refund: row.refundPayout,
-                      extra: row.extraPayout,
-                    },
-                    experience: {
-                      completion: payouts.testSuccess.points,
-                      extra: row.extraExperience,
-                    },
-                    note: row.notes,
-                    completed: true,
-                  },
-                })
-                  .unwrap()
-                  .then((res) => {
-                    setItems((oldItems) => {
-                      const index = oldItems.findIndex(
-                        (i) => i.testerId === row.testerId
-                      );
-                      const oldItem = oldItems[index];
-                      oldItem.completionPayout = payouts.testSuccess.payout;
-                      oldItem.completionExperience = payouts.testSuccess.points;
-                      oldItem.notes = payouts.testSuccess.message;
-                      oldItem.completed = "Pagabile";
-                      updateTotals(oldItem, oldItem);
-                      return [...oldItems];
-                    });
-                  });
-              }
+              setToPaymentStatus(items, true);
             },
           },
           {
             label: "Segna come da non pagare",
             handler: (items) => {
-              for (const row of items) {
-                updateTester({
-                  campaign: id,
-                  testerId: row.testerId.replace("T", ""),
-                  body: {
-                    payout: {
-                      completion: payouts.testFailure.payout,
-                      bugs: row.bugPayout,
-                      refund: row.refundPayout,
-                      extra: row.extraPayout,
-                    },
-                    experience: {
-                      completion: payouts.testFailure.points,
-                      extra: row.extraExperience,
-                    },
-                    note: row.notes,
-                    completed: false,
-                  },
-                })
-                  .unwrap()
-                  .then((res) => {
-                    setItems((oldItems) => {
-                      const index = oldItems.findIndex(
-                        (i) => i.testerId === row.testerId
-                      );
-                      const oldItem = oldItems[index];
-                      oldItem.completionPayout = payouts.testFailure.payout;
-                      oldItem.completionExperience = payouts.testFailure.points;
-                      oldItem.notes = payouts.testFailure.message;
-                      oldItem.completed = "No";
-                      updateTotals(oldItem, oldItem);
-                      return [...oldItems];
-                    });
-                  });
-              }
+              setToPaymentStatus(items, false);
             },
           },
         ]}

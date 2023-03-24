@@ -16,6 +16,7 @@ import { Column, Item } from "./types";
 import { TableWrapper } from "./TableWrapper";
 import { StarCell, StarCellTemplate } from "./StarCell";
 import { NumberCellTemplate } from "./NumberCell";
+import { SelectCell, SelectCellTemplate } from "./SelectCell";
 
 function EdiTable<T extends { [key: string]: string | number | boolean }>({
   columnHeaders,
@@ -104,6 +105,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
             customHeader: new CustomHeader(),
             star: new StarCellTemplate(),
             number: new NumberCellTemplate(),
+            select: new SelectCellTemplate(),
           }}
           onContextMenu={
             contextMenu
@@ -140,49 +142,71 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
   columns: Column<T>[],
   items: Item<T>[]
 ) {
-  return items.map<Row<DefaultCellTypes | UneditableCell | StarCell>>(
-    (item, idx) => ({
-      rowId: idx,
-      cells: columns.map((column, idx) => {
-        if (Object.keys(item).includes(column.key)) {
-          const value = item[column.key as keyof typeof item];
-          if (column.type === "uneditable") {
-            const textValue =
-              typeof value === "string" ? value : value.toString();
-            return {
-              type: "uneditable",
-              text: column.renderer ? column.renderer(value) : textValue,
-              style: item.style || {},
-            };
-          } else if (column.type === "star" && typeof value === "boolean") {
-            return {
-              type: "star",
-              value: value ? 1 : 0,
-              text: "",
-              style: item.style || {},
-            };
-          } else if (typeof value === "number") {
-            return {
-              type: "number",
-              value,
-              text: column.renderer ? column.renderer(value) : undefined,
-              groupId: column.key,
-              style: item.style || {},
-            };
-          } else if (typeof value === "string") {
-            return {
-              type: "text",
-              text: value,
-              groupId: column.key,
-              style: item.style || {},
-            };
-          }
-          throw new Error("Unknown type");
+  return items.map<
+    Row<DefaultCellTypes | UneditableCell | StarCell | SelectCell>
+  >((item, idx) => ({
+    rowId: idx,
+    cells: columns.map((column, idx) => {
+      if (Object.keys(item).includes(column.key)) {
+        const value = item[column.key as keyof typeof item];
+        if (column.type === "uneditable") {
+          const textValue =
+            typeof value === "string" ? value : value.toString();
+          return {
+            type: "uneditable",
+            text: column.renderer ? column.renderer(value) : textValue,
+            style: item.style || {},
+          };
+        } else if (column.type === "star" && typeof value === "boolean") {
+          return {
+            type: "star",
+            value: value ? 1 : 0,
+            text: "",
+            style: item.style || {},
+          };
+        } else if (column.type === "select") {
+          const textValue =
+            typeof value === "string" ? value : value.toString();
+          return {
+            type: "select",
+            value: value,
+            text: textValue,
+            options: column.values,
+            onChange: (value) => {
+              if (!column.onChange) return;
+              if (column.key in item) {
+                column.onChange(
+                  {
+                    ...item,
+                    [column.key]: value,
+                  },
+                  value
+                );
+              }
+            },
+            style: item.style || {},
+          };
+        } else if (typeof value === "number") {
+          return {
+            type: "number",
+            value,
+            text: column.renderer ? column.renderer(value) : undefined,
+            groupId: column.key,
+            style: item.style || {},
+          };
+        } else if (typeof value === "string") {
+          return {
+            type: "text",
+            text: value,
+            groupId: column.key,
+            style: item.style || {},
+          };
         }
-        throw new Error("Unknown column");
-      }),
-    })
-  );
+        throw new Error("Unknown type");
+      }
+      throw new Error("Unknown column");
+    }),
+  }));
 }
 
 function getBottomItems<T extends { [key: string]: string | number | boolean }>(

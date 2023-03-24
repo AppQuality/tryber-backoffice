@@ -1,0 +1,16 @@
+.rg-select-cell-select {
+  border: 0;
+  background: #fff;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.rg-select-wrapper {
+  width: 50%;
+  height: 80%;
+  background-size: cover;
+  border: 1px solid #cccccc;
+  background-position: center center;
+  background-repeat: no-repeat;
+}

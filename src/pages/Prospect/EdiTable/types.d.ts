@@ -1,3 +1,6 @@
+import { Cell } from "@silevis/reactgrid";
+import { SelectCell } from "./SelectCell";
+
 export type Column<T> = {
   name: string;
   key: Exclude<keyof T, number | symbol>;
@@ -9,8 +12,9 @@ export type Column<T> = {
       type: "number" | "text" | "uneditable" | "star";
     }
   | {
-      type: "dropdown";
+      type: "select";
       values: string[];
+      onChange?: (cell: Item<T>, newValue: string) => void;
     }
 );
 
