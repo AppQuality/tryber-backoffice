@@ -20,7 +20,7 @@ import { Row } from "./types";
 import euroRenderer from "./euroRenderer";
 import OpenableColumnButton from "./OpenableColumnButton";
 
-const { TrophyFill, ChevronCompactRight } = icons;
+const { TrophyFill } = icons;
 
 const FluidContainer = styled.div`
     max-width: 90%;
