@@ -260,6 +260,12 @@ const Table = ({
         onChange={(changes) => {}}
         columns={[
           {
+            name: "TID",
+            key: "testerId",
+            type: "uneditable",
+          },
+          { name: "Name", key: "tester", width: 150, type: "uneditable" },
+          {
             name: "★",
             key: "isTopTester",
             type: "star",
@@ -277,12 +283,6 @@ const Table = ({
             ),
             width: 25,
           },
-          {
-            name: "TID",
-            key: "testerId",
-            type: "uneditable",
-          },
-          { name: "Name", key: "tester", width: 150, type: "uneditable" },
           {
             name: "Esito",
             key: "completed",
