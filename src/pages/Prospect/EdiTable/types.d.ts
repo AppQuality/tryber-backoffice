@@ -1,6 +1,3 @@
-import { Cell } from "@silevis/reactgrid";
-import { SelectCell } from "./SelectCell";
-
 export type Column<T> = {
   name: string;
   key: Exclude<keyof T, number | symbol>;
