@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export const TableWrapper = styled.div`
-  max-height: 80vh;
-  overflow-y: scroll;
   padding-bottom: 20px;
   .reactgrid .reactgrid-content {
     background: ${({ theme }) => theme.colors.white};
