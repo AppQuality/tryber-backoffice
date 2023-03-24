@@ -15,6 +15,7 @@ import { UneditableCell, UneditableCellTemplate } from "./UneditableCell";
 import { Column, Item } from "./types";
 import { TableWrapper } from "./TableWrapper";
 import { StarCell, StarCellTemplate } from "./StarCell";
+import { NumberCellTemplate } from "./NumberCell";
 
 function EdiTable<T extends { [key: string]: string | number | boolean }>({
   columnHeaders,
@@ -96,6 +97,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
             uneditable: new UneditableCellTemplate(),
             customHeader: new CustomHeader(),
             star: new StarCellTemplate(),
+            number: new NumberCellTemplate(),
           }}
           onContextMenu={
             contextMenu
@@ -141,7 +143,7 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
           if (column.type === "uneditable" && typeof value === "string") {
             return {
               type: "uneditable",
-              text: value,
+              text: column.renderer ? column.renderer(value) : value,
               style: item.style || {},
             };
           } else if (column.type === "star" && typeof value === "boolean") {
@@ -155,6 +157,7 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
             return {
               type: "number",
               value,
+              text: column.renderer ? column.renderer(value) : undefined,
               groupId: column.key,
               style: item.style || {},
             };

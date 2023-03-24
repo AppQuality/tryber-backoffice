@@ -3,6 +3,7 @@ export type Column<T> = {
   key: Exclude<keyof T, number | symbol>;
   width?: number | undefined;
   children?: React.ReactNode;
+  renderer?: (item: Item<T>[keyof T]) => string;
 } & (
   | {
       type: "number" | "text" | "uneditable" | "star";
