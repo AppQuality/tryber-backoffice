@@ -27,6 +27,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   onChange,
   className,
   contextMenu,
+  stickyLeftColumns,
 }: {
   columnHeaders?: { height?: number; items: { name: string; span?: number }[] };
   columns: Column<T>[];
@@ -37,6 +38,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   onChange?: (changes: CellChange[]) => void;
   className?: string;
   contextMenu?: { label: string; handler: (rows: Item<T>[]) => void }[];
+  stickyLeftColumns?: number;
 }) {
   const [items, setItems] = useState<Item<T>[]>([]);
   useEffect(() => {
@@ -71,6 +73,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
               return [...prevItems];
             });
           }}
+          stickyLeftColumns={stickyLeftColumns}
           stickyTopRows={columnHeaders ? 2 : 1}
           rows={[
             ...getTopHeader(columnHeaders),

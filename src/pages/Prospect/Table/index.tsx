@@ -577,6 +577,7 @@ const Table = ({
             },
           },
         ]}
+        stickyLeftColumns={3}
       />
       MAX BONUS BUG: {payouts.maxBonusBug}
     </>
