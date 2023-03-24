@@ -101,7 +101,7 @@ const Prospect = () => {
         return {
           isTopTester: d.isTopTester,
           testerId: `T${d.tester.id}`,
-          tester: `${d.tester.name} ${d.tester.surname}`,
+          tester: `${d.tester.name.charAt(0)}. ${d.tester.surname}`,
           completed: d.isCompleted ? ("Pagabile" as const) : ("No" as const),
           useCaseCompleted: `${d.usecases.completed}/`,
           useCaseTotal: `${d.usecases.required} UC`,
