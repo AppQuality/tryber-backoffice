@@ -98,7 +98,7 @@ const Prospect = () => {
           isTopTester: d.isTopTester,
           testerId: `T${d.tester.id}`,
           tester: `${d.tester.name} ${d.tester.surname.charAt(0)}.`,
-          completed: d.isCompleted ? "Pagabile" : "No",
+          completed: d.isCompleted ? ("Pagabile" as const) : ("No" as const),
           useCaseCompleted: `${d.usecases.completed}/`,
           useCaseTotal: `${d.usecases.required} UC`,
           totalBugs: `${
@@ -221,12 +221,13 @@ const Prospect = () => {
                 extra: i.extraExperience,
               },
               payout: {
-                completion: i.completionExperience,
+                completion: i.completionPayout,
                 bug: i.bugPayout,
-                extra: i.extraExperience,
+                extra: i.extraPayout,
                 refund: i.refundPayout,
               },
               note: i.notes,
+              completed: i.completed === "Pagabile",
             }))
             .filter((i) => i.tester.id > 0);
           if (
