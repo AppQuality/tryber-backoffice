@@ -14,6 +14,11 @@ const ErrorHandler = ({ error }: { error: FetchBaseQueryError }) => {
       <MessageWrapper>It looks like the campaign doesn't exist</MessageWrapper>
     );
   }
+  if (error.status === 404) {
+    return (
+      <MessageWrapper>It looks like there are no tester here</MessageWrapper>
+    );
+  }
   if (error.status === 412) {
     return (
       <MessageWrapper>
