@@ -4,6 +4,6 @@ export const MessageWrapper = styled.div`
   font-size: 40px;
   display: flex;
   align-items: center;
-  height: 100vh;
+  height: 60vh;
   justify-content: center;
 `;
