@@ -11,12 +11,15 @@ import {
   Button,
   Title,
   aqBootstrapTheme,
+  icons,
 } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { CellStyle } from "./EdiTable/types";
 import { MessageWrapper } from "./MessageWrapper";
 import { Row } from "./types";
 import euroRenderer from "./euroRenderer";
+
+const { TrophyFill } = icons;
 
 const FluidContainer = styled.div`
     max-width: 90%;
@@ -294,7 +297,18 @@ const Prospect = () => {
             name: "★",
             key: "isTopTester",
             type: "star",
-            children: <span style={{ fontSize: "24px" }}>★</span>,
+            children: (
+              <div
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  display: "grid",
+                }}
+              >
+                <TrophyFill />
+              </div>
+            ),
             width: 25,
           },
           {
