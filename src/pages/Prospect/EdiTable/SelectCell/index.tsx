@@ -1,4 +1,5 @@
 import * as React from "react";
+import styled from "styled-components";
 import "./style.css";
 
 import { isAlphaNumericKey, isNavigationKey } from "@silevis/reactgrid";
@@ -23,6 +24,15 @@ export interface SelectCell extends Cell {
   renderer?: (text: string) => React.ReactNode;
   errorMessage?: string;
 }
+
+const StyledSelect = styled.select`
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-family: ${({ theme }) => theme.typography.fontFamily.mono};
+`;
 
 export class SelectCellTemplate implements CellTemplate<SelectCell> {
   getCompatibleCell(
@@ -95,22 +105,13 @@ export class SelectCellTemplate implements CellTemplate<SelectCell> {
     isInEditMode: boolean,
     onCellChanged: (cell: Compatible<SelectCell>, commit: boolean) => void
   ): React.ReactNode {
-    if (!isInEditMode) {
-      const isValid = cell.validator ? cell.validator(cell.text) : true;
-      const cellText = cell.text || cell.placeholder || "";
-      const textToDisplay =
-        !isValid && cell.errorMessage ? cell.errorMessage : cellText;
-      return cell.renderer ? cell.renderer(textToDisplay) : cellText;
-    }
-
     return (
-      <select
-        className="rg-select-cell-select"
+      <StyledSelect
         defaultValue={cell.text}
         onChange={(e) => {
           onCellChanged(
             this.getCompatibleCell({ ...cell, text: e.currentTarget.value }),
-            false
+            true
           );
         }}
         onBlur={(e) => {
@@ -129,9 +130,11 @@ export class SelectCellTemplate implements CellTemplate<SelectCell> {
         }}
       >
         {cell.options.map((option) => (
-          <option value={option}>{option}</option>
+          <option selected={option === cell.text} value={option}>
+            {option}
+          </option>
         ))}
-      </select>
+      </StyledSelect>
     );
   }
 }
