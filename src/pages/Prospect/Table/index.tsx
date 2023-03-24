@@ -257,7 +257,9 @@ const Table = ({
               });
             });
         }}
-        onChange={(changes) => {}}
+        onChange={(changes) => {
+          if (isDone) return false;
+        }}
         columns={[
           {
             name: "TID",
@@ -396,14 +398,14 @@ const Table = ({
             ? [
                 {
                   name: "Test",
-                  type: "number" as const,
+                  type: isDone ? ("uneditable" as const) : ("number" as const),
                   key: "completionPayout" as const,
                   renderer: euroRenderer,
                   children: <ColoredCell color="green100">Test</ColoredCell>,
                 },
                 {
                   name: "Bonus Bug",
-                  type: "number" as const,
+                  type: isDone ? ("uneditable" as const) : ("number" as const),
                   width: 90,
                   key: "bugPayout" as const,
                   renderer: euroRenderer,
@@ -413,7 +415,7 @@ const Table = ({
                 },
                 {
                   name: "Rimborso",
-                  type: "number" as const,
+                  type: isDone ? ("uneditable" as const) : ("number" as const),
                   key: "refundPayout" as const,
                   renderer: euroRenderer,
                   children: (
@@ -422,7 +424,7 @@ const Table = ({
                 },
                 {
                   name: "Extra",
-                  type: "number" as const,
+                  type: isDone ? ("uneditable" as const) : ("number" as const),
                   key: "extraPayout" as const,
                   renderer: euroRenderer,
                   children: <ColoredCell color="green100">Extra</ColoredCell>,
@@ -454,19 +456,24 @@ const Table = ({
             ? [
                 {
                   name: "XP Base",
-                  type: "number" as const,
+                  type: isDone ? ("uneditable" as const) : ("number" as const),
                   key: "completionExperience" as const,
                   children: <ColoredCell color="blue100">XP Base</ColoredCell>,
                 },
                 {
                   name: "Extra XP",
-                  type: "number" as const,
+                  type: isDone ? ("uneditable" as const) : ("number" as const),
                   key: "extraExperience" as const,
                   children: <ColoredCell color="blue100">Extra</ColoredCell>,
                 },
               ]
             : []),
-          { name: "Note", type: "text", key: "notes", width: 200 },
+          {
+            name: "Note",
+            type: isDone ? "uneditable" : "text",
+            key: "notes",
+            width: 200,
+          },
           { name: "Status", key: "status", type: "uneditable" },
         ]}
         subHeader={[
