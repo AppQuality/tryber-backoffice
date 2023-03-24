@@ -35,7 +35,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   bottom?: Item<T>[];
   data: Item<T>[];
   onRowChange?: (row: T) => void;
-  onChange?: (changes: CellChange[]) => void;
+  onChange?: (changes: CellChange[]) => boolean | void;
   className?: string;
   contextMenu?: { label: string; handler: (rows: Item<T>[]) => void }[];
   stickyLeftColumns?: number;
@@ -53,7 +53,9 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
           enableRowSelection
           enableFillHandle
           onCellsChanged={(changes) => {
-            onChange && onChange(changes);
+            if (onChange) {
+              if (onChange(changes) === false) return;
+            }
             setItems((prevItems) => {
               changes.forEach((change) => {
                 const column = columns.find((c) => c.name === change.columnId);
@@ -144,10 +146,12 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
       cells: columns.map((column, idx) => {
         if (Object.keys(item).includes(column.key)) {
           const value = item[column.key as keyof typeof item];
-          if (column.type === "uneditable" && typeof value === "string") {
+          if (column.type === "uneditable") {
+            const textValue =
+              typeof value === "string" ? value : value.toString();
             return {
               type: "uneditable",
-              text: column.renderer ? column.renderer(value) : value,
+              text: column.renderer ? column.renderer(value) : textValue,
               style: item.style || {},
             };
           } else if (column.type === "star" && typeof value === "boolean") {
