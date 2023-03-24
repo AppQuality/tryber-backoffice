@@ -18,8 +18,9 @@ import { CellStyle } from "./EdiTable/types";
 import { MessageWrapper } from "./MessageWrapper";
 import { Row } from "./types";
 import euroRenderer from "./euroRenderer";
+import OpenableColumnButton from "./OpenableColumnButton";
 
-const { TrophyFill } = icons;
+const { TrophyFill, ChevronCompactRight } = icons;
 
 const FluidContainer = styled.div`
     max-width: 90%;
@@ -101,7 +102,7 @@ const Prospect = () => {
           isTopTester: d.isTopTester,
           testerId: `T${d.tester.id}`,
           tester: `${d.tester.name} ${d.tester.surname}`,
-          completed: d.isCompleted ? "Pagabile" : "No",
+          completed: d.isCompleted ? ("Pagabile" as const) : ("No" as const),
           useCaseCompleted: `${d.usecases.completed}/`,
           useCaseTotal: `${d.usecases.required} UC`,
           totalBugs: `${
@@ -322,9 +323,8 @@ const Prospect = () => {
             key: "completed",
             type: "uneditable",
             children: (
-              <Button
-                type="link-hover"
-                className="aq-p-1"
+              <OpenableColumnButton
+                isOpen={expanded.usecases}
                 onClick={() =>
                   setExpanded({
                     ...expanded,
@@ -333,7 +333,7 @@ const Prospect = () => {
                 }
               >
                 Esito
-              </Button>
+              </OpenableColumnButton>
             ),
           },
           ...(expanded.usecases
@@ -353,13 +353,12 @@ const Prospect = () => {
           {
             name: "Bug Trovati",
             key: "totalBugs",
-            width: 90,
+            width: 110,
             type: "uneditable",
             children: (
               <ColoredCell color="orange200">
-                <Button
-                  type="link-hover"
-                  className="aq-p-1"
+                <OpenableColumnButton
+                  isOpen={expanded.bugs}
                   onClick={() =>
                     setExpanded({
                       ...expanded,
@@ -368,7 +367,7 @@ const Prospect = () => {
                   }
                 >
                   Bug Trovati
-                </Button>
+                </OpenableColumnButton>
               </ColoredCell>
             ),
           },
@@ -409,14 +408,13 @@ const Prospect = () => {
           {
             name: "Paga Totale",
             key: "totalPayout",
-            width: 90,
+            width: 110,
             type: "uneditable",
             renderer: euroRenderer,
             children: (
               <ColoredCell color="green200">
-                <Button
-                  type="link-hover"
-                  className="aq-p-1"
+                <OpenableColumnButton
+                  isOpen={expanded.payout}
                   onClick={() =>
                     setExpanded({
                       ...expanded,
@@ -425,7 +423,7 @@ const Prospect = () => {
                   }
                 >
                   Paga Totale
-                </Button>
+                </OpenableColumnButton>
               </ColoredCell>
             ),
           },
@@ -470,11 +468,11 @@ const Prospect = () => {
             name: "XP Totali",
             key: "totalExperience",
             type: "uneditable",
+            width: 90,
             children: (
               <ColoredCell color="blue200">
-                <Button
-                  type="link-hover"
-                  className="aq-p-1"
+                <OpenableColumnButton
+                  isOpen={expanded.experience}
                   onClick={() =>
                     setExpanded({
                       ...expanded,
@@ -483,7 +481,7 @@ const Prospect = () => {
                   }
                 >
                   XP Totali
-                </Button>
+                </OpenableColumnButton>
               </ColoredCell>
             ),
           },
