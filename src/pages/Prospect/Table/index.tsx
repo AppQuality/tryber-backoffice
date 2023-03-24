@@ -18,6 +18,7 @@ import { Row } from "../types";
 import euroRenderer from "./euroRenderer";
 import OpenableColumnButton from "./OpenableColumnButton";
 import ErrorHandler from "./ErrorHandler";
+import ActionBar from "./ActionBar";
 
 const { TrophyFill } = icons;
 
@@ -226,51 +227,54 @@ const Table = ({
 
   return (
     <>
-      <Button
-        type="primary"
-        onClick={() => {
-          const testerToPay = items
-            .map((i) => ({
-              tester: {
-                id: Number(i.testerId.replace("T", "")),
-              },
-              experience: {
-                completion: i.completionExperience,
-                extra: i.extraExperience,
-              },
-              payout: {
-                completion: i.completionPayout,
-                bug: i.bugPayout,
-                extra: i.extraPayout,
-                refund: i.refundPayout,
-              },
-              note: i.notes,
-              completed: i.completed === "Pagabile",
-            }))
-            .filter((i) => i.tester.id > 0);
-          if (
-            window.confirm(
-              `You are about to pay ${testerToPay.length} testers. Are you sure?`
-            )
-          ) {
-            setIsPaying(true);
-            payTesters({
-              campaign: id,
-              body: {
-                status: "done",
-                items: testerToPay,
-              },
-            })
-              .unwrap()
-              .finally(() => {
-                setIsPaying(false);
-              });
-          }
-        }}
-        disabled={isPaying || isDone}
-      >
-        {isPaying ? "Paying..." : "Pay Testers"}
-      </Button>
+      <ActionBar>
+        <Button
+          size="sm"
+          type="primary"
+          onClick={() => {
+            const testerToPay = items
+              .map((i) => ({
+                tester: {
+                  id: Number(i.testerId.replace("T", "")),
+                },
+                experience: {
+                  completion: i.completionExperience,
+                  extra: i.extraExperience,
+                },
+                payout: {
+                  completion: i.completionPayout,
+                  bug: i.bugPayout,
+                  extra: i.extraPayout,
+                  refund: i.refundPayout,
+                },
+                note: i.notes,
+                completed: i.completed === "Pagabile",
+              }))
+              .filter((i) => i.tester.id > 0);
+            if (
+              window.confirm(
+                `You are about to pay ${testerToPay.length} testers. Are you sure?`
+              )
+            ) {
+              setIsPaying(true);
+              payTesters({
+                campaign: id,
+                body: {
+                  status: "done",
+                  items: testerToPay,
+                },
+              })
+                .unwrap()
+                .finally(() => {
+                  setIsPaying(false);
+                });
+            }
+          }}
+          disabled={isPaying || isDone}
+        >
+          {isPaying ? "Paying..." : "Pay Testers"}
+        </Button>
+      </ActionBar>
       <MyEdiTable
         onRowChange={(row) => {
           updateTester({
