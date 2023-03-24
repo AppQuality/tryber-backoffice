@@ -9,6 +9,8 @@ export interface CustomHeaderCell extends Cell, Span {
 
 export class CustomHeader extends HeaderCellTemplate {
   render(cell: Compatible<CustomHeaderCell>): React.ReactNode {
-    return cell.children || cell.text;
+    return (
+      cell.children || <div style={{ paddingLeft: "5px" }}>{cell.text}</div>
+    );
   }
 }
