@@ -15,7 +15,7 @@ import styled from "styled-components";
 import { CellStyle } from "../EdiTable/types";
 import { MessageWrapper } from "./MessageWrapper";
 import { Row } from "../types";
-import euroRenderer from "./euroRenderer";
+import { euroRenderer, bugRenderer, pointsRenderer } from "./cellRenderer";
 import OpenableColumnButton from "./OpenableColumnButton";
 import ErrorHandler from "./ErrorHandler";
 import ActionBar from "./ActionBar";
@@ -384,6 +384,7 @@ const Table = ({
             key: "totalBugs",
             width: 110,
             type: "uneditable",
+            renderer: bugRenderer,
             children: (
               <ColoredCell color="orange200">
                 <OpenableColumnButton
@@ -498,6 +499,7 @@ const Table = ({
             key: "totalExperience",
             type: "uneditable",
             width: 90,
+            renderer: pointsRenderer,
             children: (
               <ColoredCell color="blue200">
                 <OpenableColumnButton
@@ -518,12 +520,16 @@ const Table = ({
             ? [
                 {
                   name: "XP Base",
+                  width: 90,
                   type: isDone ? ("uneditable" as const) : ("number" as const),
+                  renderer: pointsRenderer,
                   key: "completionExperience" as const,
                   children: <ColoredCell color="blue100">XP Base</ColoredCell>,
                 },
                 {
                   name: "Extra XP",
+                  width: 90,
+                  renderer: pointsRenderer,
                   type: isDone ? ("uneditable" as const) : ("number" as const),
                   key: "extraExperience" as const,
                   children: <ColoredCell color="blue100">Extra</ColoredCell>,
