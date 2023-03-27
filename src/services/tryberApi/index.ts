@@ -901,6 +901,10 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
 };
 export type GetCampaignsByCampaignPayoutsApiResponse = /** status 200 OK */ {
   maxBonusBug: number;
+  completionRule: {
+    bugs?: number;
+    usecases?: number;
+  };
   testSuccess: {
     payout: number;
     points: number;
