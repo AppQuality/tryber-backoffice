@@ -265,6 +265,9 @@ const Table = ({
                 },
               })
                 .unwrap()
+                .catch((e) => {
+                  alert(e.message);
+                })
                 .finally(() => {
                   setIsPaying(false);
                 });
