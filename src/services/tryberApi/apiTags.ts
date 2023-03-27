@@ -212,6 +212,12 @@ tryberApi.enhanceEndpoints({
     postUsersMeCampaignsByCampaignIdForms: {
       invalidatesTags: ["Campaigns"],
     },
+    getCampaignsByCampaignProspect: {
+      providesTags: ["Prospect"],
+    },
+    patchCampaignsByCampaignProspect: {
+      invalidatesTags: ["Prospect"],
+    },
   },
 });
 
