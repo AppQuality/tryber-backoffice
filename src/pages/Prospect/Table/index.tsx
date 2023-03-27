@@ -19,6 +19,7 @@ import { euroRenderer, bugRenderer, pointsRenderer } from "./cellRenderer";
 import OpenableColumnButton from "./OpenableColumnButton";
 import ErrorHandler from "./ErrorHandler";
 import ActionBar from "./ActionBar";
+import InfoDrawer from "./InfoDrawer";
 
 const { TrophyFill } = icons;
 
@@ -50,6 +51,7 @@ const Table = ({
   containerWidth: number;
 }) => {
   const [isPaying, setIsPaying] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [expanded, setExpanded] = useState({
     usecases: false,
     bugs: false,
@@ -227,7 +229,22 @@ const Table = ({
 
   return (
     <>
+      <InfoDrawer
+        isOpen={isDrawerOpen}
+        setIsOpen={setIsDrawerOpen}
+        campaign={id}
+      />
       <ActionBar>
+        <Button
+          size="sm"
+          type="primary"
+          flat
+          onClick={() => {
+            setIsDrawerOpen(true);
+          }}
+        >
+          Info
+        </Button>
         <Button
           size="sm"
           type="primary"
