@@ -119,13 +119,38 @@ const InfoDrawer = ({
             <div>Loading...</div>
           ) : (
             <>
-              <div>Max Bonus Bug: {data.maxBonusBug}</div>
-              <div>Success Payout: {data.testSuccess.payout}</div>
-              <div>Success Points: {data.testSuccess.points}</div>
-              <div>Success Note: {data.testSuccess.message}</div>
-              <div>Failure Payout: {data.testFailure.payout}</div>
-              <div>Failure Points: {data.testFailure.points}</div>
-              <div>Failure Note: {data.testFailure.message}</div>
+              <div>
+                <Title size="s">Max Bonus Bug</Title> {data.maxBonusBug}€
+              </div>
+              <div>
+                <Title size="s">Completion Rule</Title>
+                At least {data.completionRule.bugs} bugs and{" "}
+                {data.completionRule.usecases}% usecases
+              </div>
+              <div>
+                <Title size="s">Success</Title>
+                <div>
+                  <b>Payout:</b> {data.testSuccess.payout}€
+                </div>
+                <div>
+                  <b>Points:</b> {data.testSuccess.points}
+                </div>
+                <div>
+                  <b>Message:</b> {data.testSuccess.message}
+                </div>
+              </div>
+              <div>
+                <Title size="s">Failure</Title>
+                <div>
+                  <b>Payout:</b> {data.testFailure.payout}€
+                </div>
+                <div>
+                  <b>Points:</b> {data.testFailure.points}
+                </div>
+                <div>
+                  <b>Message:</b> {data.testFailure.message}
+                </div>
+              </div>
             </>
           )}
         </InfoDrawerContent>
