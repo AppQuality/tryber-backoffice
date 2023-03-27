@@ -20,6 +20,7 @@ import OpenableColumnButton from "./OpenableColumnButton";
 import ErrorHandler from "./ErrorHandler";
 import ActionBar from "./ActionBar";
 import InfoDrawer from "./InfoDrawer";
+import useCanPay from "./useCanPay";
 
 const { TrophyFill } = icons;
 
@@ -67,6 +68,7 @@ const Table = ({
     });
   const [updateTester] = usePutCampaignsByCampaignProspectAndTesterIdMutation();
   const [payTesters] = usePatchCampaignsByCampaignProspectMutation();
+  const canPay = useCanPay(id);
 
   const [totals, setTotals] = useState<Record<string, number>>({});
   const [items, setItems] = useState<(Row & CellStyle)[]>([]);
@@ -290,7 +292,7 @@ const Table = ({
                 });
             }
           }}
-          disabled={isPaying || isDone}
+          disabled={isPaying || isDone || !canPay}
         >
           {isPaying ? "Paying..." : "Pay Testers"}
         </Button>

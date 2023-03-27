@@ -682,6 +682,12 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getUsersMePermissions: build.query<
+      GetUsersMePermissionsApiResponse,
+      GetUsersMePermissionsApiArg
+    >({
+      query: () => ({ url: `/users/me/permissions` }),
+    }),
     getUsersMePopups: build.query<
       GetUsersMePopupsApiResponse,
       GetUsersMePopupsApiArg
@@ -1951,6 +1957,14 @@ export type GetUsersMePendingBootyApiArg = {
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
 };
+export type GetUsersMePermissionsApiResponse = /** status 200 OK */ {
+  appq_bug?: Olp;
+  appq_campaign?: Olp;
+  appq_message_center?: Olp;
+  appq_prospect?: Olp;
+  appq_tester_selection?: Olp;
+};
+export type GetUsersMePermissionsApiArg = void;
 export type GetUsersMePopupsApiResponse = /** status 200 OK */ {
   id?: number;
   title?: string;
@@ -2258,6 +2272,7 @@ export type FiscalBirthCity =
   | {
       placeId: string;
     };
+export type Olp = number[] | boolean;
 export type MonthlyLevel = {
   id: number;
   name: string;
@@ -2348,6 +2363,7 @@ export const {
   usePostUsersMePaymentsMutation,
   useGetUsersMePaymentsByPaymentQuery,
   useGetUsersMePendingBootyQuery,
+  useGetUsersMePermissionsQuery,
   useGetUsersMePopupsQuery,
   useGetUsersMePopupsByPopupQuery,
   useGetUsersMeRankQuery,
