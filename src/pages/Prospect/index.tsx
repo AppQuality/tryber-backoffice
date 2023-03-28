@@ -4,6 +4,10 @@ import { Button, Title } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { useContainerDimensions } from "src/hooks/useContainerDimensions";
 import { useRef } from "react";
+import {
+  useGetCampaignsByCampaignBugsQuery,
+  useGetCampaignsByCampaignQuery,
+} from "src/services/tryberApi";
 
 const FluidContainer = styled.div`
   max-width: 90%;
@@ -18,6 +22,9 @@ const Prospect = () => {
   const { id } = useParams<{ id: string }>();
   const tablewrapper = useRef<HTMLDivElement>(null);
   const { width } = useContainerDimensions(tablewrapper);
+  const { data } = useGetCampaignsByCampaignQuery({
+    campaign: id,
+  });
   return (
     <FluidContainer ref={tablewrapper}>
       <Title size="xl">Prospect</Title>
@@ -44,7 +51,7 @@ const Prospect = () => {
         Go to Add Booty
       </HeaderButton>
       <Title size="mt" className="aq-mb-3">
-        Campaign {id}
+        CP{id} {data?.title ? `- ${data.title}` : ""}
       </Title>
       <Table id={id} containerWidth={width} />
     </FluidContainer>

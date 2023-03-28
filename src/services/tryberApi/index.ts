@@ -773,14 +773,10 @@ export type GetCampaignsApiResponse = /** status 200 OK */ {
   name?: string;
 }[];
 export type GetCampaignsApiArg = void;
-export type GetCampaignsByCampaignApiResponse =
-  /** status 200 A single Campaigns with the Campaign id and Project data */ Campaign & {
-    id: number;
-  } & {
-    project?: Project & {
-      id?: number;
-    };
-  };
+export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
+  id: number;
+  title: string;
+};
 export type GetCampaignsByCampaignApiArg = {
   /** A campaign id */
   campaign: string;
