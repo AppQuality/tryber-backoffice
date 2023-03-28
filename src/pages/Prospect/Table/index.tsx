@@ -590,20 +590,24 @@ const Table = ({
           },
         ]}
         data={items}
-        contextMenu={[
-          {
-            label: "Set as payable",
-            handler: (items) => {
-              setToPaymentStatus(items, true);
-            },
-          },
-          {
-            label: "Set as not payable",
-            handler: (items) => {
-              setToPaymentStatus(items, false);
-            },
-          },
-        ]}
+        contextMenu={
+          isDone
+            ? undefined
+            : [
+                {
+                  label: "Set as payable",
+                  handler: (items) => {
+                    setToPaymentStatus(items, true);
+                  },
+                },
+                {
+                  label: "Set as not payable",
+                  handler: (items) => {
+                    setToPaymentStatus(items, false);
+                  },
+                },
+              ]
+        }
         stickyLeftColumns={3}
       />
     </>
