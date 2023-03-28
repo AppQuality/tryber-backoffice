@@ -252,7 +252,7 @@ function getSubHeader<T extends { [key: string]: string | number | boolean }>(
                 : value;
             return {
               type: "header",
-              text: text,
+              text: column.renderer ? column.renderer(value) : text,
               columnId: column.key,
               className: "subheader headercell",
             };
