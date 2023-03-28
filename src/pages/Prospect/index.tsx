@@ -41,7 +41,7 @@ const Prospect = () => {
         href={`/wp-admin/admin.php?page=cp-prospect-crowd&id=${id}`}
         className="aq-mr-2"
       >
-        Go to Assistant
+        Pay Assistants
       </HeaderButton>
       <HeaderButton
         as="a"
