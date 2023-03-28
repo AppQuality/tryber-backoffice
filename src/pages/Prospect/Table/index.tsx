@@ -85,7 +85,7 @@ const Table = ({
     }`;
 
     oldItem.style =
-      newItem.completed === "Pagabile"
+      newItem.completed === "Payable"
         ? {}
         : {
             backgroundColor: aqBootstrapTheme.colors.red100,
@@ -136,7 +136,7 @@ const Table = ({
             oldItem.completionPayout = payoutData.payout;
             oldItem.completionExperience = payoutData.experience;
             oldItem.notes = payoutData.note;
-            oldItem.completed = success ? "Pagabile" : "No";
+            oldItem.completed = success ? "Payable" : "No";
             updateTotals(oldItem, oldItem);
             return [...oldItems];
           });
@@ -150,7 +150,7 @@ const Table = ({
           isTopTester: d.isTopTester,
           testerId: `T${d.tester.id}`,
           tester: `${d.tester.name.charAt(0)}. ${d.tester.surname}`,
-          completed: d.isCompleted ? ("Pagabile" as const) : ("No" as const),
+          completed: d.isCompleted ? ("Payable" as const) : ("No" as const),
           useCaseCompleted: `${d.usecases.completed}/`,
           useCaseTotal: `${d.usecases.required} UC`,
           totalBugs: `${
@@ -267,7 +267,7 @@ const Table = ({
                   refund: i.refundPayout,
                 },
                 note: i.notes,
-                completed: i.completed === "Pagabile",
+                completed: i.completed === "Payable",
               }))
               .filter((i) => i.tester.id > 0);
             if (
@@ -314,7 +314,7 @@ const Table = ({
                 extra: row.extraExperience,
               },
               note: row.notes,
-              completed: row.completed === "Pagabile" ? true : false,
+              completed: row.completed === "Payable" ? true : false,
             },
           })
             .unwrap()
@@ -361,13 +361,13 @@ const Table = ({
             width: 25,
           },
           {
-            name: "Esito",
+            name: "Result",
             key: "completed",
             type: isDone ? "uneditable" : "select",
             width: 100,
-            values: ["Pagabile", "No"],
+            values: ["Payable", "No"],
             onChange: (row, newValue) => {
-              if (newValue === "Pagabile") {
+              if (newValue === "Payable") {
                 setToPaymentStatus([row], true);
               } else {
                 setToPaymentStatus([row], false);
@@ -383,7 +383,7 @@ const Table = ({
                   })
                 }
               >
-                Esito
+                Result
               </OpenableColumnButton>
             ),
           },
@@ -402,7 +402,7 @@ const Table = ({
               ]
             : []),
           {
-            name: "Bug Trovati",
+            name: "Found Bugs",
             key: "totalBugs",
             width: 110,
             type: "uneditable",
@@ -418,7 +418,7 @@ const Table = ({
                     })
                   }
                 >
-                  Bug Trovati
+                  Found Bugs
                 </OpenableColumnButton>
               </ColoredCell>
             ),
@@ -458,7 +458,7 @@ const Table = ({
               ]
             : []),
           {
-            name: "Paga Totale",
+            name: "Total Pay",
             key: "totalPayout",
             width: 110,
             type: "uneditable",
@@ -499,13 +499,11 @@ const Table = ({
                   ),
                 },
                 {
-                  name: "Rimborso",
+                  name: "Refund",
                   type: isDone ? ("uneditable" as const) : ("number" as const),
                   key: "refundPayout" as const,
                   renderer: euroRenderer,
-                  children: (
-                    <ColoredCell color="green100">Rimborso</ColoredCell>
-                  ),
+                  children: <ColoredCell color="green100">Refund</ColoredCell>,
                 },
                 {
                   name: "Extra",
@@ -517,7 +515,7 @@ const Table = ({
               ]
             : []),
           {
-            name: "XP Totali",
+            name: "Total XP",
             key: "totalExperience",
             type: "uneditable",
             width: 90,
@@ -533,7 +531,7 @@ const Table = ({
                     })
                   }
                 >
-                  XP Totali
+                  Total XP
                 </OpenableColumnButton>
               </ColoredCell>
             ),
@@ -541,7 +539,7 @@ const Table = ({
           ...(expanded.experience
             ? [
                 {
-                  name: "XP Base",
+                  name: "Base XP",
                   width: 90,
                   type: isDone ? ("uneditable" as const) : ("number" as const),
                   renderer: pointsRenderer,
@@ -594,13 +592,13 @@ const Table = ({
         data={items}
         contextMenu={[
           {
-            label: "Segna come pagabili",
+            label: "Set as payable",
             handler: (items) => {
               setToPaymentStatus(items, true);
             },
           },
           {
-            label: "Segna come da non pagare",
+            label: "Set as not payable",
             handler: (items) => {
               setToPaymentStatus(items, false);
             },
