@@ -4,10 +4,7 @@ import { Button, Title } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { useContainerDimensions } from "src/hooks/useContainerDimensions";
 import { useRef } from "react";
-import {
-  useGetCampaignsByCampaignBugsQuery,
-  useGetCampaignsByCampaignQuery,
-} from "src/services/tryberApi";
+import { useGetCampaignsByCampaignQuery } from "src/services/tryberApi";
 
 const FluidContainer = styled.div`
   max-width: 90%;
