@@ -70,7 +70,31 @@ const useProspectItems = (id: string) => {
     error,
     setItems,
     isDone: data ? data.items.some((p) => p.status === "done") : true,
-    updateTester: (row: Row) => {
+    updateTester: (row: Row, oldRow?: Row) => {
+      if (payouts && oldRow && oldRow.completed !== row.completed) {
+        const payoutData =
+          row.completed === "Payable"
+            ? {
+                payout: payouts.testSuccess.payout,
+                experience: payouts.testSuccess.points,
+                note: payouts.testSuccess.message,
+              }
+            : {
+                payout: payouts.testFailure.payout,
+                experience: payouts.testFailure.points,
+                note: payouts.testFailure.message,
+              };
+        row = {
+          ...row,
+          completed:
+            row.completed === "Payable"
+              ? ("Payable" as const)
+              : ("No" as const),
+          completionPayout: payoutData.payout,
+          completionExperience: payoutData.experience,
+          notes: payoutData.note,
+        };
+      }
       updateTester({
         campaign: id,
         testerId: row.testerId.replace("T", ""),

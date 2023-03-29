@@ -1,6 +1,5 @@
 import EdiTable from "../EdiTable";
 import { useEffect, useState } from "react";
-import { useGetCampaignsByCampaignPayoutsQuery } from "src/services/tryberApi";
 import { Button, aqBootstrapTheme } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { MessageWrapper } from "./MessageWrapper";
@@ -35,10 +34,6 @@ const Table = ({
   const { items, isLoading, error, isDone, updateTester } =
     useProspectItems(id);
   const { columns } = useColumns({ isDone });
-  const { data, isLoading: isLoadingPayouts } =
-    useGetCampaignsByCampaignPayoutsQuery({
-      campaign: id,
-    });
   const { isPaying, payTesters } = usePayTesters(id);
   const canPay = useCanPay(id);
 
@@ -69,30 +64,6 @@ const Table = ({
     }
   }, [items]);
 
-  function setToPaymentStatus(rows: Row[], success: boolean) {
-    if (!data) return;
-    const payoutData = success
-      ? {
-          payout: data.testSuccess.payout,
-          experience: data.testSuccess.points,
-          note: data.testSuccess.message,
-        }
-      : {
-          payout: data.testFailure.payout,
-          experience: data.testFailure.points,
-          note: data.testFailure.message,
-        };
-    for (const row of rows) {
-      updateTester({
-        ...row,
-        completed: success ? ("Payable" as const) : ("No" as const),
-        completionPayout: payoutData.payout,
-        completionExperience: payoutData.experience,
-        notes: payoutData.note,
-      });
-    }
-  }
-
   useEffect(() => {
     setTotals({
       totalPayout: items.reduce((acc, i) => acc + Number(i.totalPayout), 0),
@@ -118,7 +89,7 @@ const Table = ({
     });
   }, [items]);
 
-  if (isLoading || isLoadingPayouts) {
+  if (isLoading) {
     return <MessageWrapper>Loading...</MessageWrapper>;
   }
 
@@ -126,7 +97,7 @@ const Table = ({
     return <ErrorHandler error={error} />;
   }
 
-  if (!data || !items) {
+  if (!items) {
     return (
       <MessageWrapper>There was an error loading campaign data</MessageWrapper>
     );
@@ -187,8 +158,8 @@ const Table = ({
         </Button>
       </ActionBar>
       <MyEdiTable
-        onRowChange={(row) => {
-          updateTester(row);
+        onRowChange={(row, oldRow) => {
+          updateTester(row, oldRow);
         }}
         onChange={(changes) => {
           if (isDone) return false;
@@ -227,13 +198,29 @@ const Table = ({
                 {
                   label: "Set as payable",
                   handler: (items) => {
-                    setToPaymentStatus(items, true);
+                    for (const row of items) {
+                      updateTester(
+                        {
+                          ...row,
+                          completed: "Payable" as const,
+                        },
+                        row
+                      );
+                    }
                   },
                 },
                 {
                   label: "Set as not payable",
                   handler: (items) => {
-                    setToPaymentStatus(items, false);
+                    for (const row of items) {
+                      updateTester(
+                        {
+                          ...row,
+                          completed: "No" as const,
+                        },
+                        row
+                      );
+                    }
                   },
                 },
               ]
