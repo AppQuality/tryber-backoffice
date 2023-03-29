@@ -100,7 +100,7 @@ const useProspectItems = (id: string) => {
             );
             const oldItem = oldItems[index];
             oldItem.completionPayout = row.completionPayout;
-            oldItem.completionExperience = row.completionPayout;
+            oldItem.completionExperience = row.completionExperience;
             oldItem.notes = row.notes;
             oldItem.completed = row.completed;
             return [...oldItems];
