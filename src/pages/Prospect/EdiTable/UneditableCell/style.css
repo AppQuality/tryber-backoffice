@@ -1,0 +1,14 @@
+.rg-uneditable-cell {
+  justify-content: end;
+  background-color: #f2f2f2;
+  color: #898989;
+}
+
+.rg-uneditable-wrapper {
+  width: 50%;
+  height: 80%;
+  background-size: cover;
+  border: 1px solid #cccccc;
+  background-position: center center;
+  background-repeat: no-repeat;
+}

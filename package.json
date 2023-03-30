@@ -4,11 +4,14 @@
   "private": true,
   "homepage": "backoffice/",
   "dependencies": {
+    "@analytics/google-tag-manager": "^0.5.3",
     "@appquality/appquality-design-system": "^1.0.45",
     "@appquality/craft-blocks": "^0.1.27",
     "@craco/craco": "^6.4.3",
     "@craftjs/core": "^0.2.0-beta.5",
     "@reduxjs/toolkit": "^1.8.3",
+    "@silevis/reactgrid": "^4.0.4",
+    "analytics": "^0.8.1",
     "husky": "^7.0.4",
     "lzutf8": "^0.6.0",
     "prettier": "^2.5.1",
@@ -85,8 +88,8 @@
     "jest-canvas-mock": "^2.4.0",
     "msw": "^0.47.4",
     "openapi-typescript": "^5.2.0",
-    "react-scripts": "^4.0.3",
     "react-error-overlay": "6.0.9",
+    "react-scripts": "^4.0.3",
     "ts-node": "^10.9.1"
   },
   "resolutions": {
