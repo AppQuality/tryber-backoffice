@@ -1,4 +1,5 @@
 import {
+  Cell,
   CellChange,
   CellLocation,
   DefaultCellTypes,
@@ -35,7 +36,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   subHeader?: Item<T>[];
   bottom?: Item<T>[];
   data: Item<T>[];
-  onRowChange?: (row: T) => void;
+  onRowChange?: (row: T, oldRow?: T) => void;
   onChange?: (changes: CellChange[]) => boolean | void;
   className?: string;
   contextMenu?: { label: string; handler: (rows: Item<T>[]) => void }[];
@@ -58,22 +59,33 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
               if (onChange(changes) === false) return;
             }
             setItems((prevItems) => {
-              changes.forEach((change) => {
-                const column = columns.find((c) => c.name === change.columnId);
-                if (!column) return;
-                const index = change.rowId as number;
-                const fieldName = column.key as keyof T;
-                if (change.newCell.type === "text") {
-                  prevItems[index][fieldName] = change.newCell
-                    .text as T[keyof T];
+              changes.forEach(
+                (
+                  change: CellChange<(DefaultCellTypes & Cell) | SelectCell>
+                ) => {
+                  const column = columns.find(
+                    (c) => c.name === change.columnId
+                  );
+                  if (!column) return;
+                  const index = change.rowId as number;
+                  const oldRow = { ...prevItems[index] };
+                  const fieldName = column.key as keyof T;
+                  if (change.newCell.type === "text") {
+                    prevItems[index][fieldName] = change.newCell
+                      .text as T[keyof T];
+                  }
+                  if (change.newCell.type === "select") {
+                    prevItems[index][fieldName] = change.newCell
+                      .text as T[keyof T];
+                  }
+                  if (change.newCell.type === "number") {
+                    prevItems[index][fieldName] = change.newCell
+                      .value as T[keyof T];
+                  }
+                  const row = prevItems[index];
+                  onRowChange && onRowChange(row, oldRow);
                 }
-                if (change.newCell.type === "number") {
-                  prevItems[index][fieldName] = change.newCell
-                    .value as T[keyof T];
-                }
-                const row = prevItems[index];
-                onRowChange && onRowChange(row);
-              });
+              );
               return [...prevItems];
             });
           }}
