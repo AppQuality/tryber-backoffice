@@ -11,6 +11,7 @@ import useCanPay from "./useCanPay";
 import usePayTesters from "./usePayTesters";
 import useProspectItems from "./useProspectItems";
 import useColumns from "./useColumns";
+import MagicInput from "./MagicInput";
 
 const EdiTableWithType = EdiTable<Row>;
 
@@ -105,6 +106,7 @@ const Table = ({
 
   return (
     <>
+      <MagicInput onChange={(v) => console.log(v)} />
       <InfoDrawer
         isOpen={isDrawerOpen}
         setIsOpen={setIsDrawerOpen}
