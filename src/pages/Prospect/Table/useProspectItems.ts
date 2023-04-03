@@ -8,7 +8,15 @@ import {
 import { CellStyle } from "../EdiTable/types";
 import { Row } from "../types";
 
-const useProspectItems = (id: string, testersToInclude?: number[]) => {
+const useProspectItems = ({
+  id,
+  testerFilter,
+  selectionMode,
+}: {
+  id: string;
+  testerFilter?: number[];
+  selectionMode?: "include" | "exclude";
+}) => {
   const [items, setItems] = useState<(Row & CellStyle)[]>([]);
   const { data: payouts, isLoading: isLoadingPayouts } =
     useGetCampaignsByCampaignPayoutsQuery({
@@ -18,8 +26,11 @@ const useProspectItems = (id: string, testersToInclude?: number[]) => {
 
   const { data, isLoading, error } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
-    ...(testersToInclude
-      ? { filterByInclude: { ids: testersToInclude.join(",") } }
+    ...(testerFilter && selectionMode === "include"
+      ? { filterByInclude: { ids: testerFilter.join(",") } }
+      : {}),
+    ...(testerFilter && selectionMode === "exclude"
+      ? { filterByExclude: { ids: testerFilter.join(",") } }
       : {}),
   });
 
