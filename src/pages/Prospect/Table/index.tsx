@@ -1,17 +1,17 @@
-import EdiTable from "../EdiTable";
-import { useEffect, useState } from "react";
 import { Button, aqBootstrapTheme } from "@appquality/appquality-design-system";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MessageWrapper } from "./MessageWrapper";
+import EdiTable from "../EdiTable";
 import { Row } from "../types";
-import ErrorHandler from "./ErrorHandler";
 import ActionBar from "./ActionBar";
+import ErrorHandler from "./ErrorHandler";
 import InfoDrawer from "./InfoDrawer";
+import { MessageWrapper } from "./MessageWrapper";
+import SearchBar from "./SearchBar";
 import useCanPay from "./useCanPay";
+import useColumns from "./useColumns";
 import usePayTesters from "./usePayTesters";
 import useProspectItems from "./useProspectItems";
-import useColumns from "./useColumns";
-import MagicInput from "./MagicInput";
 
 const EdiTableWithType = EdiTable<Row>;
 
@@ -106,7 +106,6 @@ const Table = ({
 
   return (
     <>
-      <MagicInput onChange={(v) => console.log(v)} />
       <InfoDrawer
         isOpen={isDrawerOpen}
         setIsOpen={setIsDrawerOpen}
@@ -159,6 +158,7 @@ const Table = ({
           {isPaying ? "Paying..." : "Pay Testers"}
         </Button>
       </ActionBar>
+      <SearchBar className="aq-my-1" onChange={(v) => console.log(v)} />
       <MyEdiTable
         onRowChange={(row, oldRow) => {
           updateTester(row, oldRow);

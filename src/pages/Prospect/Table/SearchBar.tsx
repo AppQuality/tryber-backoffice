@@ -33,10 +33,12 @@ const Container = styled.div`
 
 type Mode = "include" | "exclude";
 
-const MagicInput = ({
+const SearchBar = ({
   onChange,
+  className,
 }: {
   onChange?: (value: string, selectionMode?: Mode) => void;
+  className?: string;
 }) => {
   const [value, setValue] = useState("");
   const [mode, setMode] = useState<Mode>("include");
@@ -46,7 +48,7 @@ const MagicInput = ({
   }, [debouncedValue, mode]);
 
   return (
-    <Container>
+    <Container className={className}>
       <div style={{ flexShrink: 0, width: "10%" }}>
         <Select
           isSearchable={false}
@@ -58,8 +60,8 @@ const MagicInput = ({
               setMode(value.value);
           }}
           options={[
-            { label: "include", value: "include" },
-            { label: "exclude", value: "exclude" },
+            { label: "Only", value: "include" },
+            { label: "Exclude", value: "exclude" },
           ]}
           value={{ label: "", value: mode }}
         />
@@ -79,4 +81,4 @@ const MagicInput = ({
   );
 };
 
-export default MagicInput;
+export default SearchBar;
