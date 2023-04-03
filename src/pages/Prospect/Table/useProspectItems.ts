@@ -8,15 +8,19 @@ import {
 import { CellStyle } from "../EdiTable/types";
 import { Row } from "../types";
 
-const useProspectItems = (id: string) => {
+const useProspectItems = (id: string, testersToInclude?: number[]) => {
   const [items, setItems] = useState<(Row & CellStyle)[]>([]);
   const { data: payouts, isLoading: isLoadingPayouts } =
     useGetCampaignsByCampaignPayoutsQuery({
       campaign: id,
     });
   const [updateTester] = usePutCampaignsByCampaignProspectAndTesterIdMutation();
+
   const { data, isLoading, error } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
+    ...(testersToInclude
+      ? { filterByInclude: { ids: testersToInclude.join(",") } }
+      : {}),
   });
 
   useEffect(() => {
