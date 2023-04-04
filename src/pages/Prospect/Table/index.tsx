@@ -1,16 +1,17 @@
-import EdiTable from "../EdiTable";
-import { useEffect, useState } from "react";
 import { Button, aqBootstrapTheme } from "@appquality/appquality-design-system";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MessageWrapper } from "./MessageWrapper";
+import EdiTable from "../EdiTable";
 import { Row } from "../types";
-import ErrorHandler from "./ErrorHandler";
 import ActionBar from "./ActionBar";
+import ErrorHandler from "./ErrorHandler";
 import InfoDrawer from "./InfoDrawer";
+import { MessageWrapper } from "./MessageWrapper";
+import SearchBar from "./SearchBar";
 import useCanPay from "./useCanPay";
+import useColumns from "./useColumns";
 import usePayTesters from "./usePayTesters";
 import useProspectItems from "./useProspectItems";
-import useColumns from "./useColumns";
 
 const EdiTableWithType = EdiTable<Row>;
 
@@ -31,8 +32,15 @@ const Table = ({
   containerWidth: number;
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { items, isLoading, error, isDone, updateTester } =
-    useProspectItems(id);
+  const [selectedTesters, setSelectedTesters] = useState<number[]>([]);
+  const [selectionMode, setSelectionMode] = useState<"include" | "exclude">(
+    "include"
+  );
+  const { items, isLoading, error, isDone, updateTester } = useProspectItems({
+    id,
+    testerFilter: selectedTesters,
+    selectionMode,
+  });
   const { columns } = useColumns({ isDone });
   const { isPaying, payTesters } = usePayTesters(id);
   const canPay = useCanPay(id);
@@ -93,7 +101,7 @@ const Table = ({
     return <MessageWrapper>Loading...</MessageWrapper>;
   }
 
-  if (error && "status" in error) {
+  if (error && "status" in error && error.status !== 404) {
     return <ErrorHandler error={error} />;
   }
 
@@ -152,81 +160,94 @@ const Table = ({
               payTesters(testerToPay);
             }
           }}
-          disabled={isPaying || isDone || !canPay}
+          disabled={isPaying || isDone || !canPay || selectedTesters.length > 0}
         >
           {isPaying ? "Paying..." : "Pay Testers"}
         </Button>
       </ActionBar>
-      <MyEdiTable
-        onRowChange={(row, oldRow) => {
-          updateTester(row, oldRow);
+      <SearchBar
+        className="aq-my-1"
+        onChange={(v, mode) => {
+          const list = v
+            .split(",")
+            .map((i) => Number(i.replace(/\D/g, "")))
+            .filter((i) => i > 0);
+          setSelectedTesters(list);
+          mode && setSelectionMode(mode);
         }}
-        onChange={(changes) => {
-          if (isDone) return false;
-        }}
-        columns={columns}
-        subHeader={[
-          {
-            isTopTester: false,
-            testerId: "TOTAL",
-            tester: "",
-            completed: "",
-            useCaseCompleted: "",
-            useCaseTotal: "",
-            totalBugs: "",
-            criticalBugs: "",
-            highBugs: "",
-            mediumBugs: "",
-            lowBugs: "",
-            totalPayout: `${totals.totalPayout}`,
-            completionPayout: totals.completionPayout,
-            bugPayout: totals.bugPayout,
-            refundPayout: totals.refundPayout,
-            extraPayout: totals.extraPayout,
-            totalExperience: `${totals.totalExperience}`,
-            completionExperience: totals.completionExperience,
-            extraExperience: totals.extraExperience,
-            notes: "",
-            status: "",
-          },
-        ]}
-        data={items}
-        contextMenu={
-          isDone
-            ? undefined
-            : [
-                {
-                  label: "Set as payable",
-                  handler: (items) => {
-                    for (const row of items) {
-                      updateTester(
-                        {
-                          ...row,
-                          completed: "Payable" as const,
-                        },
-                        row
-                      );
-                    }
-                  },
-                },
-                {
-                  label: "Set as not payable",
-                  handler: (items) => {
-                    for (const row of items) {
-                      updateTester(
-                        {
-                          ...row,
-                          completed: "No" as const,
-                        },
-                        row
-                      );
-                    }
-                  },
-                },
-              ]
-        }
-        stickyLeftColumns={3}
       />
+      {
+        <MyEdiTable
+          onRowChange={(row, oldRow) => {
+            updateTester(row, oldRow);
+          }}
+          onChange={(changes) => {
+            if (isDone) return false;
+          }}
+          columns={columns}
+          subHeader={[
+            {
+              isTopTester: false,
+              testerId: "TOTAL",
+              tester: "",
+              completed: "",
+              useCaseCompleted: "",
+              useCaseTotal: "",
+              totalBugs: "",
+              criticalBugs: "",
+              highBugs: "",
+              mediumBugs: "",
+              lowBugs: "",
+              totalPayout: `${totals.totalPayout}`,
+              completionPayout: totals.completionPayout,
+              bugPayout: totals.bugPayout,
+              refundPayout: totals.refundPayout,
+              extraPayout: totals.extraPayout,
+              totalExperience: `${totals.totalExperience}`,
+              completionExperience: totals.completionExperience,
+              extraExperience: totals.extraExperience,
+              notes: "",
+              status: "",
+            },
+          ]}
+          data={items}
+          contextMenu={
+            isDone
+              ? undefined
+              : [
+                  {
+                    label: "Set as payable",
+                    handler: (items) => {
+                      for (const row of items) {
+                        updateTester(
+                          {
+                            ...row,
+                            completed: "Payable" as const,
+                          },
+                          row
+                        );
+                      }
+                    },
+                  },
+                  {
+                    label: "Set as not payable",
+                    handler: (items) => {
+                      for (const row of items) {
+                        updateTester(
+                          {
+                            ...row,
+                            completed: "No" as const,
+                          },
+                          row
+                        );
+                      }
+                    },
+                  },
+                ]
+          }
+          stickyLeftColumns={3}
+        />
+      }
     </>
   );
 };

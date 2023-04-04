@@ -8,15 +8,30 @@ import {
 import { CellStyle } from "../EdiTable/types";
 import { Row } from "../types";
 
-const useProspectItems = (id: string) => {
+const useProspectItems = ({
+  id,
+  testerFilter,
+  selectionMode,
+}: {
+  id: string;
+  testerFilter?: number[];
+  selectionMode?: "include" | "exclude";
+}) => {
   const [items, setItems] = useState<(Row & CellStyle)[]>([]);
   const { data: payouts, isLoading: isLoadingPayouts } =
     useGetCampaignsByCampaignPayoutsQuery({
       campaign: id,
     });
   const [updateTester] = usePutCampaignsByCampaignProspectAndTesterIdMutation();
+
   const { data, isLoading, error } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
+    ...(testerFilter && selectionMode === "include"
+      ? { filterByInclude: { ids: testerFilter.join(",") } }
+      : {}),
+    ...(testerFilter && selectionMode === "exclude"
+      ? { filterByExclude: { ids: testerFilter.join(",") } }
+      : {}),
   });
 
   useEffect(() => {
