@@ -23,9 +23,9 @@ import { Column, Item } from "./types";
 const Container = styled.div`
   display: flex;
   max-width: 100%;
-  height: 65vh;
-  overflow: auto;
+  overflow-x: auto;
   float: left;
+  margin-bottom: 20px;
 
   &::-webkit-scrollbar-track {
     background-color: transparent;
