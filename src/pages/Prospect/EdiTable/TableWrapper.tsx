@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const TableWrapper = styled.div`
-  padding-bottom: 20px;
   .reactgrid .reactgrid-content {
     background: ${({ theme }) => theme.colors.white};
   }

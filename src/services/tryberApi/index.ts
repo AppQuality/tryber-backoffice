@@ -186,6 +186,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/campaigns/${queryArg.campaign}/prospect`,
+        params: {
+          filterByInclude: queryArg.filterByInclude,
+          filterByExclude: queryArg.filterByExclude,
+        },
       }),
     }),
     patchCampaignsByCampaignProspect: build.mutation<
@@ -1108,6 +1112,10 @@ export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
 };
 export type GetCampaignsByCampaignProspectApiArg = {
   campaign: string;
+  /** Key-value Array for item filtering */
+  filterByInclude?: any;
+  /** Key-value Array for item filtering */
+  filterByExclude?: any;
 };
 export type PatchCampaignsByCampaignProspectApiResponse = unknown;
 export type PatchCampaignsByCampaignProspectApiArg = {
