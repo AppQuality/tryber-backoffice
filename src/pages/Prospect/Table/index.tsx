@@ -7,10 +7,11 @@ import ActionBar from "./ActionBar";
 import ErrorHandler from "./ErrorHandler";
 import InfoDrawer from "./InfoDrawer";
 import { MessageWrapper } from "./MessageWrapper";
+import PayTesterButton from "./PayTesterButton";
 import SearchBar from "./SearchBar";
+import StatusSelector from "./StatusSelector";
 import useCanPay from "./useCanPay";
 import useColumns from "./useColumns";
-import usePayTesters from "./usePayTesters";
 import useProspectItems from "./useProspectItems";
 
 const EdiTableWithType = EdiTable<Row>;
@@ -42,7 +43,6 @@ const Table = ({
     selectionMode,
   });
   const { columns } = useColumns({ isDone });
-  const { isPaying, payTesters } = usePayTesters(id);
   const canPay = useCanPay(id);
 
   const [totals, setTotals] = useState<Record<string, number>>({});
@@ -121,19 +121,20 @@ const Table = ({
       <ActionBar>
         <Button
           size="sm"
-          type="primary"
+          type="info"
           flat
           onClick={() => {
             setIsDrawerOpen(true);
           }}
         >
-          Info
+          Info Rules
         </Button>
-        <Button
-          size="sm"
-          type="primary"
-          onClick={() => {
-            const testerToPay = items
+        <div style={{ display: "flex" }}>
+          <StatusSelector id={id} disabled={isDone} />
+          <PayTesterButton
+            id={id}
+            disabled={isDone || !canPay || selectedTesters.length > 0}
+            testers={items
               .map((i) => ({
                 tester: {
                   id: Number(i.testerId.replace("T", "")),
@@ -151,19 +152,9 @@ const Table = ({
                 note: i.notes,
                 completed: i.completed === "Payable",
               }))
-              .filter((i) => i.tester.id > 0);
-            if (
-              window.confirm(
-                `You are about to pay ${testerToPay.length} testers. Are you sure?`
-              )
-            ) {
-              payTesters(testerToPay);
-            }
-          }}
-          disabled={isPaying || isDone || !canPay || selectedTesters.length > 0}
-        >
-          {isPaying ? "Paying..." : "Pay Testers"}
-        </Button>
+              .filter((i) => i.tester.id > 0)}
+          />
+        </div>
       </ActionBar>
       <SearchBar
         className="aq-my-1"
