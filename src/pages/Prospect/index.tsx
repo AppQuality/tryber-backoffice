@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
-import Table from "./Table";
 import { Button, Title } from "@appquality/appquality-design-system";
-import styled from "styled-components";
-import { useContainerDimensions } from "src/hooks/useContainerDimensions";
 import { useRef } from "react";
+import { useParams } from "react-router-dom";
+import { useContainerDimensions } from "src/hooks/useContainerDimensions";
 import { useGetCampaignsByCampaignQuery } from "src/services/tryberApi";
+import styled from "styled-components";
+import Table from "./Table";
 
 const FluidContainer = styled.div`
   max-width: 90%;
@@ -47,7 +47,7 @@ const Prospect = () => {
       >
         Go to Add Booty
       </HeaderButton>
-      <Title size="mt" className="aq-mb-3">
+      <Title size="mt" className="aq-mb-3" style={{ display: "flex" }}>
         CP{id} {data?.title ? `- ${data.title}` : ""}
       </Title>
       <Table id={id} containerWidth={width} />
