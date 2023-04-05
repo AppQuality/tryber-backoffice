@@ -50,12 +50,12 @@ const Table = ({
   useEffect(() => {
     if (items) {
       for (const item of items) {
-        item.totalPayout = `${
+        item.totalPayout = `${(
           item.completionPayout +
           item.bugPayout +
           item.refundPayout +
           item.extraPayout
-        }`;
+        ).toFixed(2)}`;
         item.totalExperience = `${
           item.completionExperience + item.extraExperience
         }`;
@@ -74,14 +74,21 @@ const Table = ({
 
   useEffect(() => {
     setTotals({
-      totalPayout: items.reduce((acc, i) => acc + Number(i.totalPayout), 0),
-      completionPayout: items.reduce(
-        (acc, i) => acc + Number(i.completionPayout),
-        0
+      totalPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.totalPayout), 0).toFixed(2)
       ),
-      bugPayout: items.reduce((acc, i) => acc + Number(i.bugPayout), 0),
-      refundPayout: items.reduce((acc, i) => acc + Number(i.refundPayout), 0),
-      extraPayout: items.reduce((acc, i) => acc + Number(i.extraPayout), 0),
+      completionPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.completionPayout), 0).toFixed(2)
+      ),
+      bugPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.bugPayout), 0).toFixed(2)
+      ),
+      refundPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.refundPayout), 0).toFixed(2)
+      ),
+      extraPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.extraPayout), 0).toFixed(2)
+      ),
       totalExperience: items.reduce(
         (acc, i) => acc + Number(i.totalExperience),
         0
