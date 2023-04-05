@@ -226,6 +226,7 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
           return {
             type: "number",
             value,
+            nanToZero: true,
             text: column.renderer ? column.renderer(value) : undefined,
             groupId: column.key,
             style: item.style || {},
