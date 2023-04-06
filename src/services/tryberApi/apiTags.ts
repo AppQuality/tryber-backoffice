@@ -218,6 +218,9 @@ tryberApi.enhanceEndpoints({
     putCampaignsByCampaignProspect: {
       invalidatesTags: ["Prospect"],
     },
+    patchCampaignsByCampaignProspect: {
+      invalidatesTags: ["Prospect"],
+    },
   },
 });
 
