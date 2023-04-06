@@ -21,10 +21,9 @@ import { CustomHeader } from "./customHeader";
 import { Column, Item } from "./types";
 
 const Container = styled.div`
-  display: flex;
   max-width: 100%;
   overflow-x: auto;
-  float: left;
+
   margin-bottom: 20px;
 
   &::-webkit-scrollbar-track {
@@ -75,6 +74,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
     <Container>
       <TableWrapper className={className}>
         <ReactGrid
+          key={`react-grid-${items.length}`}
           enableRangeSelection
           enableRowSelection
           enableFillHandle
@@ -226,6 +226,7 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
           return {
             type: "number",
             value,
+            nanToZero: true,
             text: column.renderer ? column.renderer(value) : undefined,
             groupId: column.key,
             style: item.style || {},

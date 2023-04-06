@@ -1,17 +1,17 @@
 import { useState } from "react";
 import {
-  PatchCampaignsByCampaignProspectApiArg,
-  usePatchCampaignsByCampaignProspectMutation,
+  PutCampaignsByCampaignProspectApiArg,
+  usePutCampaignsByCampaignProspectMutation,
 } from "src/services/tryberApi";
 
 const usePayTesters = (id: string) => {
   const [isPaying, setIsPaying] = useState(false);
-  const [payTesters] = usePatchCampaignsByCampaignProspectMutation();
+  const [payTesters] = usePutCampaignsByCampaignProspectMutation();
 
   return {
     isPaying,
     payTesters: (
-      testers: PatchCampaignsByCampaignProspectApiArg["body"]["items"]
+      testers: PutCampaignsByCampaignProspectApiArg["body"]["items"]
     ) => {
       setIsPaying(true);
       payTesters({

@@ -192,6 +192,16 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    putCampaignsByCampaignProspect: build.mutation<
+      PutCampaignsByCampaignProspectApiResponse,
+      PutCampaignsByCampaignProspectApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/prospect`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
     patchCampaignsByCampaignProspect: build.mutation<
       PatchCampaignsByCampaignProspectApiResponse,
       PatchCampaignsByCampaignProspectApiArg
@@ -1109,6 +1119,7 @@ export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
     isCompleted: boolean;
     isTopTester: boolean;
   }[];
+  status: ProspectStatus;
 };
 export type GetCampaignsByCampaignProspectApiArg = {
   campaign: string;
@@ -1117,11 +1128,11 @@ export type GetCampaignsByCampaignProspectApiArg = {
   /** Key-value Array for item filtering */
   filterByExclude?: any;
 };
-export type PatchCampaignsByCampaignProspectApiResponse = unknown;
-export type PatchCampaignsByCampaignProspectApiArg = {
+export type PutCampaignsByCampaignProspectApiResponse = unknown;
+export type PutCampaignsByCampaignProspectApiArg = {
   campaign: string;
   body: {
-    status: "done";
+    status: ProspectStatus;
     items: {
       tester: {
         id: number;
@@ -1139,6 +1150,13 @@ export type PatchCampaignsByCampaignProspectApiArg = {
       note?: string;
       completed: boolean;
     }[];
+  };
+};
+export type PatchCampaignsByCampaignProspectApiResponse = unknown;
+export type PatchCampaignsByCampaignProspectApiArg = {
+  campaign: string;
+  body: {
+    status?: ProspectStatus;
   };
 };
 export type GetCampaignsByCampaignStatsApiResponse = /** status 200 OK */ {
@@ -2166,6 +2184,7 @@ export type PreselectionFormQuestion = {
       type: "gender" | "phone_number" | "address";
     }
 );
+export type ProspectStatus = "draft" | "confirmed" | "done";
 export type Customer = User & {
   customer_name?: string;
 };
@@ -2310,6 +2329,7 @@ export const {
   useGetCampaignsByCampaignFormsQuery,
   usePutCampaignsByCampaignProspectAndTesterIdMutation,
   useGetCampaignsByCampaignProspectQuery,
+  usePutCampaignsByCampaignProspectMutation,
   usePatchCampaignsByCampaignProspectMutation,
   useGetCampaignsByCampaignStatsQuery,
   useGetCertificationsQuery,

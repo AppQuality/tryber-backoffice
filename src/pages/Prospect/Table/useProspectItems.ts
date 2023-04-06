@@ -51,12 +51,12 @@ const useProspectItems = ({
           highBugs: `${d.bugs.high}`,
           mediumBugs: `${d.bugs.medium}`,
           lowBugs: `${d.bugs.low}`,
-          totalPayout: `${
+          totalPayout: `${(
             d.payout.completion +
             d.payout.bug +
             d.payout.refund +
             d.payout.extra
-          }`,
+          ).toFixed(2)}`,
           completionPayout: d.payout.completion,
           bugPayout: d.payout.bug,
           refundPayout: d.payout.refund,
