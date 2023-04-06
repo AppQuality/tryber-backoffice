@@ -13,9 +13,11 @@ const PayTesterButton = ({
   disabled?: boolean;
 }) => {
   const { isPaying, payTesters } = usePayTesters(id);
-  const { isDone } = useProspectItems({
+  const { isDone, isLoading } = useProspectItems({
     id,
   });
+
+  if (isLoading) return null;
 
   if (isDone)
     return (
