@@ -12,7 +12,7 @@ const StyledInput = styled.input`
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid ${({ theme }) => theme.colors.gray300};
-  border-radius: ${({ theme }) => theme.general.borderRadius}};
+  border-radius: ${({ theme }) => theme.general.borderRadius};
   line-height: 1.5;
   box-shadow: none;
 
@@ -73,7 +73,8 @@ const SearchBar = ({
         onChange={(event) => setValue(event.target.value)}
         onPaste={(event) => {
           event.preventDefault();
-          const paste = event.clipboardData.getData("text");
+          const paste = value + event.clipboardData.getData("text");
+          console.log(paste);
           setValue(paste.replace(/(\r\n|\n|\r)/gm, ","));
         }}
       />
