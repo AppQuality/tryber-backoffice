@@ -68,7 +68,11 @@ const SearchBar = ({
         onChange={(event) => setValue(event.target.value)}
         onPaste={(event) => {
           event.preventDefault();
-          const paste = value + event.clipboardData.getData("text");
+          const paste = (
+            value +
+            event.clipboardData.getData("text") +
+            ","
+          ).replace(/,+/g, ",");
           setValue(paste.replace(/(\r\n|\n|\r)/gm, ","));
         }}
       />
