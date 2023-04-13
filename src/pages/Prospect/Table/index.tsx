@@ -165,7 +165,7 @@ const Table = ({
       </ActionBar>
       <SearchBar
         className="aq-my-1"
-        onChange={(v, mode) => {
+        onClick={(v, mode) => {
           const list = v
             .split(",")
             .map((i) => Number(i.replace(/\D/g, "")))
