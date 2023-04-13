@@ -1,6 +1,5 @@
-import { Select } from "@appquality/appquality-design-system";
-import { useEffect, useState } from "react";
-import useDebounce from "src/hooks/useDebounce";
+import { Button, Select } from "@appquality/appquality-design-system";
+import { useState } from "react";
 import styled from "styled-components";
 
 const StyledInput = styled.input`
@@ -34,18 +33,14 @@ const Container = styled.div`
 type Mode = "include" | "exclude";
 
 const SearchBar = ({
-  onChange,
+  onClick,
   className,
 }: {
-  onChange?: (value: string, selectionMode?: Mode) => void;
+  onClick: (value: string, selectionMode?: Mode) => void;
   className?: string;
 }) => {
   const [value, setValue] = useState("");
   const [mode, setMode] = useState<Mode>("include");
-  const debouncedValue = useDebounce(value, 300);
-  useEffect(() => {
-    onChange && onChange(debouncedValue, mode);
-  }, [debouncedValue, mode]);
 
   return (
     <Container className={className}>
@@ -67,7 +62,7 @@ const SearchBar = ({
         />
       </div>
       <StyledInput
-        placeholder="Enter comma separated values of tester ids"
+        placeholder="Enter comma separated values of tester ids and click to 'Filter Testers'"
         type="text"
         value={value}
         onChange={(event) => setValue(event.target.value)}
@@ -77,6 +72,11 @@ const SearchBar = ({
           setValue(paste.replace(/(\r\n|\n|\r)/gm, ","));
         }}
       />
+      <div style={{ flexShrink: 0 }}>
+        <Button type="info" flat onClick={() => onClick(value, mode)}>
+          Filter Testers
+        </Button>
+      </div>
     </Container>
   );
 };
