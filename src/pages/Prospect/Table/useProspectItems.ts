@@ -77,6 +77,9 @@ const useProspectItems = ({
       });
       setItems(items);
     }
+    if (error && "status" in error && error.status === 404) {
+      setItems([]);
+    }
   }, [data]);
 
   return {
