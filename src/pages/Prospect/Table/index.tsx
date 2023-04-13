@@ -51,12 +51,8 @@ const Table = ({
 
   const [totals, setTotals] = useState<Record<string, number>>({});
 
-  if (error && "status" in error && error.status === 404) {
-    dispatch(addMessage("No Testers Found", "danger", 5));
-  }
-
   useEffect(() => {
-    if (items) {
+    if (items.length > 0) {
       for (const item of items) {
         item.totalPayout = `${(
           item.completionPayout +
@@ -77,8 +73,10 @@ const Table = ({
                 color: aqBootstrapTheme.colors.red800,
               };
       }
+    } else if (error) {
+      dispatch(addMessage("No Testers Found", "danger", 5));
     }
-  }, [items]);
+  }, [items, error, dispatch]);
 
   useEffect(() => {
     setTotals({
