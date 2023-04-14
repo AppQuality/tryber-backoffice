@@ -11,13 +11,36 @@ import {
 } from "@silevis/reactgrid";
 import "@silevis/reactgrid/styles.css";
 import { useEffect, useState } from "react";
-import { CustomHeader } from "./customHeader";
-import { UneditableCell, UneditableCellTemplate } from "./UneditableCell";
-import { Column, Item } from "./types";
-import { TableWrapper } from "./TableWrapper";
-import { StarCell, StarCellTemplate } from "./StarCell";
+import styled from "styled-components";
 import { NumberCellTemplate } from "./NumberCell";
 import { SelectCell, SelectCellTemplate } from "./SelectCell";
+import { StarCell, StarCellTemplate } from "./StarCell";
+import { TableWrapper } from "./TableWrapper";
+import { UneditableCell, UneditableCellTemplate } from "./UneditableCell";
+import { CustomHeader } from "./customHeader";
+import { Column, Item } from "./types";
+
+const Container = styled.div`
+  max-width: 100%;
+  overflow-x: auto;
+
+  margin-bottom: 20px;
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: ${({ theme }) => theme.variants.primary};
+  }
+`;
 
 function EdiTable<T extends { [key: string]: string | number | boolean }>({
   columnHeaders,
@@ -48,9 +71,10 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
   }, [data]);
 
   return (
-    <div style={{ display: "flex" }}>
+    <Container>
       <TableWrapper className={className}>
         <ReactGrid
+          key={`react-grid-${items.length}`}
           enableRangeSelection
           enableRowSelection
           enableFillHandle
@@ -144,7 +168,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
           }
         />
       </TableWrapper>
-    </div>
+    </Container>
   );
 }
 
@@ -202,6 +226,7 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
           return {
             type: "number",
             value,
+            nanToZero: true,
             text: column.renderer ? column.renderer(value) : undefined,
             groupId: column.key,
             style: item.style || {},

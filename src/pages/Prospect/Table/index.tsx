@@ -1,16 +1,20 @@
-import EdiTable from "../EdiTable";
-import { useEffect, useState } from "react";
 import { Button, aqBootstrapTheme } from "@appquality/appquality-design-system";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MessageWrapper } from "./MessageWrapper";
+import EdiTable from "../EdiTable";
 import { Row } from "../types";
-import ErrorHandler from "./ErrorHandler";
 import ActionBar from "./ActionBar";
+import ErrorHandler from "./ErrorHandler";
 import InfoDrawer from "./InfoDrawer";
+import { MessageWrapper } from "./MessageWrapper";
+import PayTesterButton from "./PayTesterButton";
+import SearchBar from "./SearchBar";
+import StatusSelector from "./StatusSelector";
 import useCanPay from "./useCanPay";
-import usePayTesters from "./usePayTesters";
-import useProspectItems from "./useProspectItems";
 import useColumns from "./useColumns";
+import useProspectItems from "./useProspectItems";
+import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+import { useAppDispatch } from "src/store";
 
 const EdiTableWithType = EdiTable<Row>;
 
@@ -30,24 +34,32 @@ const Table = ({
   id: string;
   containerWidth: number;
 }) => {
+  const dispatch = useAppDispatch();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { items, isLoading, error, isDone, updateTester } =
-    useProspectItems(id);
+  const [selectedTesters, setSelectedTesters] = useState<number[]>([]);
+  const [selectionMode, setSelectionMode] = useState<"include" | "exclude">(
+    "include"
+  );
+  const { items, isLoading, error, isDone, updateTester } = useProspectItems({
+    id,
+    testerFilter: selectedTesters,
+    selectionMode,
+  });
+
   const { columns } = useColumns({ isDone });
-  const { isPaying, payTesters } = usePayTesters(id);
   const canPay = useCanPay(id);
 
   const [totals, setTotals] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    if (items) {
+    if (items.length > 0) {
       for (const item of items) {
-        item.totalPayout = `${
+        item.totalPayout = `${(
           item.completionPayout +
           item.bugPayout +
           item.refundPayout +
           item.extraPayout
-        }`;
+        ).toFixed(2)}`;
         item.totalExperience = `${
           item.completionExperience + item.extraExperience
         }`;
@@ -61,19 +73,28 @@ const Table = ({
                 color: aqBootstrapTheme.colors.red800,
               };
       }
+    } else if (error) {
+      dispatch(addMessage("No Testers Found", "danger", 5));
     }
-  }, [items]);
+  }, [items, error, dispatch]);
 
   useEffect(() => {
     setTotals({
-      totalPayout: items.reduce((acc, i) => acc + Number(i.totalPayout), 0),
-      completionPayout: items.reduce(
-        (acc, i) => acc + Number(i.completionPayout),
-        0
+      totalPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.totalPayout), 0).toFixed(2)
       ),
-      bugPayout: items.reduce((acc, i) => acc + Number(i.bugPayout), 0),
-      refundPayout: items.reduce((acc, i) => acc + Number(i.refundPayout), 0),
-      extraPayout: items.reduce((acc, i) => acc + Number(i.extraPayout), 0),
+      completionPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.completionPayout), 0).toFixed(2)
+      ),
+      bugPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.bugPayout), 0).toFixed(2)
+      ),
+      refundPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.refundPayout), 0).toFixed(2)
+      ),
+      extraPayout: Number(
+        items.reduce((acc, i) => acc + Number(i.extraPayout), 0).toFixed(2)
+      ),
       totalExperience: items.reduce(
         (acc, i) => acc + Number(i.totalExperience),
         0
@@ -93,7 +114,7 @@ const Table = ({
     return <MessageWrapper>Loading...</MessageWrapper>;
   }
 
-  if (error && "status" in error) {
+  if (error && "status" in error && error.status !== 404) {
     return <ErrorHandler error={error} />;
   }
 
@@ -113,19 +134,20 @@ const Table = ({
       <ActionBar>
         <Button
           size="sm"
-          type="primary"
+          type="info"
           flat
           onClick={() => {
             setIsDrawerOpen(true);
           }}
         >
-          Info
+          Info Rules
         </Button>
-        <Button
-          size="sm"
-          type="primary"
-          onClick={() => {
-            const testerToPay = items
+        <div style={{ display: "flex" }}>
+          <StatusSelector id={id} disabled={isDone} />
+          <PayTesterButton
+            id={id}
+            disabled={isDone || !canPay || selectedTesters.length > 0}
+            testers={items
               .map((i) => ({
                 tester: {
                   id: Number(i.testerId.replace("T", "")),
@@ -143,90 +165,93 @@ const Table = ({
                 note: i.notes,
                 completed: i.completed === "Payable",
               }))
-              .filter((i) => i.tester.id > 0);
-            if (
-              window.confirm(
-                `You are about to pay ${testerToPay.length} testers. Are you sure?`
-              )
-            ) {
-              payTesters(testerToPay);
-            }
-          }}
-          disabled={isPaying || isDone || !canPay}
-        >
-          {isPaying ? "Paying..." : "Pay Testers"}
-        </Button>
+              .filter((i) => i.tester.id > 0)}
+          />
+        </div>
       </ActionBar>
-      <MyEdiTable
-        onRowChange={(row, oldRow) => {
-          updateTester(row, oldRow);
+      <SearchBar
+        className="aq-my-1"
+        onClick={(v, mode) => {
+          const list = v
+            .split(",")
+            .map((i) => Number(i.replace(/\D/g, "")))
+            .filter((i) => i > 0);
+          setSelectedTesters(list);
+          mode && setSelectionMode(mode);
         }}
-        onChange={(changes) => {
-          if (isDone) return false;
-        }}
-        columns={columns}
-        subHeader={[
-          {
-            isTopTester: false,
-            testerId: "TOTAL",
-            tester: "",
-            completed: "",
-            useCaseCompleted: "",
-            useCaseTotal: "",
-            totalBugs: "",
-            criticalBugs: "",
-            highBugs: "",
-            mediumBugs: "",
-            lowBugs: "",
-            totalPayout: `${totals.totalPayout}`,
-            completionPayout: totals.completionPayout,
-            bugPayout: totals.bugPayout,
-            refundPayout: totals.refundPayout,
-            extraPayout: totals.extraPayout,
-            totalExperience: `${totals.totalExperience}`,
-            completionExperience: totals.completionExperience,
-            extraExperience: totals.extraExperience,
-            notes: "",
-            status: "",
-          },
-        ]}
-        data={items}
-        contextMenu={
-          isDone
-            ? undefined
-            : [
-                {
-                  label: "Set as payable",
-                  handler: (items) => {
-                    for (const row of items) {
-                      updateTester(
-                        {
-                          ...row,
-                          completed: "Payable" as const,
-                        },
-                        row
-                      );
-                    }
-                  },
-                },
-                {
-                  label: "Set as not payable",
-                  handler: (items) => {
-                    for (const row of items) {
-                      updateTester(
-                        {
-                          ...row,
-                          completed: "No" as const,
-                        },
-                        row
-                      );
-                    }
-                  },
-                },
-              ]
-        }
-        stickyLeftColumns={3}
       />
+      {
+        <MyEdiTable
+          onRowChange={(row, oldRow) => {
+            updateTester(row, oldRow);
+          }}
+          onChange={(changes) => {
+            if (isDone) return false;
+          }}
+          columns={columns}
+          subHeader={[
+            {
+              isTopTester: false,
+              testerId: "TOTAL",
+              tester: "",
+              completed: "",
+              useCaseCompleted: "",
+              useCaseTotal: "",
+              totalBugs: "",
+              criticalBugs: "",
+              highBugs: "",
+              mediumBugs: "",
+              lowBugs: "",
+              totalPayout: `${totals.totalPayout}`,
+              completionPayout: totals.completionPayout,
+              bugPayout: totals.bugPayout,
+              refundPayout: totals.refundPayout,
+              extraPayout: totals.extraPayout,
+              totalExperience: `${totals.totalExperience}`,
+              completionExperience: totals.completionExperience,
+              extraExperience: totals.extraExperience,
+              notes: "",
+              status: "",
+            },
+          ]}
+          data={items}
+          contextMenu={
+            isDone
+              ? undefined
+              : [
+                  {
+                    label: "Set as payable",
+                    handler: (items) => {
+                      for (const row of items) {
+                        updateTester(
+                          {
+                            ...row,
+                            completed: "Payable" as const,
+                          },
+                          row
+                        );
+                      }
+                    },
+                  },
+                  {
+                    label: "Set as not payable",
+                    handler: (items) => {
+                      for (const row of items) {
+                        updateTester(
+                          {
+                            ...row,
+                            completed: "No" as const,
+                          },
+                          row
+                        );
+                      }
+                    },
+                  },
+                ]
+          }
+          stickyLeftColumns={3}
+        />
+      }
     </>
   );
 };
