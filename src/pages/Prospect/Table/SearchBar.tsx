@@ -66,13 +66,17 @@ const SearchBar = ({
         type="text"
         value={value}
         onChange={(event) => setValue(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            onClick(value, mode);
+          }
+        }}
         onPaste={(event) => {
           event.preventDefault();
-          const paste = (
-            value +
-            event.clipboardData.getData("text") +
-            ","
-          ).replace(/,+/g, ",");
+          const paste = `${value},${event.clipboardData.getData(
+            "text"
+          )},`.replace(/,+/g, ",");
           setValue(paste.replace(/(\r\n|\n|\r)/gm, ","));
         }}
       />
