@@ -13,6 +13,8 @@ import StatusSelector from "./StatusSelector";
 import useCanPay from "./useCanPay";
 import useColumns from "./useColumns";
 import useProspectItems from "./useProspectItems";
+import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+import { useAppDispatch } from "src/store";
 
 const EdiTableWithType = EdiTable<Row>;
 
@@ -32,6 +34,7 @@ const Table = ({
   id: string;
   containerWidth: number;
 }) => {
+  const dispatch = useAppDispatch();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedTesters, setSelectedTesters] = useState<number[]>([]);
   const [selectionMode, setSelectionMode] = useState<"include" | "exclude">(
@@ -42,13 +45,14 @@ const Table = ({
     testerFilter: selectedTesters,
     selectionMode,
   });
+
   const { columns } = useColumns({ isDone });
   const canPay = useCanPay(id);
 
   const [totals, setTotals] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    if (items) {
+    if (items.length > 0) {
       for (const item of items) {
         item.totalPayout = `${(
           item.completionPayout +
@@ -69,8 +73,10 @@ const Table = ({
                 color: aqBootstrapTheme.colors.red800,
               };
       }
+    } else if (error) {
+      dispatch(addMessage("No Testers Found", "danger", 5));
     }
-  }, [items]);
+  }, [items, error, dispatch]);
 
   useEffect(() => {
     setTotals({
@@ -165,7 +171,7 @@ const Table = ({
       </ActionBar>
       <SearchBar
         className="aq-my-1"
-        onChange={(v, mode) => {
+        onClick={(v, mode) => {
           const list = v
             .split(",")
             .map((i) => Number(i.replace(/\D/g, "")))
