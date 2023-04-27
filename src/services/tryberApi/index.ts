@@ -25,7 +25,10 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     getCampaigns: build.query<GetCampaignsApiResponse, GetCampaignsApiArg>({
-      query: () => ({ url: `/campaigns` }),
+      query: (queryArg) => ({
+        url: `/campaigns`,
+        params: { fields: queryArg.fields },
+      }),
     }),
     getCampaignsByCampaign: build.query<
       GetCampaignsByCampaignApiResponse,
@@ -786,7 +789,9 @@ export type GetCampaignsApiResponse = /** status 200 OK */ {
   id?: number;
   name?: string;
 }[];
-export type GetCampaignsApiArg = void;
+export type GetCampaignsApiArg = {
+  fields?: string;
+};
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
   title: string;
