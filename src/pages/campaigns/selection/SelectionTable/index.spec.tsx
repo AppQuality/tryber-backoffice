@@ -1,20 +1,19 @@
-import { renderWithProviders, setupMatchMediaMock } from "src/utils/test-utils";
-import SelectionTable from "src/pages/campaigns/selection/SelectionTable/index";
+import { aqBootstrapTheme } from "@appquality/appquality-design-system";
+import { renderHook } from "@testing-library/react-hooks";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { getCandidatesMock } from "src/pages/campaigns/selection/SelectionTable/_mocked_data_";
-import { renderHook } from "@testing-library/react-hooks";
-import useTableRows from "./useTableRows";
-import { ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
+import { getCandidatesMock } from "src/pages/campaigns/selection/SelectionTable/_mocked_data_";
+import SelectionTable from "src/pages/campaigns/selection/SelectionTable/index";
 import { setupStore } from "src/store";
+import { renderWithProviders, setupMatchMediaMock } from "src/utils/test-utils";
+import { ThemeProvider } from "styled-components";
 import { initialState } from "../selectionSlice";
-import { aqBootstrapTheme } from "@appquality/appquality-design-system";
-import { FC } from "react";
+import useTableRows from "./useTableRows";
 
 const getWrapper =
-  (): FC =>
-  ({ children }) =>
+  () =>
+  ({ children }: { children: React.ReactNode }) =>
     (
       <ThemeProvider theme={aqBootstrapTheme}>
         <Provider
