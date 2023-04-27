@@ -63,8 +63,8 @@ const useSelectOptions = () => {
       hasValue: (value: SelectOptionType) => false,
     };
   }
-
-  const validCampaigns = (data?.filter((c) => c.id && c.name) || []) as {
+  const campaigns = data?.items || [];
+  const validCampaigns = (campaigns.filter((c) => c.id && c.name) || []) as {
     id: number;
     name: string;
   }[];
