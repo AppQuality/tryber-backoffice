@@ -27,7 +27,11 @@ const injectedRtkApi = api.injectEndpoints({
     getCampaigns: build.query<GetCampaignsApiResponse, GetCampaignsApiArg>({
       query: (queryArg) => ({
         url: `/campaigns`,
-        params: { fields: queryArg.fields },
+        params: {
+          fields: queryArg.fields,
+          start: queryArg.start,
+          limit: queryArg.limit,
+        },
       }),
     }),
     getCampaignsByCampaign: build.query<
@@ -786,11 +790,17 @@ export type PostCampaignsApiArg = {
   };
 };
 export type GetCampaignsApiResponse = /** status 200 OK */ {
-  id?: number;
-  name?: string;
-}[];
+  items?: {
+    id?: number;
+    name?: string;
+  }[];
+} & PaginationData;
 export type GetCampaignsApiArg = {
   fields?: string;
+  /** Items to skip for pagination */
+  start?: number;
+  /** Max items to retrieve */
+  limit?: number;
 };
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
@@ -2147,15 +2157,15 @@ export type Campaign = CampaignOptional & CampaignRequired;
 export type Project = {
   name?: string;
 };
-export type BugTag = {
-  id: number;
-  name: string;
-};
 export type PaginationData = {
   start: number;
   limit?: number;
   size: number;
   total?: number;
+};
+export type BugTag = {
+  id: number;
+  name: string;
 };
 export type TaskOptional = {
   name?: string;
