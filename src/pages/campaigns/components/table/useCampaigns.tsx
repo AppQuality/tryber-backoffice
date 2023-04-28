@@ -1,8 +1,13 @@
+import { Button } from "@appquality/appquality-design-system";
 import {
   GetCampaignsApiResponse,
   useGetCampaignsQuery,
 } from "src/services/tryberApi";
+import styled from "styled-components";
 
+const TableButton = styled(Button)`
+  padding: 0;
+`;
 type Item = NonNullable<GetCampaignsApiResponse["items"]>[number];
 
 type Must<T> = {
@@ -26,27 +31,79 @@ const useCampaigns = (page: number) => {
     pages: data.total ? Math.ceil(data.total / LIMIT) : 0,
     data: data.items
       .filter((campaign): campaign is Campaign => {
-        if (!campaign.id) return false;
-        if (!campaign.name) return false;
+        if (typeof campaign.id === "undefined") return false;
+        if (typeof campaign.name === "undefined") return false;
+        if (typeof campaign.csm === "undefined") return false;
+        if (typeof campaign.startDate === "undefined") return false;
+        if (typeof campaign.endDate === "undefined") return false;
+        if (typeof campaign.customerTitle === "undefined") return false;
+        if (typeof campaign.project === "undefined") return false;
+        if (typeof campaign.customer === "undefined") return false;
+        if (typeof campaign.status === "undefined") return false;
         return true;
       })
       .map((campaign) => ({
         key: campaign.id,
         id: campaign.id,
-        csm: "[49138] Valentina Coppini",
-        start_date: "21/10/2022 09:00",
-        end_date: "06/12/2022 00:00",
+        csm:
+          campaign.csm.name !== "Deleted User"
+            ? `${campaign.csm.name.charAt(0)}. ${campaign.csm.surname}`
+            : "Deleted User",
+        start_date: campaign.startDate,
+        end_date: campaign.endDate,
         title_tester: campaign.name,
-        title_customer: "Loro Piana E-commerce PROD No regression VII",
-        project_name: "Longorm Hitachi",
+        title_customer: campaign.customerTitle
+          ? campaign.customerTitle
+          : campaign.name,
+        project_name: campaign.project.name,
         result_type: "si",
-        customer_name: "Loro Piana",
+        customer_name: campaign.customer.name,
         type: "Bug Hunting",
-        status: "Running",
+        status: {
+          title: campaign.status,
+          content:
+            campaign.status === "running" ? (
+              <span style={{ color: "green" }}>Running</span>
+            ) : (
+              <span style={{ color: "red" }}>Closed</span>
+            ),
+        },
         visible_to: "Admin Only",
         actions: {
           title: "",
-          content: "Edit | View | Bugs ",
+          content: (
+            <>
+              <TableButton
+                onClick={() => {
+                  alert("Navigate to edit page " + campaign.id);
+                }}
+                size="sm"
+                type="link-hover"
+              >
+                Edit
+              </TableButton>
+              {" | "}
+              <TableButton
+                onClick={() => {
+                  alert("Navigate to view page " + campaign.id);
+                }}
+                size="sm"
+                type="link-hover"
+              >
+                View
+              </TableButton>
+              {" | "}
+              <TableButton
+                onClick={() => {
+                  alert("Navigate to bugs page " + campaign.id);
+                }}
+                size="sm"
+                type="link-hover"
+              >
+                Bugs
+              </TableButton>
+            </>
+          ),
         },
       })),
   };

@@ -793,6 +793,29 @@ export type GetCampaignsApiResponse = /** status 200 OK */ {
   items?: {
     id?: number;
     name?: string;
+    customerTitle?: string;
+    startDate?: string;
+    endDate?: string;
+    status?: "running" | "closed";
+    visibility?: "admin" | "smallgroup" | "logged" | "public";
+    resultType?: "bug" | "bugparade" | "no";
+    csm?: {
+      id: number;
+      name: string;
+      surname: string;
+    };
+    customer?: {
+      id?: number;
+      name: string;
+    };
+    type?: {
+      name: string;
+      area: "quality" | "experience";
+    };
+    project?: {
+      id?: number;
+      name: string;
+    };
   }[];
 } & PaginationData;
 export type GetCampaignsApiArg = {
