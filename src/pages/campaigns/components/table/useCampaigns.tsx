@@ -10,17 +10,20 @@ type Must<T> = {
 };
 type Campaign = Must<Item>;
 
-const useCampaigns = () => {
+const useCampaigns = (page: number) => {
+  const LIMIT = 10;
   const { isLoading, data } = useGetCampaignsQuery({
-    limit: 100,
+    limit: LIMIT,
+    start: (page - 1) * LIMIT,
   });
 
   if (isLoading || !data || !data.items) {
-    return { isLoading: true, data: [] };
+    return { isLoading: true, data: [], pages: 0 };
   }
 
   return {
     isLoading: false,
+    pages: data.total ? Math.ceil(data.total / LIMIT) : 0,
     data: data.items
       .filter((campaign): campaign is Campaign => {
         if (!campaign.id) return false;

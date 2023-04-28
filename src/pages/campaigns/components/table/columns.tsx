@@ -1,46 +1,50 @@
-const columns = [
+import { TableType } from "@appquality/appquality-design-system";
+
+const columns: TableType.Column[] = [
   {
     title: "ID",
     dataIndex: "id",
     key: "id",
   },
   {
-    title: "CSM e ID",
+    title: "CSM",
     dataIndex: "csm",
     key: "csm",
   },
   {
-    title: "Start date",
+    title: "Start",
     dataIndex: "start_date",
     key: "start_date",
   },
   {
-    title: "End date",
+    title: "End",
     dataIndex: "end_date",
     key: "end_date",
   },
   {
-    title: "Titolo lato tester",
+    title: "Tester Title",
     dataIndex: "title_tester",
     key: "title_tester",
+    maxWidth: "30ch",
   },
   {
-    title: "Titolo lato cliente",
+    title: "Customer Title",
     dataIndex: "title_customer",
     key: "title_customer",
+    maxWidth: "30ch",
   },
   {
-    title: "Nome progetto",
+    title: "Project",
     dataIndex: "project_name",
     key: "project_name",
   },
   {
-    title: "Tipo risultato",
+    title: "Result",
     dataIndex: "result_type",
     key: "result_type",
   },
   {
-    title: "Nome customer",
+    title: "Customer",
     dataIndex: "customer_name",
     key: "customer_name",
   },
