@@ -1,4 +1,7 @@
-import { TableType } from "@appquality/appquality-design-system";
+import { TableType, icons } from "@appquality/appquality-design-system";
+
+const Eye = icons.EyeFill;
+const Bug = icons.BugFill;
 
 const columns: TableType.Column[] = [
   {
@@ -25,23 +28,18 @@ const columns: TableType.Column[] = [
     title: "Tester Title",
     dataIndex: "title_tester",
     key: "title_tester",
-    maxWidth: "30ch",
+    maxWidth: "35ch",
   },
   {
     title: "Customer Title",
     dataIndex: "title_customer",
     key: "title_customer",
-    maxWidth: "30ch",
+    maxWidth: "35ch",
   },
   {
     title: "Project",
     dataIndex: "project_name",
     key: "project_name",
-  },
-  {
-    title: "Result",
-    dataIndex: "result_type",
-    key: "result_type",
   },
   {
     title: "Customer",
@@ -52,6 +50,7 @@ const columns: TableType.Column[] = [
     title: "Type",
     dataIndex: "type",
     key: "type",
+    maxWidth: "18ch",
   },
   {
     title: "Status",
@@ -59,7 +58,12 @@ const columns: TableType.Column[] = [
     key: "status",
   },
   {
-    title: "Visible to",
+    title: <Bug />,
+    dataIndex: "result_type",
+    key: "result_type",
+  },
+  {
+    title: <Eye />,
     dataIndex: "visible_to",
     key: "visible_to",
   },
@@ -67,6 +71,7 @@ const columns: TableType.Column[] = [
     title: "Actions",
     dataIndex: "actions",
     key: "actions",
+    maxWidth: "18ch",
   },
 ];
 export default columns;

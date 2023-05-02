@@ -9,7 +9,9 @@ const CampaignsTable = () => {
   if (isLoading) return <div>Loading...</div>;
   return (
     <>
-      <Table dataSource={data} columns={columns} />
+      <div style={{ background: "white" }}>
+        <Table isStriped dataSource={data} columns={columns} />
+      </div>
       <Pagination onPageChange={setPage} current={page} maxPages={pages} />
     </>
   );
