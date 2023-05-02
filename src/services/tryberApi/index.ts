@@ -31,6 +31,7 @@ const injectedRtkApi = api.injectEndpoints({
           fields: queryArg.fields,
           start: queryArg.start,
           limit: queryArg.limit,
+          mine: queryArg.mine,
         },
       }),
     }),
@@ -824,6 +825,8 @@ export type GetCampaignsApiArg = {
   start?: number;
   /** Max items to retrieve */
   limit?: number;
+  /** Return only your campaign? */
+  mine?: "true";
 };
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
