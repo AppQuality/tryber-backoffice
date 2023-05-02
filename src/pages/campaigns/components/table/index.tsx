@@ -1,4 +1,5 @@
 import {
+  Input,
   Pagination,
   Select,
   Table,
@@ -10,13 +11,23 @@ import useCampaigns from "./useCampaigns";
 const CampaignsTable = () => {
   const [page, setPage] = useState(1);
   const [mine, setMine] = useState(false);
+  const [search, setSearch] = useState<undefined | string>();
   const { isLoading, data, pages } = useCampaigns(page, {
     mine,
+    search,
   });
   if (isLoading) return <div>Loading...</div>;
   return (
     <>
       <div className="aq-my-3">
+        <Input
+          type="search"
+          id="search"
+          onChange={(value) => {
+            if (value === "") setSearch(undefined);
+            else setSearch(value);
+          }}
+        />
         <Select
           name="mine"
           label=""

@@ -22,6 +22,7 @@ const useCampaigns = (
   page: number,
   options?: {
     mine: boolean;
+    search?: string;
   }
 ) => {
   const LIMIT = 100;
@@ -29,6 +30,7 @@ const useCampaigns = (
     limit: LIMIT,
     start: (page - 1) * LIMIT,
     mine: options?.mine ? "true" : undefined,
+    search: options?.search,
   });
 
   if (isLoading || !data || !data.items) {

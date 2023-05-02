@@ -32,6 +32,7 @@ const injectedRtkApi = api.injectEndpoints({
           start: queryArg.start,
           limit: queryArg.limit,
           mine: queryArg.mine,
+          search: queryArg.search,
         },
       }),
     }),
@@ -827,6 +828,8 @@ export type GetCampaignsApiArg = {
   limit?: number;
   /** Return only your campaign? */
   mine?: "true";
+  /** A value to search in id or title */
+  search?: string;
 };
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
