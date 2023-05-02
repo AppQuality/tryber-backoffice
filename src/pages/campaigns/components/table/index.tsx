@@ -1,5 +1,6 @@
 import { Pagination, Table } from "@appquality/appquality-design-system";
 import { useFiltersCardContext } from "./FilterContext";
+import Customer from "./Filters/Customer";
 import MyCampaign from "./Filters/MyCampaign";
 import Search from "./Filters/Search";
 import useCampaigns from "./useCampaigns";
@@ -19,6 +20,7 @@ const CampaignsTable = () => {
     <>
       <div className="aq-my-3">
         <Search />
+        <Customer />
         <MyCampaign />
       </div>
       <div style={{ background: "white" }}>
