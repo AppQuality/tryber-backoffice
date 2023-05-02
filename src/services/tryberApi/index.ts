@@ -33,6 +33,8 @@ const injectedRtkApi = api.injectEndpoints({
           limit: queryArg.limit,
           mine: queryArg.mine,
           search: queryArg.search,
+          order: queryArg.order,
+          orderBy: queryArg.orderBy,
         },
       }),
     }),
@@ -830,6 +832,10 @@ export type GetCampaignsApiArg = {
   mine?: "true";
   /** A value to search in id or title */
   search?: string;
+  /** How to order values (ASC, DESC) */
+  order?: "ASC" | "DESC";
+  /** The parameter to order by */
+  orderBy?: "id" | "startDate" | "endDate";
 };
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
