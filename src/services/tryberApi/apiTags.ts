@@ -53,15 +53,6 @@ tryberApi.enhanceEndpoints({
     getCustomers: {
       providesTags: ["Customers"],
     },
-    postCustomers: {
-      invalidatesTags: ["Customers"],
-    },
-    getCustomersByCustomer: {
-      providesTags: ["Customers"],
-    },
-    putCustomersByCustomer: {
-      invalidatesTags: ["Customers"],
-    },
     getCustomUserFields: {
       providesTags: ["CustomUserFields"],
     },

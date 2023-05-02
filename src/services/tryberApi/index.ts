@@ -250,32 +250,6 @@ const injectedRtkApi = api.injectEndpoints({
     getCustomers: build.query<GetCustomersApiResponse, GetCustomersApiArg>({
       query: () => ({ url: `/customers` }),
     }),
-    postCustomers: build.mutation<
-      PostCustomersApiResponse,
-      PostCustomersApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/customers`,
-        method: "POST",
-        body: queryArg.customer,
-      }),
-    }),
-    getCustomersByCustomer: build.query<
-      GetCustomersByCustomerApiResponse,
-      GetCustomersByCustomerApiArg
-    >({
-      query: (queryArg) => ({ url: `/customers/${queryArg.customer}` }),
-    }),
-    putCustomersByCustomer: build.mutation<
-      PutCustomersByCustomerApiResponse,
-      PutCustomersByCustomerApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/customers/${queryArg.customer}`,
-        method: "PUT",
-        body: queryArg.body,
-      }),
-    }),
     getCustomUserFields: build.query<
       GetCustomUserFieldsApiResponse,
       GetCustomUserFieldsApiArg
@@ -1234,28 +1208,11 @@ export type GetCountriesByCodeRegionApiArg = {
   languageCode?: string;
 };
 export type GetCustomersApiResponse =
-  /** status 200 An array of Customer objects */ (Customer & {
+  /** status 200 An array of Customer objects */ {
     id?: number;
-  })[];
+    name?: string;
+  }[];
 export type GetCustomersApiArg = void;
-export type PostCustomersApiResponse = /** status 201 Created */ undefined;
-export type PostCustomersApiArg = {
-  /** The customer you want to create */
-  customer: Customer;
-};
-export type GetCustomersByCustomerApiResponse =
-  /** status 200 The Customer data you requested */ Customer;
-export type GetCustomersByCustomerApiArg = {
-  /** A customer id */
-  customer: string;
-};
-export type PutCustomersByCustomerApiResponse = /** status 200 OK */ undefined;
-export type PutCustomersByCustomerApiArg = {
-  /** A customer id */
-  customer: string;
-  /** The Customer data to edit */
-  body: Customer;
-};
 export type GetCustomUserFieldsApiResponse = /** status 200 OK */ {
   group: {
     id: number;
@@ -2235,9 +2192,6 @@ export type PreselectionFormQuestion = {
     }
 );
 export type ProspectStatus = "draft" | "confirmed" | "done";
-export type Customer = User & {
-  customer_name?: string;
-};
 export type CustomUserFieldsType = "text" | "select" | "multiselect";
 export type CustomUserFieldsDataOption = {
   id: number;
@@ -2385,9 +2339,6 @@ export const {
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
   useGetCustomersQuery,
-  usePostCustomersMutation,
-  useGetCustomersByCustomerQuery,
-  usePutCustomersByCustomerMutation,
   useGetCustomUserFieldsQuery,
   useGetDevicesByDeviceTypeModelsQuery,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
