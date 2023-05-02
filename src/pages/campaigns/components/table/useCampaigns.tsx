@@ -1,5 +1,6 @@
 import { Button, Text } from "@appquality/appquality-design-system";
 import {
+  GetCampaignsApiArg,
   GetCampaignsApiResponse,
   useGetCampaignsQuery,
 } from "src/services/tryberApi";
@@ -23,6 +24,8 @@ const useCampaigns = (
   options?: {
     mine: boolean;
     search?: string;
+    order?: GetCampaignsApiArg["order"];
+    orderBy?: GetCampaignsApiArg["orderBy"];
   }
 ) => {
   const LIMIT = 100;
@@ -31,6 +34,8 @@ const useCampaigns = (
     start: (page - 1) * LIMIT,
     mine: options?.mine ? "true" : undefined,
     search: options?.search,
+    orderBy: options?.orderBy,
+    order: options?.order,
   });
 
   if (isLoading || !data || !data.items) {

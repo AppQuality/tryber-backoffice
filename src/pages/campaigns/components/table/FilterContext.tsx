@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import { GetCampaignsApiArg } from "src/services/tryberApi";
 
 type Filters = {
   mine?: boolean;
@@ -6,8 +7,8 @@ type Filters = {
 };
 
 const DefaultOrder: {
-  field: string;
-  direction: "ASC" | "DESC";
+  field: GetCampaignsApiArg["orderBy"];
+  direction: GetCampaignsApiArg["order"];
 } = {
   field: "id",
   direction: "DESC",
