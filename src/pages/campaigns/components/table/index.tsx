@@ -1,47 +1,22 @@
-import {
-  Input,
-  Pagination,
-  Select,
-  Table,
-} from "@appquality/appquality-design-system";
-import { useState } from "react";
+import { Pagination, Table } from "@appquality/appquality-design-system";
+import { useFiltersCardContext } from "./FilterContext";
+import MyCampaign from "./Filters/MyCampaign";
+import Search from "./Filters/Search";
 import columns from "./columns";
 import useCampaigns from "./useCampaigns";
 
 const CampaignsTable = () => {
-  const [page, setPage] = useState(1);
-  const [mine, setMine] = useState(false);
-  const [search, setSearch] = useState<undefined | string>();
+  const { page, setPage, filters } = useFiltersCardContext();
   const { isLoading, data, pages } = useCampaigns(page, {
-    mine,
-    search,
+    mine: filters?.mine ? true : false,
+    search: filters?.search ? filters.search : undefined,
   });
   if (isLoading) return <div>Loading...</div>;
   return (
     <>
       <div className="aq-my-3">
-        <Input
-          type="search"
-          id="search"
-          onChange={(value) => {
-            if (value === "") setSearch(undefined);
-            else setSearch(value);
-          }}
-        />
-        <Select
-          name="mine"
-          label=""
-          isClearable={false}
-          options={[
-            { value: "mine", label: "My Campaigns" },
-            { value: "all", label: "All Campaigns" },
-          ]}
-          onChange={(item) => {
-            if (item.value === "mine") setMine(true);
-            else setMine(false);
-          }}
-          value={{ value: mine ? "mine" : "all", label: "" }}
-        />
+        <Search />
+        <MyCampaign />
       </div>
       <div style={{ background: "white" }}>
         <Table isStriped dataSource={data} columns={columns} />
