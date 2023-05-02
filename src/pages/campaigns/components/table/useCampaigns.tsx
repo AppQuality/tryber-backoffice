@@ -1,9 +1,12 @@
-import { Button } from "@appquality/appquality-design-system";
+import { Button, Text } from "@appquality/appquality-design-system";
 import {
   GetCampaignsApiResponse,
   useGetCampaignsQuery,
 } from "src/services/tryberApi";
 import styled from "styled-components";
+import BugTypeIcon from "./BugTypeIcon";
+import ResultTypeIcon from "./ResultTypeIcon";
+import VisibilityIcon from "./VisibilityIcon";
 
 const TableButton = styled(Button)`
   padding: 0;
@@ -16,7 +19,7 @@ type Must<T> = {
 type Campaign = Must<Item>;
 
 const useCampaigns = (page: number) => {
-  const LIMIT = 10;
+  const LIMIT = 100;
   const { isLoading, data } = useGetCampaignsQuery({
     limit: LIMIT,
     start: (page - 1) * LIMIT,
@@ -40,6 +43,9 @@ const useCampaigns = (page: number) => {
         if (typeof campaign.project === "undefined") return false;
         if (typeof campaign.customer === "undefined") return false;
         if (typeof campaign.status === "undefined") return false;
+        if (typeof campaign.resultType === "undefined") return false;
+        if (typeof campaign.type === "undefined") return false;
+        if (typeof campaign.visibility === "undefined") return false;
         return true;
       })
       .map((campaign) => ({
@@ -49,16 +55,42 @@ const useCampaigns = (page: number) => {
           campaign.csm.name !== "Deleted User"
             ? `${campaign.csm.name.charAt(0)}. ${campaign.csm.surname}`
             : "Deleted User",
-        start_date: campaign.startDate,
-        end_date: campaign.endDate,
-        title_tester: campaign.name,
+        start_date: {
+          title: campaign.startDate,
+          content: (
+            <>
+              <div>{campaign.startDate.split(" ")[0]}</div>
+              <Text small>{campaign.startDate.split(" ")[1]}</Text>
+            </>
+          ),
+        },
+        end_date: {
+          title: campaign.endDate,
+          content: (
+            <>
+              <div>{campaign.endDate.split(" ")[0]}</div>
+              <Text small>{campaign.endDate.split(" ")[1]}</Text>
+            </>
+          ),
+        },
+        title_tester: { title: campaign.name, content: campaign.name },
         title_customer: campaign.customerTitle
           ? campaign.customerTitle
           : campaign.name,
         project_name: campaign.project.name,
-        result_type: "si",
+        result_type: {
+          title: campaign.resultType,
+          content: <ResultTypeIcon resultType={campaign.resultType} />,
+        },
         customer_name: campaign.customer.name,
-        type: "Bug Hunting",
+        type: {
+          title: campaign.type.name,
+          content: (
+            <>
+              <BugTypeIcon area={campaign.type.area} /> {campaign.type.name}
+            </>
+          ),
+        },
         status: {
           title: campaign.status,
           content:
@@ -68,7 +100,7 @@ const useCampaigns = (page: number) => {
               <span style={{ color: "red" }}>Closed</span>
             ),
         },
-        visible_to: "Admin Only",
+        visible_to: <VisibilityIcon visibility={campaign.visibility} />,
         actions: {
           title: "",
           content: (
