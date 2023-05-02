@@ -18,11 +18,17 @@ type Must<T> = {
 };
 type Campaign = Must<Item>;
 
-const useCampaigns = (page: number) => {
+const useCampaigns = (
+  page: number,
+  options?: {
+    mine: boolean;
+  }
+) => {
   const LIMIT = 100;
   const { isLoading, data } = useGetCampaignsQuery({
     limit: LIMIT,
     start: (page - 1) * LIMIT,
+    mine: options?.mine ? "true" : undefined,
   });
 
   if (isLoading || !data || !data.items) {
