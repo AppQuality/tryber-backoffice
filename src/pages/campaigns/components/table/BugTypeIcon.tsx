@@ -1,7 +1,16 @@
-import { icons } from "@appquality/appquality-design-system";
+import styled from "styled-components";
+import { ReactComponent as BugComponent } from "./assets/bugfinding.svg";
+import { ReactComponent as UXComponent } from "./assets/userexperience.svg";
 
-const Bug = icons.BugFill;
-const UX = icons.BinocularsFill;
+const Bug = styled(BugComponent)`
+  width: 16px;
+  color: ${({ theme }) => theme.variants.info}};
+`;
+
+const UX = styled(UXComponent)`
+  width: 16px;
+  color: ${({ theme }) => theme.variants.success}};
+`;
 
 const BugTypeIcon = ({ area }: { area: "quality" | "experience" }) => {
   if (area === "quality") return <Bug />;
