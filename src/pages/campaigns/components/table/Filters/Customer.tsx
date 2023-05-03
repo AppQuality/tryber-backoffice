@@ -12,20 +12,24 @@ const Customer = () => {
   }));
   return (
     <Select
+      isMulti
       name="customer"
       label=""
       options={options}
-      onChange={(item) => {
-        if (item && item.value) {
-          setFilters({ customer: parseInt(item.value) });
+      onChange={(items) => {
+        if (items && items.length > 0) {
+          setFilters({
+            customer: items.map((i: { value: string }) => parseInt(i.value)),
+          });
         } else {
           setFilters({ customer: undefined });
         }
       }}
-      value={{
-        value: filters?.customer ? filters.customer.toString() : "",
-        label: "",
-      }}
+      value={
+        filters?.customer
+          ? filters.customer.map((c) => ({ value: c.toString(), label: "" }))
+          : { value: "", label: "" }
+      }
     />
   );
 };

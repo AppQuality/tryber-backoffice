@@ -6,6 +6,7 @@ import {
 } from "src/services/tryberApi";
 import styled from "styled-components";
 import BugTypeIcon from "./BugTypeIcon";
+import { useFiltersCardContext } from "./FilterContext";
 import ResultTypeIcon from "./ResultTypeIcon";
 import VisibilityIcon from "./VisibilityIcon";
 
@@ -19,23 +20,24 @@ type Must<T> = {
 };
 type Campaign = Must<Item>;
 
-const useCampaigns = (
-  page: number,
-  options?: {
-    mine: boolean;
-    search?: string;
-    order?: GetCampaignsApiArg["order"];
-    orderBy?: GetCampaignsApiArg["orderBy"];
-  }
-) => {
+const useCampaigns = (options?: {
+  mine: boolean;
+  search?: string;
+  order?: GetCampaignsApiArg["order"];
+  orderBy?: GetCampaignsApiArg["orderBy"];
+}) => {
   const LIMIT = 100;
+  const { page, filters, order } = useFiltersCardContext();
   const { isLoading, data } = useGetCampaignsQuery({
     limit: LIMIT,
     start: (page - 1) * LIMIT,
-    mine: options?.mine ? "true" : undefined,
-    search: options?.search,
-    orderBy: options?.orderBy,
-    order: options?.order,
+    mine: filters?.mine ? "true" : undefined,
+    search: filters?.search ? filters.search : undefined,
+    filterBy: {
+      customer: filters?.customer ? filters.customer.join(",") : undefined,
+    },
+    orderBy: order.field,
+    order: order.direction,
   });
 
   if (isLoading || !data || !data.items) {
