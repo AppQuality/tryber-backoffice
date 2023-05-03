@@ -8,6 +8,7 @@ import styled from "styled-components";
 import BugTypeIcon from "./BugTypeIcon";
 import { useFiltersCardContext } from "./FilterContext";
 import ResultTypeIcon from "./ResultTypeIcon";
+import StatusIcon from "./StatusIcon";
 import VisibilityIcon from "./VisibilityIcon";
 
 const TableButton = styled(Button)`
@@ -108,12 +109,9 @@ const useCampaigns = (options?: {
         },
         status: {
           title: campaign.status,
-          content:
-            campaign.status === "running" ? (
-              <span style={{ color: "green" }}>Running</span>
-            ) : (
-              <span style={{ color: "red" }}>Closed</span>
-            ),
+          content: (
+            <StatusIcon status={campaign.status} start={campaign.startDate} />
+          ),
         },
         visible_to: <VisibilityIcon visibility={campaign.visibility} />,
         actions: {

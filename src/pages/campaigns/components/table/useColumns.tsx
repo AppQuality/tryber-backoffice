@@ -15,6 +15,39 @@ const useColumns = (): TableType.Column[] => {
       onSort: (newSort) => setOrder("id", newSort),
     },
     {
+      title: "Customer Title",
+      dataIndex: "title_customer",
+      key: "title_customer",
+      maxWidth: "35ch",
+    },
+    {
+      title: "Tester Title",
+      dataIndex: "title_tester",
+      key: "title_tester",
+      maxWidth: "35ch",
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      maxWidth: "18ch",
+    },
+    {
+      title: <Bug />,
+      dataIndex: "result_type",
+      key: "result_type",
+    },
+    {
+      title: "Customer",
+      dataIndex: "customer_name",
+      key: "customer_name",
+    },
+    {
+      title: "Project",
+      dataIndex: "project_name",
+      key: "project_name",
+    },
+    {
       title: "CSM",
       dataIndex: "csm",
       key: "csm",
@@ -34,47 +67,14 @@ const useColumns = (): TableType.Column[] => {
       onSort: (newSort) => setOrder("endDate", newSort),
     },
     {
-      title: "Tester Title",
-      dataIndex: "title_tester",
-      key: "title_tester",
-      maxWidth: "35ch",
-    },
-    {
-      title: "Customer Title",
-      dataIndex: "title_customer",
-      key: "title_customer",
-      maxWidth: "35ch",
-    },
-    {
-      title: "Project",
-      dataIndex: "project_name",
-      key: "project_name",
-    },
-    {
-      title: "Customer",
-      dataIndex: "customer_name",
-      key: "customer_name",
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-      maxWidth: "18ch",
+      title: <Eye />,
+      dataIndex: "visible_to",
+      key: "visible_to",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-    },
-    {
-      title: <Bug />,
-      dataIndex: "result_type",
-      key: "result_type",
-    },
-    {
-      title: <Eye />,
-      dataIndex: "visible_to",
-      key: "visible_to",
     },
     {
       title: "Actions",
