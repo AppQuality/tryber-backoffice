@@ -4,7 +4,7 @@ import { GetCampaignsApiArg } from "src/services/tryberApi";
 type Filters = {
   mine?: boolean;
   search?: string;
-  customer?: number;
+  customer?: number[];
 };
 
 const DefaultOrder: {

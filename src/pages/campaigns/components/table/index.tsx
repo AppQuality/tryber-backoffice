@@ -7,14 +7,9 @@ import useCampaigns from "./useCampaigns";
 import useColumns from "./useColumns";
 
 const CampaignsTable = () => {
-  const { page, setPage, filters, order } = useFiltersCardContext();
+  const { page, setPage, order } = useFiltersCardContext();
   const columns = useColumns();
-  const { isLoading, data, pages } = useCampaigns(page, {
-    mine: filters?.mine ? true : false,
-    search: filters?.search ? filters.search : undefined,
-    orderBy: order.field,
-    order: order.direction,
-  });
+  const { isLoading, data, pages } = useCampaigns();
   if (isLoading) return <div>Loading...</div>;
   return (
     <>
