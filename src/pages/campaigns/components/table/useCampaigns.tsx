@@ -129,8 +129,15 @@ const useCampaigns = (options?: {
           content: (
             <>
               <TableButton
-                onClick={() => {
-                  alert("Navigate to edit page " + campaign.id);
+                onClick={(e) => {
+                  window.parent.postMessage(
+                    JSON.stringify({
+                      type: "open-edit",
+                      id: campaign.id,
+                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
+                    }),
+                    "*"
+                  );
                 }}
                 size="sm"
                 type="link-hover"
@@ -139,8 +146,15 @@ const useCampaigns = (options?: {
               </TableButton>
               {" | "}
               <TableButton
-                onClick={() => {
-                  alert("Navigate to view page " + campaign.id);
+                onClick={(e) => {
+                  window.parent.postMessage(
+                    JSON.stringify({
+                      type: "open-show",
+                      id: campaign.id,
+                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
+                    }),
+                    "*"
+                  );
                 }}
                 size="sm"
                 type="link-hover"
@@ -149,8 +163,15 @@ const useCampaigns = (options?: {
               </TableButton>
               {" | "}
               <TableButton
-                onClick={() => {
-                  alert("Navigate to bugs page " + campaign.id);
+                onClick={(e) => {
+                  window.parent.postMessage(
+                    JSON.stringify({
+                      type: "open-bugs",
+                      id: campaign.id,
+                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
+                    }),
+                    "*"
+                  );
                 }}
                 size="sm"
                 type="link-hover"
