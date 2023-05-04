@@ -5,6 +5,7 @@ type Filters = {
   mine?: boolean;
   search?: string;
   customer?: number[];
+  type?: number[];
   status?: "running" | "incoming" | "closed";
 };
 
