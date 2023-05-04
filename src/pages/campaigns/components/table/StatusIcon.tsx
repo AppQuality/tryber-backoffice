@@ -4,14 +4,17 @@ import { ReactComponent as IncomingComponent } from "./assets/incoming.svg";
 import { ReactComponent as RunningComponent } from "./assets/running.svg";
 
 const Running = styled(RunningComponent)`
-  width: 16px;
+    font-size: 16px;
+    width: 16px;
   color: ${({ theme }) => theme.palette.warning}};
 `;
 const Incoming = styled(IncomingComponent)`
+  font-size: 16px;
   width: 16px;
   color: ${({ theme }) => theme.palette.info}};
 `;
 const Closed = styled(ClosedComponent)`
+  font-size: 16px;
   width: 16px;
   color: ${({ theme }) => theme.palette.success}};
 `;

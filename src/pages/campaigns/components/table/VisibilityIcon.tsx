@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { ReactComponent as SmallGroupComponent } from "./assets/tryber.svg";
 
 const SmallGroup = styled(SmallGroupComponent)`
+  font-size: 16px;
   width: 16px;
   color: ${({ theme }) => theme.palette.secondary}};
 `;
 const AdminOnly = styled(icons.ShieldLockFill)`
+  font-size: 16px;
   width: 16px;
   color: ${({ theme }) => theme.colors.disabledFont}};
 `;

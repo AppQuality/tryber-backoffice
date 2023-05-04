@@ -3,6 +3,7 @@ import { useFiltersCardContext } from "./FilterContext";
 
 const Eye = icons.EyeFill;
 const Bug = icons.BugFill;
+const Status = icons.ClockHistory;
 
 const useColumns = (): TableType.Column[] => {
   const { setOrder } = useFiltersCardContext();
@@ -18,34 +19,30 @@ const useColumns = (): TableType.Column[] => {
       title: "Customer Title",
       dataIndex: "title_customer",
       key: "title_customer",
-      maxWidth: "35ch",
+      maxWidth: "25ch",
     },
     {
       title: "Tester Title",
       dataIndex: "title_tester",
       key: "title_tester",
-      maxWidth: "35ch",
+      maxWidth: "25ch",
     },
     {
       title: "Type",
       dataIndex: "type",
       key: "type",
-      maxWidth: "18ch",
+      maxWidth: "15ch",
     },
     {
-      title: <Bug />,
+      title: <Bug style={{ fontSize: "16px" }} />,
       dataIndex: "result_type",
       key: "result_type",
-    },
-    {
-      title: "Customer",
-      dataIndex: "customer_name",
-      key: "customer_name",
+      maxWidth: "5ch",
     },
     {
       title: "Project",
-      dataIndex: "project_name",
-      key: "project_name",
+      dataIndex: "project",
+      key: "project",
     },
     {
       title: "CSM",
@@ -56,6 +53,7 @@ const useColumns = (): TableType.Column[] => {
       title: "Start",
       dataIndex: "start_date",
       key: "startDate",
+      maxWidth: "12ch",
       isSortable: true,
       onSort: (newSort) => setOrder("startDate", newSort),
     },
@@ -63,18 +61,21 @@ const useColumns = (): TableType.Column[] => {
       title: "End",
       dataIndex: "end_date",
       key: "endDate",
+      maxWidth: "12ch",
       isSortable: true,
       onSort: (newSort) => setOrder("endDate", newSort),
     },
     {
-      title: <Eye />,
+      title: <Eye style={{ fontSize: "16px" }} />,
       dataIndex: "visible_to",
       key: "visible_to",
+      maxWidth: "5ch",
     },
     {
-      title: "Status",
+      title: <Status style={{ fontSize: "16px" }} />,
       dataIndex: "status",
       key: "status",
+      maxWidth: "5ch",
     },
     {
       title: "Actions",
