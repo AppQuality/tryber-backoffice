@@ -13,19 +13,18 @@ const useColumns = (): TableType.Column[] => {
       dataIndex: "id",
       key: "id",
       isSortable: true,
+      maxWidth: "7ch",
       onSort: (newSort) => setOrder("id", newSort),
     },
     {
       title: "Customer Title",
       dataIndex: "title_customer",
       key: "title_customer",
-      maxWidth: "25ch",
     },
     {
       title: "Tester Title",
       dataIndex: "title_tester",
       key: "title_tester",
-      maxWidth: "25ch",
     },
     {
       title: "Type",
@@ -43,11 +42,13 @@ const useColumns = (): TableType.Column[] => {
       title: "Project",
       dataIndex: "project",
       key: "project",
+      maxWidth: "20ch",
     },
     {
       title: "CSM",
       dataIndex: "csm",
       key: "csm",
+      maxWidth: "20ch",
     },
     {
       title: "Start",
