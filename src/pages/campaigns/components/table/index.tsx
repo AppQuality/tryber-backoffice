@@ -1,6 +1,7 @@
 import { Pagination, Table, Title } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { useFiltersCardContext } from "./FilterContext";
+import CampaignTypes from "./Filters/CampaignTypes";
 import Customer from "./Filters/Customer";
 import MyCampaign from "./Filters/MyCampaign";
 import Search from "./Filters/Search";
@@ -34,14 +35,14 @@ const CampaignsTable = () => {
         <div style={{ width: "30%" }}>
           <Search />
         </div>
-        <div style={{ width: "35%" }}>
+        <div style={{ width: "32.5%" }}>
           <Customer />
         </div>
-        <div style={{ width: "17.5%" }}>
+        <div style={{ width: "22.5%" }}>
+          <CampaignTypes />
+        </div>
+        <div style={{ width: "15%" }}>
           <Status />
-        </div>
-        <div style={{ width: "17.5%" }}>
-          <Customer />
         </div>
       </FilterContainer>
       <div style={{ background: "white" }}>

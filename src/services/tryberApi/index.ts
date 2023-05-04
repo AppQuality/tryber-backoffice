@@ -230,6 +230,12 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/stats` }),
     }),
+    getCampaignTypes: build.query<
+      GetCampaignTypesApiResponse,
+      GetCampaignTypesApiArg
+    >({
+      query: () => ({ url: `/campaignTypes` }),
+    }),
     getCertifications: build.query<
       GetCertificationsApiResponse,
       GetCertificationsApiArg
@@ -1191,6 +1197,11 @@ export type GetCampaignsByCampaignStatsApiResponse = /** status 200 OK */ {
 export type GetCampaignsByCampaignStatsApiArg = {
   campaign: string;
 };
+export type GetCampaignTypesApiResponse = /** status 200  */ {
+  id: number;
+  name: string;
+}[];
+export type GetCampaignTypesApiArg = void;
 export type GetCertificationsApiResponse = /** status 200 OK */ {
   id: number;
   name: string;
@@ -2338,6 +2349,7 @@ export const {
   usePutCampaignsByCampaignProspectMutation,
   usePatchCampaignsByCampaignProspectMutation,
   useGetCampaignsByCampaignStatsQuery,
+  useGetCampaignTypesQuery,
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
   useGetCustomersQuery,
