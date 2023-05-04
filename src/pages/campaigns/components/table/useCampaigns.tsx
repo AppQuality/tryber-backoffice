@@ -5,7 +5,7 @@ import {
   useGetCampaignsQuery,
 } from "src/services/tryberApi";
 import styled from "styled-components";
-import BugTypeIcon from "./BugTypeIcon";
+import BugType from "./BugTypeIcon";
 import { useFiltersCardContext } from "./FilterContext";
 import ResultTypeIcon from "./ResultTypeIcon";
 import StatusIcon from "./StatusIcon";
@@ -111,9 +111,7 @@ const useCampaigns = (options?: {
         type: {
           title: campaign.type.name,
           content: (
-            <>
-              <BugTypeIcon area={campaign.type.area} /> {campaign.type.name}
-            </>
+            <BugType area={campaign.type.area} name={campaign.type.name} />
           ),
         },
         status: {

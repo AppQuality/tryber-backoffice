@@ -16,6 +16,19 @@ const FilterContainer = styled.div`
   gap: ${({ theme }) => theme.grid.sizes[2]};
 `;
 
+const CustomTable = styled(Table)`
+  .tbody.cell {
+    padding: 0;
+  }
+  .tbody.cell > div {
+    padding: ${({ theme }) => theme.grid.sizes[2]}
+      ${({ theme }) => theme.grid.sizes[2]};
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+`;
+
 const CampaignsTable = () => {
   const { page, setPage, order } = useFiltersCardContext();
   const columns = useColumns();
@@ -46,7 +59,7 @@ const CampaignsTable = () => {
         </div>
       </FilterContainer>
       <div style={{ background: "white" }}>
-        <Table
+        <CustomTable
           orderBy={order.field}
           order={order.direction}
           isStriped
