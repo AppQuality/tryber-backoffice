@@ -15,6 +15,7 @@ const CampaignTypes = () => {
       isMulti
       name="type"
       label=""
+      placeholder="Filter by type"
       options={options}
       onChange={(items) => {
         if (items && items.length > 0) {

@@ -15,6 +15,7 @@ const Customer = () => {
       isMulti
       name="customer"
       label=""
+      placeholder="Filter by customer"
       options={options}
       onChange={(items) => {
         if (items && items.length > 0) {
