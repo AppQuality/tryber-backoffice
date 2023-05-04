@@ -11,6 +11,12 @@ import ResultTypeIcon from "./ResultTypeIcon";
 import StatusIcon from "./StatusIcon";
 import VisibilityIcon from "./VisibilityIcon";
 
+const formatDateTime = (dateTime: string) => {
+  const date = new Date(dateTime.split(" ")[0]).toLocaleDateString("it-IT");
+  const time = dateTime.split(" ")[1].replace(/:00$/, "");
+  return { date, time };
+};
+
 const TableButton = styled(Button)`
   padding: 0;
 `;
@@ -77,8 +83,8 @@ const useCampaigns = (options?: {
           title: campaign.startDate,
           content: (
             <>
-              <div>{campaign.startDate.split(" ")[0]}</div>
-              <Text small>{campaign.startDate.split(" ")[1]}</Text>
+              <div>{formatDateTime(campaign.startDate).date}</div>
+              <Text small>{formatDateTime(campaign.startDate).time}</Text>
             </>
           ),
         },
@@ -86,8 +92,8 @@ const useCampaigns = (options?: {
           title: campaign.endDate,
           content: (
             <>
-              <div>{campaign.endDate.split(" ")[0]}</div>
-              <Text small>{campaign.endDate.split(" ")[1]}</Text>
+              <div>{formatDateTime(campaign.endDate).date}</div>
+              <Text small>{formatDateTime(campaign.endDate).time}</Text>
             </>
           ),
         },

@@ -13,6 +13,7 @@ const Status = () => {
     <Select
       name="status"
       label=""
+      placeholder="Filter by status"
       options={options}
       onChange={(item) => {
         if (item && item.value) {
