@@ -2,13 +2,16 @@ import { icons } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 
 const BugParade = styled(icons.TrophyFill)`
+font-size: 16px;
 color: ${({ theme }) => theme.palette.info}};
 `;
 
 const Bug = styled(icons.BugFill)`
+font-size: 16px;
   color: ${({ theme }) => theme.variants.info}};
   `;
 const Deny = styled(icons.XCircleFill)`
+font-size: 16px;
 color: ${({ theme }) => theme.colors.disabledFont}};
 `;
 

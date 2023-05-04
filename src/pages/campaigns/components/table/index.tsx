@@ -1,10 +1,18 @@
-import { Pagination, Table } from "@appquality/appquality-design-system";
+import { Pagination, Table, Title } from "@appquality/appquality-design-system";
+import styled from "styled-components";
 import { useFiltersCardContext } from "./FilterContext";
 import Customer from "./Filters/Customer";
 import MyCampaign from "./Filters/MyCampaign";
 import Search from "./Filters/Search";
 import useCampaigns from "./useCampaigns";
 import useColumns from "./useColumns";
+
+const FilterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: ${({ theme }) => theme.grid.sizes[2]};
+`;
 
 const CampaignsTable = () => {
   const { page, setPage, order } = useFiltersCardContext();
@@ -13,11 +21,28 @@ const CampaignsTable = () => {
   if (isLoading) return <div>Loading...</div>;
   return (
     <>
-      <div className="aq-my-3">
-        <Search />
-        <Customer />
-        <MyCampaign />
-      </div>
+      <FilterContainer className="aq-my-3">
+        <div style={{ width: "40%" }}>
+          <Title size="l">My Campaigns</Title>
+        </div>
+        <div style={{ width: "25ch" }}>
+          <MyCampaign />
+        </div>
+      </FilterContainer>
+      <FilterContainer className="aq-mb-3">
+        <div style={{ width: "30%" }}>
+          <Search />
+        </div>
+        <div style={{ width: "35%" }}>
+          <Customer />
+        </div>
+        <div style={{ width: "17.5%" }}>
+          <Customer />
+        </div>
+        <div style={{ width: "17.5%" }}>
+          <Customer />
+        </div>
+      </FilterContainer>
       <div style={{ background: "white" }}>
         <Table
           orderBy={order.field}

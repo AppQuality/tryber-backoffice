@@ -93,12 +93,19 @@ const useCampaigns = (options?: {
         title_customer: campaign.customerTitle
           ? campaign.customerTitle
           : campaign.name,
-        project_name: campaign.project.name,
         result_type: {
           title: campaign.resultType,
           content: <ResultTypeIcon resultType={campaign.resultType} />,
         },
-        customer_name: campaign.customer.name,
+        project: {
+          title: campaign.customer.name,
+          content: (
+            <>
+              {campaign.project.name}
+              <Text small>{campaign.customer.name}</Text>
+            </>
+          ),
+        },
         type: {
           title: campaign.type.name,
           content: (
@@ -113,7 +120,10 @@ const useCampaigns = (options?: {
             <StatusIcon status={campaign.status} start={campaign.startDate} />
           ),
         },
-        visible_to: <VisibilityIcon visibility={campaign.visibility} />,
+        visible_to: {
+          title: campaign.visibility,
+          content: <VisibilityIcon visibility={campaign.visibility} />,
+        },
         actions: {
           title: "",
           content: (

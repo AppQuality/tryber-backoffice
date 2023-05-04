@@ -9,8 +9,8 @@ const MyCampaign = () => {
       label=""
       isClearable={false}
       options={[
-        { value: "mine", label: "My Campaigns" },
-        { value: "all", label: "All Campaigns" },
+        { value: "mine", label: "Managed by me" },
+        { value: "all", label: "Managed by anyone" },
       ]}
       onChange={(item) => {
         if (item.value === "mine") setFilters({ mine: true });
