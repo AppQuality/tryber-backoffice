@@ -4,6 +4,7 @@ import { useFiltersCardContext } from "./FilterContext";
 import Customer from "./Filters/Customer";
 import MyCampaign from "./Filters/MyCampaign";
 import Search from "./Filters/Search";
+import Status from "./Filters/Status";
 import useCampaigns from "./useCampaigns";
 import useColumns from "./useColumns";
 
@@ -37,7 +38,7 @@ const CampaignsTable = () => {
           <Customer />
         </div>
         <div style={{ width: "17.5%" }}>
-          <Customer />
+          <Status />
         </div>
         <div style={{ width: "17.5%" }}>
           <Customer />

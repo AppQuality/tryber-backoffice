@@ -36,6 +36,7 @@ const useCampaigns = (options?: {
     search: filters?.search ? filters.search : undefined,
     filterBy: {
       customer: filters?.customer ? filters.customer.join(",") : undefined,
+      status: filters?.status ? filters.status : undefined,
     },
     orderBy: order.field,
     order: order.direction,
