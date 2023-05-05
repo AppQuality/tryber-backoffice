@@ -3,15 +3,18 @@ import styled from "styled-components";
 
 const BugParade = styled(icons.TrophyFill)`
 font-size: 16px;
+float: left;
 color: ${({ theme }) => theme.palette.info}};
 `;
 
 const Bug = styled(icons.BugFill)`
 font-size: 16px;
+float: left;
   color: ${({ theme }) => theme.variants.info}};
   `;
 const Deny = styled(icons.XCircleFill)`
 font-size: 16px;
+float: left;
 color: ${({ theme }) => theme.colors.disabledFont}};
 `;
 

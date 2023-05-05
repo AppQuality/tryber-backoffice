@@ -67,7 +67,12 @@ const CampaignsTable = () => {
           columns={columns}
         />
       </div>
-      <Pagination onPageChange={setPage} current={page} maxPages={pages} />
+      <Pagination
+        className="aq-mt-3"
+        onPageChange={setPage}
+        current={page}
+        maxPages={pages}
+      />
     </>
   );
 };
