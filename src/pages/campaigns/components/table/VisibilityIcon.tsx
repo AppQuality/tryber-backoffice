@@ -13,14 +13,26 @@ const AdminOnly = styled(icons.ShieldLockFill)`
   color: ${({ theme }) => theme.colors.disabledFont}};
 `;
 
+const LoggedUsers = styled(icons.PeopleFill)`
+  font-size: 16px;
+  width: 16px;
+  color: ${({ theme }) => theme.palette.primary}};
+`;
+
+const Public = styled(icons.GlobeAmericas)`
+  font-size: 16px;
+  width: 16px;
+  color: ${({ theme }) => theme.variants.primary}};
+`;
+
 const VisibilityIcon = ({
   visibility,
 }: {
   visibility: "public" | "smallgroup" | "logged" | "admin";
 }) => {
-  if (visibility === "public") return <>P</>;
+  if (visibility === "public") return <Public />;
   if (visibility === "smallgroup") return <SmallGroup />;
-  if (visibility === "logged") return <>L</>;
+  if (visibility === "logged") return <LoggedUsers />;
   if (visibility === "admin") return <AdminOnly />;
   return null;
 };
