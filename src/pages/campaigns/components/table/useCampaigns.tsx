@@ -12,7 +12,11 @@ import StatusIcon from "./StatusIcon";
 import VisibilityIcon from "./VisibilityIcon";
 
 const formatDateTime = (dateTime: string) => {
-  const date = new Date(dateTime.split(" ")[0]).toLocaleDateString("it-IT");
+  const date = new Date(dateTime.split(" ")[0]).toLocaleDateString("it-IT", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
   const time = dateTime.split(" ")[1].replace(/:00$/, "");
   return { date, time };
 };
