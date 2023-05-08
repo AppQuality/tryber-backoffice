@@ -4,6 +4,7 @@ import {
   GetCampaignsApiResponse,
   useGetCampaignsQuery,
 } from "src/services/tryberApi";
+import openInWordpress from "src/utils/openInWordpress";
 import styled from "styled-components";
 import BugType from "./BugTypeIcon";
 import { useFiltersCardContext } from "./FilterContext";
@@ -106,7 +107,7 @@ const useCampaigns = (options?: {
           ? campaign.customerTitle
           : campaign.name,
         result_type: {
-          title: campaign.resultType,
+          title: ResultTypeIcon.text(campaign.resultType),
           content: <ResultTypeIcon resultType={campaign.resultType} />,
         },
         project: {
@@ -119,19 +120,19 @@ const useCampaigns = (options?: {
           ),
         },
         type: {
-          title: campaign.type.name,
+          title: BugType.text(campaign.type.area, campaign.type.name),
           content: (
             <BugType area={campaign.type.area} name={campaign.type.name} />
           ),
         },
         status: {
-          title: campaign.status,
+          title: StatusIcon.text(campaign.status, campaign.startDate),
           content: (
             <StatusIcon status={campaign.status} start={campaign.startDate} />
           ),
         },
         visible_to: {
-          title: campaign.visibility,
+          title: VisibilityIcon.text(campaign.visibility),
           content: <VisibilityIcon visibility={campaign.visibility} />,
         },
         actions: {
@@ -139,16 +140,9 @@ const useCampaigns = (options?: {
           content: (
             <>
               <TableButton
-                onClick={(e) => {
-                  window.parent.postMessage(
-                    JSON.stringify({
-                      type: "open-edit",
-                      id: campaign.id,
-                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
-                    }),
-                    "*"
-                  );
-                }}
+                onClick={(e) =>
+                  openInWordpress(e, "open-edit", { id: campaign.id })
+                }
                 size="sm"
                 type="link-hover"
               >
@@ -156,16 +150,9 @@ const useCampaigns = (options?: {
               </TableButton>
               {" | "}
               <TableButton
-                onClick={(e) => {
-                  window.parent.postMessage(
-                    JSON.stringify({
-                      type: "open-show",
-                      id: campaign.id,
-                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
-                    }),
-                    "*"
-                  );
-                }}
+                onClick={(e) =>
+                  openInWordpress(e, "open-show", { id: campaign.id })
+                }
                 size="sm"
                 type="link-hover"
               >
@@ -173,16 +160,9 @@ const useCampaigns = (options?: {
               </TableButton>
               {" | "}
               <TableButton
-                onClick={(e) => {
-                  window.parent.postMessage(
-                    JSON.stringify({
-                      type: "open-bugs",
-                      id: campaign.id,
-                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
-                    }),
-                    "*"
-                  );
-                }}
+                onClick={(e) =>
+                  openInWordpress(e, "open-bugs", { id: campaign.id })
+                }
                 size="sm"
                 type="link-hover"
               >
