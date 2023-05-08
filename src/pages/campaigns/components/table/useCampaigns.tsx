@@ -106,7 +106,7 @@ const useCampaigns = (options?: {
           ? campaign.customerTitle
           : campaign.name,
         result_type: {
-          title: campaign.resultType,
+          title: ResultTypeIcon.text(campaign.resultType),
           content: <ResultTypeIcon resultType={campaign.resultType} />,
         },
         project: {
@@ -119,19 +119,19 @@ const useCampaigns = (options?: {
           ),
         },
         type: {
-          title: campaign.type.name,
+          title: BugType.text(campaign.type.area, campaign.type.name),
           content: (
             <BugType area={campaign.type.area} name={campaign.type.name} />
           ),
         },
         status: {
-          title: campaign.status,
+          title: StatusIcon.text(campaign.status, campaign.startDate),
           content: (
             <StatusIcon status={campaign.status} start={campaign.startDate} />
           ),
         },
         visible_to: {
-          title: campaign.visibility,
+          title: VisibilityIcon.text(campaign.visibility),
           content: <VisibilityIcon visibility={campaign.visibility} />,
         },
         actions: {

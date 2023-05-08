@@ -25,16 +25,22 @@ const Public = styled(icons.GlobeAmericas)`
   color: ${({ theme }) => theme.variants.primary}};
 `;
 
-const VisibilityIcon = ({
-  visibility,
-}: {
-  visibility: "public" | "smallgroup" | "logged" | "admin";
-}) => {
+type Visibility = "public" | "smallgroup" | "logged" | "admin";
+
+const VisibilityIcon = ({ visibility }: { visibility: Visibility }) => {
   if (visibility === "public") return <Public />;
   if (visibility === "smallgroup") return <SmallGroup />;
   if (visibility === "logged") return <LoggedUsers />;
   if (visibility === "admin") return <AdminOnly />;
   return null;
+};
+
+VisibilityIcon.text = (visibility: Visibility) => {
+  if (visibility === "public") return "Public";
+  if (visibility === "smallgroup") return "Small Group";
+  if (visibility === "logged") return "Logged Users";
+  if (visibility === "admin") return "Admin Only";
+  return "";
 };
 
 export default VisibilityIcon;
