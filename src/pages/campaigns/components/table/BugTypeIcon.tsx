@@ -35,4 +35,9 @@ const BugType = ({
     </div>
   );
 };
+
+BugType.text = (area: "quality" | "experience", name: string) => {
+  return `${area === "quality" ? "Quality" : "Experience"} - ${name}`;
+};
+
 export default BugType;
