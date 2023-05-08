@@ -4,6 +4,7 @@ import {
   GetCampaignsApiResponse,
   useGetCampaignsQuery,
 } from "src/services/tryberApi";
+import openInWordpress from "src/utils/openInWordpress";
 import styled from "styled-components";
 import BugType from "./BugTypeIcon";
 import { useFiltersCardContext } from "./FilterContext";
@@ -139,16 +140,9 @@ const useCampaigns = (options?: {
           content: (
             <>
               <TableButton
-                onClick={(e) => {
-                  window.parent.postMessage(
-                    JSON.stringify({
-                      type: "open-edit",
-                      id: campaign.id,
-                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
-                    }),
-                    "*"
-                  );
-                }}
+                onClick={(e) =>
+                  openInWordpress(e, "open-edit", { id: campaign.id })
+                }
                 size="sm"
                 type="link-hover"
               >
@@ -156,16 +150,9 @@ const useCampaigns = (options?: {
               </TableButton>
               {" | "}
               <TableButton
-                onClick={(e) => {
-                  window.parent.postMessage(
-                    JSON.stringify({
-                      type: "open-show",
-                      id: campaign.id,
-                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
-                    }),
-                    "*"
-                  );
-                }}
+                onClick={(e) =>
+                  openInWordpress(e, "open-show", { id: campaign.id })
+                }
                 size="sm"
                 type="link-hover"
               >
@@ -173,16 +160,9 @@ const useCampaigns = (options?: {
               </TableButton>
               {" | "}
               <TableButton
-                onClick={(e) => {
-                  window.parent.postMessage(
-                    JSON.stringify({
-                      type: "open-bugs",
-                      id: campaign.id,
-                      newTab: e.ctrlKey || e.metaKey ? true : undefined,
-                    }),
-                    "*"
-                  );
-                }}
+                onClick={(e) =>
+                  openInWordpress(e, "open-bugs", { id: campaign.id })
+                }
                 size="sm"
                 type="link-hover"
               >

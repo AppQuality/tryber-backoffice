@@ -4,6 +4,7 @@ import {
   Table,
   Title,
 } from "@appquality/appquality-design-system";
+import openInWordpress from "src/utils/openInWordpress";
 import styled from "styled-components";
 import { useFiltersCardContext } from "./FilterContext";
 import CampaignTypes from "./Filters/CampaignTypes";
@@ -56,15 +57,7 @@ const CampaignsTable = () => {
               size="sm"
               type="secondary"
               flat
-              onClick={(e) => {
-                window.parent.postMessage(
-                  JSON.stringify({
-                    type: "open-new-campaign",
-                    newTab: e.ctrlKey || e.metaKey ? true : undefined,
-                  }),
-                  "*"
-                );
-              }}
+              onClick={(e) => openInWordpress(e, "open-new-campaign")}
             >
               Add campaign
             </Button>
