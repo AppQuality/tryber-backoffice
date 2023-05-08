@@ -34,4 +34,13 @@ const StatusIcon = ({
   return null;
 };
 
+StatusIcon.text = (status: "running" | "closed", start: string) => {
+  if (status === "running") {
+    if (new Date(start) > new Date()) return "Incoming";
+    return "Running";
+  }
+  if (status === "closed") return "Closed";
+  return "";
+};
+
 export default StatusIcon;

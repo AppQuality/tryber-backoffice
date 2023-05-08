@@ -29,4 +29,11 @@ const ResultTypeIcon = ({
   return null;
 };
 
+ResultTypeIcon.text = (resultType: "bug" | "bugparade" | "no") => {
+  if (resultType === "bug") return "Bugform Enabled";
+  if (resultType === "bugparade") return "Bug Parade";
+  if (resultType === "no") return "Bugform Disabled";
+  return "";
+};
+
 export default ResultTypeIcon;
