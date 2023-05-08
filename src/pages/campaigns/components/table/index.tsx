@@ -1,4 +1,9 @@
-import { Pagination, Table, Title } from "@appquality/appquality-design-system";
+import {
+  Button,
+  Pagination,
+  Table,
+  Title,
+} from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { useFiltersCardContext } from "./FilterContext";
 import CampaignTypes from "./Filters/CampaignTypes";
@@ -37,8 +42,33 @@ const CampaignsTable = () => {
   return (
     <>
       <FilterContainer className="aq-my-3">
-        <div style={{ width: "40%" }}>
+        <div
+          style={{
+            width: "40%",
+            display: "flex",
+            gap: "8px",
+            alignItems: "center",
+          }}
+        >
           <Title size="l">My Campaigns</Title>
+          <div>
+            <Button
+              size="sm"
+              type="secondary"
+              flat
+              onClick={(e) => {
+                window.parent.postMessage(
+                  JSON.stringify({
+                    type: "open-new-campaign",
+                    newTab: e.ctrlKey || e.metaKey ? true : undefined,
+                  }),
+                  "*"
+                );
+              }}
+            >
+              Add campaign
+            </Button>
+          </div>
         </div>
         <div style={{ width: "25ch" }}>
           <MyCampaign />
