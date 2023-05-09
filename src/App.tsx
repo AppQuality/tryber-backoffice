@@ -40,7 +40,6 @@ function App() {
             <Route path={`/backoffice/new`} component={Create} />
             <Route path="/backoffice/payments" component={AdminPayments} />
             <Route path="/backoffice/jotform" component={Jotform} />
-            <Route path="/backoffice/campaigns" component={Campaigns} />
             <Route
               path="/backoffice/campaigns/preselection-forms"
               component={CampaignPreselectionList}
@@ -57,6 +56,7 @@ function App() {
               path="/backoffice/campaigns/:id/selection"
               component={SelectionPage}
             />
+            <Route path="/backoffice/campaigns" component={Campaigns} />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
           </Switch>
