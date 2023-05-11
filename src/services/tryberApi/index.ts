@@ -781,7 +781,7 @@ export type GetCampaignsApiResponse = /** status 200 OK */ {
     customerTitle?: string;
     startDate?: string;
     endDate?: string;
-    status?: "running" | "closed";
+    status?: "running" | "closed" | "incoming";
     visibility?: "admin" | "smallgroup" | "logged" | "public";
     resultType?: "bug" | "bugparade" | "no";
     csm?: {

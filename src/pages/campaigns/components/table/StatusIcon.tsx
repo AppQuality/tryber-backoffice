@@ -23,22 +23,21 @@ const StatusIcon = ({
   status,
   start,
 }: {
-  status: "running" | "closed";
+  status: "running" | "closed" | "incoming";
   start: string;
 }) => {
-  if (status === "running") {
-    if (new Date(start) > new Date()) return <Incoming />;
-    return <Running />;
-  }
+  if (status === "running") return <Running />;
+  if (status === "incoming") return <Incoming />;
   if (status === "closed") return <Closed />;
   return null;
 };
 
-StatusIcon.text = (status: "running" | "closed", start: string) => {
-  if (status === "running") {
-    if (new Date(start) > new Date()) return "Incoming";
-    return "Running";
-  }
+StatusIcon.text = (
+  status: "running" | "closed" | "incoming",
+  start: string
+) => {
+  if (status === "running") return "Running";
+  if (status === "incoming") return "Incoming";
   if (status === "closed") return "Closed";
   return "";
 };
