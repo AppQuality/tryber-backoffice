@@ -25,7 +25,19 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     getCampaigns: build.query<GetCampaignsApiResponse, GetCampaignsApiArg>({
-      query: () => ({ url: `/campaigns` }),
+      query: (queryArg) => ({
+        url: `/campaigns`,
+        params: {
+          fields: queryArg.fields,
+          start: queryArg.start,
+          limit: queryArg.limit,
+          mine: queryArg.mine,
+          search: queryArg.search,
+          order: queryArg.order,
+          orderBy: queryArg.orderBy,
+          filterBy: queryArg.filterBy,
+        },
+      }),
     }),
     getCampaignsByCampaign: build.query<
       GetCampaignsByCampaignApiResponse,
@@ -218,6 +230,12 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/stats` }),
     }),
+    getCampaignTypes: build.query<
+      GetCampaignTypesApiResponse,
+      GetCampaignTypesApiArg
+    >({
+      query: () => ({ url: `/campaignTypes` }),
+    }),
     getCertifications: build.query<
       GetCertificationsApiResponse,
       GetCertificationsApiArg
@@ -238,32 +256,6 @@ const injectedRtkApi = api.injectEndpoints({
     }),
     getCustomers: build.query<GetCustomersApiResponse, GetCustomersApiArg>({
       query: () => ({ url: `/customers` }),
-    }),
-    postCustomers: build.mutation<
-      PostCustomersApiResponse,
-      PostCustomersApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/customers`,
-        method: "POST",
-        body: queryArg.customer,
-      }),
-    }),
-    getCustomersByCustomer: build.query<
-      GetCustomersByCustomerApiResponse,
-      GetCustomersByCustomerApiArg
-    >({
-      query: (queryArg) => ({ url: `/customers/${queryArg.customer}` }),
-    }),
-    putCustomersByCustomer: build.mutation<
-      PutCustomersByCustomerApiResponse,
-      PutCustomersByCustomerApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/customers/${queryArg.customer}`,
-        method: "PUT",
-        body: queryArg.body,
-      }),
     }),
     getCustomUserFields: build.query<
       GetCustomUserFieldsApiResponse,
@@ -783,10 +775,50 @@ export type PostCampaignsApiArg = {
   };
 };
 export type GetCampaignsApiResponse = /** status 200 OK */ {
-  id?: number;
-  name?: string;
-}[];
-export type GetCampaignsApiArg = void;
+  items?: {
+    id?: number;
+    name?: string;
+    customerTitle?: string;
+    startDate?: string;
+    endDate?: string;
+    status?: "running" | "closed" | "incoming";
+    visibility?: "admin" | "smallgroup" | "logged" | "public";
+    resultType?: "bug" | "bugparade" | "no";
+    csm?: {
+      id: number;
+      name: string;
+      surname: string;
+    };
+    customer?: {
+      id?: number;
+      name: string;
+    };
+    type?: {
+      name: string;
+      area: "quality" | "experience";
+    };
+    project?: {
+      id?: number;
+      name: string;
+    };
+  }[];
+} & PaginationData;
+export type GetCampaignsApiArg = {
+  fields?: string;
+  /** Items to skip for pagination */
+  start?: number;
+  /** Max items to retrieve */
+  limit?: number;
+  /** Return only your campaign? */
+  mine?: "true";
+  /** A value to search in id or title */
+  search?: string;
+  /** How to order values (ASC, DESC) */
+  order?: "ASC" | "DESC";
+  /** The parameter to order by */
+  orderBy?: "id" | "startDate" | "endDate";
+  filterBy?: any;
+};
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
   title: string;
@@ -1165,6 +1197,11 @@ export type GetCampaignsByCampaignStatsApiResponse = /** status 200 OK */ {
 export type GetCampaignsByCampaignStatsApiArg = {
   campaign: string;
 };
+export type GetCampaignTypesApiResponse = /** status 200  */ {
+  id: number;
+  name: string;
+}[];
+export type GetCampaignTypesApiArg = void;
 export type GetCertificationsApiResponse = /** status 200 OK */ {
   id: number;
   name: string;
@@ -1184,28 +1221,11 @@ export type GetCountriesByCodeRegionApiArg = {
   languageCode?: string;
 };
 export type GetCustomersApiResponse =
-  /** status 200 An array of Customer objects */ (Customer & {
+  /** status 200 An array of Customer objects */ {
     id?: number;
-  })[];
+    name?: string;
+  }[];
 export type GetCustomersApiArg = void;
-export type PostCustomersApiResponse = /** status 201 Created */ undefined;
-export type PostCustomersApiArg = {
-  /** The customer you want to create */
-  customer: Customer;
-};
-export type GetCustomersByCustomerApiResponse =
-  /** status 200 The Customer data you requested */ Customer;
-export type GetCustomersByCustomerApiArg = {
-  /** A customer id */
-  customer: string;
-};
-export type PutCustomersByCustomerApiResponse = /** status 200 OK */ undefined;
-export type PutCustomersByCustomerApiArg = {
-  /** A customer id */
-  customer: string;
-  /** The Customer data to edit */
-  body: Customer;
-};
 export type GetCustomUserFieldsApiResponse = /** status 200 OK */ {
   group: {
     id: number;
@@ -2142,15 +2162,15 @@ export type Campaign = CampaignOptional & CampaignRequired;
 export type Project = {
   name?: string;
 };
-export type BugTag = {
-  id: number;
-  name: string;
-};
 export type PaginationData = {
   start: number;
   limit?: number;
   size: number;
   total?: number;
+};
+export type BugTag = {
+  id: number;
+  name: string;
 };
 export type TaskOptional = {
   name?: string;
@@ -2185,9 +2205,6 @@ export type PreselectionFormQuestion = {
     }
 );
 export type ProspectStatus = "draft" | "confirmed" | "done";
-export type Customer = User & {
-  customer_name?: string;
-};
 export type CustomUserFieldsType = "text" | "select" | "multiselect";
 export type CustomUserFieldsDataOption = {
   id: number;
@@ -2332,12 +2349,10 @@ export const {
   usePutCampaignsByCampaignProspectMutation,
   usePatchCampaignsByCampaignProspectMutation,
   useGetCampaignsByCampaignStatsQuery,
+  useGetCampaignTypesQuery,
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
   useGetCustomersQuery,
-  usePostCustomersMutation,
-  useGetCustomersByCustomerQuery,
-  usePutCustomersByCustomerMutation,
   useGetCustomUserFieldsQuery,
   useGetDevicesByDeviceTypeModelsQuery,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,

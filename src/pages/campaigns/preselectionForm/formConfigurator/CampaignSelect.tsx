@@ -1,7 +1,7 @@
 import {
-  Select,
-  FormikField,
   FieldProps,
+  FormikField,
+  Select,
 } from "@appquality/appquality-design-system";
 import { useGetCampaignsQuery } from "src/services/tryberApi";
 
@@ -51,7 +51,9 @@ export const CampaignSelect = ({
 };
 
 const useSelectOptions = () => {
-  const { data, isLoading } = useGetCampaignsQuery();
+  const { data, isLoading } = useGetCampaignsQuery({
+    fields: "id,name",
+  });
 
   if (isLoading) {
     return {
@@ -61,8 +63,8 @@ const useSelectOptions = () => {
       hasValue: (value: SelectOptionType) => false,
     };
   }
-
-  const validCampaigns = (data?.filter((c) => c.id && c.name) || []) as {
+  const campaigns = data?.items || [];
+  const validCampaigns = (campaigns.filter((c) => c.id && c.name) || []) as {
     id: number;
     name: string;
   }[];
