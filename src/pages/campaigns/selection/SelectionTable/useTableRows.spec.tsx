@@ -1,14 +1,13 @@
-import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableRows";
-import { rest } from "msw";
-import { renderHook } from "@testing-library/react-hooks";
-import { getCandidatesMock } from "src/pages/campaigns/selection/SelectionTable/_mocked_data_";
-import { setupStore } from "src/store";
-import { Provider } from "react-redux";
-import { FC } from "react";
 import { aqBootstrapTheme } from "@appquality/appquality-design-system";
-import { ThemeProvider } from "styled-components";
-import { initialState } from "src/pages/campaigns/selection/selectionSlice";
+import { renderHook } from "@testing-library/react-hooks";
+import { rest } from "msw";
 import { setupServer } from "msw/node";
+import { Provider } from "react-redux";
+import { getCandidatesMock } from "src/pages/campaigns/selection/SelectionTable/_mocked_data_";
+import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableRows";
+import { initialState } from "src/pages/campaigns/selection/selectionSlice";
+import { setupStore } from "src/store";
+import { ThemeProvider } from "styled-components";
 
 const handlers = [
   rest.get("https://dv-crowd.app-quality.com/api/users/me", (req, res, ctx) => {
@@ -36,7 +35,7 @@ afterAll(() => server.close());
 
 describe("useTableRows", () => {
   it("should return a list of rows", async function () {
-    const wrapper: FC = ({ children }) => (
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
       <ThemeProvider theme={aqBootstrapTheme}>
         <Provider
           store={setupStore({

@@ -4,20 +4,21 @@ import {
   aqBootstrapTheme,
   GlobalStyle,
 } from "@appquality/appquality-design-system";
+import { Provider } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import BugsList from "src/pages/BugsList";
+import CampaignPreselection from "src/pages/campaigns/preselectionForm";
 import AdminPayments from "src/pages/Payments";
 import Create from "src/pages/Popups/Create";
 import List from "src/pages/Popups/List";
-import BugsList from "src/pages/BugsList";
 import Update from "src/pages/Popups/Update";
-import CampaignPreselection from "src/pages/campaigns/preselectionForm";
-import { Provider } from "react-redux";
 import { setupStore } from "src/store";
 import { ThemeProvider } from "styled-components";
 import SiteWideMessages from "./features/SiteWideMessages";
-import Jotform from "./pages/Jotform";
+import Campaigns from "./pages/campaigns";
 import CampaignPreselectionList from "./pages/campaigns/preselectionFormList";
 import SelectionPage from "./pages/campaigns/selection";
+import Jotform from "./pages/Jotform";
 import Prospect from "./pages/Prospect";
 
 function App() {
@@ -41,11 +42,9 @@ function App() {
             <Route path="/backoffice/jotform" component={Jotform} />
             <Route
               path="/backoffice/campaigns/preselection-forms"
-              exact
               component={CampaignPreselectionList}
             />
             <Route
-              exact
               path="/backoffice/campaigns/preselection-forms/new"
               component={CampaignPreselection}
             />
@@ -55,9 +54,9 @@ function App() {
             />
             <Route
               path="/backoffice/campaigns/:id/selection"
-              exact
               component={SelectionPage}
             />
+            <Route path="/backoffice/campaigns" component={Campaigns} />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
           </Switch>
