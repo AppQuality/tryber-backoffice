@@ -41,16 +41,16 @@ function App() {
             <Route path="/backoffice/payments" component={AdminPayments} />
             <Route path="/backoffice/jotform" component={Jotform} />
             <Route
-              path="/backoffice/campaigns/preselection-forms"
-              component={CampaignPreselectionList}
-            />
-            <Route
               path="/backoffice/campaigns/preselection-forms/new"
               component={CampaignPreselection}
             />
             <Route
               path="/backoffice/campaigns/preselection-forms/:id"
               component={CampaignPreselection}
+            />
+            <Route
+              path="/backoffice/campaigns/preselection-forms"
+              component={CampaignPreselectionList}
             />
             <Route
               path="/backoffice/campaigns/:id/selection"
