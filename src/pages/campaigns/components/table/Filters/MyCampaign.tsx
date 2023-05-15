@@ -13,27 +13,27 @@ const MyCampaign = () => {
   if (isLoading || !data || ownersLoading || !owners) return null;
 
   const myId = data.id;
-  const options = owners.map((owner) =>
-    owner.id === myId
-      ? {
-          value: "mine",
-          label: "Managed by me",
-        }
-      : {
-          value: owner.id.toString(),
-          label: `${owner.name.charAt(0).toUpperCase()}. ${owner.surname}`,
-        }
-  );
+  const options = owners
+    .filter((owner) => owner.id !== myId)
+    .map((owner) => ({
+      value: owner.id.toString(),
+      label: `${owner.name.charAt(0).toUpperCase()}. ${owner.surname}`,
+    }));
 
   let currentValue = "all";
   if (filters?.csm === myId) currentValue = "mine";
   else if (filters?.csm) currentValue = filters.csm.toString();
+
   return (
     <Select
       name="mine"
       label=""
       isClearable={false}
-      options={[...options, { value: "all", label: "Managed by anyone" }]}
+      options={[
+        { value: "mine", label: "Managed by me" },
+        { value: "all", label: "Managed by anyone" },
+        ...options,
+      ]}
       onChange={(item) => {
         if (item.value === "mine") setFilters({ csm: myId });
         else if (item.value === "all") setFilters({ csm: undefined });
