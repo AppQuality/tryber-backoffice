@@ -39,6 +39,12 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getCampaignsOwners: build.query<
+      GetCampaignsOwnersApiResponse,
+      GetCampaignsOwnersApiArg
+    >({
+      query: () => ({ url: `/campaigns/owners` }),
+    }),
     getCampaignsByCampaign: build.query<
       GetCampaignsByCampaignApiResponse,
       GetCampaignsByCampaignApiArg
@@ -825,6 +831,12 @@ export type GetCampaignsApiArg = {
   orderBy?: "id" | "startDate" | "endDate";
   filterBy?: any;
 };
+export type GetCampaignsOwnersApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  surname: string;
+}[];
+export type GetCampaignsOwnersApiArg = void;
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
   title: string;
@@ -2344,6 +2356,7 @@ export const {
   usePostAuthenticateMutation,
   usePostCampaignsMutation,
   useGetCampaignsQuery,
+  useGetCampaignsOwnersQuery,
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
   useGetCampaignsByCampaignBugsQuery,
