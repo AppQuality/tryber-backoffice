@@ -7,6 +7,7 @@ type Filters = {
   customer?: number[];
   type?: number[];
   status?: "running" | "incoming" | "closed";
+  csm?: number;
 };
 
 const DefaultOrder: {
