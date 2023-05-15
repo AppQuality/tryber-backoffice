@@ -49,6 +49,7 @@ const useCampaigns = (options?: {
       type: filters?.type ? filters.type.join(",") : undefined,
       customer: filters?.customer ? filters.customer.join(",") : undefined,
       status: filters?.status ? filters.status : undefined,
+      csm: filters?.csm ? filters.csm : undefined,
     },
     orderBy: order.field,
     order: order.direction,
