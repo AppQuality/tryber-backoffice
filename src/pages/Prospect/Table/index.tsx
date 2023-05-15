@@ -1,10 +1,13 @@
 import { Button, aqBootstrapTheme } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
+import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+import { useAppDispatch } from "src/store";
 import styled from "styled-components";
 import EdiTable from "../EdiTable";
 import { Row } from "../types";
 import ActionBar from "./ActionBar";
 import ErrorHandler from "./ErrorHandler";
+import GroupSelect from "./GroupSelect";
 import InfoDrawer from "./InfoDrawer";
 import { MessageWrapper } from "./MessageWrapper";
 import PayTesterButton from "./PayTesterButton";
@@ -13,8 +16,6 @@ import StatusSelector from "./StatusSelector";
 import useCanPay from "./useCanPay";
 import useColumns from "./useColumns";
 import useProspectItems from "./useProspectItems";
-import { addMessage } from "src/redux/siteWideMessages/actionCreators";
-import { useAppDispatch } from "src/store";
 
 const EdiTableWithType = EdiTable<Row>;
 
@@ -40,10 +41,12 @@ const Table = ({
   const [selectionMode, setSelectionMode] = useState<"include" | "exclude">(
     "include"
   );
+  const [groups, setGroups] = useState<number[]>([]);
   const { items, isLoading, error, isDone, updateTester } = useProspectItems({
     id,
     testerFilter: selectedTesters,
     selectionMode,
+    groupsFilter: groups,
   });
 
   const { columns } = useColumns({ isDone });
@@ -146,7 +149,12 @@ const Table = ({
           <StatusSelector id={id} disabled={isDone} />
           <PayTesterButton
             id={id}
-            disabled={isDone || !canPay || selectedTesters.length > 0}
+            disabled={
+              isDone ||
+              !canPay ||
+              selectedTesters.length > 0 ||
+              groups.length > 0
+            }
             testers={items
               .map((i) => ({
                 tester: {
@@ -178,6 +186,13 @@ const Table = ({
             .filter((i) => i > 0);
           setSelectedTesters(list);
           mode && setSelectionMode(mode);
+        }}
+      />
+      <GroupSelect
+        campaignId={id}
+        current={groups}
+        onChange={(groupIds) => {
+          setGroups(groupIds);
         }}
       />
       {

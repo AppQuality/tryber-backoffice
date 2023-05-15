@@ -71,6 +71,12 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getCampaignsByCampaignGroups: build.query<
+      GetCampaignsByCampaignGroupsApiResponse,
+      GetCampaignsByCampaignGroupsApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/groups` }),
+    }),
     postCampaignsByCampaignCandidates: build.mutation<
       PostCampaignsByCampaignCandidatesApiResponse,
       PostCampaignsByCampaignCandidatesApiArg
@@ -882,6 +888,14 @@ export type GetCampaignsByCampaignBugsApiArg = {
   /** Key-value Array for item filtering */
   filterBy?: object;
 };
+export type GetCampaignsByCampaignGroupsApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+}[];
+export type GetCampaignsByCampaignGroupsApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
 export type PostCampaignsByCampaignCandidatesApiResponse =
   /** status 200 OK */
   | {
@@ -1124,6 +1138,7 @@ export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
       id: number;
       name: string;
       surname: string;
+      group: number;
     };
     usecases: {
       completed: number;
@@ -2332,6 +2347,7 @@ export const {
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
   useGetCampaignsByCampaignBugsQuery,
+  useGetCampaignsByCampaignGroupsQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignCandidatesQuery,
   useGetCampaignsByCampaignPayoutsQuery,
