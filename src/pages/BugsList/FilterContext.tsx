@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import useSearchParams from "./useSearchParams";
 
 type Filters = {
   severities?: number[];
@@ -37,7 +38,16 @@ const Context = createContext<{
 });
 
 const FiltersContext = ({ children }: { children: React.ReactNode }) => {
-  const [filters, setFilters] = useState({});
+  const queryParams = useSearchParams();
+  const [filters, setFilters] = useState(
+    queryParams.filterBy
+      ? {
+          status: queryParams.filterBy.status
+            ? queryParams.filterBy.status
+            : undefined,
+        }
+      : {}
+  );
   const [order, setOrder] = useState<typeof DefaultOrder>(DefaultOrder);
   const [page, setPage] = useState(1);
 
