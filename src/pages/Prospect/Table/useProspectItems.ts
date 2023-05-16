@@ -64,17 +64,8 @@ const useProspectItems = ({
           return {
             isTopTester: d.isTopTester,
             testerId: `T${d.tester.id}`,
-            tester: `${d.tester.name.charAt(0)}. ${d.tester.surname} ${
-              d.tester.group === 1
-                ? "1️⃣"
-                : d.tester.group === 2
-                ? "2️⃣"
-                : d.tester.group === 3
-                ? "3️⃣"
-                : d.tester.group === 4
-                ? "4️⃣"
-                : "#️⃣"
-            }`,
+            tester: `${d.tester.name.charAt(0)}. ${d.tester.surname}`,
+            group: d.tester.group,
             completed: d.isCompleted ? ("Payable" as const) : ("No" as const),
             useCaseCompleted: `${d.usecases.completed}/`,
             useCaseTotal: `${d.usecases.required} UC`,
