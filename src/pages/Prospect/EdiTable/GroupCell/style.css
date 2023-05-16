@@ -1,0 +1,13 @@
+.rg-group-cell {
+  justify-content: center;
+  background-color: #f2f2f2;
+}
+
+.rg-group-wrapper {
+  width: 50%;
+  height: 80%;
+  background-size: cover;
+  border: 1px solid #cccccc;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
