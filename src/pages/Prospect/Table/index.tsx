@@ -177,24 +177,27 @@ const Table = ({
           />
         </div>
       </ActionBar>
-      <SearchBar
-        className="aq-my-1"
-        onClick={(v, mode) => {
-          const list = v
-            .split(",")
-            .map((i) => Number(i.replace(/\D/g, "")))
-            .filter((i) => i > 0);
-          setSelectedTesters(list);
-          mode && setSelectionMode(mode);
-        }}
-      />
-      <GroupSelect
-        campaignId={id}
-        current={groups}
-        onChange={(groupIds) => {
-          setGroups(groupIds);
-        }}
-      />
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <SearchBar
+          className="aq-my-1"
+          onClick={(v, mode) => {
+            const list = v
+              .split(",")
+              .map((i) => Number(i.replace(/\D/g, "")))
+              .filter((i) => i > 0);
+            setSelectedTesters(list);
+            mode && setSelectionMode(mode);
+          }}
+        />
+        <GroupSelect
+          style={{ width: "30%" }}
+          campaignId={id}
+          current={groups}
+          onChange={(groupIds) => {
+            setGroups(groupIds);
+          }}
+        />
+      </div>
       {
         <MyEdiTable
           onRowChange={(row, oldRow) => {
@@ -208,6 +211,7 @@ const Table = ({
             {
               isTopTester: false,
               testerId: "TOTAL",
+              group: 0,
               tester: "",
               completed: "",
               useCaseCompleted: "",
@@ -264,7 +268,7 @@ const Table = ({
                   },
                 ]
           }
-          stickyLeftColumns={3}
+          stickyLeftColumns={4}
         />
       }
     </>

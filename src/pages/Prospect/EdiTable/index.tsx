@@ -12,6 +12,7 @@ import {
 import "@silevis/reactgrid/styles.css";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { GroupCell, GroupCellTemplate } from "./GroupCell";
 import { NumberCellTemplate } from "./NumberCell";
 import { SelectCell, SelectCellTemplate } from "./SelectCell";
 import { StarCell, StarCellTemplate } from "./StarCell";
@@ -142,6 +143,7 @@ function EdiTable<T extends { [key: string]: string | number | boolean }>({
             star: new StarCellTemplate(),
             number: new NumberCellTemplate(),
             select: new SelectCellTemplate(),
+            group: new GroupCellTemplate(),
           }}
           onContextMenu={
             contextMenu
@@ -179,7 +181,7 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
   items: Item<T>[]
 ) {
   return items.map<
-    Row<DefaultCellTypes | UneditableCell | StarCell | SelectCell>
+    Row<DefaultCellTypes | UneditableCell | StarCell | SelectCell | GroupCell>
   >((item, idx) => ({
     rowId: idx,
     cells: columns.map((column, idx) => {
@@ -197,6 +199,13 @@ function getRowItems<T extends { [key: string]: string | number | boolean }>(
           return {
             type: "star",
             value: value ? 1 : 0,
+            text: "",
+            style: item.style || {},
+          };
+        } else if (column.type === "group" && typeof value === "number") {
+          return {
+            type: "group",
+            value: value,
             text: "",
             style: item.style || {},
           };
@@ -280,6 +289,14 @@ function getSubHeader<T extends { [key: string]: string | number | boolean }>(
         rowId: `subheader-${idx}`,
         cells: columns.map((column, idx) => {
           if (Object.keys(b).includes(column.key)) {
+            if (["star", "group"].includes(column.type)) {
+              return {
+                type: "header",
+                text: "",
+                columnId: column.key,
+                className: "subheader headercell",
+              };
+            }
             const value = b[column.key as keyof typeof b];
             const text =
               typeof value === "number"

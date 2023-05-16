@@ -82,7 +82,7 @@ const SearchBar = ({
       />
       <div style={{ flexShrink: 0 }}>
         <Button type="info" flat onClick={() => onClick(value, mode)}>
-          Filter Testers
+          Search
         </Button>
       </div>
     </Container>

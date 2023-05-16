@@ -3,10 +3,10 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Column } from "../EdiTable/types";
 import { Row } from "../types";
-import { bugRenderer, euroRenderer, pointsRenderer } from "./cellRenderer";
 import OpenableColumnButton from "./OpenableColumnButton";
+import { bugRenderer, euroRenderer, pointsRenderer } from "./cellRenderer";
 
-const { TrophyFill } = icons;
+const { TrophyFill, PeopleFill } = icons;
 
 const ColoredCell = styled.div<{
   color: keyof (typeof aqBootstrapTheme)["colors"];
@@ -31,6 +31,24 @@ const useColumns = ({ isDone }: { isDone: boolean }) => {
       type: "uneditable",
     },
     { name: "Name", key: "tester", width: 150, type: "uneditable" },
+    {
+      name: "G.",
+      key: "group",
+      children: (
+        <div
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            display: "grid",
+          }}
+        >
+          <PeopleFill />
+        </div>
+      ),
+      width: 25,
+      type: "group",
+    },
     {
       name: "★",
       key: "isTopTester",

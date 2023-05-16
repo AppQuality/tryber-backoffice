@@ -6,7 +6,7 @@ export type Column<T> = {
   renderer?: (item: Item<T>[keyof T]) => string;
 } & (
   | {
-      type: "number" | "text" | "uneditable" | "star";
+      type: "number" | "text" | "uneditable" | "star" | "group";
     }
   | {
       type: "select";
