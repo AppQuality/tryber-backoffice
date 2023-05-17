@@ -4,14 +4,14 @@ import {
   Button,
   Title,
 } from "@appquality/appquality-design-system";
-import Filters from "./Filters";
-import Table from "./Table";
-import FilterContext from "./FilterContext";
-import { useParams } from "react-router-dom";
-import TagsFilter from "./Filters/TagsFilter";
 import { useState } from "react";
-import Stats from "./Stats";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import FilterContext from "./FilterContext";
+import Filters from "./Filters";
+import TagsFilter from "./Filters/TagsFilter";
+import Stats from "./Stats";
+import Table from "./Table";
 
 const FluidContainer = styled.div`
     max-width: 90%;

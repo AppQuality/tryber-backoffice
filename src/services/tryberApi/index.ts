@@ -39,6 +39,12 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getCampaignsOwners: build.query<
+      GetCampaignsOwnersApiResponse,
+      GetCampaignsOwnersApiArg
+    >({
+      query: () => ({ url: `/campaigns/owners` }),
+    }),
     getCampaignsByCampaign: build.query<
       GetCampaignsByCampaignApiResponse,
       GetCampaignsByCampaignApiArg
@@ -70,6 +76,12 @@ const injectedRtkApi = api.injectEndpoints({
           filterBy: queryArg.filterBy,
         },
       }),
+    }),
+    getCampaignsByCampaignGroups: build.query<
+      GetCampaignsByCampaignGroupsApiResponse,
+      GetCampaignsByCampaignGroupsApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/groups` }),
     }),
     postCampaignsByCampaignCandidates: build.mutation<
       PostCampaignsByCampaignCandidatesApiResponse,
@@ -819,6 +831,12 @@ export type GetCampaignsApiArg = {
   orderBy?: "id" | "startDate" | "endDate";
   filterBy?: any;
 };
+export type GetCampaignsOwnersApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  surname: string;
+}[];
+export type GetCampaignsOwnersApiArg = void;
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
   title: string;
@@ -881,6 +899,14 @@ export type GetCampaignsByCampaignBugsApiArg = {
   orderBy?: "severity" | "testerId" | "status" | "type" | "id";
   /** Key-value Array for item filtering */
   filterBy?: object;
+};
+export type GetCampaignsByCampaignGroupsApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+}[];
+export type GetCampaignsByCampaignGroupsApiArg = {
+  /** A campaign id */
+  campaign: string;
 };
 export type PostCampaignsByCampaignCandidatesApiResponse =
   /** status 200 OK */
@@ -1124,6 +1150,7 @@ export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
       id: number;
       name: string;
       surname: string;
+      group: number;
     };
     usecases: {
       completed: number;
@@ -2329,9 +2356,11 @@ export const {
   usePostAuthenticateMutation,
   usePostCampaignsMutation,
   useGetCampaignsQuery,
+  useGetCampaignsOwnersQuery,
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
   useGetCampaignsByCampaignBugsQuery,
+  useGetCampaignsByCampaignGroupsQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignCandidatesQuery,
   useGetCampaignsByCampaignPayoutsQuery,
