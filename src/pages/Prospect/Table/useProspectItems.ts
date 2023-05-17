@@ -12,10 +12,12 @@ const useProspectItems = ({
   id,
   testerFilter,
   selectionMode,
+  groupsFilter,
 }: {
   id: string;
   testerFilter?: number[];
   selectionMode?: "include" | "exclude";
+  groupsFilter?: number[];
 }) => {
   const [items, setItems] = useState<(Row & CellStyle)[]>([]);
   const { data: payouts, isLoading: isLoadingPayouts } =
@@ -24,14 +26,32 @@ const useProspectItems = ({
     });
   const [updateTester] = usePutCampaignsByCampaignProspectAndTesterIdMutation();
 
+  let filter: {
+    filterByInclude?: { ids?: string; groups?: string };
+    filterByExclude?: { ids?: string; groups?: string };
+  } = {};
+
+  if (testerFilter) {
+    if (selectionMode === "include") {
+      filter = { filterByInclude: { ids: testerFilter.join(",") } };
+    } else if (selectionMode === "exclude") {
+      filter = { filterByExclude: { ids: testerFilter.join(",") } };
+    }
+  }
+
+  if (groupsFilter) {
+    filter = {
+      ...filter,
+      filterByInclude: {
+        ...(filter.filterByInclude || {}),
+        groups: groupsFilter.join(","),
+      },
+    };
+  }
+
   const { data, isLoading, error } = useGetCampaignsByCampaignProspectQuery({
     campaign: id,
-    ...(testerFilter && selectionMode === "include"
-      ? { filterByInclude: { ids: testerFilter.join(",") } }
-      : {}),
-    ...(testerFilter && selectionMode === "exclude"
-      ? { filterByExclude: { ids: testerFilter.join(",") } }
-      : {}),
+    ...filter,
   });
 
   useEffect(() => {
@@ -45,6 +65,7 @@ const useProspectItems = ({
             isTopTester: d.isTopTester,
             testerId: `T${d.tester.id}`,
             tester: `${d.tester.name.charAt(0)}. ${d.tester.surname}`,
+            group: d.tester.group,
             completed: d.isCompleted ? ("Payable" as const) : ("No" as const),
             useCaseCompleted: `${d.usecases.completed}/`,
             useCaseTotal: `${d.usecases.required} UC`,
