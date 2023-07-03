@@ -20,6 +20,7 @@ import CampaignPreselectionList from "./pages/campaigns/preselectionFormList";
 import SelectionPage from "./pages/campaigns/selection";
 import Jotform from "./pages/Jotform";
 import Prospect from "./pages/Prospect";
+import Agreements from "./pages/agreements";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
               component={SelectionPage}
             />
             <Route path="/backoffice/campaigns" component={Campaigns} />
+            <Route path="/backoffice/agreements" component={Agreements} />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
           </Switch>
