@@ -21,9 +21,8 @@ import SelectionPage from "./pages/campaigns/selection";
 import Jotform from "./pages/Jotform";
 import Prospect from "./pages/Prospect";
 import AgreementsList from "./pages/agreements/list";
-import SingleAgreementView from "./pages/agreements/single-view";
-import SingleAgreementEdit from "./pages/agreements/single-edit";
-import SingleAgreementNew from "./pages/agreements/single-new";
+import SingleAgreementEdit from "./pages/agreements/view-edit";
+import SingleAgreementNew from "./pages/agreements/new";
 
 function App() {
   return (
@@ -64,10 +63,6 @@ function App() {
             <Route path="/backoffice/agreements" component={AgreementsList} />
             <Route
               path="/backoffice/agreements/:id"
-              component={SingleAgreementView}
-            />
-            <Route
-              path="/backoffice/agreements/:id/edit"
               component={SingleAgreementEdit}
             />
             <Route
