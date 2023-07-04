@@ -17,6 +17,12 @@ describe("Edit Single Agreement Page:", () => {
     cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/1/edit`);
     throw new Error("test should be implemented");
   });
+  it("how is the validation of the form?", () => {
+    cy.clearCookies();
+    cy.notLoggedIn();
+    cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/1/edit`);
+    throw new Error("test should be implemented");
+  });
   it("if the user click on the save button something should happen (qpi call to check for authorization? confirmation modal?)", () => {
     cy.clearCookies();
     cy.notLoggedIn();

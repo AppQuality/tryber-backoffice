@@ -44,7 +44,19 @@ describe("Agreements Table: ", () => {
     cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/`);
     throw new Error("test should be implemented");
   });
-  it("if an user click on a row it should open the signle agreement edit page", () => {
+  it("there should be a search input (or multiselect?) to filter results by client", () => {
+    cy.clearCookies();
+    cy.loggedIn();
+    cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/`);
+    throw new Error("test should be implemented");
+  });
+  it("there should be a button to add a new agreement, clicking on it link to the new agreementpage", () => {
+    cy.clearCookies();
+    cy.loggedIn();
+    cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/`);
+    throw new Error("test should be implemented");
+  });
+  it("if an user click on a row it should open the single agreement edit page", () => {
     cy.clearCookies();
     cy.loggedIn();
     cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/`);
