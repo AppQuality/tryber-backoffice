@@ -50,7 +50,7 @@ describe("Agreements Table: ", () => {
     cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/`);
     throw new Error("test should be implemented");
   });
-  it("there should be a button to add a new agreement, clicking on it link to the new agreementpage", () => {
+  it("there should be a button to add a new agreement, clicking on it brings to the new agreement page", () => {
     cy.clearCookies();
     cy.loggedIn();
     cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/`);
