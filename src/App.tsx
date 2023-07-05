@@ -60,15 +60,15 @@ function App() {
               component={SelectionPage}
             />
             <Route path="/backoffice/campaigns" component={Campaigns} />
-            <Route path="/backoffice/agreements" component={AgreementsList} />
-            <Route
-              path="/backoffice/agreements/:id"
-              component={SingleAgreementEdit}
-            />
             <Route
               path="/backoffice/agreements/new"
               component={SingleAgreementNew}
             />
+            <Route
+              path="/backoffice/agreements/:id"
+              component={SingleAgreementEdit}
+            />
+            <Route path="/backoffice/agreements" component={AgreementsList} />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
           </Switch>
