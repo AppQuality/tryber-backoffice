@@ -3,7 +3,14 @@ describe("New Single Agreement Page:", () => {
     cy.clearCookies();
     cy.loggedIn();
     cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/new`);
-    throw new Error("test should be implemented");
+    cy.get("input#title").should("be.visible");
+    cy.get("input#tokens").should("be.visible");
+    cy.get("input#tokenUnitPrice").should("be.visible");
+    cy.get("input#startDate").should("be.visible");
+    cy.get("input#closeDate").should("be.visible");
+    cy.get("input#isTokenBased").should("be.visible");
+    cy.get("textarea#notes").should("be.visible");
+    cy.get("div#customer").should("be.visible");
   });
   it("Validation: all required but notes, title is string, notes is string, start and close date are dates, token is number, token unit price is number (float), is token based is a boolean, customer id is number", () => {
     cy.clearCookies();
