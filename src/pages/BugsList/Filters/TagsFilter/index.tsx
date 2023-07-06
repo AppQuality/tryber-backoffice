@@ -1,4 +1,4 @@
-import { Card, Select } from "@appquality/appquality-design-system";
+import { Select } from "@appquality/appquality-design-system";
 import useTags from "./useTags";
 import { useFiltersCardContext } from "../../FilterContext";
 import { useEffect } from "react";
