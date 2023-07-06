@@ -1,11 +1,13 @@
+import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 import { AgreementForm } from "../components/AgreementForm";
+import { PageTitle } from "@appquality/appquality-design-system";
 
 const NewAgreementPage = () => {
   return (
-    <div>
-      <h1>New Agreement</h1>
+    <OpsUserContainer>
+      <PageTitle>New Agreement</PageTitle>
       <AgreementForm />
-    </div>
+    </OpsUserContainer>
   );
 };
 
