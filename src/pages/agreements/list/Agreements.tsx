@@ -99,6 +99,7 @@ export const Agreements = () => {
                 actions: (
                   <div title="Actions">
                     <Button
+                      // TODO: add useNavigate
                       onClick={() =>
                         (window.location.href = `/backoffice/agreements/${a.id}`)
                       }
@@ -108,6 +109,7 @@ export const Agreements = () => {
                       <EditIcon />
                     </Button>
                     <Button
+                      // TODO: add delete mutation
                       onClick={() =>
                         (window.location.href = `/backoffice/agreements/${a.id}/delete`)
                       }
