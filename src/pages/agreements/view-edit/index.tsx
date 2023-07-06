@@ -1,4 +1,4 @@
-import { PageTitle } from "@appquality/appquality-design-system";
+import { Card, PageTitle } from "@appquality/appquality-design-system";
 import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
 import { AgreementForm } from "../components/AgreementForm";
 import { useGetAgreementsByAgreementIdQuery } from "src/services/tryberApi";
@@ -19,7 +19,9 @@ const EditAgreementPage = () => {
       >
         {currentData?.title}
       </PageTitle>
-      <AgreementForm agreement={currentData} refetch={refetch} />
+      <Card className="aq-pb-4">
+        <AgreementForm agreement={currentData} refetch={refetch} />
+      </Card>
     </OpsUserContainer>
   );
 };
