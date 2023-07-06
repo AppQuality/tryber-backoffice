@@ -50,8 +50,8 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
     title: agreement?.title || "",
     tokens: agreement?.tokens || 0,
     tokenUnitPrice: agreement?.unitPrice || 0,
-    startDate: agreement?.startDate || "",
-    expirationDate: agreement?.expirationDate || "",
+    startDate: agreement?.startDate.split(" ")[0] || "",
+    expirationDate: agreement?.expirationDate.split(" ")[0] || "",
     isTokenBased: agreement?.isTokenBased || false,
     note: agreement?.note || "",
     customer: {
@@ -145,16 +145,47 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
           <Field type="number" name="tokens" />
           <FormLabel htmlFor="unitPrice" label="Token Unit Price" />
           <Field type="number" name="tokenUnitPrice" />
-          <FormLabel htmlFor="startDate" label="Start Date" />
-          <Field name="startDate" />
+          <FormikField name="startDate">
+            {({ field, form }: FieldProps) => {
+              return (
+                <FormGroup>
+                  <FormLabel htmlFor={field.name} label="Start Date" />
+                  <Datepicker
+                    value={field.value}
+                    id={field.name}
+                    locale="it"
+                    placeholder="Select a start date"
+                    setText="Set"
+                    cancelText="Cancel"
+                    onCancel={() => {
+                      form.setFieldValue("", field.name);
+                    }}
+                    onChange={(v: { value: Date }) => {
+                      if (!v.value) {
+                        v.value = new Date();
+                      }
+                      form.setFieldValue(
+                        field.name,
+                        `${v.value.getFullYear()}-${
+                          v.value.getMonth() + 1
+                        }-${v.value.getDate()}`
+                      );
+                    }}
+                  />
+                  <ErrorMessage name={field.name} />
+                </FormGroup>
+              );
+            }}
+          </FormikField>
           <FormikField name="expirationDate">
             {({ field, form }: FieldProps) => {
               return (
                 <FormGroup>
-                  <FormLabel htmlFor={field.name} label="Close Date" />
+                  <FormLabel htmlFor={field.name} label="Expiration Date" />
                   <Datepicker
                     value={field.value}
                     id={field.name}
+                    locale="it"
                     placeholder="Select a close date"
                     setText="Set"
                     cancelText="Cancel"
@@ -162,17 +193,14 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
                       form.setFieldValue("", field.name);
                     }}
                     onChange={(v: { value: Date }) => {
+                      if (!v.value) {
+                        v.value = new Date();
+                      }
                       form.setFieldValue(
                         field.name,
-                        v.value
-                          ? new Date(
-                              Date.UTC(
-                                v.value.getFullYear(),
-                                v.value.getMonth(),
-                                v.value.getDate()
-                              )
-                            )
-                          : ""
+                        `${v.value.getFullYear()}-${
+                          v.value.getMonth() + 1
+                        }-${v.value.getDate()}`
                       );
                     }}
                   />
