@@ -1,11 +1,11 @@
 import { Select } from "@appquality/appquality-design-system";
-import useTags from "./useTags";
+import useCustomerIds from "./useCustomerIds";
 import { useFiltersCardContext } from "../../FilterContext";
 import { useEffect } from "react";
 
-const TagsFilter = ({ id }: { id: string }) => {
+const CustomersFilter = ({ id }: { id: string }) => {
   const { filters, setFilters } = useFiltersCardContext();
-  const { tags, isLoading, isError, total } = useTags(id);
+  const { tags, isLoading, isError, total } = useCustomerIds(id);
 
   useEffect(() => {
     if (tags.length) {
@@ -49,4 +49,4 @@ const TagsFilter = ({ id }: { id: string }) => {
   );
 };
 
-export default TagsFilter;
+export default CustomersFilter;
