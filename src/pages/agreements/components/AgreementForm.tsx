@@ -214,6 +214,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
             {({ field }: FieldProps) => {
               return (
                 <Checkbox
+                  className="aq-mb-3"
                   id={field.name}
                   name={field.name}
                   defaultChecked={field.value}
@@ -246,7 +247,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
             }}
           </FormikField>
           <FormLabel htmlFor="note" label="Notes" />
-          <TextareaField name="note" placeholder="Notes" />
+          <TextareaField name="note" placeholder="Notes" className="aq-mb-3" />
           <Button htmlType="submit">Submit</Button>
         </Form>
       </Formik>
