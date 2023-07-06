@@ -4,7 +4,6 @@ import {
   Field,
   FormikField,
   FormLabel,
-  Select,
   TextareaField,
   Button,
   Checkbox,
@@ -12,46 +11,94 @@ import {
   FieldProps,
   ErrorMessage,
 } from "@appquality/appquality-design-system";
+import { FormikHelpers } from "formik";
 import * as yup from "yup";
+import siteWideMessageStore from "src/redux/siteWideMessages";
+import { CustomerSelect } from "./CustomerSelect";
+import { usePostAgreementsMutation } from "src/services/tryberApi";
+import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
+import { useHistory } from "react-router-dom";
 
 const AgreementForm = () => {
+  const [newAgreement] = usePostAgreementsMutation();
+  const history = useHistory();
+  const { add } = siteWideMessageStore();
   // todo: get Agreement data, if any
 
   type AgreementFormValues = {
     title: string;
-    tokens: string;
-    tokenUnitPrice: string;
+    tokens: number;
+    tokenUnitPrice: number;
     startDate: string;
-    closeDate: string;
-    isTokenBased?: boolean;
-    notes: string;
-    customer: string;
+    expirationDate: string;
+    isTokenBased: boolean;
+    note?: string;
+    customer: Option;
   };
   const initialValues: AgreementFormValues = {
     title: "",
-    tokens: "",
-    tokenUnitPrice: "",
+    tokens: 0,
+    tokenUnitPrice: 0,
     startDate: "",
-    closeDate: "",
+    expirationDate: "",
     isTokenBased: false,
-    notes: "",
-    customer: "",
+    note: "",
+    customer: {
+      label: "Select a customer",
+      value: "",
+    },
   };
 
   const validationSchema = yup.object({
     title: yup.string().required("Required"),
-    tokens: yup.string().required("Required"),
-    tokenUnitPrice: yup.string().required("Required"),
+    tokens: yup.number().required("Required"),
+    tokenUnitPrice: yup.number().required("Required"),
     startDate: yup.string().required("Required"),
     closeDate: yup.string().required("Required"),
     isTokenBased: yup.boolean().required("Required"),
-    notes: yup.string(),
-    customer: yup.string().required("Required"),
+    note: yup.string(),
+    customer: yup
+      .object({
+        label: yup.string().required("Required"),
+        value: yup.string().required("Required"),
+      })
+      .required("Required"),
   });
 
-  const onSubmit = (values: AgreementFormValues) => {
-    console.log(values);
+  const onSubmit = async (
+    values: AgreementFormValues,
+    actions: FormikHelpers<AgreementFormValues>
+  ) => {
+    actions.setSubmitting(true);
+    if (!values.customer.value) {
+      actions.setFieldError("customer", "Required");
+      actions.setSubmitting(false);
+      return;
+    }
+    const res = await newAgreement({
+      body: {
+        title: values.title,
+        tokens: values.tokens,
+        unitPrice: values.tokenUnitPrice,
+        startDate: values.startDate,
+        expirationDate: values.expirationDate,
+        isTokenBased: values.isTokenBased,
+        note: values.note,
+        customerId: parseInt(values.customer.value),
+      },
+    });
+
+    if (res && "data" in res) {
+      history.push(`/backoffice/agreements/${res.data.agreementId}`);
+      add({ type: "success", message: "Agreement saved" });
+    } else {
+      add({
+        type: "danger",
+        message: "There was an error",
+      });
+    }
   };
+
   return (
     <div>
       <Formik
@@ -63,12 +110,12 @@ const AgreementForm = () => {
           <FormLabel htmlFor="title" label="Title" />
           <Field name="title" />
           <FormLabel htmlFor="tokens" label="Tokens" />
-          <Field name="tokens" />
-          <FormLabel htmlFor="tokenUnitPrice" label="Token Unit Price" />
-          <Field name="tokenUnitPrice" />
+          <Field type="number" name="tokens" />
+          <FormLabel htmlFor="unitPrice" label="Token Unit Price" />
+          <Field type="number" name="tokenUnitPrice" />
           <FormLabel htmlFor="startDate" label="Start Date" />
           <Field name="startDate" />
-          <FormLabel htmlFor="closeDate" label="Close Date" />
+          <FormLabel htmlFor="expirationDate" label="Close Date" />
           <Field name="closeDate" />
           <FormLabel htmlFor="isTokenBased" label="Is Token Based" />
           <Checkbox id="isTokenBased" name="isTokenBased" />
@@ -76,27 +123,24 @@ const AgreementForm = () => {
             {({ field, form }: FieldProps) => {
               return (
                 <FormGroup>
-                  <Select
-                    data-qa="customer-select"
-                    isMulti
+                  <CustomerSelect
+                    isMulti={false}
                     name={field.name}
-                    onBlur={() => {
-                      form.setFieldTouched(field.name);
-                    }}
+                    value={field.value}
                     onChange={(value) => {
                       form.setFieldValue(field.name, value, true);
                     }}
-                    label="Customer"
-                    value={field.value}
-                    options={[]}
+                    onBlur={() => {
+                      form.setFieldTouched(field.name);
+                    }}
                   />
                   <ErrorMessage name={field.name} />
                 </FormGroup>
               );
             }}
           </FormikField>
-          <FormLabel htmlFor="notes" label="Notes" />
-          <TextareaField name="notes" placeholder="Notes" />
+          <FormLabel htmlFor="note" label="Notes" />
+          <TextareaField name="note" placeholder="Notes" />
           <Button htmlType="submit">Submit</Button>
         </Form>
       </Formik>
