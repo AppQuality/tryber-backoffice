@@ -14,7 +14,11 @@ const EditAgreementPage = () => {
   if (isError) return <div>there was an error</div>;
   return (
     <OpsUserContainer>
-      <PageTitle>{currentData?.title}</PageTitle>
+      <PageTitle
+        back={{ text: "back to list", navigation: "/backoffice/agreements" }}
+      >
+        {currentData?.title}
+      </PageTitle>
       <AgreementForm agreement={currentData} refetch={refetch} />
     </OpsUserContainer>
   );
