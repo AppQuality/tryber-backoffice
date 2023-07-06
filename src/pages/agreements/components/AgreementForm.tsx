@@ -15,15 +15,24 @@ import { FormikHelpers } from "formik";
 import * as yup from "yup";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import { CustomerSelect } from "./CustomerSelect";
-import { usePostAgreementsMutation } from "src/services/tryberApi";
+import {
+  GetAgreementsByAgreementIdApiResponse,
+  usePostAgreementsMutation,
+  usePutAgreementsByAgreementIdMutation,
+} from "src/services/tryberApi";
 import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
 import { useHistory } from "react-router-dom";
 
-const AgreementForm = () => {
+type AgreementFormProps = {
+  agreement?: GetAgreementsByAgreementIdApiResponse;
+  refetch?: () => void;
+};
+
+const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
   const [newAgreement] = usePostAgreementsMutation();
+  const [editAgreement] = usePutAgreementsByAgreementIdMutation();
   const history = useHistory();
   const { add } = siteWideMessageStore();
-  // todo: get Agreement data, if any
 
   type AgreementFormValues = {
     title: string;
@@ -36,16 +45,16 @@ const AgreementForm = () => {
     customer: Option;
   };
   const initialValues: AgreementFormValues = {
-    title: "",
-    tokens: 0,
-    tokenUnitPrice: 0,
-    startDate: "",
-    expirationDate: "",
-    isTokenBased: false,
-    note: "",
+    title: agreement?.title || "",
+    tokens: agreement?.tokens || 0,
+    tokenUnitPrice: agreement?.unitPrice || 0,
+    startDate: agreement?.startDate || "",
+    expirationDate: agreement?.expirationDate || "",
+    isTokenBased: agreement?.isTokenBased || false,
+    note: agreement?.note || "",
     customer: {
-      label: "Select a customer",
-      value: "",
+      label: agreement?.customer?.company || "",
+      value: agreement?.customer?.id?.toString() || "",
     },
   };
 
@@ -54,7 +63,7 @@ const AgreementForm = () => {
     tokens: yup.number().required("Required"),
     tokenUnitPrice: yup.number().required("Required"),
     startDate: yup.string().required("Required"),
-    closeDate: yup.string().required("Required"),
+    expirationDate: yup.string().required("Required"),
     isTokenBased: yup.boolean().required("Required"),
     note: yup.string(),
     customer: yup
@@ -75,22 +84,42 @@ const AgreementForm = () => {
       actions.setSubmitting(false);
       return;
     }
-    const res = await newAgreement({
-      body: {
-        title: values.title,
-        tokens: values.tokens,
-        unitPrice: values.tokenUnitPrice,
-        startDate: values.startDate,
-        expirationDate: values.expirationDate,
-        isTokenBased: values.isTokenBased,
-        note: values.note,
-        customerId: parseInt(values.customer.value),
-      },
-    });
-
+    const res = agreement?.id
+      ? await editAgreement({
+          agreementId: agreement.id.toString(),
+          body: {
+            title: values.title,
+            tokens: values.tokens,
+            unitPrice: values.tokenUnitPrice,
+            startDate: values.startDate,
+            expirationDate: values.expirationDate,
+            isTokenBased: values.isTokenBased,
+            note: values.note,
+            customerId: parseInt(values.customer.value),
+          },
+        })
+      : await newAgreement({
+          body: {
+            title: values.title,
+            tokens: values.tokens,
+            unitPrice: values.tokenUnitPrice,
+            startDate: values.startDate,
+            expirationDate: values.expirationDate,
+            isTokenBased: values.isTokenBased,
+            note: values.note,
+            customerId: parseInt(values.customer.value),
+          },
+        });
     if (res && "data" in res) {
-      history.push(`/backoffice/agreements/${res.data.agreementId}`);
-      add({ type: "success", message: "Agreement saved" });
+      if ("agreementId" in res.data) {
+        history.push(`/backoffice/agreements/${res.data.agreementId}`);
+        add({ type: "success", message: "New Agreement Saved" });
+      }
+      if ("id" in res.data) {
+        if (refetch) refetch();
+        history.push(`/backoffice/agreements/${res.data.id}`);
+        add({ type: "success", message: "Agreement Updated" });
+      }
     } else {
       add({
         type: "danger",
@@ -116,9 +145,22 @@ const AgreementForm = () => {
           <FormLabel htmlFor="startDate" label="Start Date" />
           <Field name="startDate" />
           <FormLabel htmlFor="expirationDate" label="Close Date" />
-          <Field name="closeDate" />
+          <Field name="expirationDate" />
           <FormLabel htmlFor="isTokenBased" label="Is Token Based" />
-          <Checkbox id="isTokenBased" name="isTokenBased" />
+          <FormikField name="isTokenBased">
+            {({ field }: FieldProps) => {
+              return (
+                <Checkbox
+                  id={field.name}
+                  name={field.name}
+                  defaultChecked={field.value}
+                  onChange={(e) => {
+                    field.onChange(e);
+                  }}
+                />
+              );
+            }}
+          </FormikField>
           <FormikField name="customer">
             {({ field, form }: FieldProps) => {
               return (
