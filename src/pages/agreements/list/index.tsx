@@ -1,6 +1,15 @@
-import { PageTitle, Table } from "@appquality/appquality-design-system";
+import {
+  BSCol,
+  BSGrid,
+  Button,
+  Table,
+  Title,
+} from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import getAllAgreements from "src/api/getAllAgreements";
+import FilterContext from "src/pages/BugsList/FilterContext";
+import styled from "styled-components";
+import CustomersFilter from "src/pages/agreements/list/Filters/CustomersFilter";
 
 interface Agreement {
   id: number;
@@ -16,6 +25,16 @@ interface Agreement {
   note: string;
   isTokenBased: boolean;
 }
+
+const FluidContainer = styled.div`
+    max-width: 90%;
+    margin: 0 auto;
+  }
+`;
+
+const HeaderButton = (props: Parameters<typeof Button>[0]) => {
+  return <Button {...props} size="sm" type="link-hover" />;
+};
 
 const AgreementsListPage = () => {
   const [agreements, setAgreements] = useState<
@@ -92,12 +111,33 @@ const AgreementsListPage = () => {
         console.error(err);
       });
   }, []);
+  function setIsStatsModalOpen(arg0: boolean) {
+    throw new Error("Function not implemented.");
+  }
 
   return (
-    <>
-      <PageTitle size="regular">Agreements List</PageTitle>
-      <Table columns={columns} dataSource={agreements} />
-    </>
+    <FluidContainer>
+      <Title size="m">Agreements List</Title>
+
+      <HeaderButton
+        as="a"
+        href={`/wp-admin/admin.php?page=mvc_campaigns`}
+        type="secondary"
+        className="aq-mr-2"
+      >
+        New Agreement
+      </HeaderButton>
+      <FilterContext>
+        <div className="aq-mb-4">
+          <CustomersFilter id="1" />
+        </div>
+        <BSGrid>
+          <BSCol size="col-lg-12">
+            <Table columns={columns} dataSource={agreements} />
+          </BSCol>
+        </BSGrid>
+      </FilterContext>
+    </FluidContainer>
   );
 };
 
