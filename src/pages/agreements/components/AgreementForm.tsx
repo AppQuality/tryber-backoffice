@@ -15,37 +15,34 @@ import {
 } from "@appquality/appquality-design-system";
 import { FormikHelpers } from "formik";
 import * as yup from "yup";
-import siteWideMessageStore from "src/redux/siteWideMessages";
 import { CustomerSelect } from "./CustomerSelect";
-import {
-  GetAgreementsByAgreementIdApiResponse,
-  usePostAgreementsMutation,
-  usePutAgreementsByAgreementIdMutation,
-} from "src/services/tryberApi";
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
-import { useHistory } from "react-router-dom";
+import { GetAgreementsByAgreementIdApiResponse } from "src/services/tryberApi";
 
 type AgreementFormProps = {
   agreement?: GetAgreementsByAgreementIdApiResponse;
   refetch?: () => void;
+  onSubmit: (
+    values: AgreementFormValues,
+    actions: FormikHelpers<AgreementFormValues>
+  ) => void;
 };
 
-const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
-  const [newAgreement] = usePostAgreementsMutation();
-  const [editAgreement] = usePutAgreementsByAgreementIdMutation();
-  const history = useHistory();
-  const { add } = siteWideMessageStore();
+export type AgreementFormValues = {
+  title: string;
+  tokens: number;
+  tokenUnitPrice: number;
+  startDate: string;
+  expirationDate: string;
+  isTokenBased: boolean;
+  note?: string;
+  customer: string;
+};
 
-  type AgreementFormValues = {
-    title: string;
-    tokens: number;
-    tokenUnitPrice: number;
-    startDate: string;
-    expirationDate: string;
-    isTokenBased: boolean;
-    note?: string;
-    customer: string;
-  };
+const AgreementForm = ({
+  agreement,
+  refetch,
+  onSubmit,
+}: AgreementFormProps) => {
   const initialValues: AgreementFormValues = {
     title: agreement?.title || "",
     tokens: agreement?.tokens || 0,
@@ -67,55 +64,6 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
     note: yup.string(),
     customer: yup.string().required("Required"),
   });
-
-  const onSubmit = async (
-    values: AgreementFormValues,
-    actions: FormikHelpers<AgreementFormValues>
-  ) => {
-    actions.setSubmitting(true);
-    const res = agreement?.id
-      ? await editAgreement({
-          agreementId: agreement.id.toString(),
-          body: {
-            title: values.title,
-            tokens: values.tokens,
-            unitPrice: values.tokenUnitPrice,
-            startDate: values.startDate,
-            expirationDate: values.expirationDate,
-            isTokenBased: values.isTokenBased,
-            note: values.note,
-            customerId: parseInt(values.customer),
-          },
-        })
-      : await newAgreement({
-          body: {
-            title: values.title,
-            tokens: values.tokens,
-            unitPrice: values.tokenUnitPrice,
-            startDate: values.startDate,
-            expirationDate: values.expirationDate,
-            isTokenBased: values.isTokenBased,
-            note: values.note,
-            customerId: parseInt(values.customer),
-          },
-        });
-    if (res && "data" in res) {
-      if ("agreementId" in res.data) {
-        history.push(`/backoffice/agreements/${res.data.agreementId}`);
-        add({ type: "success", message: "New Agreement Saved" });
-      }
-      if ("id" in res.data) {
-        if (refetch) refetch();
-        history.push(`/backoffice/agreements/${res.data.id}`);
-        add({ type: "success", message: "Agreement Updated" });
-      }
-    } else {
-      add({
-        type: "danger",
-        message: "There was an error",
-      });
-    }
-  };
 
   return (
     <div>
