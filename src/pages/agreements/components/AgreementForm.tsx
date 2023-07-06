@@ -229,6 +229,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
               return (
                 <FormGroup>
                   <CustomerSelect
+                    isDisabled={!!agreement?.id}
                     isMulti={false}
                     name={field.name}
                     value={field.value}
