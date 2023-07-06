@@ -2,11 +2,10 @@ import React, { createContext, useContext, useState } from "react";
 import useSearchParams from "./useSearchParams";
 
 type Filters = {
-  severities?: number[];
-  types?: number[];
-  status?: number[];
-  tags?: string[];
-  duplication?: string[];
+  customers?: {
+    id?: number;
+    name?: string;
+  }[];
   search?: string;
 };
 
@@ -39,15 +38,7 @@ const Context = createContext<{
 
 const FiltersContext = ({ children }: { children: React.ReactNode }) => {
   const queryParams = useSearchParams();
-  const [filters, setFilters] = useState(
-    queryParams.filterBy
-      ? {
-          status: queryParams.filterBy.status
-            ? queryParams.filterBy.status
-            : undefined,
-        }
-      : {}
-  );
+  const [filters, setFilters] = useState({});
   const [order, setOrder] = useState<typeof DefaultOrder>(DefaultOrder);
   const [page, setPage] = useState(1);
 
@@ -75,11 +66,11 @@ const FiltersContext = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useFiltersCardContext = () => {
+export const useFiltersAgreementsContext = () => {
   const context = useContext(Context);
 
   if (!context)
-    throw new Error("Provider not found for FlipCardContextProvider");
+    throw new Error("Provider not found for FiltersAgreementsContextProvider");
 
   return context;
 };

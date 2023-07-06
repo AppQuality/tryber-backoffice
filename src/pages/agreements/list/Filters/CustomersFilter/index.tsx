@@ -1,19 +1,15 @@
 import { Select } from "@appquality/appquality-design-system";
-import useCustomerIds from "./useCustomerIds";
-import { useFiltersCardContext } from "../../FilterContext";
-import { useEffect } from "react";
+import useCustomers from "./useCustomers";
+import { useFiltersAgreementsContext } from "../../FilterContext";
 
-const CustomersFilter = ({ id }: { id: string }) => {
-  const { filters, setFilters } = useFiltersCardContext();
-  const { tags, isLoading, isError, total } = useCustomerIds(id);
+const CustomersFilter = () => {
+  const { filters, setFilters } = useFiltersAgreementsContext();
+  const { customers, isLoading, isError, total } = useCustomers();
 
-  useEffect(() => {
-    if (tags.length) {
-      setFilters({
-        tags: tags.map((o) => o.id.toString()),
-      });
-    }
-  }, [tags.length]);
+  const options = customers.map((i) => ({
+    label: i.name ?? "",
+    value: i.id ? i.id.toString() : "",
+  }));
 
   if (isLoading) {
     return <>Loading</>;
@@ -23,25 +19,30 @@ const CustomersFilter = ({ id }: { id: string }) => {
     return <>Error</>;
   }
 
-  const options = tags.map((i) => ({
-    label: i.name,
-    value: i.id.toString(),
-  }));
-
-  if (options.length < 2) return null;
+  if (!options.length) return null;
 
   return (
     <Select
-      placeholder={"Filter by tags"}
+      placeholder={"Filter by customers"}
       isMulti
       menuTargetQuery={"body"}
-      name={"tags"}
-      label={`Tags (${total})`}
+      name={"customers"}
+      label={`Customers (${total})`}
       options={options}
-      value={options.filter((o) => filters.tags?.includes(o.value))}
+      value={
+        filters.customers
+          ? filters.customers?.map((c) => ({
+              label: c.name ?? "",
+              value: c.id ? c.id.toString() : "",
+            }))
+          : []
+      }
       onChange={(newOptions) => {
         setFilters({
-          tags: newOptions.map((o: { value: string }) => o.value),
+          customers: newOptions.map((o: { value: string; label: string }) => ({
+            id: parseInt(o.value),
+            name: o.label,
+          })),
         });
       }}
       noOptionsMessage={() => "No options"}
