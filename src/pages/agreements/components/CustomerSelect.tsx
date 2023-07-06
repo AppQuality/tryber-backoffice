@@ -1,5 +1,4 @@
 import { Select } from "@appquality/appquality-design-system";
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
 import { useMemo } from "react";
 import { useGetCustomersQuery } from "src/services/tryberApi";
 
@@ -9,7 +8,7 @@ type CustomerSelectProps = {
   name?: string;
   onBlur?: () => void;
   onChange?: (value: any) => void;
-  value: Option | Option[];
+  value: string | string[];
 };
 
 const CustomerSelect = ({
@@ -30,6 +29,15 @@ const CustomerSelect = ({
     [data]
   );
 
+  const selectedOptions = useMemo(
+    () =>
+      options?.filter((option) =>
+        Array.isArray(value)
+          ? value?.some((value) => value === option.value)
+          : value === option.value
+      ),
+    [options, value]
+  );
   return (
     <Select
       name={name}
@@ -43,7 +51,7 @@ const CustomerSelect = ({
       onChange={onChange}
       label="Customer"
       isDisabled={isDisabled || !data || !data.length || isError}
-      value={value}
+      value={selectedOptions || []}
       options={options || []}
     />
   );

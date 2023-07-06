@@ -44,7 +44,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
     expirationDate: string;
     isTokenBased: boolean;
     note?: string;
-    customer: Option;
+    customer: string;
   };
   const initialValues: AgreementFormValues = {
     title: agreement?.title || "",
@@ -54,10 +54,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
     expirationDate: agreement?.expirationDate.split(" ")[0] || "",
     isTokenBased: agreement?.isTokenBased || false,
     note: agreement?.note || "",
-    customer: {
-      label: agreement?.customer?.company || "",
-      value: agreement?.customer?.id?.toString() || "",
-    },
+    customer: agreement?.customer?.id?.toString() || "",
   };
 
   const validationSchema = yup.object({
@@ -68,12 +65,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
     expirationDate: yup.string().required("Required"),
     isTokenBased: yup.boolean().required("Required"),
     note: yup.string(),
-    customer: yup
-      .object({
-        label: yup.string().required("Required"),
-        value: yup.string().required("Required"),
-      })
-      .required("Required"),
+    customer: yup.string().required("Required"),
   });
 
   const onSubmit = async (
@@ -81,11 +73,6 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
     actions: FormikHelpers<AgreementFormValues>
   ) => {
     actions.setSubmitting(true);
-    if (!values.customer.value) {
-      actions.setFieldError("customer", "Required");
-      actions.setSubmitting(false);
-      return;
-    }
     const res = agreement?.id
       ? await editAgreement({
           agreementId: agreement.id.toString(),
@@ -97,7 +84,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
             expirationDate: values.expirationDate,
             isTokenBased: values.isTokenBased,
             note: values.note,
-            customerId: parseInt(values.customer.value),
+            customerId: parseInt(values.customer),
           },
         })
       : await newAgreement({
@@ -109,7 +96,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
             expirationDate: values.expirationDate,
             isTokenBased: values.isTokenBased,
             note: values.note,
-            customerId: parseInt(values.customer.value),
+            customerId: parseInt(values.customer),
           },
         });
     if (res && "data" in res) {
@@ -234,8 +221,8 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
                     isMulti={false}
                     name={field.name}
                     value={field.value}
-                    onChange={(value) => {
-                      form.setFieldValue(field.name, value, true);
+                    onChange={(v: { value: string }) => {
+                      form.setFieldValue(field.name, v.value, true);
                     }}
                     onBlur={() => {
                       form.setFieldTouched(field.name);
