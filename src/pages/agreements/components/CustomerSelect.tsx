@@ -5,6 +5,7 @@ import { useGetCustomersQuery } from "src/services/tryberApi";
 
 type CustomerSelectProps = {
   isMulti?: boolean;
+  isDisabled?: boolean;
   name?: string;
   onBlur?: () => void;
   onChange?: (value: any) => void;
@@ -13,6 +14,7 @@ type CustomerSelectProps = {
 
 const CustomerSelect = ({
   isMulti = true,
+  isDisabled = false,
   name = "customer-select",
   onBlur,
   onChange,
@@ -40,7 +42,7 @@ const CustomerSelect = ({
       onBlur={onBlur}
       onChange={onChange}
       label="Customer"
-      isDisabled={!data || !data.length || isError}
+      isDisabled={isDisabled || !data || !data.length || isError}
       value={value}
       options={options || []}
     />
