@@ -128,6 +128,25 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
         <Form>
           <FormLabel htmlFor="title" label="Title" />
           <Field name="title" />
+          <FormikField name="isTokenBased">
+            {({ field }: FieldProps) => {
+              return (
+                <>
+                  <Checkbox
+                    label="Is Token Based"
+                    className="aq-mb-3"
+                    id={field.name}
+                    name={field.name}
+                    defaultChecked={field.value}
+                    onChange={(e) => {
+                      field.onChange(e);
+                    }}
+                  />
+                  <ErrorMessage name={field.name} />
+                </>
+              );
+            }}
+          </FormikField>
           <FormLabel htmlFor="tokens" label="Tokens" />
           <Field type="number" name="tokens" />
           <FormLabel htmlFor="unitPrice" label="Token Unit Price" />
@@ -193,22 +212,6 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
                   />
                   <ErrorMessage name={field.name} />
                 </FormGroup>
-              );
-            }}
-          </FormikField>
-          <FormLabel htmlFor="isTokenBased" label="Is Token Based" />
-          <FormikField name="isTokenBased">
-            {({ field }: FieldProps) => {
-              return (
-                <Checkbox
-                  className="aq-mb-3"
-                  id={field.name}
-                  name={field.name}
-                  defaultChecked={field.value}
-                  onChange={(e) => {
-                    field.onChange(e);
-                  }}
-                />
               );
             }}
           </FormikField>
