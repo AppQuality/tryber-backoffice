@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 
 const EditAgreementPage = () => {
   const { id } = useParams<{ id: string }>();
+  // todo: understand better which data is being fetched here
   const { data, currentData, isLoading, isFetching, isError, refetch } =
     useGetAgreementsByAgreementIdQuery({
       agreementId: id,
@@ -15,9 +16,10 @@ const EditAgreementPage = () => {
   return (
     <OpsUserContainer>
       <PageTitle
+        // todo: use env vars for this (maybe to use in router and tests too)
         back={{ text: "back to list", navigation: "/backoffice/agreements" }}
       >
-        {currentData?.title}
+        Edit Agreement: {currentData?.title}
       </PageTitle>
       <Card className="aq-pb-4">
         <AgreementForm agreement={currentData} refetch={refetch} />
