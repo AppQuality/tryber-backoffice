@@ -66,11 +66,7 @@ const EditAgreementPage = () => {
         Edit Agreement: {currentData?.title}
       </PageTitle>
       <Card className="aq-pb-4">
-        <AgreementForm
-          agreement={currentData}
-          refetch={refetch}
-          onSubmit={onSubmit}
-        />
+        <AgreementForm agreement={currentData} onSubmit={onSubmit} />
       </Card>
     </OpsUserContainer>
   );

@@ -20,7 +20,6 @@ import { GetAgreementsByAgreementIdApiResponse } from "src/services/tryberApi";
 
 type AgreementFormProps = {
   agreement?: GetAgreementsByAgreementIdApiResponse;
-  refetch?: () => void;
   onSubmit: (
     values: AgreementFormValues,
     actions: FormikHelpers<AgreementFormValues>
@@ -38,11 +37,7 @@ export type AgreementFormValues = {
   customer: string;
 };
 
-const AgreementForm = ({
-  agreement,
-  refetch,
-  onSubmit,
-}: AgreementFormProps) => {
+const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
   const initialValues: AgreementFormValues = {
     title: agreement?.title || "",
     tokens: agreement?.tokens || 0,
