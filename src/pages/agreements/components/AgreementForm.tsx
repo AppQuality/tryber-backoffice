@@ -10,6 +10,8 @@ import {
   FormGroup,
   FieldProps,
   ErrorMessage,
+  Datepicker,
+  DatepickerGlobalStyle,
 } from "@appquality/appquality-design-system";
 import { FormikHelpers } from "formik";
 import * as yup from "yup";
@@ -130,6 +132,7 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
 
   return (
     <div>
+      <DatepickerGlobalStyle />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -144,8 +147,40 @@ const AgreementForm = ({ agreement, refetch }: AgreementFormProps) => {
           <Field type="number" name="tokenUnitPrice" />
           <FormLabel htmlFor="startDate" label="Start Date" />
           <Field name="startDate" />
-          <FormLabel htmlFor="expirationDate" label="Close Date" />
-          <Field name="expirationDate" />
+          <FormikField name="expirationDate">
+            {({ field, form }: FieldProps) => {
+              return (
+                <FormGroup>
+                  <FormLabel htmlFor={field.name} label="Close Date" />
+                  <Datepicker
+                    value={field.value}
+                    id={field.name}
+                    placeholder="Select a close date"
+                    setText="Set"
+                    cancelText="Cancel"
+                    onCancel={() => {
+                      form.setFieldValue("", field.name);
+                    }}
+                    onChange={(v: { value: Date }) => {
+                      form.setFieldValue(
+                        field.name,
+                        v.value
+                          ? new Date(
+                              Date.UTC(
+                                v.value.getFullYear(),
+                                v.value.getMonth(),
+                                v.value.getDate()
+                              )
+                            )
+                          : ""
+                      );
+                    }}
+                  />
+                  <ErrorMessage name={field.name} />
+                </FormGroup>
+              );
+            }}
+          </FormikField>
           <FormLabel htmlFor="isTokenBased" label="Is Token Based" />
           <FormikField name="isTokenBased">
             {({ field }: FieldProps) => {
