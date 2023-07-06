@@ -1,4 +1,8 @@
-import { Button, Table } from "@appquality/appquality-design-system";
+import {
+  Button,
+  Pagination,
+  Table,
+} from "@appquality/appquality-design-system";
 import { useGetAgreementsQuery } from "src/services/tryberApi";
 import styled from "styled-components";
 import { ReactComponent as EditIcon } from "src/assets/edit.svg";
@@ -11,11 +15,15 @@ const TableContainer = styled.div`
 `;
 
 export const Agreements = () => {
-  const { filters } = useFiltersAgreementsContext();
+  const LIMIT = 10;
+
+  const { filters, page, setPage } = useFiltersAgreementsContext();
   const { data, isLoading, isError } = useGetAgreementsQuery({
     ...(filters.customers && {
       filterBy: { customer: filters.customers?.map((c) => c.id).join() },
     }),
+    limit: LIMIT,
+    start: (page - 1) * LIMIT,
   });
 
   const columns = [
@@ -114,6 +122,13 @@ export const Agreements = () => {
             : []
         }
       />
+      {data && data.total && data.limit ? (
+        <Pagination
+          onPageChange={(newPage) => setPage(newPage)}
+          current={page}
+          maxPages={Math.ceil(data.total / data.limit)}
+        />
+      ) : null}
     </TableContainer>
   );
 };

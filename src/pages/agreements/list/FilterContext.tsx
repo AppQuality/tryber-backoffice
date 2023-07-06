@@ -6,7 +6,6 @@ type Filters = {
     id?: number;
     name?: string;
   }[];
-  search?: string;
 };
 
 const DefaultOrder: {
