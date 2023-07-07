@@ -12,11 +12,13 @@ import {
   ErrorMessage,
   Datepicker,
   DatepickerGlobalStyle,
+  Input,
 } from "@appquality/appquality-design-system";
 import { FormikHelpers } from "formik";
 import * as yup from "yup";
 import { CustomerSelect } from "./CustomerSelect";
 import { GetAgreementsByAgreementIdApiResponse } from "src/services/tryberApi";
+import { roundNumberTwoDecimals } from "../utils";
 
 type AgreementFormProps = {
   agreement?: GetAgreementsByAgreementIdApiResponse;
@@ -30,6 +32,7 @@ export type AgreementFormValues = {
   title: string;
   tokens: number;
   tokenUnitPrice: number;
+  amount: number;
   startDate: string;
   expirationDate: string;
   isTokenBased: boolean;
@@ -42,6 +45,9 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
     title: agreement?.title || "",
     tokens: agreement?.tokens || 0,
     tokenUnitPrice: agreement?.unitPrice || 165,
+    amount: agreement
+      ? Math.round(agreement?.tokens * agreement?.unitPrice)
+      : 0,
     startDate: agreement?.startDate.split(" ")[0] || "",
     expirationDate: agreement?.expirationDate.split(" ")[0] || "",
     isTokenBased: agreement?.isTokenBased || false,
@@ -52,7 +58,8 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
   const validationSchema = yup.object({
     title: yup.string().required("Required"),
     tokens: yup.number().required("Required"),
-    tokenUnitPrice: yup.number().required("Required"),
+    tokenUnitPrice: yup.number().moreThan(0).required("Required"),
+    amount: yup.number().min(0),
     startDate: yup.string().required("Required"),
     expirationDate: yup.string().required("Required"),
     isTokenBased: yup.boolean().required("Required"),
@@ -68,12 +75,12 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ values }) => (
+        {({ values: { isTokenBased } }) => (
           <Form>
             <FormLabel htmlFor="title" label="Title" />
             <Field name="title" />
             <FormikField name="isTokenBased">
-              {({ field }: FieldProps) => {
+              {({ field, form }: FieldProps) => {
                 return (
                   <>
                     <Checkbox
@@ -84,6 +91,16 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
                       defaultChecked={field.value}
                       onChange={(e) => {
                         field.onChange(e);
+                        // if agreement change to not token based, calculate number of tokens based on amount
+                        if (e.target.checked === false) {
+                          form.setFieldValue(
+                            "tokens",
+                            roundNumberTwoDecimals(
+                              form.values.amount / form.values.tokenUnitPrice
+                            ),
+                            true
+                          );
+                        }
                       }}
                     />
                     <ErrorMessage name={field.name} />
@@ -92,18 +109,72 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
               }}
             </FormikField>
             <FormLabel htmlFor="tokens" label="Tokens" />
-            <Field
-              type="number"
-              name="tokens"
-              disabled={!values.isTokenBased}
-            />
-            <FormLabel htmlFor="unitPrice" label="Token Unit Price" />
-            <Field type="number" name="tokenUnitPrice" />
-            {!values.isTokenBased && (
-              <>
-                <FormLabel htmlFor="value" label="Agreement Amount" />
-                <Field type="number" name="value" />
-              </>
+            <Field type="number" name="tokens" disabled={!isTokenBased} />
+            <FormikField name="tokenUnitPrice">
+              {({ field, form }: FieldProps) => (
+                <FormGroup>
+                  <FormLabel htmlFor={field.name} label="Token Unit Price" />
+                  <div className="input-group">
+                    <Input
+                      value={field.value}
+                      id={field.name}
+                      type="number"
+                      placeholder="Agreement Amount"
+                      onChange={(value) => {
+                        form.setFieldValue(
+                          field.name,
+                          parseFloat(value || "0"),
+                          true
+                        );
+                        if (!isTokenBased && form.values.amount >= 0) {
+                          form.setFieldValue(
+                            "tokens",
+                            roundNumberTwoDecimals(
+                              form.values.amount / parseFloat(value || "0")
+                            ),
+                            true
+                          );
+                        }
+                      }}
+                    />
+                  </div>
+                  <ErrorMessage name="tokenUnitPrice" />
+                </FormGroup>
+              )}
+            </FormikField>
+            {!isTokenBased && (
+              <FormikField name="amount">
+                {({ field, form }: FieldProps) => (
+                  <FormGroup>
+                    <FormLabel htmlFor={field.name} label="Agreement Amount" />
+                    <div className="input-group">
+                      <Input
+                        id={field.name}
+                        value={field.value}
+                        type="number"
+                        placeholder="Agreement Amount"
+                        onChange={(value) => {
+                          form.setFieldValue(
+                            field.name,
+                            parseFloat(value),
+                            true
+                          );
+                          if (!isTokenBased && form.values.tokenUnitPrice > 0) {
+                            form.setFieldValue(
+                              "tokens",
+                              roundNumberTwoDecimals(
+                                parseFloat(value || "0") /
+                                  form.values.tokenUnitPrice
+                              ),
+                              true
+                            );
+                          }
+                        }}
+                      />
+                    </div>
+                  </FormGroup>
+                )}
+              </FormikField>
             )}
             <FormikField name="startDate">
               {({ field, form }: FieldProps) => {
