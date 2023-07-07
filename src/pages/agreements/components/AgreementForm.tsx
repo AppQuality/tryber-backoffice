@@ -179,7 +179,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
             <FormikField name="startDate">
               {({ field, form }: FieldProps) => {
                 return (
-                  <FormGroup>
+                  <FormGroup key={field.value}>
                     <FormLabel htmlFor={field.name} label="Start Date" />
                     <Datepicker
                       value={field.value}
@@ -211,7 +211,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
             <FormikField name="expirationDate">
               {({ field, form }: FieldProps) => {
                 return (
-                  <FormGroup>
+                  <FormGroup key={field.value}>
                     <FormLabel htmlFor={field.name} label="Expiration Date" />
                     <Datepicker
                       value={field.value}
