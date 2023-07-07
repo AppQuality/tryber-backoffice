@@ -17,6 +17,10 @@ describe("View/Edit Single Agreement Page:", () => {
     cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/1`);
     throw new Error("test should be implemented");
   });
+
+  it("If the Agreement is NOT token based there should be a field Amount to input the total amount and calculate the number of tokens", () => {});
+  it("If the Agreement is NOT token based the field tokens should be disabled", () => {});
+
   it("Validation: all required but notes, title is string, notes is string, start and close date are dates, token is number, token unit price is number (float), is token based is a boolean, customer is an id", () => {
     cy.clearCookies();
     cy.loggedIn();
