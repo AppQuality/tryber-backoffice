@@ -12,8 +12,11 @@ describe("New Single Agreement Page:", () => {
     cy.get("textarea#notes").should("be.visible");
     cy.get("div#customer").should("be.visible");
   });
+  it("The field tokenUnitPrice should be prefilled with the value 165, as a hint or suggestion", () => {});
   it("If the Agreement is NOT token based there should be a field Amount to input the total amount and calculate the number of tokens", () => {});
   it("If the Agreement is NOT token based the field tokens should be disabled", () => {});
+  it("If the Agreement is NOT token based when the user fill the amount field and tokenUnitPrice, the number of tokens is calculated, otherwise we show 0", () => {});
+
   it("Validation: all required but notes, title is string, notes is string, start and close date are dates, token is number, token unit price is number (float), is token based is a boolean, customer id is number", () => {
     cy.clearCookies();
     cy.loggedIn();
