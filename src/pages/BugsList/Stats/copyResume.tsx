@@ -24,12 +24,12 @@ ${
     : ""
 }      
 ${
-  data.bugsByType.length > 0
+  data.bugsByType.length > 1
     ? `- il ${data.bugsByType[1].percent}% dei bug unici riguarda problemi di tipo ${data.bugsByType[1].type}`
     : ""
 }      
 ${
-  data.bugsByType.length > 1
+  data.bugsByType.length > 2
     ? `- il ${data.bugsByType[2].percent}% dei bug unici riguarda problemi di tipo ${data.bugsByType[2].type}`
     : ""
 }      
