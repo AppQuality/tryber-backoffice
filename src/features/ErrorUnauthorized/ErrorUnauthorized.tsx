@@ -16,7 +16,7 @@ const StyledError = styled.div`
 `;
 
 const ErrorUnauthorized = () => (
-  <StyledError>
+  <StyledError data-qa="error-unauthorized">
     <img
       alt="error 403"
       className="aq-mb-3"
