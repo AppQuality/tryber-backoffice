@@ -12,6 +12,7 @@ import { Container } from "@appquality/appquality-design-system";
 import { Agreements } from "./Agreements";
 import { ReactNode } from "react";
 import { useGetAgreementsQuery } from "src/services/tryberApi";
+import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 
 const FluidContainer = styled.div`
     padding: 2rem;
@@ -34,11 +35,20 @@ const AgreementsListPageContent = ({ children }: { children: ReactNode }) => {
   if (isFetching || isLoading) return <Container>Loading...</Container>;
 
   if (error && "data" in error) {
-    if (window && window.top) {
-      // app could be in an iframe, so we need to refer to the top window
-      window.top.location.href = "/wp-login.php";
+    if (error.data instanceof Object && "err" in error.data) {
+      if (window && window.top) {
+        // app could be in an iframe, so we need to refer to the top window
+        window.top.location.href = "/wp-login.php";
+        return <Container>Redirecting...</Container>;
+      }
     }
-    return <Container>Redirecting...</Container>;
+    if (error.data instanceof Object && "message" in error.data) {
+      return (
+        <Container>
+          <ErrorUnauthorized />
+        </Container>
+      );
+    }
   }
   return <Container>{children}</Container>;
 };
