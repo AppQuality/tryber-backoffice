@@ -10,7 +10,6 @@ export default defineConfig({
     env: {
       REACT_APP_API_URL: "https://dev.tryber.me/api",
       AGREEMENTS_PAGE: "/agreements",
-      AGREEMENTS_NEW_PAGE: "/agreements/new",
     },
     video: false,
     screenshotOnRunFailure: false,

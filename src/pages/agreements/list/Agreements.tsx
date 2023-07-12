@@ -80,7 +80,7 @@ export const Agreements = () => {
   ];
 
   return (
-    <TableContainer>
+    <TableContainer data-qa="agreements-table">
       <Table
         columns={columns}
         dataSource={
