@@ -62,6 +62,7 @@ const AgreementsListPage = () => (
           as="a"
           href={`/backoffice/agreements/new`}
           className="aq-mr-2"
+          id="add-new-agreement-btn"
         >
           + Add New
         </HeaderButton>
@@ -73,6 +74,7 @@ const AgreementsListPage = () => (
             style={{
               margin: "1rem 0",
             }}
+            data-qa="customers-select"
           >
             <CustomersFilter />
           </div>
