@@ -1,0 +1,48 @@
+{
+  "items": [
+    {
+      "id": 70,
+      "title": "Rocco Iteration 2",
+      "tokens": 39,
+      "unitPrice": 6.9,
+      "startDate": "2023-11-20 00:12:20",
+      "expirationDate": "2023-03-01 00:12:20",
+      "customer": {
+        "id": 1,
+        "company": "Rocco & Friends"
+      },
+      "note": "Test con dati veri",
+      "isTokenBased": false
+    },
+    {
+      "id": 69,
+      "title": "Rocco Token",
+      "tokens": 169,
+      "unitPrice": 6.9,
+      "startDate": "2023-10-20 00:12:20",
+      "expirationDate": "2023-01-01 00:12:20",
+      "customer": {
+        "id": 1,
+        "company": "Rocco & Friends"
+      },
+      "note": "Test con dati veri",
+      "isTokenBased": false
+    },
+    {
+      "id": 42,
+      "title": "Epic Token",
+      "tokens": 103,
+      "unitPrice": 166.6,
+      "startDate": "2020-10-20 00:12:20",
+      "expirationDate": "2020-01-01 00:12:20",
+      "customer": {
+        "id": 3,
+        "company": "Epical s.p.a."
+      },
+      "note": "Test con dati veri",
+      "isTokenBased": true
+    }
+  ],
+  "start": 0,
+  "size": 3
+}
