@@ -20,6 +20,9 @@ import CampaignPreselectionList from "./pages/campaigns/preselectionFormList";
 import SelectionPage from "./pages/campaigns/selection";
 import Jotform from "./pages/Jotform";
 import Prospect from "./pages/Prospect";
+import AgreementsList from "./pages/agreements/list";
+import SingleAgreementEdit from "./pages/agreements/view-edit";
+import SingleAgreementNew from "./pages/agreements/new";
 
 function App() {
   return (
@@ -57,6 +60,15 @@ function App() {
               component={SelectionPage}
             />
             <Route path="/backoffice/campaigns" component={Campaigns} />
+            <Route
+              path="/backoffice/agreements/new"
+              component={SingleAgreementNew}
+            />
+            <Route
+              path="/backoffice/agreements/:id"
+              component={SingleAgreementEdit}
+            />
+            <Route path="/backoffice/agreements" component={AgreementsList} />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
           </Switch>

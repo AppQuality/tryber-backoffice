@@ -9,6 +9,26 @@ export interface paths {
     get: operations["get-root"];
     parameters: {};
   };
+  "/agreements": {
+    /** Retrive all agreements */
+    get: operations["get-agreements"];
+    /** Create a new Agreement */
+    post: operations["post-agreements"];
+    parameters: {};
+  };
+  "/agreements/{agreementId}": {
+    /** Get a specific Agreement */
+    get: operations["get-agreements-agreement-id"];
+    /** Put a specific Agreement */
+    put: operations["put-agreements-agreement-id"];
+    /** Delete a specific Agreement */
+    delete: operations["delete-agreements-agreement-id"];
+    parameters: {
+      path: {
+        agreementId: string;
+      };
+    };
+  };
   "/authenticate": {
     /** A request to login with your username and password */
     post: operations["post-authenticate"];
@@ -18,6 +38,11 @@ export interface paths {
     get: operations["get-campaigns"];
     /** Create a new Campaign if you have access to the creation */
     post: operations["post-campaigns"];
+  };
+  "/campaigns/owners": {
+    /** Get all the owners of campaigns you have access to */
+    get: operations["get-campaigns-owners"];
+    parameters: {};
   };
   "/campaigns/{campaign}": {
     /** Get the data of a Campaign if you have access to it */
@@ -31,6 +56,26 @@ export interface paths {
       };
     };
   };
+  "/campaigns/{campaign}/bugs": {
+    /** Get all bugs of a Campaign if you have access to it */
+    get: operations["get-campaigns-cid-bugs"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: components["parameters"]["campaign"];
+      };
+    };
+  };
+  "/campaigns/{campaign}/groups": {
+    /** Get all groups used in a Campaign if you have access to it */
+    get: operations["get-campaigns-cid-groups"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+  };
   "/campaigns/{campaign}/candidates": {
     get: operations["get-campaigns-campaign-candidates"];
     /** The Tryber will be inserted as a candidate Tryber on a specific Campaign */
@@ -39,6 +84,15 @@ export interface paths {
       path: {
         /** A campaign id */
         campaign: string;
+      };
+    };
+  };
+  "/campaigns/{campaign}/payouts": {
+    get: operations["get-campaigns-campaign-payouts"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: components["parameters"]["campaign"];
       };
     };
   };
@@ -90,6 +144,39 @@ export interface paths {
       };
     };
   };
+  "/campaigns/{campaign}/prospect/{testerId}": {
+    put: operations["put-campaigns-campaign-prospect-testerId"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: components["parameters"]["campaign"];
+        testerId: components["parameters"]["testerId"];
+      };
+    };
+  };
+  "/campaigns/{campaign}/prospect": {
+    get: operations["get-campaigns-campaign-prospect"];
+    /** Make campaign perspective status done, and change exp points and tester payouts. */
+    put: operations["put-campaigns-campaign-prospect"];
+    patch: operations["patch-campaigns-campaign-prospect"];
+    parameters: {
+      path: {
+        campaign: string;
+      };
+    };
+  };
+  "/campaigns/{campaign}/stats": {
+    get: operations["get-campaigns-campaign-stats"];
+    parameters: {
+      path: {
+        campaign: string;
+      };
+    };
+  };
+  "/campaignTypes": {
+    get: operations["get-campaign-types"];
+    parameters: {};
+  };
   "/certifications": {
     /** Get all certificatio */
     get: operations["get-certifications"];
@@ -106,21 +193,7 @@ export interface paths {
   "/customers": {
     /** Get all the customers you have access to */
     get: operations["get-customers"];
-    /** Add a new Customer to the platform */
-    post: operations["post-customers"];
     parameters: {};
-  };
-  "/customers/{customer}": {
-    /** Get the data for a Customer if you have access to it */
-    get: operations["get-customers-customer_id"];
-    /** Change the data of a Customer if you have access to it */
-    put: operations["put-customers-customer"];
-    parameters: {
-      path: {
-        /** A customer id */
-        customer: components["parameters"]["customer"];
-      };
-    };
   };
   "/custom_user_fields": {
     get: operations["get-customUserFields"];
@@ -371,6 +444,11 @@ export interface paths {
     get: operations["get-users-me-pending-booty"];
     parameters: {};
   };
+  "/users/me/permissions": {
+    /** Return all user permissions */
+    get: operations["get-users-me-permissions"];
+    parameters: {};
+  };
   "/users/me/popups": {
     /** Get all popup defined for your user */
     get: operations["get-users-me-popups"];
@@ -411,6 +489,16 @@ export interface components {
       text?: string;
       is_candidate?: boolean;
     };
+    Agreement: {
+      title: string;
+      tokens: number;
+      unitPrice: number;
+      startDate: string;
+      expirationDate: string;
+      note?: string;
+      /** @default false */
+      isTokenBased?: boolean;
+    };
     /** Bug */
     Bug: {
       severity?: components["schemas"]["BugSeverity"];
@@ -430,6 +518,11 @@ export interface components {
       id?: number;
       name?: string;
       description?: string;
+    };
+    /** BugTag */
+    BugTag: {
+      id: number;
+      name: string;
     };
     /** BugType */
     BugType: {
@@ -515,9 +608,6 @@ export interface components {
       /** Format: date */
       achievement_date: string;
     };
-    Customer: components["schemas"]["User"] & {
-      customer_name?: string;
-    };
     /** CustomUserFieldsData */
     CustomUserFieldsData: {
       id: number;
@@ -552,7 +642,12 @@ export interface components {
      * FiscalType
      * @enum {string}
      */
-    FiscalType: "withholding" | "witholding-extra" | "other" | "non-italian";
+    FiscalType:
+      | "withholding"
+      | "witholding-extra"
+      | "non-italian"
+      | "vat"
+      | "company";
     /** LevelDefinition */
     LevelDefinition: {
       id: number;
@@ -579,6 +674,7 @@ export interface components {
       content?: string;
       title?: string;
     };
+    Olp: number[] | boolean;
     /** PreselectionFormQuestion */
     PreselectionFormQuestion: {
       question: string;
@@ -683,6 +779,11 @@ export interface components {
       size: number;
       total?: number;
     };
+    /**
+     * ProspectStatus
+     * @enum {string}
+     */
+    ProspectStatus: "draft" | "confirmed" | "done";
   };
   responses: {
     /** A user */
@@ -767,6 +868,7 @@ export interface components {
     searchBy: string;
     /** @description The value to search for */
     search: string;
+    testerId: string;
   };
 }
 
@@ -781,6 +883,137 @@ export interface operations {
           "application/json": { [key: string]: unknown };
         };
       };
+    };
+  };
+  /** Retrive all agreements */
+  "get-agreements": {
+    parameters: {
+      query: {
+        /** Key-value Array for item filtering */
+        filterBy?: components["parameters"]["filterBy"];
+        /** Items to skip for pagination */
+        start?: components["parameters"]["start"];
+        /** Max items to retrieve */
+        limit?: components["parameters"]["limit"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            items: ({
+              id: number;
+            } & components["schemas"]["Agreement"] & {
+                customer: {
+                  id: number;
+                  company: string;
+                };
+              })[];
+          } & components["schemas"]["PaginationData"];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+    };
+  };
+  /** Create a new Agreement */
+  "post-agreements": {
+    parameters: {};
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            agreementId: number;
+          };
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      /** Internal Server Error */
+      500: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          customerId: number;
+        } & components["schemas"]["Agreement"];
+      };
+    };
+  };
+  /** Get a specific Agreement */
+  "get-agreements-agreement-id": {
+    parameters: {
+      path: {
+        agreementId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+          } & components["schemas"]["Agreement"] & {
+              customer: {
+                id: number;
+                company: string;
+              };
+            };
+        };
+      };
+      /** Forbidden */
+      403: unknown;
+      /** Internal Server Error */
+      500: unknown;
+    };
+  };
+  /** Put a specific Agreement */
+  "put-agreements-agreement-id": {
+    parameters: {
+      path: {
+        agreementId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+          } & components["schemas"]["Agreement"] & {
+              customer: {
+                id: number;
+                company: string;
+              };
+            };
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      /** Internal Server Error */
+      500: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Agreement"] & {
+          customerId: number;
+        };
+      };
+    };
+  };
+  /** Delete a specific Agreement */
+  "delete-agreements-agreement-id": {
+    parameters: {
+      path: {
+        agreementId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: unknown;
+      /** Forbidden */
+      403: unknown;
+      /** Internal Server Error */
+      500: unknown;
     };
   };
   /** A request to login with your username and password */
@@ -807,14 +1040,61 @@ export interface operations {
   };
   /** Get all the Campaigns you have access to */
   "get-campaigns": {
+    parameters: {
+      query: {
+        fields?: string;
+        /** Items to skip for pagination */
+        start?: components["parameters"]["start"];
+        /** Max items to retrieve */
+        limit?: components["parameters"]["limit"];
+        /** Return only your campaign? */
+        mine?: "true";
+        /** A value to search in id or title */
+        search?: string;
+        /** How to order values (ASC, DESC) */
+        order?: components["parameters"]["order"];
+        /** The parameter to order by */
+        orderBy?: "id" | "startDate" | "endDate";
+        filterBy?: unknown;
+      };
+    };
     responses: {
       /** OK */
       200: {
         content: {
           "application/json": {
-            id?: number;
-            name?: string;
-          }[];
+            items?: {
+              id?: number;
+              name?: string;
+              customerTitle?: string;
+              startDate?: string;
+              endDate?: string;
+              /** @enum {string} */
+              status?: "running" | "closed" | "incoming";
+              /** @enum {string} */
+              visibility?: "admin" | "smallgroup" | "logged" | "public";
+              /** @enum {string} */
+              resultType?: "bug" | "bugparade" | "no";
+              csm?: {
+                id: number;
+                name: string;
+                surname: string;
+              };
+              customer?: {
+                id?: number;
+                name: string;
+              };
+              type?: {
+                name: string;
+                /** @enum {string} */
+                area: "quality" | "experience";
+              };
+              project?: {
+                id?: number;
+                name: string;
+              };
+            }[];
+          } & components["schemas"]["PaginationData"];
         };
       };
       403: components["responses"]["NotAuthorized"];
@@ -837,6 +1117,24 @@ export interface operations {
       };
     };
   };
+  /** Get all the owners of campaigns you have access to */
+  "get-campaigns-owners": {
+    parameters: {};
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            name: string;
+            surname: string;
+          }[];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+  };
   /** Get the data of a Campaign if you have access to it */
   "get-campaigns-campaign": {
     parameters: {
@@ -846,7 +1144,15 @@ export interface operations {
       };
     };
     responses: {
-      200: components["responses"]["SingleCampaign"];
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            title: string;
+          };
+        };
+      };
       403: components["responses"]["NotAuthorized"];
       /** Not Found */
       404: unknown;
@@ -870,6 +1176,88 @@ export interface operations {
       content: {
         "application/json": components["schemas"]["CampaignOptional"];
       };
+    };
+  };
+  /** Get all bugs of a Campaign if you have access to it */
+  "get-campaigns-cid-bugs": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: components["parameters"]["campaign"];
+      };
+      query: {
+        /** Max items to retrieve */
+        limit?: components["parameters"]["limit"];
+        /** Items to skip for pagination */
+        start?: components["parameters"]["start"];
+        /** The value to search for */
+        search?: components["parameters"]["search"];
+        /** How to order values (ASC, DESC) */
+        order?: components["parameters"]["order"];
+        /** Order values by STATUS, TESTERID, SEVERITY, TYPE, ID */
+        orderBy?: "severity" | "testerId" | "status" | "type" | "id";
+        /** Key-value Array for item filtering */
+        filterBy?: components["parameters"]["filterBy"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            items: {
+              id: number;
+              title: string;
+              internalId: string;
+              status: {
+                id: number;
+                name: string;
+              };
+              type: {
+                id: number;
+                name: string;
+              };
+              severity: {
+                id: number;
+                name: string;
+              };
+              tester: {
+                id: number;
+              };
+              tags?: components["schemas"]["BugTag"][];
+              /** @enum {string} */
+              duplication: "father" | "unique" | "duplicated";
+              isFavourite: boolean;
+              created: string;
+              updated: string;
+            }[];
+          } & components["schemas"]["PaginationData"];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  /** Get all groups used in a Campaign if you have access to it */
+  "get-campaigns-cid-groups": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            name: string;
+          }[];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
     };
   };
   "get-campaigns-campaign-candidates": {
@@ -971,6 +1359,40 @@ export interface operations {
               device?: number | "random";
             };
       };
+    };
+  };
+  "get-campaigns-campaign-payouts": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: components["parameters"]["campaign"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            maxBonusBug: number;
+            completionRule: {
+              bugs?: number;
+              usecases?: number;
+            };
+            testSuccess: {
+              payout: number;
+              points: number;
+              message: string;
+            };
+            testFailure: {
+              payout: number;
+              points: number;
+              message: string;
+            };
+          };
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
     };
   };
   /** Get all UseCases linked to a Campaign */
@@ -1216,6 +1638,209 @@ export interface operations {
       404: components["responses"]["NotFound"];
     };
   };
+  "put-campaigns-campaign-prospect-testerId": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: components["parameters"]["campaign"];
+        testerId: components["parameters"]["testerId"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            payout: {
+              completion: number;
+              bugs: number;
+              refund: number;
+              extra: number;
+            };
+            experience: {
+              completion: number;
+              extra: number;
+            };
+            note: string;
+            completed: boolean;
+          };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          payout: {
+            completion: number;
+            bugs: number;
+            refund: number;
+            extra: number;
+          };
+          experience: {
+            completion: number;
+            extra: number;
+          };
+          note: string;
+          completed: boolean;
+        };
+      };
+    };
+  };
+  "get-campaigns-campaign-prospect": {
+    parameters: {
+      path: {
+        campaign: string;
+      };
+      query: {
+        /** Key-value Array for item filtering */
+        filterByInclude?: unknown;
+        /** Key-value Array for item filtering */
+        filterByExclude?: unknown;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            items: {
+              tester: {
+                id: number;
+                name: string;
+                surname: string;
+                group: number;
+              };
+              usecases: {
+                completed: number;
+                required: number;
+              };
+              bugs: {
+                critical: number;
+                high: number;
+                medium: number;
+                low: number;
+              };
+              payout: {
+                completion: number;
+                bug: number;
+                refund: number;
+                extra: number;
+              };
+              experience: {
+                completion: number;
+                extra: number;
+              };
+              note: string;
+              /** @enum {string} */
+              status: "pending" | "done";
+              weightedBugs: number;
+              isCompleted: boolean;
+              isTopTester: boolean;
+            }[];
+            status: components["schemas"]["ProspectStatus"];
+          };
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+      /** Precondition Failed */
+      412: unknown;
+    };
+  };
+  /** Make campaign perspective status done, and change exp points and tester payouts. */
+  "put-campaigns-campaign-prospect": {
+    parameters: {
+      path: {
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: unknown;
+      /** Not Modified */
+      304: never;
+      /** Not Implemented */
+      501: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          status: components["schemas"]["ProspectStatus"];
+          items: {
+            tester: {
+              id: number;
+            };
+            experience: {
+              completion: number;
+              extra: number;
+            };
+            payout: {
+              completion: number;
+              bug: number;
+              extra: number;
+              refund: number;
+            };
+            note?: string;
+            completed: boolean;
+          }[];
+        };
+      };
+    };
+  };
+  "patch-campaigns-campaign-prospect": {
+    parameters: {
+      path: {
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: unknown;
+      /** Not Modified */
+      304: never;
+      /** Forbidden */
+      403: unknown;
+      /** Not Implemented */
+      501: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          status?: components["schemas"]["ProspectStatus"];
+        };
+      };
+    };
+  };
+  "get-campaigns-campaign-stats": {
+    parameters: {
+      path: {
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            selected: number;
+          };
+        };
+      };
+    };
+  };
+  "get-campaign-types": {
+    parameters: {};
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            name: string;
+          }[];
+        };
+      };
+    };
+  };
   /** Get all certificatio */
   "get-certifications": {
     parameters: {
@@ -1268,69 +1893,13 @@ export interface operations {
       /** An array of Customer objects */
       200: {
         content: {
-          "application/json": (components["schemas"]["Customer"] & {
+          "application/json": {
             id?: number;
-          })[];
+            name?: string;
+          }[];
         };
       };
       403: components["responses"]["NotAuthorized"];
-    };
-  };
-  /** Add a new Customer to the platform */
-  "post-customers": {
-    parameters: {};
-    responses: {
-      /** Created */
-      201: unknown;
-      400: components["responses"]["MissingParameters"];
-      403: components["responses"]["NotAuthorized"];
-    };
-    /** The customer you want to create */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Customer"];
-      };
-    };
-  };
-  /** Get the data for a Customer if you have access to it */
-  "get-customers-customer_id": {
-    parameters: {
-      path: {
-        /** A customer id */
-        customer: components["parameters"]["customer"];
-      };
-    };
-    responses: {
-      /** The Customer data you requested */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Customer"];
-        };
-      };
-      403: components["responses"]["NotAuthorized"];
-      404: components["responses"]["NotFound"];
-    };
-  };
-  /** Change the data of a Customer if you have access to it */
-  "put-customers-customer": {
-    parameters: {
-      path: {
-        /** A customer id */
-        customer: components["parameters"]["customer"];
-      };
-    };
-    responses: {
-      /** OK */
-      200: unknown;
-      400: components["responses"]["MissingParameters"];
-      403: components["responses"]["NotAuthorized"];
-      404: components["responses"]["NotFound"];
-    };
-    /** The Customer data to edit */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Customer"];
-      };
     };
   };
   "get-customUserFields": {
@@ -1603,11 +2172,12 @@ export interface operations {
             /** @enum {string} */
             element: "payments";
             id: number;
-            message: {
+            message: Partial<{
               /** @enum {string} */
               code: "GENERIC_ERROR";
               data: string;
-            };
+            }> &
+              Partial<string>;
           };
         };
       };
@@ -2845,6 +3415,26 @@ export interface operations {
       };
       403: components["responses"]["NotAuthorized"];
       404: components["responses"]["NotFound"];
+    };
+  };
+  /** Return all user permissions */
+  "get-users-me-permissions": {
+    parameters: {};
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            appq_bug?: components["schemas"]["Olp"];
+            appq_campaign?: components["schemas"]["Olp"];
+            appq_message_center?: components["schemas"]["Olp"];
+            appq_prospect?: components["schemas"]["Olp"];
+            appq_tester_selection?: components["schemas"]["Olp"];
+          };
+        };
+      };
+      /** Internal Server Error */
+      500: unknown;
     };
   };
   /** Get all popup defined for your user */

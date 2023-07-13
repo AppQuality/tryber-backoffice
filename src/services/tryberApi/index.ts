@@ -4,6 +4,51 @@ const injectedRtkApi = api.injectEndpoints({
     get: build.query<GetApiResponse, GetApiArg>({
       query: () => ({ url: `/` }),
     }),
+    getAgreements: build.query<GetAgreementsApiResponse, GetAgreementsApiArg>({
+      query: (queryArg) => ({
+        url: `/agreements`,
+        params: {
+          filterBy: queryArg.filterBy,
+          start: queryArg.start,
+          limit: queryArg.limit,
+        },
+      }),
+    }),
+    postAgreements: build.mutation<
+      PostAgreementsApiResponse,
+      PostAgreementsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/agreements`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    putAgreementsByAgreementId: build.mutation<
+      PutAgreementsByAgreementIdApiResponse,
+      PutAgreementsByAgreementIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/agreements/${queryArg.agreementId}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
+    deleteAgreementsByAgreementId: build.mutation<
+      DeleteAgreementsByAgreementIdApiResponse,
+      DeleteAgreementsByAgreementIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/agreements/${queryArg.agreementId}`,
+        method: "DELETE",
+      }),
+    }),
+    getAgreementsByAgreementId: build.query<
+      GetAgreementsByAgreementIdApiResponse,
+      GetAgreementsByAgreementIdApiArg
+    >({
+      query: (queryArg) => ({ url: `/agreements/${queryArg.agreementId}` }),
+    }),
     postAuthenticate: build.mutation<
       PostAuthenticateApiResponse,
       PostAuthenticateApiArg
@@ -757,6 +802,61 @@ const injectedRtkApi = api.injectEndpoints({
 export { injectedRtkApi as tryberApi };
 export type GetApiResponse = /** status 200 OK */ {};
 export type GetApiArg = void;
+export type GetAgreementsApiResponse = /** status 200 OK */ {
+  items: ({
+    id: number;
+  } & Agreement & {
+      customer: {
+        id: number;
+        company: string;
+      };
+    })[];
+} & PaginationData;
+export type GetAgreementsApiArg = {
+  /** Key-value Array for item filtering */
+  filterBy?: object;
+  /** Items to skip for pagination */
+  start?: number;
+  /** Max items to retrieve */
+  limit?: number;
+};
+export type PostAgreementsApiResponse = /** status 200 OK */ {
+  agreementId: number;
+};
+export type PostAgreementsApiArg = {
+  body: {
+    customerId: number;
+  } & Agreement;
+};
+export type PutAgreementsByAgreementIdApiResponse = /** status 200 OK */ {
+  id: number;
+} & Agreement & {
+    customer: {
+      id: number;
+      company: string;
+    };
+  };
+export type PutAgreementsByAgreementIdApiArg = {
+  agreementId: string;
+  body: Agreement & {
+    customerId: number;
+  };
+};
+export type DeleteAgreementsByAgreementIdApiResponse = unknown;
+export type DeleteAgreementsByAgreementIdApiArg = {
+  agreementId: string;
+};
+export type GetAgreementsByAgreementIdApiResponse = /** status 200 OK */ {
+  id: number;
+} & Agreement & {
+    customer: {
+      id: number;
+      company: string;
+    };
+  };
+export type GetAgreementsByAgreementIdApiArg = {
+  agreementId: string;
+};
 export type PostAuthenticateApiResponse =
   /** status 200 Authentication data. The token can be used to authenticate the protected requests */ {
     id?: number;
@@ -882,6 +982,8 @@ export type GetCampaignsByCampaignBugsApiResponse = /** status 200 OK */ {
     tags?: BugTag[];
     duplication: "father" | "unique" | "duplicated";
     isFavourite: boolean;
+    created: string;
+    updated: string;
   }[];
 } & PaginationData;
 export type GetCampaignsByCampaignBugsApiArg = {
@@ -2112,6 +2214,21 @@ export type PostUsersMeCampaignsByCampaignIdFormsApiArg = {
     device?: number[];
   };
 };
+export type Agreement = {
+  title: string;
+  tokens: number;
+  unitPrice: number;
+  startDate: string;
+  expirationDate: string;
+  note?: string;
+  isTokenBased?: boolean;
+};
+export type PaginationData = {
+  start: number;
+  limit?: number;
+  size: number;
+  total?: number;
+};
 export type BugSeverity = {
   id?: number;
   name?: string;
@@ -2188,12 +2305,6 @@ export type CampaignRequired = {
 export type Campaign = CampaignOptional & CampaignRequired;
 export type Project = {
   name?: string;
-};
-export type PaginationData = {
-  start: number;
-  limit?: number;
-  size: number;
-  total?: number;
 };
 export type BugTag = {
   id: number;
@@ -2329,8 +2440,9 @@ export type UserDevice = {
 export type FiscalType =
   | "withholding"
   | "witholding-extra"
-  | "other"
-  | "non-italian";
+  | "non-italian"
+  | "vat"
+  | "company";
 export type FiscalBirthCity =
   | {
       city: string;
@@ -2353,6 +2465,11 @@ export type RankingItem = {
 };
 export const {
   useGetQuery,
+  useGetAgreementsQuery,
+  usePostAgreementsMutation,
+  usePutAgreementsByAgreementIdMutation,
+  useDeleteAgreementsByAgreementIdMutation,
+  useGetAgreementsByAgreementIdQuery,
   usePostAuthenticateMutation,
   usePostCampaignsMutation,
   useGetCampaignsQuery,
