@@ -3,7 +3,7 @@ const numberOfColumns = 10;
 describe("Agreements Page:", () => {
   beforeEach(() => {
     cy.clearCookies();
-    cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/agreements`, {
+    cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/agreements?`, {
       statusCode: 200,
       fixture: "/agreements/_get/response-items-no-filtered.json",
     }).as("loggedIn");
@@ -16,7 +16,8 @@ describe("Agreements Page:", () => {
     cy.get("#customers-select").should("be.visible");
   });
   it("There should be a button to add a new agreement, clicking on it brings the user to the new agreement page", () => {
-    cy.get("#add-new-agreement-btn").should("be.visible");
+    cy.get("#add-new-agreement-btn").should("be.visible").click();
+    cy.url().should("include", "/agreements/new");
   });
 });
 
@@ -65,6 +66,15 @@ describe("Customer multiselect: ", () => {
 });
 
 describe("Agreements Table: ", () => {
+  beforeEach(() => {
+    cy.clearCookies();
+    cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/agreements?`, {
+      statusCode: 200,
+      fixture: "/agreements/_get/response-items-no-filtered.json",
+    }).as("getAgreements");
+    cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/`);
+  });
+
   it("Should have the following headers: Title, Start Date, Expiring Date, Company, # of tokens, Remaining tokens, €/token, Total, Actions", () => {});
   it("If there are no agreements should show an empty state", () => {});
   it("If there is an error should show an error state", () => {});
@@ -72,7 +82,11 @@ describe("Agreements Table: ", () => {
   it("If there are more than 20 agreements they should be paginated", () => {});
   it("Every row should be hoverable and clickable", () => {});
   it("If an user clicks on a row it should open the single agreement view/edit page", () => {});
-  it("If an user clicks on the delete action a confirmation modal should appear with ok cancel options", () => {});
+  it.only("If an user clicks on the delete action a confirmation modal should appear with ok cancel options", () => {
+    cy.dataQa("agreements-table")
+      .get(".tbody.cell")
+      .should("have.length", numberOfColumns * 2);
+  });
   it("If an user succesfully deletes an agreement the corresponding row should be gone. There should be a succes message", () => {});
   it("If an error happens trying to delete an agreement, the corresponding row should still be visible and a danger message should be visible", () => {});
 });

@@ -3,11 +3,15 @@ import {
   Pagination,
   Table,
 } from "@appquality/appquality-design-system";
-import { useGetAgreementsQuery } from "src/services/tryberApi";
+import {
+  useDeleteAgreementsByAgreementIdMutation,
+  useGetAgreementsQuery,
+} from "src/services/tryberApi";
 import styled from "styled-components";
 import { ReactComponent as EditIcon } from "src/assets/edit.svg";
 import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
 import { useFiltersAgreementsContext } from "./FilterContext";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 
 const TableContainer = styled.div`
   background-color: white;
@@ -16,9 +20,10 @@ const TableContainer = styled.div`
 
 export const Agreements = () => {
   const LIMIT = 10;
-
+  const [deleteAgreement] = useDeleteAgreementsByAgreementIdMutation();
+  const { add } = siteWideMessageStore();
   const { filters, page, setPage } = useFiltersAgreementsContext();
-  const { data, isLoading, isError } = useGetAgreementsQuery({
+  const { data, isLoading, isError, refetch } = useGetAgreementsQuery({
     ...(filters.customers && {
       filterBy: { customer: filters.customers?.map((c) => c.id).join() },
     }),
@@ -79,6 +84,28 @@ export const Agreements = () => {
     },
   ];
 
+  const onDelete = async (id: string, title: string) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete this agreement? ID: ${id}, Title: ${title}`
+      ) === true
+    ) {
+      deleteAgreement({ agreementId: id })
+        .unwrap()
+        .then((res) => {
+          refetch();
+          add({ type: "success", message: "Agreement Deleted" });
+        })
+        .catch((err) => {
+          refetch();
+          add({
+            type: "danger",
+            message: "There was an error",
+          });
+        });
+    }
+  };
+
   return (
     <TableContainer data-qa="agreements-table">
       <Table
@@ -109,10 +136,8 @@ export const Agreements = () => {
                       <EditIcon />
                     </Button>
                     <Button
-                      // TODO: add delete mutation
-                      onClick={() =>
-                        (window.location.href = `/backoffice/agreements/${a.id}/delete`)
-                      }
+                      data-qa={`delete-agreement-button-${a.id}`}
+                      onClick={() => onDelete(a.id.toString(), a.title)}
                       size="sm"
                       type="link"
                     >
