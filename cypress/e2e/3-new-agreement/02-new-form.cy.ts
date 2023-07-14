@@ -15,7 +15,7 @@ describe("New Single Agreement Page:", () => {
       .type("test")
       .and("have.value", "test");
   });
-  it("There should be a form with input for tokens", () => {
+  it("There should be a form with input for tokens, unit price prefilled with 165", () => {
     cy.get("input#isTokenBased").should("be.visible").click().and("be.checked");
     cy.get("input#tokens")
       .should("be.visible")
@@ -30,6 +30,22 @@ describe("New Single Agreement Page:", () => {
       .clear()
       .type("10")
       .and("have.value", "100");
+  });
+  it("Should disable number of tokens only if isTokenBased is false", () => {
+    cy.get("input#isTokenBased").should("not.be.checked");
+    cy.get("input#tokens").should("be.disabled");
+    cy.get("input#isTokenBased").click();
+    cy.get("input#tokens").should("be.enabled");
+  });
+  it("Should change number of tokens when the user edit the amount value", () => {
+    cy.get("input#amount").click().clear().type("99000");
+    cy.get("input#tokens").should("have.value", "600");
+  });
+  it("Should change number of tokens when the user edit the token unit price value", () => {
+    // type 20 but value is 200 because a 0 is already present in the input when clearing the field
+    cy.get("input#tokenUnitPrice").click().clear().type("20");
+    cy.get("input#amount").click().clear().type("99000");
+    cy.get("input#tokens").should("have.value", "495");
   });
   it("There should be a form with input for start date", () => {
     const today = new Date();
@@ -61,20 +77,27 @@ describe("New Single Agreement Page:", () => {
       cy.get("input").should("have.value", `${day}/${month}/${year}`);
     });
   });
-  it("The customer select should be preselected with the customer field and be enabled", () => {
+  it("The customer select should be enabled and editable", () => {
     cy.get("div#customer").should("contain", "Select a customer");
     // test if the customer select is not disabled after is rendered completely
     cy.get("div#customer")
       .should("be.visible")
       .within(() => {
         cy.get("input#react-select-3-input").should("be.enabled");
+      })
+      .click()
+      .within(() => {
+        cy.get("#react-select-3-option-0").click();
+        cy.get("[class$='singleValue']").should("contain", "Peronsipò");
       });
   });
   it("There should be a form with input for notes", () => {
-    cy.get("textarea#notes").should("be.visible");
+    cy.get("textarea#note")
+      .should("be.visible")
+      .click()
+      .type("test notes")
+      .and("have.value", "test notes");
   });
-
-  it("The field tokenUnitPrice should be prefilled with the value 165, as a hint or suggestion", () => {});
   it("If the Agreement is NOT token based there should be a field Amount to input the total amount and calculate the number of tokens", () => {});
   it("If the Agreement is NOT token based the field tokens should be disabled", () => {});
   it("If the Agreement is NOT token based when the user fill the amount field and tokenUnitPrice, the number of tokens is calculated, otherwise we show 0", () => {});
