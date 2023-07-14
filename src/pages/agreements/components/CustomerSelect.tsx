@@ -44,7 +44,6 @@ const CustomerSelect = ({
       placeholder={
         isError || !data ? "Error retrieving customers" : "Select a customer"
       }
-      data-qa="customer-select"
       isLoading={isLoading || isFetching}
       isMulti={isMulti}
       onBlur={onBlur}
