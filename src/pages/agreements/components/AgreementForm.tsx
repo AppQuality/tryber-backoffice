@@ -33,8 +33,8 @@ export type AgreementFormValues = {
   tokens: number;
   tokenUnitPrice: number;
   amount: number;
-  startDate: string;
-  expirationDate: string;
+  startDate: Date;
+  expirationDate: Date;
   isTokenBased: boolean;
   note?: string;
   customer: string;
@@ -48,8 +48,12 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
     amount: agreement
       ? Math.round(agreement?.tokens * agreement?.unitPrice)
       : 0,
-    startDate: agreement?.startDate.split(" ")[0] || "",
-    expirationDate: agreement?.expirationDate.split(" ")[0] || "",
+    startDate: agreement
+      ? new Date(agreement.startDate.split(" ")[0])
+      : new Date(),
+    expirationDate: agreement
+      ? new Date(agreement.expirationDate.split(" ")[0])
+      : new Date(),
     isTokenBased: agreement?.isTokenBased || false,
     note: agreement?.note || "",
     customer: agreement?.customer?.id?.toString() || "",
@@ -60,8 +64,8 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
     tokens: yup.number().required("Required"),
     tokenUnitPrice: yup.number().moreThan(0).required("Required"),
     amount: yup.number().min(0),
-    startDate: yup.string().required("Required"),
-    expirationDate: yup.string().required("Required"),
+    startDate: yup.date().required("Required"),
+    expirationDate: yup.date().required("Required"),
     isTokenBased: yup.boolean().required("Required"),
     note: yup.string(),
     customer: yup.string().required("Required"),
@@ -179,7 +183,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
             <FormikField name="startDate">
               {({ field, form }: FieldProps) => {
                 return (
-                  <FormGroup key={field.value}>
+                  <FormGroup key={field.value} data-qa={field.name}>
                     <FormLabel htmlFor={field.name} label="Start Date" />
                     <Datepicker
                       value={field.value}
@@ -195,12 +199,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
                         if (!v.value) {
                           v.value = new Date();
                         }
-                        form.setFieldValue(
-                          field.name,
-                          `${v.value.getFullYear()}-${
-                            v.value.getMonth() + 1
-                          }-${v.value.getDate()}`
-                        );
+                        form.setFieldValue(field.name, v.value);
                       }}
                     />
                     <ErrorMessage name={field.name} />
@@ -211,7 +210,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
             <FormikField name="expirationDate">
               {({ field, form }: FieldProps) => {
                 return (
-                  <FormGroup key={field.value}>
+                  <FormGroup key={field.value} data-qa={field.name}>
                     <FormLabel htmlFor={field.name} label="Expiration Date" />
                     <Datepicker
                       value={field.value}
@@ -227,12 +226,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
                         if (!v.value) {
                           v.value = new Date();
                         }
-                        form.setFieldValue(
-                          field.name,
-                          `${v.value.getFullYear()}-${
-                            v.value.getMonth() + 1
-                          }-${v.value.getDate()}`
-                        );
+                        form.setFieldValue(field.name, v.value);
                       }}
                     />
                     <ErrorMessage name={field.name} />
