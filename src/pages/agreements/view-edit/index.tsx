@@ -11,6 +11,7 @@ import {
 } from "src/services/tryberApi";
 import { useHistory, useParams } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
+import { formatDateforAPI } from "../utils";
 
 const EditAgreementPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,14 +31,15 @@ const EditAgreementPage = () => {
     actions: FormikHelpers<AgreementFormValues>
   ) => {
     actions.setSubmitting(true);
+
     const res = await editAgreement({
       agreementId: id.toString(),
       body: {
         title: values.title,
         tokens: values.tokens,
         unitPrice: values.tokenUnitPrice,
-        startDate: values.startDate,
-        expirationDate: values.expirationDate,
+        startDate: formatDateforAPI(values.startDate),
+        expirationDate: formatDateforAPI(values.expirationDate),
         isTokenBased: values.isTokenBased,
         note: values.note,
         customerId: parseInt(values.customer),

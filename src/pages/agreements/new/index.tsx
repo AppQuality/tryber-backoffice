@@ -8,6 +8,7 @@ import { usePostAgreementsMutation } from "src/services/tryberApi";
 import { FormikHelpers } from "formik";
 import { useHistory } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
+import { formatDateforAPI } from "../utils";
 
 const NewAgreementPage = () => {
   const [newAgreement] = usePostAgreementsMutation();
@@ -23,8 +24,8 @@ const NewAgreementPage = () => {
         title: values.title,
         tokens: values.tokens,
         unitPrice: values.tokenUnitPrice,
-        startDate: values.startDate,
-        expirationDate: values.expirationDate,
+        startDate: formatDateforAPI(values.startDate),
+        expirationDate: formatDateforAPI(values.expirationDate),
         isTokenBased: values.isTokenBased,
         note: values.note,
         customerId: parseInt(values.customer),
