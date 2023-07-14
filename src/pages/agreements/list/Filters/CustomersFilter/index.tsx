@@ -26,7 +26,7 @@ const CustomersFilter = () => {
       placeholder={"Filter by customers"}
       isMulti
       menuTargetQuery={"body"}
-      name={"customers"}
+      name={"customers-select"}
       label={`Customers (${total})`}
       options={options}
       value={

@@ -27,22 +27,8 @@
       },
       "note": "Test con dati veri",
       "isTokenBased": false
-    },
-    {
-      "id": 42,
-      "title": "Epic Token",
-      "tokens": 103,
-      "unitPrice": 166.6,
-      "startDate": "2020-10-20 00:12:20",
-      "expirationDate": "2020-01-01 00:12:20",
-      "customer": {
-        "id": 3,
-        "company": "Epical s.p.a."
-      },
-      "note": "Test con dati veri",
-      "isTokenBased": true
     }
   ],
   "start": 0,
-  "size": 3
+  "size": 2
 }
