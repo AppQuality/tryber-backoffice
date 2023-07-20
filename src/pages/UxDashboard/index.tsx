@@ -34,10 +34,10 @@ const UxDashboard = () => {
   }
 
   return (
-    <div>
+    <Container>
       <h1>UxDashboard</h1>
       <UxDashboardForm />
-    </div>
+    </Container>
   );
 };
 
