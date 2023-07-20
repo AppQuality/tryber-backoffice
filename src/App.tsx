@@ -23,6 +23,7 @@ import Prospect from "./pages/Prospect";
 import AgreementsList from "./pages/agreements/list";
 import SingleAgreementEdit from "./pages/agreements/view-edit";
 import SingleAgreementNew from "./pages/agreements/new";
+import UxDashboard from "./pages/UxDashboard";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
               component={SingleAgreementEdit}
             />
             <Route path="/backoffice/agreements" component={AgreementsList} />
+            <Route path="/backoffice/ux-dashboard" component={UxDashboard} />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
           </Switch>
