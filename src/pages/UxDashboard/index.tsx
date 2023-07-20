@@ -1,6 +1,7 @@
 import { Container } from "@appquality/appquality-design-system";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
+import UxDashboardForm from "./UxDashboardForm";
 
 const UxDashboard = () => {
   const {
@@ -35,6 +36,7 @@ const UxDashboard = () => {
   return (
     <div>
       <h1>UxDashboard</h1>
+      <UxDashboardForm />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 describe("Ux Dashboard Form", () => {
-  it("should redirect to wp login if user is logged out", () => {
+  it("Should redirect to wp login if user is logged out", () => {
     cy.intercept(
       "GET",
       `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
@@ -11,13 +11,13 @@ describe("Ux Dashboard Form", () => {
     cy.visit(`${Cypress.env("UX_DASHBOARD_PAGE")}/`);
     cy.url().should("include", "wp-login.php");
   });
-  it.only("If a user does not have enough permissions, should see a not authorized page", () => {
+  it("Should print a not authorized page, if a user does not have enough permissions.", () => {
     cy.intercept(
       "GET",
       `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
       {
         statusCode: 200,
-        fixture: "permissions/_get/response_200_not_enough_permissions.json",
+        fixture: "permissions/_get/response_200_appq_campaign.json",
       }
     ).as("notEnoughPermissions");
     cy.visit(`${Cypress.env("UX_DASHBOARD_PAGE")}/`);
@@ -25,5 +25,17 @@ describe("Ux Dashboard Form", () => {
       "contain",
       "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
     );
+  });
+  it("Should print an ux dashboard form, if the user have at least appq_campaign permission.", () => {
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
+      {
+        statusCode: 200,
+        fixture: "permissions/_get/response_200_appq_campaign.json",
+      }
+    ).as("authorized");
+    cy.visit(`${Cypress.env("UX_DASHBOARD_PAGE")}/`);
+    cy.dataQa("ux-dashboard-form").should("be.visible");
   });
 });
