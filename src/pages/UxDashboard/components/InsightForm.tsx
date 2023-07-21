@@ -1,4 +1,11 @@
-import { Field, Form, Formik } from "@appquality/appquality-design-system";
+import {
+  Field,
+  FieldProps,
+  Form,
+  Formik,
+  FormikField,
+  Select,
+} from "@appquality/appquality-design-system";
 import { useAppSelector } from "src/store";
 import * as Yup from "yup";
 
@@ -71,6 +78,17 @@ export const InsightForm = () => {
       <Form data-qa="insight-form">
         <Field name="title" label="Title" />
         <Field name="description" label="Description" />
+        <FormikField name="severity">
+          {({ field, form }: FieldProps) => (
+            <Select
+              options={[]}
+              label="Severity"
+              name="severity"
+              value={field.value}
+              onChange={(value) => form.setFieldValue(field.name, value)}
+            />
+          )}
+        </FormikField>
       </Form>
     </Formik>
   );
