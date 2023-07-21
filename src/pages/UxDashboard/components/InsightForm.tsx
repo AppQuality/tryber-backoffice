@@ -1,4 +1,5 @@
 import { Field, Form, Formik } from "@appquality/appquality-design-system";
+import { useAppSelector } from "src/store";
 import * as Yup from "yup";
 
 interface VideoPart {
@@ -26,16 +27,18 @@ export interface Insight {
 }
 
 export const InsightForm = () => {
+  const { selectedInsight } = useAppSelector((state) => state.uxDashboard);
+
   const initialValues: Insight = {
-    id: 0,
-    title: "",
-    description: "",
-    severity: {
+    id: selectedInsight?.id || 0,
+    title: selectedInsight?.title || "",
+    description: selectedInsight?.description || "",
+    severity: selectedInsight?.severity || {
       id: 0,
       name: "",
     },
-    cluster: "",
-    videoPart: [],
+    cluster: selectedInsight?.cluster || "",
+    videoPart: selectedInsight?.videoPart || [],
   };
 
   const validationSchema = Yup.object().shape({
@@ -68,7 +71,6 @@ export const InsightForm = () => {
       <Form data-qa="insight-form">
         <Field name="title" label="Title" />
         <Field name="description" label="Description" />
-        <Field name="severityId" label="Severity" />
       </Form>
     </Formik>
   );

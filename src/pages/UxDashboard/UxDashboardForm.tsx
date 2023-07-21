@@ -11,6 +11,8 @@ import { InsightsWrapper } from "./components/styled";
 import { InsightModal } from "./components/insightModal";
 import { useState } from "react";
 import { Insight } from "./components/InsightForm";
+import { setSelectedInsight } from "./uxDashboardSlice";
+import { useAppDispatch } from "src/store";
 
 interface FormValuesInterface {
   insights: Insight[];
@@ -18,6 +20,7 @@ interface FormValuesInterface {
 
 const UxDashboardForm = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const dispatch = useAppDispatch();
   const initialValues: FormValuesInterface = {
     insights: data.insight || [],
   };
@@ -43,6 +46,11 @@ const UxDashboardForm = () => {
     ),
   });
 
+  function editInsight(insight: Insight): void {
+    dispatch(setSelectedInsight(insight));
+    setModalOpen(true);
+  }
+
   return (
     <>
       <InsightModal
@@ -65,14 +73,37 @@ const UxDashboardForm = () => {
               </Title>
               <InsightsWrapper data-qa="insights-list" className="aq-mb-3">
                 {initialValues.insights.map((insight) => (
-                  <Card
-                    key={insight.id}
-                    data-qa={`insight-card-${insight.id}`}
-                    title={insight.title}
-                  >
-                    <div className="aq-mb-3">{insight.description}</div>
-                    Severity: {insight.severity.name}
-                  </Card>
+                  <div data-qa={`insight-card-${insight.id}`}>
+                    <Card key={insight.id} title={insight.title}>
+                      <div className="aq-mb-3">{insight.description}</div>
+                      <div className="aq-mb-3">
+                        Severity: {insight.severity.name}
+                      </div>
+                      <div
+                        className="aq-mb-3"
+                        style={{ display: "flex", gap: "5px" }}
+                      >
+                        <Button
+                          htmlType="button"
+                          type="info"
+                          size="block"
+                          onClick={() => editInsight(insight)}
+                          data-qa="edit-insight"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          htmlType="button"
+                          type="danger"
+                          size="block"
+                          onClick={() => alert("delete insight")}
+                          data-qa="delete-insight"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </Card>
+                  </div>
                 ))}
                 <Card title="Add new Insight">
                   <Button

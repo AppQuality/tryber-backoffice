@@ -26,8 +26,20 @@ describe("Insights section of the form", () => {
       cy.dataQa("add-new-insight").should("be.visible");
     });
   });
-  it.only("Should show a form to create a new insight when clicking on the add new insight card", () => {
+  it("Should show an empty form to create a new insight when clicking on the add new insight card", () => {
     cy.dataQa("add-new-insight").click();
-    cy.dataQa("insight-form").should("be.visible");
+    cy.dataQa("insight-form").within(() => {
+      cy.get("input#title").should("be.empty");
+      cy.get("input#description").should("be.empty");
+    });
+  });
+  it.only("Should show a prefilled form when clicking on the edit insight", () => {
+    cy.dataQa("insight-card-1").within(() => {
+      cy.dataQa("edit-insight").click();
+    });
+    cy.dataQa("insight-form").within(() => {
+      cy.get("input#title").should("have.value", "My insight");
+      cy.get("input#description").should("have.value", "This is an insight");
+    });
   });
 });
