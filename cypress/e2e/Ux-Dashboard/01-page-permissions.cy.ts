@@ -1,4 +1,8 @@
-describe("Ux Dashboard Form", () => {
+describe("Ux Dashboard Page", () => {
+  beforeEach(() => {
+    cy.clearCookies();
+    cy.visit(`${Cypress.env("UX_DASHBOARD_PAGE")}/`);
+  });
   it("Should redirect to wp login if user is logged out", () => {
     cy.intercept(
       "GET",
@@ -8,7 +12,6 @@ describe("Ux Dashboard Form", () => {
         fixture: "permissions/_get/response_403_not_logged_in.json",
       }
     ).as("notLoggedIn");
-    cy.visit(`${Cypress.env("UX_DASHBOARD_PAGE")}/`);
     cy.url().should("include", "wp-login.php");
   });
   it("Should print a not authorized page, if a user does not have enough permissions.", () => {
@@ -20,7 +23,6 @@ describe("Ux Dashboard Form", () => {
         fixture: "permissions/_get/response_200_appq_campaign.json",
       }
     ).as("notEnoughPermissions");
-    cy.visit(`${Cypress.env("UX_DASHBOARD_PAGE")}/`);
     cy.dataQa("error-unauthorized").should(
       "contain",
       "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
@@ -35,7 +37,6 @@ describe("Ux Dashboard Form", () => {
         fixture: "permissions/_get/response_200_appq_campaign.json",
       }
     ).as("authorized");
-    cy.visit(`${Cypress.env("UX_DASHBOARD_PAGE")}/`);
     cy.dataQa("ux-dashboard-form").should("be.visible");
   });
 });

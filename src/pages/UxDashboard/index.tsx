@@ -1,4 +1,8 @@
-import { Container } from "@appquality/appquality-design-system";
+import {
+  Card,
+  Container,
+  PageTitle,
+} from "@appquality/appquality-design-system";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
 import UxDashboardForm from "./UxDashboardForm";
@@ -35,8 +39,10 @@ const UxDashboard = () => {
 
   return (
     <Container>
-      <h1>UxDashboard</h1>
-      <UxDashboardForm />
+      <PageTitle>UxDashboard</PageTitle>
+      <Card>
+        <UxDashboardForm />
+      </Card>
     </Container>
   );
 };

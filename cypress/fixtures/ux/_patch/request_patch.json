@@ -1,0 +1,29 @@
+{
+  "status": "draft",
+  "insights": [
+    {
+      "id": 0,
+      "title": "string",
+      "description": "string",
+      "severityId": 0,
+      "order": 0,
+      "clusterId": [0],
+      "videoPart": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 0,
+          "mediaId": 0,
+          "description": "string",
+          "order": 0
+        }
+      ]
+    }
+  ],
+  "sentiments": [
+    {
+      "clusterId": 0,
+      "value": "string"
+    }
+  ]
+}
