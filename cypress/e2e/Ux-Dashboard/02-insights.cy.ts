@@ -26,8 +26,8 @@ describe("Insights section of the form", () => {
       cy.dataQa("add-new-insight").should("be.visible");
     });
   });
-  it.only("Should show a modal to create a new insight when clicking on the add new insight card", () => {
+  it.only("Should show a form to create a new insight when clicking on the add new insight card", () => {
     cy.dataQa("add-new-insight").click();
-    cy.dataQa("insight-modal").should("be.visible");
+    cy.dataQa("insight-form").should("be.visible");
   });
 });
