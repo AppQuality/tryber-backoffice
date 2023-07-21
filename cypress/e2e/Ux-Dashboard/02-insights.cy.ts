@@ -14,7 +14,7 @@ describe("Insights section of the form", () => {
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
       {
         statusCode: 200,
-        fixture: "permissions/_get/response_200_appq_campaign.json",
+        fixture: "campaigns/id/ux/_get/response_200_draft_with_insights.json",
       }
     ).as("getUx");
     cy.visit(
@@ -32,6 +32,14 @@ describe("Insights section of the form", () => {
     });
   });
   it("Should show an empty section if no previous insight is present, only new insight card is present", () => {
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
+      {
+        statusCode: 200,
+        fixture: "campaigns/id/ux/_get/response_200_draft_NO_insights.json",
+      }
+    ).as("getUx");
     cy.wait("@getUx");
     cy.dataQa("insights-list").within(() => {
       cy.get(".aq-card-body").should("have.length", 1);
