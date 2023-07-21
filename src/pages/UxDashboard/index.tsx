@@ -6,8 +6,10 @@ import {
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
 import UxDashboardForm from "./UxDashboardForm";
+import { useParams } from "react-router-dom";
 
 const UxDashboard = () => {
+  const { id } = useParams<{ id: string }>();
   const {
     data: permissions,
     isError,
@@ -15,7 +17,7 @@ const UxDashboard = () => {
   } = useGetUsersMePermissionsQuery();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Container>Loading...</Container>;
   }
 
   if (isError) {
@@ -41,7 +43,7 @@ const UxDashboard = () => {
     <Container>
       <PageTitle>UxDashboard</PageTitle>
       <Card>
-        <UxDashboardForm />
+        <UxDashboardForm campaignId={id} />
       </Card>
     </Container>
   );

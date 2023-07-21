@@ -60,6 +60,10 @@ function App() {
               path="/backoffice/campaigns/:id/selection"
               component={SelectionPage}
             />
+            <Route
+              path="/backoffice/campaigns/:id/ux-dashboard"
+              component={UxDashboard}
+            />
             <Route path="/backoffice/campaigns" component={Campaigns} />
             <Route
               path="/backoffice/agreements/new"
@@ -70,7 +74,6 @@ function App() {
               component={SingleAgreementEdit}
             />
             <Route path="/backoffice/agreements" component={AgreementsList} />
-            <Route path="/backoffice/ux-dashboard" component={UxDashboard} />
             <Route path={`/backoffice/:id`} component={Update} />
             <Route path={`/backoffice`} component={List} />
           </Switch>

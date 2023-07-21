@@ -5,7 +5,6 @@ import {
   Formik,
   Title,
 } from "@appquality/appquality-design-system";
-import data from "./data/ux/_get/response_200_insights.json";
 import * as Yup from "yup";
 import { InsightsWrapper } from "./components/styled";
 import { InsightModal } from "./components/insightModal";
@@ -13,16 +12,23 @@ import { useState } from "react";
 import { Insight } from "./components/InsightForm";
 import { setSelectedInsight } from "./uxDashboardSlice";
 import { useAppDispatch } from "src/store";
+import { useGetCampaignsByCampaignUxQuery } from "src/services/tryberApi";
 
 interface FormValuesInterface {
   insights: Insight[];
 }
+interface UxDashboardFormProps {
+  campaignId: string;
+}
 
-const UxDashboardForm = () => {
+const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const { data, isLoading, isError } = useGetCampaignsByCampaignUxQuery({
+    campaign: campaignId,
+  });
   const initialValues: FormValuesInterface = {
-    insights: data.insight || [],
+    insights: data?.insight || [],
   };
   const validationSchema = Yup.object({
     insights: Yup.array().of(
