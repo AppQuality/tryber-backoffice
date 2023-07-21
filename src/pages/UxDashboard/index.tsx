@@ -28,23 +28,20 @@ const UxDashboard = () => {
       return <Container>Redirecting...</Container>;
     }
   }
-
-  if (permissions) {
-    if (permissions.appq_campaign !== true) {
-      return (
-        <Container>
-          <ErrorUnauthorized />
-        </Container>
-      );
-    }
+  if (permissions?.appq_campaign === true) {
+    return (
+      <Container>
+        <PageTitle>UxDashboard</PageTitle>
+        <Card>
+          <UxDashboardForm campaignId={id} />
+        </Card>
+      </Container>
+    );
   }
 
   return (
     <Container>
-      <PageTitle>UxDashboard</PageTitle>
-      <Card>
-        <UxDashboardForm campaignId={id} />
-      </Card>
+      <ErrorUnauthorized />
     </Container>
   );
 };

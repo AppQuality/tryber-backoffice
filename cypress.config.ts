@@ -10,6 +10,7 @@ export default defineConfig({
     env: {
       REACT_APP_API_URL: "https://dev.tryber.me/api",
       AGREEMENTS_PAGE: "/agreements",
+      CAMPAINGS_PAGE: "/campaigns",
       UX_DASHBOARD_PAGE: "/ux-dashboard",
     },
     video: false,

@@ -1,7 +1,13 @@
 describe("Ux Dashboard Page", () => {
   beforeEach(() => {
     cy.clearCookies();
-    cy.visit(`${Cypress.env("UX_DASHBOARD_PAGE")}/`);
+    cy.clearAllLocalStorage();
+    cy.clearAllSessionStorage();
+    cy.visit(
+      `${Cypress.env("CAMPAINGS_PAGE")}/4904${Cypress.env(
+        "UX_DASHBOARD_PAGE"
+      )}/`
+    );
   });
   it("Should redirect to wp login if user is logged out", () => {
     cy.intercept(
@@ -20,7 +26,7 @@ describe("Ux Dashboard Page", () => {
       `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
       {
         statusCode: 200,
-        fixture: "permissions/_get/response_200_appq_campaign.json",
+        fixture: "permissions/_get/response_200_not_enough_permissions.json",
       }
     ).as("notEnoughPermissions");
     cy.dataQa("error-unauthorized").should(
