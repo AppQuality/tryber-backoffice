@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Container,
   Form,
   Formik,
   Title,
@@ -27,6 +28,12 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
   const { data, isLoading, isError } = useGetCampaignsByCampaignUxQuery({
     campaign: campaignId,
   });
+  if (isLoading) {
+    return <Container>Loading...</Container>;
+  }
+  if (isError) {
+    return <Container>Error...</Container>;
+  }
   const initialValues: FormValuesInterface = {
     insights: data?.insight || [],
   };
