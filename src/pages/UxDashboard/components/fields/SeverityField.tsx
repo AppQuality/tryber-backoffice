@@ -32,12 +32,7 @@ const SeverityField = (fieldProps: FieldProps) => {
         options={severityOptions}
         label="Severity"
         name={field.name}
-        value={
-          severityOptions.find((option) => option.value === field.value) || {
-            label: "",
-            value: "",
-          }
-        }
+        value={field.value}
         onChange={(value) => form.setFieldValue(field.name, value)}
       />
       <ErrorMessage name={field.name} />

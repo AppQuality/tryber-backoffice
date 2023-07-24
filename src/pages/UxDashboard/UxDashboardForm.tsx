@@ -10,13 +10,15 @@ import * as Yup from "yup";
 import { InsightsWrapper } from "./components/styled";
 import { InsightModal } from "./components/insightModal";
 import { useState } from "react";
-import { Insight } from "./components/InsightForm";
 import { setSelectedInsight } from "./uxDashboardSlice";
 import { useAppDispatch } from "src/store";
-import { useGetCampaignsByCampaignUxQuery } from "src/services/tryberApi";
+import {
+  GetCampaignsByCampaignUxApiResponse,
+  useGetCampaignsByCampaignUxQuery,
+} from "src/services/tryberApi";
 
-interface FormValuesInterface {
-  insights: Insight[];
+export interface FormValuesInterface {
+  insights: NonNullable<GetCampaignsByCampaignUxApiResponse["insight"]>;
 }
 interface UxDashboardFormProps {
   campaignId: string;
@@ -59,7 +61,7 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
     ),
   });
 
-  function editInsight(insight: Insight): void {
+  function editInsight(insight: FormValuesInterface["insights"][number]): void {
     dispatch(setSelectedInsight(insight));
     setModalOpen(true);
   }
@@ -86,8 +88,8 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
               </Title>
               <InsightsWrapper data-qa="insights-list" className="aq-mb-3">
                 {initialValues.insights.map((insight) => (
-                  <div data-qa={`insight-card-${insight.id}`}>
-                    <Card key={insight.id} title={insight.title}>
+                  <div key={insight.id} data-qa={`insight-card-${insight.id}`}>
+                    <Card title={insight.title}>
                       <div className="aq-mb-3">{insight.description}</div>
                       <div className="aq-mb-3">
                         Severity: {insight.severity.name}

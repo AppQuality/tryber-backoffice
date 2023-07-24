@@ -7,16 +7,20 @@ import {
 
 export const clusterOptions = [
   {
-    label: "Cluster1",
-    value: "cluster1",
+    value: "1",
+    label: "UC1: Cart",
   },
   {
-    label: "Cluster2",
-    value: "cluster2",
+    value: "2",
+    label: "UC2: Login",
   },
   {
-    label: "Cluster3",
-    value: "cluster3",
+    value: "3",
+    label: "UC3: Checkout",
+  },
+  {
+    value: "4",
+    label: "UC4: Search",
   },
 ];
 
@@ -25,15 +29,11 @@ const ClusterField = (fieldProps: FieldProps) => {
   return (
     <FormGroup>
       <Select
+        isMulti
         options={clusterOptions}
         label="Cluster"
         name={field.name}
-        value={
-          clusterOptions.find((option) => option.value === field.value) || {
-            label: "",
-            value: "",
-          }
-        }
+        value={field.value}
         onChange={(value) => form.setFieldValue(field.name, value)}
       />
       <ErrorMessage name={field.name} />

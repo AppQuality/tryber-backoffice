@@ -46,7 +46,7 @@ describe("Insights section of the form", () => {
       cy.dataQa("add-new-insight").should("be.visible");
     });
   });
-  it.only("Should show an empty form to create a new insight when clicking on the add new insight card", () => {
+  it("Should show an empty form to create a new insight when clicking on the add new insight card", () => {
     cy.wait("@getUx");
     cy.dataQa("add-new-insight").click();
     cy.dataQa("insight-form").within(() => {
@@ -56,16 +56,23 @@ describe("Insights section of the form", () => {
       cy.get("#cluster input[name=cluster]").should("have.value", "");
     });
   });
-  it("Should show a prefilled form when clicking on the edit insight", () => {
+  it.only("Should show a prefilled form when clicking on the edit insight", () => {
     cy.wait("@getUx");
-    cy.dataQa("insight-card-1").within(() => {
+    cy.dataQa("insight-card-2").within(() => {
       cy.dataQa("edit-insight").click();
     });
     cy.dataQa("insight-form").within(() => {
-      cy.get("input#title").should("have.value", "My insight");
-      cy.get("input#description").should("have.value", "This is an insight");
-      cy.get("#severity input").should("have.label", "Major");
-      cy.get("#cluster input").should("have.label", "Major");
+      cy.get("input#title").should("have.value", "My second insight");
+      cy.get("input#description").should(
+        "have.value",
+        "This is another insight"
+      );
+      cy.get("#severity input[name=severity]").should("have.value", "2");
+      cy.get("#cluster input[name=cluster]")
+        .should("have.length", 2)
+        .each(($el, index) => {
+          cy.wrap($el).should("have.value", `${index + 1}`);
+        });
     });
   });
 });
