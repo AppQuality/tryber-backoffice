@@ -1,9 +1,11 @@
 import {
+  Button,
   Field,
   FieldProps,
   Form,
   Formik,
   FormikField,
+  TextareaField,
 } from "@appquality/appquality-design-system";
 import { useAppSelector } from "src/store";
 import * as Yup from "yup";
@@ -92,13 +94,14 @@ export const InsightForm = () => {
     >
       <Form data-qa="insight-form">
         <Field name="title" label="Title" />
-        <Field name="description" label="Description" />
+        <TextareaField name="description" label="Description" />
         <FormikField name="severity">
           {(fieldProps: FieldProps) => <SeverityField {...fieldProps} />}
         </FormikField>
         <FormikField name="cluster">
           {(fieldProps: FieldProps) => <ClusterField {...fieldProps} />}
         </FormikField>
+        <Button htmlType="submit">Submit</Button>
       </Form>
     </Formik>
   );

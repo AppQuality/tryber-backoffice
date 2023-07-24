@@ -31,7 +31,7 @@ const UxDashboard = () => {
   if (permissions?.appq_campaign === true) {
     return (
       <Container>
-        <PageTitle>UxDashboard</PageTitle>
+        <PageTitle>Ux Dashboard</PageTitle>
         <Card>
           <UxDashboardForm campaignId={id} />
         </Card>

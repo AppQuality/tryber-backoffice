@@ -29,6 +29,7 @@ const SeverityField = (fieldProps: FieldProps) => {
   return (
     <FormGroup>
       <Select
+        menuTargetQuery="body"
         options={severityOptions}
         label="Severity"
         name={field.name}
