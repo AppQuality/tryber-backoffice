@@ -51,19 +51,19 @@ describe("Insights section of the form", () => {
     cy.dataQa("add-new-insight").click();
     cy.dataQa("insight-form").within(() => {
       cy.get("input#title").should("be.empty");
-      cy.get("input#description").should("be.empty");
+      cy.get("textarea#description").should("be.empty");
       cy.get("#severity input[name=severity]").should("have.value", "");
       cy.get("#cluster input[name=cluster]").should("have.value", "");
     });
   });
-  it.only("Should show a prefilled form when clicking on the edit insight", () => {
+  it("Should show a prefilled form when clicking on the edit insight", () => {
     cy.wait("@getUx");
     cy.dataQa("insight-card-2").within(() => {
       cy.dataQa("edit-insight").click();
     });
     cy.dataQa("insight-form").within(() => {
       cy.get("input#title").should("have.value", "My second insight");
-      cy.get("input#description").should(
+      cy.get("textarea#description").should(
         "have.value",
         "This is another insight"
       );
@@ -73,6 +73,20 @@ describe("Insights section of the form", () => {
         .each(($el, index) => {
           cy.wrap($el).should("have.value", `${index + 1}`);
         });
+    });
+  });
+  it.only("Should empty the insight form every time is closed", () => {
+    cy.wait("@getUx");
+    cy.dataQa("insight-card-2").within(() => {
+      cy.dataQa("edit-insight").click();
+    });
+    cy.get(".modal .modal-close").click();
+    cy.dataQa("add-new-insight").click();
+    cy.dataQa("insight-form").within(() => {
+      cy.get("input#title").should("be.empty");
+      cy.get("textarea#description").should("be.empty");
+      cy.get("#severity input[name=severity]").should("have.value", "");
+      cy.get("#cluster input[name=cluster]").should("have.value", "");
     });
   });
 });
