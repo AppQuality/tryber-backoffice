@@ -4,10 +4,11 @@ import {
   Form,
   Formik,
   FormikField,
-  Select,
 } from "@appquality/appquality-design-system";
 import { useAppSelector } from "src/store";
 import * as Yup from "yup";
+import SeverityField from "./fields/SeverityField";
+import ClusterField from "./fields/ClusterField";
 
 interface VideoPart {
   id: number;
@@ -79,15 +80,10 @@ export const InsightForm = () => {
         <Field name="title" label="Title" />
         <Field name="description" label="Description" />
         <FormikField name="severity">
-          {({ field, form }: FieldProps) => (
-            <Select
-              options={[]}
-              label="Severity"
-              name="severity"
-              value={field.value}
-              onChange={(value) => form.setFieldValue(field.name, value)}
-            />
-          )}
+          {(fieldProps: FieldProps) => <SeverityField {...fieldProps} />}
+        </FormikField>
+        <FormikField name="cluster">
+          {(fieldProps: FieldProps) => <ClusterField {...fieldProps} />}
         </FormikField>
       </Form>
     </Formik>
