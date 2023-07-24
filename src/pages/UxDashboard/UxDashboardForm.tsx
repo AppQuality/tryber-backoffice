@@ -135,9 +135,6 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
             <Button htmlType="submit" data-qa="submit-draft">
               Save Draft
             </Button>
-            <Button htmlType="reset" data-qa="reset-fields">
-              Reset
-            </Button>
           </Form>
         </Formik>
       </div>
