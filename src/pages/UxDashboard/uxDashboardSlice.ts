@@ -17,6 +17,9 @@ const selectionSlice = createSlice({
     ) {
       state.selectedInsight = action.payload;
     },
+    resetInsight(state) {
+      state.selectedInsight = undefined;
+    },
     reset() {
       return initialState;
     },
@@ -24,6 +27,6 @@ const selectionSlice = createSlice({
 });
 
 const { actions, reducer } = selectionSlice;
-export const { setSelectedInsight, reset } = actions;
+export const { setSelectedInsight, resetInsight, reset } = actions;
 
 export default reducer;
