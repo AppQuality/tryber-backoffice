@@ -5,32 +5,25 @@ import {
   Select,
 } from "@appquality/appquality-design-system";
 
-export const clusterOptions = [
-  {
-    value: "1",
-    label: "UC1: Cart",
-  },
-  {
-    value: "2",
-    label: "UC2: Login",
-  },
-  {
-    value: "3",
-    label: "UC3: Checkout",
-  },
-  {
-    value: "4",
-    label: "UC4: Search",
-  },
-];
+interface ClusterFieldProps extends FieldProps {
+  isLoading: boolean;
+  options: SelectOptionType[];
+}
 
-const ClusterField = (fieldProps: FieldProps) => {
+const ClusterField = ({
+  isLoading,
+  options,
+  ...fieldProps
+}: ClusterFieldProps) => {
   const { form, field } = fieldProps;
+
   return (
     <FormGroup>
       <Select
+        isLoading={isLoading}
+        menuTargetQuery="body"
         isMulti
-        options={clusterOptions}
+        options={options}
         label="Cluster"
         name={field.name}
         value={field.value}

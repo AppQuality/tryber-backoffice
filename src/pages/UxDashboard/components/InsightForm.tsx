@@ -10,8 +10,11 @@ import {
 import { useAppSelector } from "src/store";
 import * as Yup from "yup";
 import SeverityField, { severityOptions } from "./fields/SeverityField";
-import ClusterField, { clusterOptions } from "./fields/ClusterField";
+import ClusterField from "./fields/ClusterField";
 import { FormValuesInterface } from "../UxDashboardForm";
+import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
+import { useMemo } from "react";
+import { useParams } from "react-router-dom";
 
 interface VideoPart {
   id: number;
@@ -29,19 +32,41 @@ export interface FormInsight {
   videoPart: VideoPart[];
 }
 
-const mapClusterToSelectOptionType = (
-  cluster: FormValuesInterface["insights"][number]["cluster"]
-): SelectOptionType[] => {
-  if (cluster === "all") {
-    return clusterOptions;
-  }
-  return clusterOptions.filter((option) =>
-    cluster.find((cluster) => cluster.id.toString() === option.value)
-  );
-};
-
 export const InsightForm = () => {
+  const { id } = useParams<{ id: string }>();
   const { selectedInsight } = useAppSelector((state) => state.uxDashboard);
+  const { data, isLoading, isError } = useGetCampaignsByCampaignClustersQuery({
+    campaign: id,
+  });
+
+  const clusterOptions = useMemo(() => {
+    if (isLoading) {
+      return [];
+    }
+    if (isError) {
+      return [{ label: "Something went wrong retrieving clusters", value: "" }];
+    }
+    return (
+      data?.items.map((cluster) => ({
+        label: cluster.name,
+        value: cluster.id.toString(),
+      })) || []
+    );
+  }, [data, isLoading, isError]);
+
+  const mapClusterToSelectOptionType = (
+    cluster?: FormValuesInterface["insights"][number]["cluster"]
+  ): SelectOptionType[] => {
+    if (!cluster) {
+      return [];
+    }
+    if (cluster === "all") {
+      return clusterOptions;
+    }
+    return clusterOptions.filter((option) =>
+      cluster.find((cluster) => cluster.id.toString() === option.value)
+    );
+  };
 
   const initialValues: FormInsight = {
     id: selectedInsight?.id || 0,
@@ -53,7 +78,7 @@ export const InsightForm = () => {
       label: "",
       value: "",
     },
-    cluster: mapClusterToSelectOptionType(selectedInsight?.cluster || []),
+    cluster: mapClusterToSelectOptionType(selectedInsight?.cluster),
     videoPart: selectedInsight?.videoPart || [],
   };
 
@@ -89,6 +114,7 @@ export const InsightForm = () => {
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
@@ -99,7 +125,13 @@ export const InsightForm = () => {
           {(fieldProps: FieldProps) => <SeverityField {...fieldProps} />}
         </FormikField>
         <FormikField name="cluster">
-          {(fieldProps: FieldProps) => <ClusterField {...fieldProps} />}
+          {(fieldProps: FieldProps) => (
+            <ClusterField
+              isLoading={isLoading}
+              options={clusterOptions}
+              {...fieldProps}
+            />
+          )}
         </FormikField>
         <Button htmlType="submit">Submit</Button>
       </Form>

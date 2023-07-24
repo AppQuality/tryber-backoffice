@@ -17,6 +17,14 @@ describe("Insights section of the form", () => {
         fixture: "campaigns/id/ux/_get/response_200_draft_with_insights.json",
       }
     ).as("getUx");
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/clusters`,
+      {
+        statusCode: 200,
+        fixture: "campaigns/id/clusters/_get/response_200_items.json",
+      }
+    ).as("getClusters");
     cy.visit(
       `${Cypress.env("CAMPAINGS_PAGE")}/4904${Cypress.env(
         "UX_DASHBOARD_PAGE"
@@ -24,7 +32,6 @@ describe("Insights section of the form", () => {
     );
   });
   it("Should show a section with the current saved insights plus an add new insight card", () => {
-    cy.wait("@getUx");
     cy.dataQa("insights-list").within(() => {
       // 3 is insight plus add new insight card
       cy.get(".aq-card-body").should("have.length", 3);
@@ -47,7 +54,6 @@ describe("Insights section of the form", () => {
     });
   });
   it("Should show an empty form to create a new insight when clicking on the add new insight card", () => {
-    cy.wait("@getUx");
     cy.dataQa("add-new-insight").click();
     cy.dataQa("insight-form").within(() => {
       cy.get("input#title").should("be.empty");
@@ -57,7 +63,6 @@ describe("Insights section of the form", () => {
     });
   });
   it("Should show a prefilled form when clicking on the edit insight", () => {
-    cy.wait("@getUx");
     cy.dataQa("insight-card-2").within(() => {
       cy.dataQa("edit-insight").click();
     });
@@ -75,8 +80,7 @@ describe("Insights section of the form", () => {
         });
     });
   });
-  it.only("Should empty the insight form every time is closed", () => {
-    cy.wait("@getUx");
+  it("Should empty the insight form every time is closed", () => {
     cy.dataQa("insight-card-2").within(() => {
       cy.dataQa("edit-insight").click();
     });
