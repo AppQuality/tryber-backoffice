@@ -6,10 +6,11 @@ import {
   Container,
   Form,
   Formik,
+  Pill,
   Title,
 } from "@appquality/appquality-design-system";
 import * as Yup from "yup";
-import { InsightsWrapper } from "./components/styled";
+import { AddNewInsightCTA, InsightsWrapper } from "./components/styled";
 import { InsightModal } from "./components/insightModal";
 import { useState } from "react";
 import { setSelectedInsight } from "./uxDashboardSlice";
@@ -19,6 +20,7 @@ import {
   useGetCampaignsByCampaignUxQuery,
 } from "src/services/tryberApi";
 import { PreviewModal } from "./components/PreviewModal";
+import SeverityPill from "./components/SeverityPill";
 
 export interface FormValuesInterface {
   insights: NonNullable<GetCampaignsByCampaignUxApiResponse["insight"]>;
@@ -93,7 +95,7 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
           <Form>
             <BSGrid>
               <BSCol size="col-lg-9">
-                <Card>
+                <Card className="aq-mb-3">
                   <section data-qa="form-section-insights">
                     <Title size="m" data-qa="section-title-insights">
                       Insights
@@ -110,7 +112,26 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
                           <Card title={insight.title}>
                             <div className="aq-mb-3">{insight.description}</div>
                             <div className="aq-mb-3">
-                              Severity: {insight.severity.name}
+                              <SeverityPill severity={insight.severity} />
+                            </div>
+                            <div className="aq-mb-3">
+                              {Array.isArray(insight.cluster) &&
+                                insight.cluster.map((cluster) => (
+                                  <Pill
+                                    type="primary"
+                                    className="aq-mr-1"
+                                    key={cluster.id}
+                                    flat
+                                  >
+                                    {cluster.name}
+                                  </Pill>
+                                ))}
+                              {insight.cluster &&
+                                !Array.isArray(insight.cluster) && (
+                                  <Pill type="primary" className="aq-mr-1" flat>
+                                    General
+                                  </Pill>
+                                )}
                             </div>
                             <div
                               className="aq-mb-3"
@@ -118,6 +139,17 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
                             >
                               <Button
                                 htmlType="button"
+                                flat
+                                type="danger"
+                                size="block"
+                                onClick={() => alert("delete insight")}
+                                data-qa="delete-insight"
+                              >
+                                Delete
+                              </Button>
+                              <Button
+                                htmlType="button"
+                                flat
                                 type="primary"
                                 size="block"
                                 onClick={() => editInsight(insight)}
@@ -125,40 +157,34 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
                               >
                                 Edit
                               </Button>
-                              <Button
-                                htmlType="button"
-                                type="primary"
-                                size="block"
-                                onClick={() => alert("delete insight")}
-                                data-qa="delete-insight"
-                              >
-                                Delete
-                              </Button>
                             </div>
                           </Card>
                         </div>
                       ))}
-                      <Card title="Add new Insight">
-                        <Button
-                          htmlType="button"
+                      <Card shadow>
+                        <AddNewInsightCTA
                           data-qa="add-new-insight"
-                          size="block"
                           onClick={() => setModalOpen(true)}
                         >
-                          +
-                        </Button>
+                          <span>+</span>
+                          <span>Add new insight</span>
+                        </AddNewInsightCTA>
                       </Card>
                     </InsightsWrapper>
                   </section>
                 </Card>
+                <Title size="ms" data-qa="section-title-insights">
+                  Overview campagna
+                </Title>
+                <Card title="Sentiment">
+                  <section data-qa="form-section-ux-dashboard"></section>
+                  nuova card
+                </Card>
               </BSCol>
               <BSCol size="col-lg-3">
-                <Card title="actions">
-                  <p className="aq-mb-3">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
+                <Card title="actions" className="aq-mb-3">
                   <Button
-                    className="aq-mb-3"
+                    className="aq-mb-4"
                     type="primary"
                     size="block"
                     htmlType="submit"
@@ -166,9 +192,13 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
                   >
                     Save Draft
                   </Button>
+                  <p className="aq-mb-2">
+                    <strong>Publish </strong>lorem ipsum dolor sit amet
+                  </p>
                   <Button
                     htmlType="button"
                     size="block"
+                    type="secondary"
                     data-qa="open-dashboard-preview"
                     onClick={() => setPreviewOpen(true)}
                   >
