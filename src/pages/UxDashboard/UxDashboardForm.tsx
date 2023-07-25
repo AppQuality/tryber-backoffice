@@ -16,6 +16,7 @@ import {
   GetCampaignsByCampaignUxApiResponse,
   useGetCampaignsByCampaignUxQuery,
 } from "src/services/tryberApi";
+import { PreviewModal } from "./components/PreviewModal";
 
 export interface FormValuesInterface {
   insights: NonNullable<GetCampaignsByCampaignUxApiResponse["insight"]>;
@@ -26,6 +27,7 @@ interface UxDashboardFormProps {
 
 const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { data, isLoading, isError } = useGetCampaignsByCampaignUxQuery({
     campaign: campaignId,
@@ -72,6 +74,11 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
         onClose={() => setModalOpen(false)}
         isOpen={modalOpen}
         title={"new/edit Insight"}
+      />
+      <PreviewModal
+        onClose={() => setPreviewOpen(false)}
+        isOpen={previewOpen}
+        title={"Preview Ux Dashboard"}
       />
       <div data-qa="ux-dashboard-form">
         <Formik
@@ -134,6 +141,13 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
             </section>
             <Button htmlType="submit" data-qa="submit-draft">
               Save Draft
+            </Button>
+            <Button
+              htmlType="button"
+              data-qa="preview-dashboard"
+              onClick={() => setPreviewOpen(true)}
+            >
+              Preview Ux Dashboard
             </Button>
           </Form>
         </Formik>
