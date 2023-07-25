@@ -133,7 +133,6 @@ export const InsightForm = () => {
             />
           )}
         </FormikField>
-        <Button htmlType="submit">Submit</Button>
       </Form>
     </Formik>
   );

@@ -166,7 +166,7 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
                           data-qa="add-new-insight"
                           onClick={() => setModalOpen(true)}
                         >
-                          <span>+</span>
+                          <span className="icon-big">+</span>
                           <span>Add new insight</span>
                         </AddNewInsightCTA>
                       </Card>
