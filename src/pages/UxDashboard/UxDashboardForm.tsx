@@ -169,7 +169,7 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
                   <Button
                     htmlType="button"
                     size="block"
-                    data-qa="preview-dashboard"
+                    data-qa="open-dashboard-preview"
                     onClick={() => setPreviewOpen(true)}
                   >
                     Preview

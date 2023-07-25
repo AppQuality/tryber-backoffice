@@ -23,92 +23,97 @@ export const PreviewModal = ({ isOpen, onClose, title }: PreviewModalProps) => {
   const ModalFooter = () => {
     return (
       <>
-        <Button onClick={handleClose}>Back</Button>
-        <Button onClick={handleClose}>Publish</Button>
+        <Button data-qa="close-dashboard-preview" onClick={handleClose}>
+          Back
+        </Button>
+        <Button data-qa="publish-dashboard" onClick={handleClose}>
+          Publish
+        </Button>
       </>
     );
   };
 
   return (
     <StyledModal
-      data-qa="ux-dashboard-preview"
       isOpen={isOpen}
       title={title}
       onClose={handleClose}
       footer={<ModalFooter />}
     >
-      Preview Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-      quos <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
-      Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
-      <br />
-      voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
-      <br />
+      <div data-qa="ux-dashboard-preview">
+        Preview Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Quisquam, quos <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos{" "}
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+        Quisquam, quos voluptatem. Quisquam, quos voluptatem. Quisquam, quos
+        <br />
+        voluptatem. Quisquam, quos voluptatem. Quisquam, quos voluptatem.
+        <br />
+      </div>
     </StyledModal>
   );
 };
