@@ -1,5 +1,4 @@
 import {
-  Button,
   Field,
   FieldProps,
   Form,
@@ -10,7 +9,7 @@ import {
 import { useAppSelector } from "src/store";
 import * as Yup from "yup";
 import SeverityField, { severityOptions } from "./fields/SeverityField";
-import ClusterField from "./fields/ClusterField";
+import ClusterField, { clusterOptionGeneral } from "./fields/ClusterField";
 import { FormValuesInterface } from "../UxDashboardForm";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useMemo } from "react";
@@ -35,24 +34,21 @@ export interface FormInsight {
 export const InsightForm = () => {
   const { id } = useParams<{ id: string }>();
   const { selectedInsight } = useAppSelector((state) => state.uxDashboard);
-  const { data, isLoading, isError } = useGetCampaignsByCampaignClustersQuery({
+  const { data, isError } = useGetCampaignsByCampaignClustersQuery({
     campaign: id,
   });
 
   const clusterOptions = useMemo(() => {
-    if (isLoading) {
-      return [];
-    }
     if (isError) {
       return [{ label: "Something went wrong retrieving clusters", value: "" }];
     }
-    return (
+    const options =
       data?.items.map((cluster) => ({
         label: cluster.name,
         value: cluster.id.toString(),
-      })) || []
-    );
-  }, [data, isLoading, isError]);
+      })) || [];
+    return [clusterOptionGeneral, ...options];
+  }, [data, isError]);
 
   const mapClusterToSelectOptionType = (
     cluster?: FormValuesInterface["insights"][number]["cluster"]
@@ -61,7 +57,7 @@ export const InsightForm = () => {
       return [];
     }
     if (cluster === "all") {
-      return clusterOptions;
+      return [clusterOptionGeneral];
     }
     return clusterOptions.filter((option) =>
       cluster.find((cluster) => cluster.id.toString() === option.value)
@@ -126,11 +122,7 @@ export const InsightForm = () => {
         </FormikField>
         <FormikField name="cluster">
           {(fieldProps: FieldProps) => (
-            <ClusterField
-              isLoading={isLoading}
-              options={clusterOptions}
-              {...fieldProps}
-            />
+            <ClusterField options={clusterOptions} {...fieldProps} />
           )}
         </FormikField>
       </Form>

@@ -25,10 +25,10 @@ export const InsightModal = ({ isOpen, onClose, title }: InsightModalProps) => {
   const ModalFooter = () => {
     return (
       <>
-        <Button data-qa="close-dashboard-preview" onClick={handleClose}>
+        <Button data-qa="discard-new-insight" onClick={handleClose}>
           Discard
         </Button>
-        <Button data-qa="publish-dashboard" onClick={handleClose}>
+        <Button data-qa="save-new-insight" onClick={handleClose}>
           Save
         </Button>
       </>

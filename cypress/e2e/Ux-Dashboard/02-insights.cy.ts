@@ -84,7 +84,7 @@ describe("Insights section of the form", () => {
     cy.dataQa("insight-card-2").within(() => {
       cy.dataQa("edit-insight").click();
     });
-    cy.get(".modal .modal-close").click();
+    cy.dataQa("discard-new-insight").click();
     cy.dataQa("add-new-insight").click();
     cy.dataQa("insight-form").within(() => {
       cy.get("input#title").should("be.empty");
