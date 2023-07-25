@@ -19,6 +19,10 @@ export const AddNewInsightCTA = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  .icon-big {
+    font-size: 5rem;
+    line-height: 1;
+  }
   color: ${({ theme }) => theme.colors.gray400};
   &:hover {
     color: ${({ theme }) => theme.colors.gray800};
