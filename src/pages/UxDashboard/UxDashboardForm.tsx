@@ -1,4 +1,6 @@
 import {
+  BSCol,
+  BSGrid,
   Button,
   Card,
   Container,
@@ -89,66 +91,92 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
           validationSchema={validationSchema}
         >
           <Form>
-            <section data-qa="form-section-insights">
-              <Title size="m" data-qa="section-title-insights">
-                Insights
-              </Title>
-              <InsightsWrapper data-qa="insights-list" className="aq-mb-3">
-                {initialValues.insights.map((insight) => (
-                  <div key={insight.id} data-qa={`insight-card-${insight.id}`}>
-                    <Card title={insight.title}>
-                      <div className="aq-mb-3">{insight.description}</div>
-                      <div className="aq-mb-3">
-                        Severity: {insight.severity.name}
-                      </div>
-                      <div
-                        className="aq-mb-3"
-                        style={{ display: "flex", gap: "5px" }}
-                      >
+            <BSGrid>
+              <BSCol size="col-lg-9">
+                <Card>
+                  <section data-qa="form-section-insights">
+                    <Title size="m" data-qa="section-title-insights">
+                      Insights
+                    </Title>
+                    <InsightsWrapper
+                      data-qa="insights-list"
+                      className="aq-mb-3"
+                    >
+                      {initialValues.insights.map((insight) => (
+                        <div
+                          key={insight.id}
+                          data-qa={`insight-card-${insight.id}`}
+                        >
+                          <Card title={insight.title}>
+                            <div className="aq-mb-3">{insight.description}</div>
+                            <div className="aq-mb-3">
+                              Severity: {insight.severity.name}
+                            </div>
+                            <div
+                              className="aq-mb-3"
+                              style={{ display: "flex", gap: "5px" }}
+                            >
+                              <Button
+                                htmlType="button"
+                                type="primary"
+                                size="block"
+                                onClick={() => editInsight(insight)}
+                                data-qa="edit-insight"
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                htmlType="button"
+                                type="primary"
+                                size="block"
+                                onClick={() => alert("delete insight")}
+                                data-qa="delete-insight"
+                              >
+                                Delete
+                              </Button>
+                            </div>
+                          </Card>
+                        </div>
+                      ))}
+                      <Card title="Add new Insight">
                         <Button
                           htmlType="button"
-                          type="info"
+                          data-qa="add-new-insight"
                           size="block"
-                          onClick={() => editInsight(insight)}
-                          data-qa="edit-insight"
+                          onClick={() => setModalOpen(true)}
                         >
-                          Edit
+                          +
                         </Button>
-                        <Button
-                          htmlType="button"
-                          type="danger"
-                          size="block"
-                          onClick={() => alert("delete insight")}
-                          data-qa="delete-insight"
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </Card>
-                  </div>
-                ))}
-                <Card title="Add new Insight">
+                      </Card>
+                    </InsightsWrapper>
+                  </section>
+                </Card>
+              </BSCol>
+              <BSCol size="col-lg-3">
+                <Card title="actions">
+                  <p className="aq-mb-3">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  </p>
+                  <Button
+                    className="aq-mb-3"
+                    type="primary"
+                    size="block"
+                    htmlType="submit"
+                    data-qa="submit-draft"
+                  >
+                    Save Draft
+                  </Button>
                   <Button
                     htmlType="button"
-                    data-qa="add-new-insight"
                     size="block"
-                    onClick={() => setModalOpen(true)}
+                    data-qa="preview-dashboard"
+                    onClick={() => setPreviewOpen(true)}
                   >
-                    +
+                    Preview
                   </Button>
                 </Card>
-              </InsightsWrapper>
-            </section>
-            <Button htmlType="submit" data-qa="submit-draft">
-              Save Draft
-            </Button>
-            <Button
-              htmlType="button"
-              data-qa="preview-dashboard"
-              onClick={() => setPreviewOpen(true)}
-            >
-              Preview Ux Dashboard
-            </Button>
+              </BSCol>
+            </BSGrid>
           </Form>
         </Formik>
       </div>

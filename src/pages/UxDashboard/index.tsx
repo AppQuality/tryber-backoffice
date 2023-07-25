@@ -32,9 +32,7 @@ const UxDashboard = () => {
     return (
       <Container>
         <PageTitle>Ux Dashboard</PageTitle>
-        <Card>
-          <UxDashboardForm campaignId={id} />
-        </Card>
+        <UxDashboardForm campaignId={id} />
       </Container>
     );
   }
