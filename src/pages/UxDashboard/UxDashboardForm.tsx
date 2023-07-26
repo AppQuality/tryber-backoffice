@@ -8,7 +8,11 @@ import {
   Title,
 } from "@appquality/appquality-design-system";
 import * as Yup from "yup";
-import { AddNewInsightCTA, InsightsWrapper } from "./components/styled";
+import {
+  AddNewInsightCTA,
+  InsightPillsWrapper,
+  InsightsWrapper,
+} from "./components/styled";
 import { InsightModal } from "./components/insightModal";
 import { useState } from "react";
 import { setSelectedInsight } from "./uxDashboardSlice";
@@ -123,10 +127,7 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
               >
                 Dettaglio
               </Title>
-              <Card className="aq-mb-2">
-                <Title size="m" data-qa="section-title-insights">
-                  Insights
-                </Title>
+              <Card title="Insights" className="aq-mb-2">
                 <InsightsWrapper data-qa="insights-list" className="aq-mb-3">
                   {initialValues.insights.map((insight) => (
                     <div
@@ -135,52 +136,49 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
                     >
                       <Card title={insight.title}>
                         <div className="aq-mb-3">{insight.description}</div>
-                        <div className="aq-mb-3">
-                          <SeverityPill severity={insight.severity} />
-                        </div>
-                        <div className="aq-mb-3">
-                          {Array.isArray(insight.cluster) &&
-                            insight.cluster.map((cluster) => (
-                              <Pill
-                                type="primary"
-                                className="aq-mr-1"
-                                key={cluster.id}
-                                flat
-                              >
-                                {cluster.name}
-                              </Pill>
-                            ))}
-                          {insight.cluster &&
-                            !Array.isArray(insight.cluster) && (
-                              <Pill type="primary" className="aq-mr-1" flat>
-                                General
-                              </Pill>
-                            )}
-                        </div>
-                        <div
-                          className="aq-mb-3"
-                          style={{ display: "flex", gap: "5px" }}
-                        >
-                          <Button
-                            htmlType="button"
-                            flat
-                            type="danger"
-                            size="block"
-                            onClick={() => alert("delete insight")}
-                            data-qa="delete-insight"
-                          >
-                            Delete
-                          </Button>
-                          <Button
-                            htmlType="button"
-                            flat
-                            type="primary"
-                            size="block"
-                            onClick={() => editInsight(insight)}
-                            data-qa="edit-insight"
-                          >
-                            Edit
-                          </Button>
+                        <div>
+                          <InsightPillsWrapper className="aq-mb-3">
+                            <SeverityPill severity={insight.severity} />
+                            {Array.isArray(insight.cluster) &&
+                              insight.cluster.map((cluster) => (
+                                <Pill
+                                  type="primary"
+                                  className="aq-mr-1"
+                                  key={cluster.id}
+                                  flat
+                                >
+                                  {cluster.name}
+                                </Pill>
+                              ))}
+                            {insight.cluster &&
+                              !Array.isArray(insight.cluster) && (
+                                <Pill type="primary" className="aq-mr-1" flat>
+                                  General
+                                </Pill>
+                              )}
+                          </InsightPillsWrapper>
+                          <div style={{ display: "flex", gap: "5px" }}>
+                            <Button
+                              htmlType="button"
+                              flat
+                              type="danger"
+                              size="block"
+                              onClick={() => alert("delete insight")}
+                              data-qa="delete-insight"
+                            >
+                              Delete
+                            </Button>
+                            <Button
+                              htmlType="button"
+                              flat
+                              type="primary"
+                              size="block"
+                              onClick={() => editInsight(insight)}
+                              data-qa="edit-insight"
+                            >
+                              Edit
+                            </Button>
+                          </div>
                         </div>
                       </Card>
                     </div>

@@ -1,10 +1,12 @@
 import {
   BSCol,
   BSGrid,
+  Text,
   Button,
   Card,
   Container,
   PageTitle,
+  Steps,
 } from "@appquality/appquality-design-system";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
@@ -58,42 +60,57 @@ const UxDashboard = () => {
               </div>
             )}
           </BSCol>
-          <BSCol size="col-lg-3">
-            <Card title="actions" className="aq-mb-3">
-              <Button
-                className="aq-mb-4"
-                type="primary"
-                size="block"
-                htmlType="submit"
-                data-qa="submit-draft"
-              >
-                Save Draft
-              </Button>
-              <p className="aq-mb-2">
-                <strong>Publish </strong>lorem ipsum dolor sit amet
-              </p>
-              {step === 0 && (
-                <Button
-                  htmlType="button"
-                  size="block"
-                  type="secondary"
-                  data-qa="open-dashboard-preview"
-                  onClick={() => setStep(1)}
-                >
-                  Preview
-                </Button>
-              )}
-              {step === 1 && (
-                <>
+          {step !== 2 && (
+            <BSCol size="col-lg-3">
+              <Card title="actions" className="aq-mb-3">
+                {step === 0 && (
+                  <>
+                    <Button
+                      className="aq-mb-1"
+                      type="primary"
+                      flat
+                      size="block"
+                      htmlType="submit"
+                      data-qa="submit-draft"
+                      onClick={() => alert("submit draft")}
+                    >
+                      Save Draft
+                    </Button>
+                    <Text small className="aq-mb-3">
+                      last saved: 1 minute ago
+                    </Text>
+                  </>
+                )}
+                {step === 1 && (
                   <Button
-                    htmlType="button"
+                    className="aq-mb-3"
+                    type="primary"
+                    flat
                     size="block"
-                    type="secondary"
                     data-qa="close-dashboard-preview"
                     onClick={() => setStep(0)}
                   >
                     Back to Form
                   </Button>
+                )}
+                {step === 0 && (
+                  <>
+                    <Button
+                      className="aq-mb-1"
+                      htmlType="button"
+                      size="block"
+                      type="secondary"
+                      data-qa="open-dashboard-preview"
+                      onClick={() => setStep(1)}
+                    >
+                      Preview
+                    </Button>
+                    <Text small className="aq-mb-3">
+                      Per <strong>pubblicare</strong> passa prima dalla preview
+                    </Text>
+                  </>
+                )}
+                {step === 1 && (
                   <Button
                     htmlType="button"
                     size="block"
@@ -103,10 +120,19 @@ const UxDashboard = () => {
                   >
                     Publish
                   </Button>
-                </>
+                )}
+              </Card>
+              {step === 0 && (
+                <Card title="Sezioni del form" className="aq-mb-3">
+                  <Steps direction="vertical" current={0}>
+                    <Steps.Step title="Sulla Campagna" />
+                    <Steps.Step title="Panoramica" />
+                    <Steps.Step title="Nel dettaglio" />
+                  </Steps>
+                </Card>
               )}
-            </Card>
-          </BSCol>
+            </BSCol>
+          )}
         </BSGrid>
       </Container>
     );
