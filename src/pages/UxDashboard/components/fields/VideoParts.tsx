@@ -38,7 +38,7 @@ const VideoParts = () => {
   const { value } = getFieldProps<FormInsight["observations"]>("observations");
   return (
     <ObservationsWrapper>
-      {value.map((observation) => (
+      {value.map((observation, index) => (
         <Card key={observation.id}>
           <div className="aq-mb-3">
             <Video
@@ -51,20 +51,24 @@ const VideoParts = () => {
               <Video.ProgressBar className="progress-bar" />
             </Video>
           </div>
-          <Field name="observations[0].name" label="Title" disabled />
+          <Field name={`observations[${index}].name`} label="Title" disabled />
           <Field
-            name="observations[0].time"
+            name={`observations[${index}].time`}
             label="Start"
             type="number"
             disabled
           />
-          <Field name="end" type="number" label="End" />
           <Field
-            name="observations[0].cluster.name"
+            name={`observations[${index}].end`}
+            type="number"
+            label="End"
+          />
+          <Field
+            name={`observations[${index}].cluster.name`}
             label="Cluster Name"
             disabled
           />
-          <TextareaField name="note" label="Note" />
+          <TextareaField name={`observations[${index}].note`} label="Note" />
         </Card>
       ))}
     </ObservationsWrapper>
