@@ -1,6 +1,4 @@
 import {
-  BSCol,
-  BSGrid,
   Button,
   Card,
   Container,
@@ -19,7 +17,6 @@ import {
   GetCampaignsByCampaignUxApiResponse,
   useGetCampaignsByCampaignUxQuery,
 } from "src/services/tryberApi";
-import { PreviewModal } from "./components/PreviewModal";
 import SeverityPill from "./components/SeverityPill";
 
 export interface FormValuesInterface {
@@ -31,15 +28,15 @@ interface UxDashboardFormProps {
 
 const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const { data, isLoading, isError } = useGetCampaignsByCampaignUxQuery({
+  const { data, isLoading, isError, error } = useGetCampaignsByCampaignUxQuery({
     campaign: campaignId,
   });
   if (isLoading) {
     return <Container>Loading...</Container>;
   }
-  if (isError) {
+  if (isError && "status" in error && error.status === 403) {
+    // campaign does not exist
     return <Container>Error...</Container>;
   }
   const initialValues: FormValuesInterface = {
@@ -79,11 +76,6 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
         isOpen={modalOpen}
         title={"new/edit Insight"}
       />
-      <PreviewModal
-        onClose={() => setPreviewOpen(false)}
-        isOpen={previewOpen}
-        title={"Preview Ux Dashboard"}
-      />
       <div data-qa="ux-dashboard-form">
         <Formik
           initialValues={initialValues}
@@ -93,120 +85,118 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
           validationSchema={validationSchema}
         >
           <Form>
-            <BSGrid>
-              <BSCol size="col-lg-9">
-                <Card className="aq-mb-3">
-                  <section data-qa="form-section-insights">
-                    <Title size="m" data-qa="section-title-insights">
-                      Insights
-                    </Title>
-                    <InsightsWrapper
-                      data-qa="insights-list"
-                      className="aq-mb-3"
-                    >
-                      {initialValues.insights.map((insight) => (
-                        <div
-                          key={insight.id}
-                          data-qa={`insight-card-${insight.id}`}
-                        >
-                          <Card title={insight.title}>
-                            <div className="aq-mb-3">{insight.description}</div>
-                            <div className="aq-mb-3">
-                              <SeverityPill severity={insight.severity} />
-                            </div>
-                            <div className="aq-mb-3">
-                              {Array.isArray(insight.cluster) &&
-                                insight.cluster.map((cluster) => (
-                                  <Pill
-                                    type="primary"
-                                    className="aq-mr-1"
-                                    key={cluster.id}
-                                    flat
-                                  >
-                                    {cluster.name}
-                                  </Pill>
-                                ))}
-                              {insight.cluster &&
-                                !Array.isArray(insight.cluster) && (
-                                  <Pill type="primary" className="aq-mr-1" flat>
-                                    General
-                                  </Pill>
-                                )}
-                            </div>
-                            <div
-                              className="aq-mb-3"
-                              style={{ display: "flex", gap: "5px" }}
-                            >
-                              <Button
-                                htmlType="button"
-                                flat
-                                type="danger"
-                                size="block"
-                                onClick={() => alert("delete insight")}
-                                data-qa="delete-insight"
-                              >
-                                Delete
-                              </Button>
-                              <Button
-                                htmlType="button"
-                                flat
-                                type="primary"
-                                size="block"
-                                onClick={() => editInsight(insight)}
-                                data-qa="edit-insight"
-                              >
-                                Edit
-                              </Button>
-                            </div>
-                          </Card>
-                        </div>
-                      ))}
-                      <Card shadow>
-                        <AddNewInsightCTA
-                          data-qa="add-new-insight"
-                          onClick={() => setModalOpen(true)}
-                        >
-                          <span className="icon-big">+</span>
-                          <span>Add new insight</span>
-                        </AddNewInsightCTA>
-                      </Card>
-                    </InsightsWrapper>
-                  </section>
-                </Card>
-                <Title size="ms" data-qa="section-title-insights">
-                  Overview campagna
+            <section data-qa="form-section-campaign" className="aq-mb-4">
+              <Title
+                size="ms"
+                data-qa="section-title-campaign"
+                className="aq-mb-2"
+              >
+                Sulla campagna
+              </Title>
+              <Card title="Domande" className="aq-mb-2">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </Card>
+              <Card title="Metodologia" className="aq-mb-2">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </Card>
+            </section>
+            <section data-qa="form-section-overview" className="aq-mb-4">
+              <Title
+                size="ms"
+                data-qa="section-title-overview"
+                className="aq-mb-2"
+              >
+                Panoramica
+              </Title>
+              <Card title="Metriche" className="aq-mb-2">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </Card>
+              <Card title="Sentiment" className="aq-mb-2">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </Card>
+            </section>
+            <section data-qa="form-section-insights" className="aq-mb-4">
+              <Title
+                size="ms"
+                data-qa="section-title-insights"
+                className="aq-mb-2"
+              >
+                Dettaglio
+              </Title>
+              <Card className="aq-mb-2">
+                <Title size="m" data-qa="section-title-insights">
+                  Insights
                 </Title>
-                <Card title="Sentiment">
-                  <section data-qa="form-section-ux-dashboard"></section>
-                  nuova card
-                </Card>
-              </BSCol>
-              <BSCol size="col-lg-3">
-                <Card title="actions" className="aq-mb-3">
-                  <Button
-                    className="aq-mb-4"
-                    type="primary"
-                    size="block"
-                    htmlType="submit"
-                    data-qa="submit-draft"
-                  >
-                    Save Draft
-                  </Button>
-                  <p className="aq-mb-2">
-                    <strong>Publish </strong>lorem ipsum dolor sit amet
-                  </p>
-                  <Button
-                    htmlType="button"
-                    size="block"
-                    type="secondary"
-                    data-qa="open-dashboard-preview"
-                    onClick={() => setPreviewOpen(true)}
-                  >
-                    Preview
-                  </Button>
-                </Card>
-              </BSCol>
-            </BSGrid>
+                <InsightsWrapper data-qa="insights-list" className="aq-mb-3">
+                  {initialValues.insights.map((insight) => (
+                    <div
+                      key={insight.id}
+                      data-qa={`insight-card-${insight.id}`}
+                    >
+                      <Card title={insight.title}>
+                        <div className="aq-mb-3">{insight.description}</div>
+                        <div className="aq-mb-3">
+                          <SeverityPill severity={insight.severity} />
+                        </div>
+                        <div className="aq-mb-3">
+                          {Array.isArray(insight.cluster) &&
+                            insight.cluster.map((cluster) => (
+                              <Pill
+                                type="primary"
+                                className="aq-mr-1"
+                                key={cluster.id}
+                                flat
+                              >
+                                {cluster.name}
+                              </Pill>
+                            ))}
+                          {insight.cluster &&
+                            !Array.isArray(insight.cluster) && (
+                              <Pill type="primary" className="aq-mr-1" flat>
+                                General
+                              </Pill>
+                            )}
+                        </div>
+                        <div
+                          className="aq-mb-3"
+                          style={{ display: "flex", gap: "5px" }}
+                        >
+                          <Button
+                            htmlType="button"
+                            flat
+                            type="danger"
+                            size="block"
+                            onClick={() => alert("delete insight")}
+                            data-qa="delete-insight"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            htmlType="button"
+                            flat
+                            type="primary"
+                            size="block"
+                            onClick={() => editInsight(insight)}
+                            data-qa="edit-insight"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      </Card>
+                    </div>
+                  ))}
+                  <Card shadow>
+                    <AddNewInsightCTA
+                      data-qa="add-new-insight"
+                      onClick={() => setModalOpen(true)}
+                    >
+                      <span className="icon-big">+</span>
+                      <span>Add new insight</span>
+                    </AddNewInsightCTA>
+                  </Card>
+                </InsightsWrapper>
+              </Card>
+            </section>
           </Form>
         </Formik>
       </div>

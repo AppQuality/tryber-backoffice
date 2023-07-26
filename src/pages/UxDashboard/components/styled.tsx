@@ -1,3 +1,4 @@
+import { Steps } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 
 export const InsightsWrapper = styled.div`
@@ -23,8 +24,15 @@ export const AddNewInsightCTA = styled.div`
     font-size: 5rem;
     line-height: 1;
   }
+  transition: color 0.2s ease-in-out;
   color: ${({ theme }) => theme.colors.gray400};
   &:hover {
     color: ${({ theme }) => theme.colors.gray800};
+  }
+`;
+
+export const StyledSteps = styled(Steps)`
+  .step-status-icon {
+    background-color: ${({ theme }) => theme.colors.gray100};
   }
 `;
