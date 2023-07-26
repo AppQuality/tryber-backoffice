@@ -24,14 +24,20 @@ export const InsightModal = ({ isOpen, onClose, title }: InsightModalProps) => {
   };
   const ModalFooter = () => {
     return (
-      <>
-        <Button data-qa="discard-new-insight" onClick={handleClose}>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          data-qa="discard-new-insight"
+          type="danger"
+          flat
+          onClick={handleClose}
+          className="aq-mr-3"
+        >
           Discard
         </Button>
-        <Button data-qa="save-new-insight" onClick={handleClose}>
+        <Button data-qa="save-new-insight" flat onClick={handleClose}>
           Save
         </Button>
-      </>
+      </div>
     );
   };
   return (

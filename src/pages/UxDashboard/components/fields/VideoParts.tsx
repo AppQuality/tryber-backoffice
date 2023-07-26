@@ -1,4 +1,10 @@
-import { Card, Text } from "@appquality/appquality-design-system";
+import {
+  Card,
+  Field,
+  Input,
+  Text,
+  TextareaField,
+} from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { FormInsight } from "../InsightForm";
 import styled from "styled-components";
@@ -34,31 +40,31 @@ const VideoParts = () => {
     <ObservationsWrapper>
       {value.map((observation) => (
         <Card key={observation.id}>
-          <Text>
-            <strong>Title: </strong>
-            {observation.name}
-          </Text>
-          <Text>
-            <strong>Tester: </strong>
-            {observation.tester.name}
-          </Text>
-          <Text>
-            <strong>Start: </strong>
-            {observation.time}
-          </Text>
-          <Text>
-            <strong>Cluster: </strong>
-            {observation.cluster.name}
-          </Text>
-          <Video
-            src="htt>p://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-            start={0}
-            end={20}
-          >
-            <Player />
-            <Video.PlayPauseButton className="play-pause-button" />
-            <Video.ProgressBar className="progress-bar" />
-          </Video>
+          <div className="aq-mb-3">
+            <Video
+              src="htt>p://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+              start={0}
+              end={20}
+            >
+              <Player />
+              <Video.PlayPauseButton className="play-pause-button" />
+              <Video.ProgressBar className="progress-bar" />
+            </Video>
+          </div>
+          <Field name="observations[0].name" label="Title" disabled />
+          <Field
+            name="observations[0].time"
+            label="Start"
+            type="number"
+            disabled
+          />
+          <Field name="end" type="number" label="End" />
+          <Field
+            name="observations[0].cluster.name"
+            label="Cluster Name"
+            disabled
+          />
+          <TextareaField name="note" label="Note" />
         </Card>
       ))}
     </ObservationsWrapper>
