@@ -56,7 +56,16 @@ const UxDashboard = () => {
             {step === 1 && <Preview />}
             {step === 2 && (
               <div>
-                bravo/a hai pubblicato tutto <br />
+                <Text className="aq-mb-3">
+                  bravo/a hai pubblicato tutto{" "}
+                  <Button
+                    type="link"
+                    data-qa="back-to-form"
+                    onClick={() => setStep(0)}
+                  >
+                    Torna al form per apportare nuove modifiche
+                  </Button>
+                </Text>
               </div>
             )}
           </BSCol>
