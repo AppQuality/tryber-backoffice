@@ -223,6 +223,7 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/campaigns/${queryArg.campaign}/observations`,
+        params: { filterBy: queryArg.filterBy },
       }),
     }),
     postCampaignsForms: build.mutation<
@@ -1259,6 +1260,7 @@ export type GetCampaignsByCampaignObservationsApiResponse =
 export type GetCampaignsByCampaignObservationsApiArg = {
   /** A campaign id */
   campaign: string;
+  filterBy?: any;
 };
 export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
   id: number;
