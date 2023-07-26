@@ -9,8 +9,10 @@ const ObservationsWrapper = styled.div`
   grid-template-columns: repeat(3, 33.33%);
   gap: 1rem;
   margin-bottom: 1rem;
-  & > div {
-    margin-bottom: 0.5rem;
+  .play-pause-button {
+    display: block;
+  }
+  .progress-bar {
   }
 `;
 const Player = styled(Video.Player)`
@@ -40,13 +42,22 @@ const VideoParts = () => {
             <strong>Tester: </strong>
             {observation.tester.name}
           </Text>
+          <Text>
+            <strong>Start: </strong>
+            {observation.time}
+          </Text>
+          <Text>
+            <strong>Cluster: </strong>
+            {observation.cluster.name}
+          </Text>
           <Video
             src="htt>p://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
             start={0}
             end={20}
           >
             <Player />
-            <Video.PlayPauseButton />
+            <Video.PlayPauseButton className="play-pause-button" />
+            <Video.ProgressBar className="progress-bar" />
           </Video>
         </Card>
       ))}
