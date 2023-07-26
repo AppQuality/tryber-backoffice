@@ -137,6 +137,13 @@
   resolved "https://registry.npmjs.org/@appquality/mobiscroll/-/mobiscroll-5.10.1.tgz"
   integrity sha512-A9YVu/5aFcmd6WtLEfr//x20mV5w9O3X5nsooYW43HMdfrx1fKcPfarCk9fHyyov1h0S9DdrzR7Dl/sciL7usA==
 
+"@appquality/stream-player@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@appquality/stream-player/-/stream-player-1.0.3.tgz#cd8f1599c37de1edb2162cbce332e356d020b5f8"
+  integrity sha512-kZBmDxb3BokBRKU9k3d9Z04rOCGq0UzK2u/iKilcQxp5wsHyPwweXki+6DaqMcZJMjLxKBfsq3QUCxpOMtZXmw==
+  dependencies:
+    hls.js "^1.4.8"
+
 "@babel/code-frame@7.10.4":
   version "7.10.4"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.10.4.tgz"
@@ -6863,6 +6870,11 @@ history@^4.9.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
     value-equal "^1.0.1"
+
+hls.js@^1.4.8:
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.4.10.tgz#3feac40f21a558453b243b5b926b7317e70624e1"
+  integrity sha512-wAVSj4Fm2MqOHy5+BlYnlKxXvJlv5IuZHjlzHu18QmjRzSDFQiUDWdHs5+NsFMQrgKEBwuWDcyvaMC9dUzJ5Uw==
 
 hmac-drbg@^1.0.1:
   version "1.0.1"
