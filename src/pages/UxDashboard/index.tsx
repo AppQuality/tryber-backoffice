@@ -52,6 +52,11 @@ const UxDashboard = () => {
             </StyledSteps>
             {step === 0 && <UxDashboardForm campaignId={id} />}
             {step === 1 && <Preview />}
+            {step === 2 && (
+              <div>
+                bravo/a hai pubblicato tutto <br />
+              </div>
+            )}
           </BSCol>
           <BSCol size="col-lg-3">
             <Card title="actions" className="aq-mb-3">
@@ -79,15 +84,26 @@ const UxDashboard = () => {
                 </Button>
               )}
               {step === 1 && (
-                <Button
-                  htmlType="button"
-                  size="block"
-                  type="secondary"
-                  data-qa="close-dashboard-preview"
-                  onClick={() => setStep(0)}
-                >
-                  Back to Form
-                </Button>
+                <>
+                  <Button
+                    htmlType="button"
+                    size="block"
+                    type="secondary"
+                    data-qa="close-dashboard-preview"
+                    onClick={() => setStep(0)}
+                  >
+                    Back to Form
+                  </Button>
+                  <Button
+                    htmlType="button"
+                    size="block"
+                    type="secondary"
+                    data-qa="close-dashboard-preview"
+                    onClick={() => setStep(2)}
+                  >
+                    Publish
+                  </Button>
+                </>
               )}
             </Card>
           </BSCol>

@@ -14,21 +14,15 @@ import { FormValuesInterface } from "../UxDashboardForm";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+import Observations, { ObservationOption } from "./fields/Observations";
 
-interface VideoPart {
-  id: number;
-  start: number;
-  end: number;
-  mediaId: number;
-  description: string;
-}
 export interface FormInsight {
   id: number;
   title: string;
   description: string;
   severity: SelectOptionType;
   cluster: SelectOptionType[];
-  videoPart: VideoPart[];
+  observations: ObservationOption[];
 }
 
 export const InsightForm = () => {
@@ -75,7 +69,7 @@ export const InsightForm = () => {
       value: "",
     },
     cluster: mapClusterToSelectOptionType(selectedInsight?.cluster),
-    videoPart: selectedInsight?.videoPart || [],
+    observations: [],
   };
 
   const validationSchema = Yup.object().shape({
@@ -91,7 +85,7 @@ export const InsightForm = () => {
         value: Yup.string().required("Required"),
       })
     ),
-    videoParts: Yup.array().of(
+    observations: Yup.array().of(
       Yup.object().shape({
         id: Yup.number().required("Required"),
         start: Yup.number().required("Required"),
@@ -125,6 +119,7 @@ export const InsightForm = () => {
             <ClusterField options={clusterOptions} {...fieldProps} />
           )}
         </FormikField>
+        <Observations />
       </Form>
     </Formik>
   );
