@@ -1255,6 +1255,11 @@ export type GetCampaignsByCampaignObservationsApiResponse =
         id: number;
         name: string;
       };
+      media: {
+        id: number;
+        url: string;
+        streamUrl: string;
+      };
     }[];
   };
 export type GetCampaignsByCampaignObservationsApiArg = {
