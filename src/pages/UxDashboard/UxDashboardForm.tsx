@@ -24,6 +24,7 @@ import {
 import SeverityPill from "./components/SeverityPill";
 
 export interface FormValuesInterface {
+  status: GetCampaignsByCampaignUxApiResponse["status"];
   insights: NonNullable<GetCampaignsByCampaignUxApiResponse["insight"]>;
 }
 interface UxDashboardFormProps {
@@ -40,13 +41,16 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
     return <Container>Loading...</Container>;
   }
   if (isError && "status" in error && error.status === 403) {
+    // 404 is for data not found but the campaign exists
     // campaign does not exist
     return <Container>Error...</Container>;
   }
   const initialValues: FormValuesInterface = {
+    status: data?.status || "draft",
     insights: data?.insight || [],
   };
   const validationSchema = Yup.object({
+    status: Yup.string().required("Required"),
     insights: Yup.array().of(
       Yup.object().shape({
         title: Yup.string().required("Required"),

@@ -1,13 +1,13 @@
 import Video from "@appquality/stream-player";
 import styled from "styled-components";
 
+const ProgressBar = styled(Video.ProgressBar)`
+  :after {
+    background-color: ${({ theme }) => theme.colors.purple600};
+  }
+  background-color: ${({ theme }) => theme.colors.purple100};
+`;
 export const VideoControls = () => {
-  const ProgressBar = styled(Video.ProgressBar)`
-    :after {
-      background-color: ${({ theme }) => theme.colors.purple600};
-    }
-    background-color: ${({ theme }) => theme.colors.purple100};
-  `;
   return (
     <>
       <Video.Timer className={"timer"} />

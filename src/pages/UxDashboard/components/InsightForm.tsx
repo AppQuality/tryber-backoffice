@@ -14,15 +14,15 @@ import { FormValuesInterface } from "../UxDashboardForm";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import Observations, { ObservationOption } from "./fields/Observations";
+import Observations from "./fields/Observations";
 
-export interface FormInsight {
+export interface InsightFormValues {
   id: number;
   title: string;
   description: string;
   severity: SelectOptionType;
   cluster: SelectOptionType[];
-  observations: ObservationOption[];
+  videoparts?: FormValuesInterface["insights"][number]["videoPart"];
 }
 
 export const InsightForm = () => {
@@ -58,7 +58,7 @@ export const InsightForm = () => {
     );
   };
 
-  const initialValues: FormInsight = {
+  const initialValues: InsightFormValues = {
     id: selectedInsight?.id || 0,
     title: selectedInsight?.title || "",
     description: selectedInsight?.description || "",
@@ -69,7 +69,7 @@ export const InsightForm = () => {
       value: "",
     },
     cluster: mapClusterToSelectOptionType(selectedInsight?.cluster),
-    observations: [],
+    videoparts: selectedInsight?.videoPart,
   };
 
   const validationSchema = Yup.object().shape({
@@ -85,19 +85,20 @@ export const InsightForm = () => {
         value: Yup.string().required("Required"),
       })
     ),
-    observations: Yup.array().of(
+    videoparts: Yup.array().of(
       Yup.object().shape({
         id: Yup.number().required("Required"),
         start: Yup.number().required("Required"),
         end: Yup.number().required("Required"),
         mediaId: Yup.number().required("Required"),
-        description: Yup.string().required("Required"),
-        order: Yup.number().required("Required"),
+        url: Yup.string().required("Required"),
+        streamUrl: Yup.string().required("Required"),
+        description: Yup.string(),
       })
     ),
   });
 
-  const onSubmit = (values: FormInsight) => {
+  const onSubmit = (values: InsightFormValues) => {
     alert(JSON.stringify(values));
   };
 

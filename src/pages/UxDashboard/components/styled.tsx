@@ -53,7 +53,7 @@ export const InsightPillsWrapper = styled.div`
   margin-bottom: ${({ theme }) => theme.grid.sizes[2]};
 `;
 
-export const ObservationsWrapper = styled.div`
+export const VideoPartsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 33.33%);
   gap: 1rem;

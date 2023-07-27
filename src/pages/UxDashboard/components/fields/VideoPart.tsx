@@ -6,6 +6,7 @@ import {
 import styled from "styled-components";
 import Video from "@appquality/stream-player";
 import { VideoControls } from "../VideoControls";
+import { FormValuesInterface } from "../../UxDashboardForm";
 
 const Player = styled(Video.Player)`
   width: 100%;
@@ -19,36 +20,23 @@ const Player = styled(Video.Player)`
 `;
 
 const VideoPart = ({
-  observation,
+  videopart,
   index,
 }: {
-  observation: any;
+  videopart: FormValuesInterface["insights"][number]["videoPart"][number];
   index: number;
 }) => {
   return (
-    <Card key={observation.id}>
+    <>
       <div className="aq-mb-3">
-        <Video src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4">
+        <Video start={videopart.start} src={videopart.url}>
           <Player />
           <VideoControls />
         </Video>
       </div>
-
-      <Field name={`observations[${index}].name`} label="Title" disabled />
-      <Field
-        name={`observations[${index}].time`}
-        label="Start"
-        type="number"
-        disabled
-      />
-      <Field name={`observations[${index}].end`} type="number" label="End" />
-      <Field
-        name={`observations[${index}].cluster.name`}
-        label="Cluster Name"
-        disabled
-      />
-      <TextareaField name={`observations[${index}].note`} label="Note" />
-    </Card>
+      <Field name={`videoparts[${index}].end`} type="number" label="End" />
+      <TextareaField name={`videoparts[${index}].note`} label="Note" />
+    </>
   );
 };
 export default VideoPart;
