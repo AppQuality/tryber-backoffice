@@ -3,17 +3,15 @@ import {
   Field,
   TextareaField,
 } from "@appquality/appquality-design-system";
-import { useFormikContext } from "formik";
-import { FormInsight } from "../InsightForm";
 import styled from "styled-components";
 import Video from "@appquality/stream-player";
+import { VideoControls } from "../VideoControls";
 
 const Player = styled(Video.Player)`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.colors.gray100};
   > video {
     width: 100%;
     height: 200px;
@@ -32,10 +30,10 @@ const VideoPart = ({
       <div className="aq-mb-3">
         <Video src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4">
           <Player />
-          <Video.PlayPauseButton className="play-pause-button" />
-          <Video.ProgressBar className="progress-bar" />
+          <VideoControls />
         </Video>
       </div>
+
       <Field name={`observations[${index}].name`} label="Title" disabled />
       <Field
         name={`observations[${index}].time`}
