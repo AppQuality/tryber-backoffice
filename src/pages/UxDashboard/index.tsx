@@ -3,10 +3,8 @@ import {
   BSGrid,
   Text,
   Button,
-  Card,
   Container,
   PageTitle,
-  Steps,
 } from "@appquality/appquality-design-system";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
@@ -15,6 +13,7 @@ import { useParams } from "react-router-dom";
 import { StyledSteps } from "./components/styled";
 import { useState } from "react";
 import { Preview } from "./components/Preview";
+import Sidebar from "./components/Sidebar";
 
 const UxDashboard = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,7 +39,12 @@ const UxDashboard = () => {
   if (permissions?.appq_campaign === true) {
     return (
       <Container>
-        <PageTitle>Ux Dashboard</PageTitle>
+        <PageTitle
+          heading="UX Campaign Overview Dashboard"
+          subtitle={`Campagna ${id}`}
+        >
+          Tool di compilazione
+        </PageTitle>
         <BSGrid>
           <BSCol size="col-lg-9">
             <StyledSteps
@@ -69,79 +73,9 @@ const UxDashboard = () => {
               </div>
             )}
           </BSCol>
-          {step !== 2 && (
-            <BSCol size="col-lg-3">
-              <Card title="actions" className="aq-mb-3">
-                {step === 0 && (
-                  <>
-                    <Button
-                      className="aq-mb-1"
-                      type="primary"
-                      flat
-                      size="block"
-                      htmlType="submit"
-                      data-qa="submit-draft"
-                      onClick={() => alert("submit draft")}
-                    >
-                      Save Draft
-                    </Button>
-                    <Text small className="aq-mb-3">
-                      last saved: 1 minute ago
-                    </Text>
-                  </>
-                )}
-                {step === 1 && (
-                  <Button
-                    className="aq-mb-3"
-                    type="primary"
-                    flat
-                    size="block"
-                    data-qa="close-dashboard-preview"
-                    onClick={() => setStep(0)}
-                  >
-                    Back to Form
-                  </Button>
-                )}
-                {step === 0 && (
-                  <>
-                    <Button
-                      className="aq-mb-1"
-                      htmlType="button"
-                      size="block"
-                      type="secondary"
-                      data-qa="open-dashboard-preview"
-                      onClick={() => setStep(1)}
-                    >
-                      Preview
-                    </Button>
-                    <Text small className="aq-mb-3">
-                      Per <strong>pubblicare</strong> passa prima dalla preview
-                    </Text>
-                  </>
-                )}
-                {step === 1 && (
-                  <Button
-                    htmlType="button"
-                    size="block"
-                    type="secondary"
-                    data-qa="close-dashboard-preview"
-                    onClick={() => setStep(2)}
-                  >
-                    Publish
-                  </Button>
-                )}
-              </Card>
-              {step === 0 && (
-                <Card title="Sezioni del form" className="aq-mb-3">
-                  <Steps direction="vertical" current={0}>
-                    <Steps.Step title="Sulla Campagna" />
-                    <Steps.Step title="Panoramica" />
-                    <Steps.Step title="Nel dettaglio" />
-                  </Steps>
-                </Card>
-              )}
-            </BSCol>
-          )}
+          <BSCol size="col-lg-3">
+            {step !== 2 && <Sidebar step={step} setStep={setStep} />}
+          </BSCol>
         </BSGrid>
       </Container>
     );
