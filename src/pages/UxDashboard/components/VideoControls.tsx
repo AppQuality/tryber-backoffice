@@ -8,24 +8,36 @@ const ProgressBar = styled(Video.ProgressBar)`
   background-color: ${({ theme }) => theme.colors.purple100};
 `;
 export const VideoControls = () => {
+  const ProgressBar = styled(Video.ProgressBar)`
+    :after {
+      background-color: ${({ theme }) => theme.colors.purple600};
+    }
+    background-color: ${({ theme }) => theme.colors.purple100};
+  `;
+  const FlexDiv = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  `;
+  const CustomTimer = styled(Video.Timer)`
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -20px;
+    color: ${({ theme }) => theme.colors.purple600};
+    background-color: ${({ theme }) => theme.colors.purple200};
+    border-radius: 5px;
+  `;
   return (
     <>
-      <Video.Timer className={"timer"} />
-      <div
-        onClick={(e) => {
-          console.log(e);
-        }}
-        className="flex-container"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "4px",
-        }}
-      >
+      <FlexDiv>
+        <CustomTimer className={"timer"} />
+      </FlexDiv>
+
+      <FlexDiv>
         <Video.ChangeTime value={-10}></Video.ChangeTime>
         <Video.PlayPauseButton className="play-pause-button" />
         <Video.ChangeTime value={10}></Video.ChangeTime>
-      </div>
+      </FlexDiv>
       <ProgressBar className="progress-bar" />
     </>
   );
