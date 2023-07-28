@@ -3,9 +3,12 @@ import { FormValuesInterface } from "./UxDashboardForm";
 
 interface UxDashboardState {
   selectedInsight?: FormValuesInterface["insights"][number];
+  insightIndex: number;
 }
 
-export const initialState: UxDashboardState = {};
+export const initialState: UxDashboardState = {
+  insightIndex: 0,
+};
 
 const selectionSlice = createSlice({
   name: "uxDashboard",
@@ -17,6 +20,9 @@ const selectionSlice = createSlice({
     ) {
       state.selectedInsight = action.payload;
     },
+    setInsightIndex(state, action: PayloadAction<number>) {
+      state.insightIndex = action.payload;
+    },
     resetInsight(state) {
       state.selectedInsight = undefined;
     },
@@ -27,6 +33,7 @@ const selectionSlice = createSlice({
 });
 
 const { actions, reducer } = selectionSlice;
-export const { setSelectedInsight, resetInsight, reset } = actions;
+export const { setSelectedInsight, setInsightIndex, resetInsight, reset } =
+  actions;
 
 export default reducer;

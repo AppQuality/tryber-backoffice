@@ -1,13 +1,12 @@
 import { Button, Modal } from "@appquality/appquality-design-system";
 import { InsightForm } from "./InsightForm";
-import { useAppDispatch } from "src/store";
+import { useAppDispatch, useAppSelector } from "src/store";
 import { resetInsight } from "../uxDashboardSlice";
 import styled from "styled-components";
 
 interface InsightModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
 }
 const StyledModal = styled(Modal)`
   .modal {
@@ -16,7 +15,7 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-export const InsightModal = ({ isOpen, onClose, title }: InsightModalProps) => {
+export const InsightModal = ({ isOpen, onClose }: InsightModalProps) => {
   const dispatch = useAppDispatch();
   const handleClose = () => {
     dispatch(resetInsight());
