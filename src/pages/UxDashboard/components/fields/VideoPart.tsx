@@ -1,20 +1,8 @@
 import { Field, TextareaField } from "@appquality/appquality-design-system";
-import styled from "styled-components";
 import Video from "@appquality/stream-player";
-import { VideoControls } from "../VideoControls";
-import { useAppSelector } from "src/store";
 import { FormValuesInterface } from "../../UxForm/FormProvider";
-
-const Player = styled(Video.Player)`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  > video {
-    width: 100%;
-    height: 200px;
-  }
-`;
+import { VideoContent } from "../VideoContent";
+import { useAppSelector } from "src/store";
 
 const VideoPart = ({
   videopart,
@@ -28,8 +16,7 @@ const VideoPart = ({
     <>
       <div className="aq-mb-3">
         <Video start={videopart.start} src={videopart.url}>
-          <Player />
-          <VideoControls />
+          <VideoContent />
         </Video>
       </div>
       <Field

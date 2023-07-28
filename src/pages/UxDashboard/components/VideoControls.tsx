@@ -22,33 +22,6 @@ const CustomTimer = styled(Video.Timer)`
   padding: 5px;
 `;
 
-const Content = styled.div<{
-  isFullScreen?: boolean;
-}>`
-  position: relative;
-  display: flex;
-
-  ${({ isFullScreen }) =>
-    isFullScreen &&
-    `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    `}
-`;
-
-export const VideoContent = ({
-  children,
-}: {
-  children: React.ReactNode | React.ReactNodeArray;
-}) => {
-  const { isFullScreen } = VideoContent();
-
-  return <Content isFullScreen={isFullScreen}>{children}</Content>;
-};
-
 export const VideoControls = () => {
   return (
     <>
