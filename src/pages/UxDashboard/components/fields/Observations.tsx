@@ -27,59 +27,53 @@ const Observations = () => {
   );
 
   return (
-    <>
+    <VideoPartsWrapper>
       <FieldArray
         name="videoparts"
         render={({ form, remove, push, name }) => {
           return (
-            <div>
-              <VideoPartsWrapper>
-                {form
-                  .getFieldProps(name)
-                  .value?.map(
-                    (
-                      videopart: FormValuesInterface["insights"][number]["videoPart"][number],
-                      index: number
-                    ) => (
-                      <Card key={videopart.id}>
-                        <VideoPart videopart={videopart} index={index} />
-                        <Button
-                          flat
-                          type="danger"
-                          onClick={() => remove(index)}
-                        >
-                          Remove
-                        </Button>
-                      </Card>
-                    )
-                  )}
-                <Card>
-                  <Select
-                    menuTargetQuery="body"
-                    options={observationsOptions}
-                    label="Add a new observation"
-                    name={"observation"}
-                    value={[]}
-                    onChange={(value) => {
-                      if (!value) {
-                        return;
-                      }
-                      push({
-                        // push a new videopart to the field array
-                        start: value.time,
-                        mediaId: value.media.id,
-                        url: value.media.url,
-                        streamUrl: value.media.streamUrl,
-                      });
-                    }}
-                  />
-                </Card>
-              </VideoPartsWrapper>
-            </div>
+            <>
+              {form
+                .getFieldProps(name)
+                .value?.map(
+                  (
+                    videopart: FormValuesInterface["insights"][number]["videoPart"][number],
+                    index: number
+                  ) => (
+                    <Card key={videopart.id}>
+                      <VideoPart videopart={videopart} index={index} />
+                      <Button flat type="danger" onClick={() => remove(index)}>
+                        Remove
+                      </Button>
+                    </Card>
+                  )
+                )}
+              <Card>
+                <Select
+                  menuTargetQuery="body"
+                  options={observationsOptions}
+                  label="Add a new observation"
+                  name={"observation"}
+                  value={[]}
+                  onChange={(value) => {
+                    if (!value) {
+                      return;
+                    }
+                    push({
+                      // push a new videopart to the field array
+                      start: value.time,
+                      mediaId: value.media.id,
+                      url: value.media.url,
+                      streamUrl: value.media.streamUrl,
+                    });
+                  }}
+                />
+              </Card>
+            </>
           );
         }}
       />
-    </>
+    </VideoPartsWrapper>
   );
 };
 

@@ -4,6 +4,8 @@ import {
   FormGroup,
   Select,
 } from "@appquality/appquality-design-system";
+import { useMemo } from "react";
+import { FormValuesInterface } from "../../UxDashboardForm";
 
 export const severityOptions = [
   {
@@ -24,8 +26,15 @@ export const severityOptions = [
   },
 ];
 
-const SeverityField = (fieldProps: FieldProps) => {
-  const { form, field } = fieldProps;
+const SeverityField = ({
+  form,
+  field,
+}: FieldProps<FormValuesInterface["insights"][number]["severity"]>) => {
+  const mapSeverityToSelectValue = useMemo(() => {
+    return field.value
+      ? { label: field.value.name, value: field.value.id.toString() }
+      : { label: "" };
+  }, [field.value]);
   return (
     <FormGroup>
       <Select
@@ -33,8 +42,17 @@ const SeverityField = (fieldProps: FieldProps) => {
         options={severityOptions}
         label="Severity"
         name={field.name}
-        value={field.value}
-        onChange={(value) => form.setFieldValue(field.name, value)}
+        value={mapSeverityToSelectValue}
+        onChange={(value) => {
+          if (!value || typeof value.value === "undefined") {
+            form.setFieldValue(field.name, undefined);
+            return;
+          }
+          form.setFieldValue(field.name, {
+            name: value.label,
+            id: parseInt(value.value, 10),
+          });
+        }}
       />
       <ErrorMessage name={field.name} />
     </FormGroup>

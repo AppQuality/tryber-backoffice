@@ -153,9 +153,11 @@ const UxDashboardForm = ({ campaignId }: UxDashboardFormProps) => {
                                   </div>
                                   <div>
                                     <InsightPillsWrapper className="aq-mb-3">
-                                      <SeverityPill
-                                        severity={insight.severity}
-                                      />
+                                      {insight?.severity && (
+                                        <SeverityPill
+                                          severity={insight.severity}
+                                        />
+                                      )}
                                       {Array.isArray(insight.cluster) &&
                                         insight.cluster.map((cluster) => (
                                           <Pill
