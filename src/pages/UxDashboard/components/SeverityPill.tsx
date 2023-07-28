@@ -1,4 +1,4 @@
-import { FormValuesInterface } from "../UxDashboardForm";
+import { FormValuesInterface } from "../UxForm";
 import { Pill } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
 

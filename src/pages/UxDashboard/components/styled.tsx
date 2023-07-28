@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 export const InsightsWrapper = styled.div`
   display: grid;
-  grid-auto-flow: column;
   grid-auto-rows: 1fr;
   grid-template-columns: repeat(
     3,

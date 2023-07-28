@@ -8,7 +8,7 @@ import {
 import { useMemo } from "react";
 import { VideoPartsWrapper } from "../styled";
 import VideoPart from "./VideoPart";
-import { FormValuesInterface } from "../../UxDashboardForm";
+import { FormValuesInterface } from "../../UxForm";
 
 export type ObservationOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];

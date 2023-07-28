@@ -24,7 +24,6 @@ const Sidebar = ({
               size="block"
               htmlType="submit"
               data-qa="submit-draft"
-              onClick={() => alert("submit draft")}
             >
               Save Draft
             </Button>

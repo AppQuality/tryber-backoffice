@@ -2,7 +2,7 @@ import { Field, TextareaField } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import Video from "@appquality/stream-player";
 import { VideoControls } from "../VideoControls";
-import { FormValuesInterface } from "../../UxDashboardForm";
+import { FormValuesInterface } from "../../UxForm";
 import { useAppSelector } from "src/store";
 
 const Player = styled(Video.Player)`
