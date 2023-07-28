@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FormValuesInterface } from "./UxForm";
+import { FormValuesInterface } from "./UxForm/FormProvider";
 
 interface UxDashboardState {
   selectedInsight?: FormValuesInterface["insights"][number];

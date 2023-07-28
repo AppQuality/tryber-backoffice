@@ -1,15 +1,24 @@
 import { Container, Formik } from "@appquality/appquality-design-system";
 import { ReactNode } from "react";
 import { useParams } from "react-router-dom";
-import { useGetCampaignsByCampaignUxQuery } from "src/services/tryberApi";
-import { FormValuesInterface } from ".";
+import {
+  GetCampaignsByCampaignUxApiResponse,
+  useGetCampaignsByCampaignUxQuery,
+  usePatchCampaignsByCampaignUxMutation,
+} from "src/services/tryberApi";
 import { string, array, object, number, lazy } from "yup";
+
+export interface FormValuesInterface {
+  status?: GetCampaignsByCampaignUxApiResponse["status"];
+  insights: NonNullable<GetCampaignsByCampaignUxApiResponse["insight"]>;
+}
 
 const FormProvider = ({ children }: { children: ReactNode }) => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, isError, error } = useGetCampaignsByCampaignUxQuery({
     campaign: id,
   });
+  const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   if (isLoading) {
     return <Container>Loading...</Container>;
   }
@@ -19,13 +28,14 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     return <Container>Error...</Container>;
   }
   const initialValues: FormValuesInterface = {
-    status: data?.status || "draft",
+    status: data?.status,
     insights: data?.insight || [],
   };
   const validationSchema = object({
-    status: string().required(),
+    status: string(),
     insights: array().of(
       object().shape({
+        id: number(),
         title: string().required(),
         description: string().required(),
         severity: object()
@@ -62,7 +72,23 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={() => {
+      onSubmit={async (values, formikHelpers) => {
+        formikHelpers.setSubmitting(true);
+        console.log(values);
+        // values.insights = values.insights.map((insight) => {
+        //   insight.cluster = insight.cluster.map((cluster) => cluster.id);
+        //   insight.videoParts = insight.videoParts.map((videoPart) => ({
+        //     ...videoPart,
+        //     mediaId: videoPart.mediaId.toString(),
+        //   }));
+        //   return insight;
+        // }
+        // await saveDashboard({
+        //   campaign: id,
+        //   body: {
+        //     insights: values.insights,
+        //   },
+        // })
         alert("Form submitted");
       }}
       validationSchema={validationSchema}

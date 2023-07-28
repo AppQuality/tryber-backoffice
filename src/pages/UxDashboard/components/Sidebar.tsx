@@ -4,6 +4,8 @@ import {
   Steps,
   Text,
 } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
+import { FormValuesInterface } from "../UxForm/FormProvider";
 
 const Sidebar = ({
   step,
@@ -12,6 +14,8 @@ const Sidebar = ({
   step: number;
   setStep: (n: number) => void;
 }) => {
+  const { errors, submitForm, values } =
+    useFormikContext<FormValuesInterface>();
   return (
     <>
       <Card title="actions" className="aq-mb-3">
@@ -24,11 +28,12 @@ const Sidebar = ({
               size="block"
               htmlType="submit"
               data-qa="submit-draft"
+              onClick={() => submitForm()}
             >
               Save Draft
             </Button>
             <Text small className="aq-mb-3">
-              last saved: 1 minute ago
+              {errors && errors.insights && JSON.stringify(errors)}
             </Text>
           </>
         )}
@@ -53,10 +58,12 @@ const Sidebar = ({
               type="secondary"
               data-qa="open-dashboard-preview"
               onClick={() => setStep(1)}
+              disabled={typeof values.status === "undefined"}
             >
               Preview
             </Button>
             <Text small className="aq-mb-3">
+              {values.status}
               Per <strong>pubblicare</strong> passa prima dalla preview
             </Text>
           </>

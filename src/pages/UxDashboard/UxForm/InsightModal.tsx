@@ -6,16 +6,19 @@ import {
   FormikField,
   TextareaField,
 } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { resetInsight } from "../uxDashboardSlice";
 import styled from "styled-components";
-import SeverityField from "./fields/SeverityField";
-import ClusterField from "./fields/ClusterField";
-import Observations from "./fields/Observations";
+import SeverityField from "../components/fields/SeverityField";
+import ClusterField from "../components/fields/ClusterField";
+import Observations from "../components/fields/Observations";
+import { FormValuesInterface } from "./FormProvider";
 
 interface InsightModalProps {
   isOpen: boolean;
   onClose: () => void;
+  removeInsight: (index: number) => void;
 }
 const StyledModal = styled(Modal)`
   .modal {
@@ -24,10 +27,29 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-export const InsightModal = ({ isOpen, onClose }: InsightModalProps) => {
+const InsightModal = ({
+  isOpen,
+  onClose,
+  removeInsight,
+}: InsightModalProps) => {
   const dispatch = useAppDispatch();
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
+  const { errors, setFieldTouched } = useFormikContext<FormValuesInterface>();
+  const handleAdd = () => {
+    if (errors.insights && errors.insights[insightIndex]) {
+      setFieldTouched(`insights[${insightIndex}].title`);
+      setFieldTouched(`insights[${insightIndex}].description`);
+      setFieldTouched(`insights[${insightIndex}].cluster`);
+      setFieldTouched(`insights[${insightIndex}].severity`);
+      alert("compila tutti i campi obbligatori");
+      return;
+    }
+    dispatch(resetInsight());
+    onClose();
+  };
   const handleClose = () => {
+    removeInsight(insightIndex);
+    // todo discard changes if
     dispatch(resetInsight());
     onClose();
   };
@@ -41,10 +63,10 @@ export const InsightModal = ({ isOpen, onClose }: InsightModalProps) => {
           onClick={handleClose}
           className="aq-mr-3"
         >
-          Discard
+          Discard Changes
         </Button>
-        <Button data-qa="save-new-insight" flat onClick={handleClose}>
-          Save
+        <Button data-qa="save-new-insight" flat onClick={handleAdd}>
+          Add
         </Button>
       </div>
     );
@@ -73,3 +95,5 @@ export const InsightModal = ({ isOpen, onClose }: InsightModalProps) => {
     </StyledModal>
   );
 };
+
+export default InsightModal;

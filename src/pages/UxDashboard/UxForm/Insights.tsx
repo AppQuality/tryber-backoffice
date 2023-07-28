@@ -5,12 +5,12 @@ import {
   InsightsWrapper,
 } from "../components/styled";
 import { FieldArray } from "formik";
-import { InsightModal } from "../components/insightModal";
 import { setInsightIndex, setSelectedInsight } from "../uxDashboardSlice";
 import SeverityPill from "../components/SeverityPill";
 import { useState } from "react";
-import { FormValuesInterface } from ".";
+import { FormValuesInterface } from "./FormProvider";
 import { useAppDispatch } from "src/store";
+import InsightModal from "./InsightModal";
 
 const InsightSection = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -21,13 +21,17 @@ const InsightSection = () => {
   const dispatch = useAppDispatch();
   return (
     <>
-      <InsightModal onClose={() => setModalOpen(false)} isOpen={modalOpen} />
       <Card title="Insights" className="aq-mb-2">
         <InsightsWrapper data-qa="insights-list" className="aq-mb-3">
           <FieldArray
             name="insights"
             render={({ form, remove, push, name }) => (
               <>
+                <InsightModal
+                  onClose={() => setModalOpen(false)}
+                  isOpen={modalOpen}
+                  removeInsight={remove}
+                />
                 {form.values.insights.map(
                   (
                     insight: FormValuesInterface["insights"][number],

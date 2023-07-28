@@ -8,7 +8,7 @@ import {
 import { useMemo } from "react";
 import { VideoPartsWrapper } from "../styled";
 import VideoPart from "./VideoPart";
-import { FormValuesInterface } from "../../UxForm";
+import { FormValuesInterface } from "../../UxForm/FormProvider";
 
 export type ObservationOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];
@@ -48,7 +48,7 @@ const Observations = () => {
                     </Card>
                   )
                 )}
-              <Card>
+              <Card key="new-observation">
                 <Select
                   menuTargetQuery="body"
                   options={observationsOptions}
