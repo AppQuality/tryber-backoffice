@@ -1,8 +1,17 @@
-import { Button, Modal } from "@appquality/appquality-design-system";
-import { InsightForm } from "./InsightForm";
+import {
+  Button,
+  Modal,
+  Field,
+  FieldProps,
+  FormikField,
+  TextareaField,
+} from "@appquality/appquality-design-system";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { resetInsight } from "../uxDashboardSlice";
 import styled from "styled-components";
+import SeverityField from "./fields/SeverityField";
+import ClusterField from "./fields/ClusterField";
+import Observations from "./fields/Observations";
 
 interface InsightModalProps {
   isOpen: boolean;
@@ -17,6 +26,7 @@ const StyledModal = styled(Modal)`
 
 export const InsightModal = ({ isOpen, onClose }: InsightModalProps) => {
   const dispatch = useAppDispatch();
+  const { insightIndex } = useAppSelector((state) => state.uxDashboard);
   const handleClose = () => {
     dispatch(resetInsight());
     onClose();
@@ -46,7 +56,20 @@ export const InsightModal = ({ isOpen, onClose }: InsightModalProps) => {
       closeOnClickOutside={false}
       footer={<ModalFooter />}
     >
-      <InsightForm />
+      <div data-qa="insight-form">
+        <Field name={`insights[${insightIndex}].title`} label="Title" />
+        <TextareaField
+          name={`insights[${insightIndex}].description`}
+          label="Description"
+        />
+        <FormikField name={`insights[${insightIndex}].severity`}>
+          {(fieldProps: FieldProps) => <SeverityField {...fieldProps} />}
+        </FormikField>
+        <FormikField name={`insights[${insightIndex}].cluster`}>
+          {(fieldProps: FieldProps) => <ClusterField {...fieldProps} />}
+        </FormikField>
+        <Observations />
+      </div>
     </StyledModal>
   );
 };
