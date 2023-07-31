@@ -118,20 +118,10 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         console.log(res);
         formikHelpers.setSubmitting(false);
         if ("error" in res) {
-          if (
-            "data" in res.error &&
-            typeof res.error.data === "object" &&
-            res.error.data &&
-            "err" in res.error.data &&
-            Array.isArray(res.error.data.err)
-          ) {
-            res.error.data.err.forEach((err) => {
-              add({
-                type: "danger",
-                message: `${err.dataPath} ${err.message}`,
-              });
-            });
-          }
+          add({
+            type: "danger",
+            message: `something went wrong`,
+          });
         }
       }}
       onReset={() => {
