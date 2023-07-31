@@ -4,7 +4,7 @@ import {
   InsightPillsWrapper,
   InsightsWrapper,
 } from "../components/styled";
-import { FieldArray } from "formik";
+import { FieldArray, useFormikContext } from "formik";
 import { setInsightIndex, setSelectedInsight } from "../uxDashboardSlice";
 import SeverityPill from "../components/SeverityPill";
 import { useState } from "react";
@@ -14,6 +14,7 @@ import InsightModal from "./InsightModal";
 
 const InsightSection = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { submitForm } = useFormikContext<FormValuesInterface>();
   function editInsight(insight: FormValuesInterface["insights"][number]): void {
     dispatch(setSelectedInsight(insight));
     setModalOpen(true);
@@ -75,7 +76,9 @@ const InsightSection = () => {
                               onClick={() => {
                                 window.confirm(
                                   "Are you sure you wish to delete this item?"
-                                ) && remove(index);
+                                ) &&
+                                  remove(index) &&
+                                  submitForm();
                               }}
                               data-qa="delete-insight"
                             >

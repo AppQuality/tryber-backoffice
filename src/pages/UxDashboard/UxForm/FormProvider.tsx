@@ -9,6 +9,7 @@ import {
 import { useAppDispatch } from "src/store";
 import { string, array, object, number, lazy } from "yup";
 import { reset } from "../uxDashboardSlice";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
@@ -16,6 +17,7 @@ export interface FormValuesInterface {
 }
 
 const FormProvider = ({ children }: { children: ReactNode }) => {
+  const { add } = siteWideMessageStore();
   const { id } = useParams<{ id: string }>();
   const { currentData, isLoading, isError, error, refetch } =
     useGetCampaignsByCampaignUxQuery({
@@ -113,9 +115,23 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             sentiments: [],
           },
         });
-        if ("data" in res) {
-          dispatch(reset());
-          refetch();
+        console.log(res);
+        formikHelpers.setSubmitting(false);
+        if ("error" in res) {
+          if (
+            "data" in res.error &&
+            typeof res.error.data === "object" &&
+            res.error.data &&
+            "err" in res.error.data &&
+            Array.isArray(res.error.data.err)
+          ) {
+            res.error.data.err.forEach((err) => {
+              add({
+                type: "danger",
+                message: `${err.dataPath} ${err.message}`,
+              });
+            });
+          }
         }
       }}
       onReset={() => {

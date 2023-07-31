@@ -54,7 +54,6 @@ const SeverityField = ({
           });
         }}
       />
-      <ErrorMessage name={field.name} />
     </FormGroup>
   );
 };

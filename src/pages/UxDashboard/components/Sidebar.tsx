@@ -6,6 +6,9 @@ import {
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { FormValuesInterface } from "../UxForm/FormProvider";
+import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
+import { useParams } from "react-router-dom";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 
 const Sidebar = ({
   step,
@@ -14,7 +17,10 @@ const Sidebar = ({
   step: number;
   setStep: (n: number) => void;
 }) => {
+  const { id } = useParams<{ id: string }>();
+  const { add } = siteWideMessageStore();
   const { submitForm, values } = useFormikContext<FormValuesInterface>();
+  const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   return (
     <>
       <Card title="actions" className="aq-mb-3">
@@ -69,7 +75,22 @@ const Sidebar = ({
             size="block"
             type="secondary"
             data-qa="close-dashboard-preview"
-            onClick={() => setStep(2)}
+            onClick={() => {
+              const res = saveDashboard({
+                campaign: id,
+                body: {
+                  status: "publish",
+                },
+              });
+              if ("error" in res) {
+                add({
+                  type: "danger",
+                  message: `something went wrong`,
+                });
+                return;
+              }
+              setStep(2);
+            }}
           >
             Publish
           </Button>
