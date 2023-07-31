@@ -43,13 +43,6 @@ const Content = styled.div<{
                     height: 100%;
                 }
             }
-
-            ${ControlsWrapper} {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-            }
         `}
 `;
 
