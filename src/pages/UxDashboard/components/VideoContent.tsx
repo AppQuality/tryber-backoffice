@@ -53,14 +53,17 @@ const Content = styled.div<{
         `}
 `;
 
-export const VideoContent = () => {
+export const VideoContent = ({ fieldName }: { fieldName: string }) => {
   const { isFullScreen, context } = useVideoContext();
 
   return (
     <Content isFullScreen={isFullScreen}>
       <Player />
       <ControlsWrapper>
-        <VideoControls currentTime={context.player?.currentTime} />
+        <VideoControls
+          currentTime={context.player?.currentTime}
+          fieldName={fieldName}
+        />
       </ControlsWrapper>
     </Content>
   );

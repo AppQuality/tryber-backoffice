@@ -1,7 +1,7 @@
 import { Button } from "@appquality/appquality-design-system";
 import Video from "@appquality/stream-player";
 import styled from "styled-components";
-// import { useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 
 const ProgressBar = styled(Video.ProgressBar)`
   :after {
@@ -24,10 +24,17 @@ const CustomTimer = styled(Video.Timer)`
   padding: 5px;
 `;
 
-export const VideoControls = ({ currentTime }: { currentTime?: number }) => {
-  const fillEndTime = () => {};
-
-  //  const { setFieldValue } = useFormikContext();
+export const VideoControls = ({
+  currentTime,
+  fieldName,
+}: {
+  currentTime?: number;
+  fieldName: string;
+}) => {
+  const { setFieldValue } = useFormikContext();
+  const fillEndTime = () => {
+    setFieldValue(fieldName, currentTime);
+  };
 
   return (
     <>

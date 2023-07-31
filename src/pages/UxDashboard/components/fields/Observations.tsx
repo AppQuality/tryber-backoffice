@@ -9,12 +9,14 @@ import { useMemo } from "react";
 import { VideoPartsWrapper } from "../styled";
 import VideoPart from "./VideoPart";
 import { FormValuesInterface } from "../../UxForm/FormProvider";
+import { useAppSelector } from "src/store";
 
 export type ObservationOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];
 const Observations = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetCampaignsByCampaignObservationsQuery({ campaign: id });
+  const { insightIndex } = useAppSelector((state) => state.uxDashboard);
 
   const observationsOptions: ObservationOption[] = useMemo(
     () =>
@@ -29,7 +31,7 @@ const Observations = () => {
   return (
     <VideoPartsWrapper>
       <FieldArray
-        name="videoparts"
+        name={`insights[${insightIndex}].videoPart`}
         render={({ form, remove, push, name }) => {
           return (
             <>

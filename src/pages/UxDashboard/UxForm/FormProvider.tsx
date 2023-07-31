@@ -100,13 +100,13 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       initialValues={initialValues}
       onSubmit={async (values, formikHelpers) => {
         formikHelpers.setSubmitting(true);
-        await saveDashboard({
-          campaign: id,
-          body: {
-            insights: mapFormInsightsForPatch(values.insights),
-            sentiments: [],
-          },
-        });
+        // await saveDashboard({
+        //   campaign: id,
+        //   body: {
+        //     insights: mapFormInsightsForPatch(values.insights),
+        //     sentiments: [],
+        //   },
+        // });
       }}
       validationSchema={validationSchema}
     >

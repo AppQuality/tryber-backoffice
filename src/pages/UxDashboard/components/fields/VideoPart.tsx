@@ -16,16 +16,18 @@ const VideoPart = ({
     <>
       <div className="aq-mb-3">
         <Video start={videopart.start} src={videopart.url}>
-          <VideoContent />
+          <VideoContent
+            fieldName={`insights[${insightIndex}].videoPart[${index}].end`}
+          />
         </Video>
       </div>
       <Field
-        name={`insights[${insightIndex}].videoparts[${index}].end`}
+        name={`insights[${insightIndex}].videoPart[${index}].end`}
         type="number"
         label="End"
       />
       <TextareaField
-        name={`insights[${insightIndex}].videoparts[${index}].note`}
+        name={`insights[${insightIndex}].videoPart[${index}].note`}
         label="Note"
       />
     </>
