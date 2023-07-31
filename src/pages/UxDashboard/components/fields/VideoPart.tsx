@@ -27,7 +27,7 @@ const VideoPart = ({
         label="End"
       />
       <TextareaField
-        name={`insights[${insightIndex}].videoPart[${index}].note`}
+        name={`insights[${insightIndex}].videoPart[${index}].description`}
         label="Note"
       />
     </>

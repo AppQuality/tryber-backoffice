@@ -33,7 +33,11 @@ export const VideoControls = ({
 }) => {
   const { setFieldValue } = useFormikContext();
   const fillEndTime = () => {
-    setFieldValue(fieldName, currentTime);
+    if (currentTime) {
+      setFieldValue(fieldName, Math.round(currentTime));
+    } else {
+      alert("Current time is not available");
+    }
   };
 
   return (

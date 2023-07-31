@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import {
   GetCampaignsByCampaignUxApiResponse,
-  PatchCampaignsByCampaignUxApiArg,
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
 } from "src/services/tryberApi";
@@ -70,9 +69,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     ),
   });
 
-  const mapFormInsightsForPatch = (
-    insights: FormValuesInterface["insights"]
-  ): PatchCampaignsByCampaignUxApiArg["body"]["insights"] =>
+  const mapFormInsightsForPatch = (insights: FormValuesInterface["insights"]) =>
     insights.map((insight, index) => {
       return {
         id: insight.id,
@@ -80,19 +77,21 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         description: insight.description,
         order: index,
         severityId: insight.severity.id,
-        clusterId: Array.isArray(insight.cluster)
+        clusterIds: Array.isArray(insight.cluster)
           ? insight.cluster.map((cluster) => cluster.id)
           : insight.cluster,
-        videoPart: insight.videoPart.map((video, videoIndex) => {
-          return {
-            id: video.id,
-            order: videoIndex,
-            start: video.start,
-            end: video.end,
-            mediaId: video.mediaId,
-            description: video.description,
-          };
-        }),
+        videoPart: !insight.videoPart
+          ? []
+          : insight.videoPart.map((video, videoIndex) => {
+              return {
+                id: video.id,
+                order: videoIndex,
+                start: video.start,
+                end: video.end,
+                mediaId: video.mediaId,
+                description: video.description,
+              };
+            }),
       };
     });
   return (
@@ -100,13 +99,14 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       initialValues={initialValues}
       onSubmit={async (values, formikHelpers) => {
         formikHelpers.setSubmitting(true);
-        // await saveDashboard({
-        //   campaign: id,
-        //   body: {
-        //     insights: mapFormInsightsForPatch(values.insights),
-        //     sentiments: [],
-        //   },
-        // });
+        const res = await saveDashboard({
+          campaign: id,
+          body: {
+            insights: mapFormInsightsForPatch(values.insights),
+            sentiments: [],
+          },
+        });
+        console.log(res);
       }}
       validationSchema={validationSchema}
     >

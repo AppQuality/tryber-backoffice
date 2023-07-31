@@ -1206,29 +1206,32 @@ export type PatchCampaignsByCampaignUxApiResponse = /** status 200 OK */ {};
 export type PatchCampaignsByCampaignUxApiArg = {
   /** A campaign id */
   campaign: string;
-  body: {
-    status?: "draft" | "publish";
-    insights: {
-      id: number;
-      title: string;
-      description: string;
-      severityId: number;
-      order: number;
-      clusterId: number[] | "all";
-      videoPart: {
-        id: number;
-        start: number;
-        end: number;
-        mediaId: number;
-        description: string;
-        order: number;
-      }[];
-    }[];
-    sentiments: {
-      clusterId: number;
-      value: string;
-    }[];
-  };
+  body:
+    | {
+        insights: {
+          id?: number;
+          title: string;
+          description: string;
+          severityId: number;
+          order: number;
+          clusterIds: number[] | "all";
+          videoPart: {
+            id?: number;
+            start: number;
+            end: number;
+            mediaId: number;
+            description: string;
+            order: number;
+          }[];
+        }[];
+        sentiments: {
+          clusterId: number;
+          value: number;
+        }[];
+      }
+    | {
+        status: "publish";
+      };
 };
 export type GetCampaignsByCampaignClustersApiResponse =
   /** status 200 A UseCase linked with the Campaign */ {
