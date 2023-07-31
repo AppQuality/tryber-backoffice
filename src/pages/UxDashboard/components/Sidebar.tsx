@@ -14,8 +14,7 @@ const Sidebar = ({
   step: number;
   setStep: (n: number) => void;
 }) => {
-  const { errors, submitForm, values } =
-    useFormikContext<FormValuesInterface>();
+  const { submitForm, values } = useFormikContext<FormValuesInterface>();
   return (
     <>
       <Card title="actions" className="aq-mb-3">
@@ -32,9 +31,6 @@ const Sidebar = ({
             >
               Save Draft
             </Button>
-            <Text small className="aq-mb-3">
-              {errors && errors.insights && JSON.stringify(errors)}
-            </Text>
           </>
         )}
         {step === 1 && (
@@ -63,7 +59,6 @@ const Sidebar = ({
               Preview
             </Button>
             <Text small className="aq-mb-3">
-              {values.status}
               Per <strong>pubblicare</strong> passa prima dalla preview
             </Text>
           </>

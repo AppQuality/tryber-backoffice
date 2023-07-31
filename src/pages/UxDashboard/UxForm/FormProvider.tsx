@@ -6,7 +6,9 @@ import {
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
 } from "src/services/tryberApi";
+import { useAppDispatch } from "src/store";
 import { string, array, object, number, lazy } from "yup";
+import { reset } from "../uxDashboardSlice";
 
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
@@ -15,9 +17,11 @@ export interface FormValuesInterface {
 
 const FormProvider = ({ children }: { children: ReactNode }) => {
   const { id } = useParams<{ id: string }>();
-  const { data, isLoading, isError, error } = useGetCampaignsByCampaignUxQuery({
-    campaign: id,
-  });
+  const { currentData, isLoading, isError, error, refetch } =
+    useGetCampaignsByCampaignUxQuery({
+      campaign: id,
+    });
+  const dispatch = useAppDispatch();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   if (isLoading) {
     return <Container>Loading...</Container>;
@@ -27,42 +31,44 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     // campaign does not exist
     return <Container>Error...</Container>;
   }
+
   const initialValues: FormValuesInterface = {
-    status: data?.status,
-    insights: data?.insight || [],
+    status: currentData?.status,
+    insights: currentData?.insight || [],
   };
+
   const validationSchema = object({
     status: string(),
     insights: array().of(
       object().shape({
         id: number(),
-        title: string().required(),
-        description: string().required(),
+        title: string().required("Campo obbligatorio"),
+        description: string().required("Campo obbligatorio"),
         severity: object()
           .shape({
-            id: number().required(),
-            name: string().required(),
+            id: number().required("Campo obbligatorio"),
+            name: string().required("Campo obbligatorio"),
           })
-          .required(),
+          .required("Campo obbligatorio"),
         cluster: lazy((value) =>
           typeof value === "string"
-            ? string().required()
+            ? string().required("Campo obbligatorio")
             : array()
                 .of(
                   object().shape({
-                    id: number().required(),
-                    name: string().required(),
+                    id: number().required("Campo obbligatorio"),
+                    name: string().required("Campo obbligatorio"),
                   })
                 )
-                .required()
+                .required("Campo obbligatorio")
         ),
-        videoParts: array().of(
+        videoPart: array().of(
           object().shape({
-            id: number().required(),
-            start: number().required(),
-            end: number().required(),
-            mediaId: number().required(),
-            description: string().required(),
+            id: number(),
+            start: number().required("Campo obbligatorio"),
+            end: number().required("Campo obbligatorio"),
+            mediaId: number().required("Campo obbligatorio"),
+            description: string().required("Campo obbligatorio"),
           })
         ),
       })
@@ -97,6 +103,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize
       onSubmit={async (values, formikHelpers) => {
         formikHelpers.setSubmitting(true);
         const res = await saveDashboard({
@@ -106,7 +113,14 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             sentiments: [],
           },
         });
-        console.log(res);
+        if ("data" in res) {
+          dispatch(reset());
+          refetch();
+        }
+      }}
+      onReset={() => {
+        dispatch(reset());
+        refetch();
       }}
       validationSchema={validationSchema}
     >

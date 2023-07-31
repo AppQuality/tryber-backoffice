@@ -31,7 +31,7 @@ const SeverityField = ({
   field,
 }: FieldProps<FormValuesInterface["insights"][number]["severity"]>) => {
   const mapSeverityToSelectValue = useMemo(() => {
-    return field.value
+    return typeof field.value === "object" && field.value !== null
       ? { label: field.value.name, value: field.value.id.toString() }
       : { label: "" };
   }, [field.value]);

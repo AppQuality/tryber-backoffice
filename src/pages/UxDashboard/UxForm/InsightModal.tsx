@@ -34,8 +34,9 @@ const InsightModal = ({
 }: InsightModalProps) => {
   const dispatch = useAppDispatch();
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
-  const { errors, setFieldTouched } = useFormikContext<FormValuesInterface>();
-  const handleAdd = () => {
+  const { submitForm, setFieldTouched, errors, resetForm } =
+    useFormikContext<FormValuesInterface>();
+  const handleAdd = async () => {
     if (errors.insights && errors.insights[insightIndex]) {
       setFieldTouched(`insights[${insightIndex}].title`);
       setFieldTouched(`insights[${insightIndex}].description`);
@@ -44,12 +45,11 @@ const InsightModal = ({
       alert("compila tutti i campi obbligatori");
       return;
     }
-    dispatch(resetInsight());
+    submitForm();
     onClose();
   };
-  const handleClose = () => {
-    removeInsight(insightIndex);
-    // todo discard changes if
+  const handleClose = async () => {
+    resetForm();
     dispatch(resetInsight());
     onClose();
   };
@@ -59,14 +59,15 @@ const InsightModal = ({
         <Button
           data-qa="discard-new-insight"
           type="danger"
+          htmlType="reset"
           flat
           onClick={handleClose}
           className="aq-mr-3"
         >
-          Discard Changes
+          Cancel
         </Button>
         <Button data-qa="save-new-insight" flat onClick={handleAdd}>
-          Add
+          Save
         </Button>
       </div>
     );
