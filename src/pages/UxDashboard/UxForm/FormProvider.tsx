@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import {
   GetCampaignsByCampaignUxApiResponse,
+  PatchCampaignsByCampaignUxApiArg,
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
 } from "src/services/tryberApi";
@@ -69,27 +70,43 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     ),
   });
 
+  const mapFormInsightsForPatch = (
+    insights: FormValuesInterface["insights"]
+  ): PatchCampaignsByCampaignUxApiArg["body"]["insights"] =>
+    insights.map((insight, index) => {
+      return {
+        id: insight.id,
+        title: insight.title,
+        description: insight.description,
+        order: index,
+        severityId: insight.severity.id,
+        clusterId: Array.isArray(insight.cluster)
+          ? insight.cluster.map((cluster) => cluster.id)
+          : insight.cluster,
+        videoPart: insight.videoPart.map((video, videoIndex) => {
+          return {
+            id: video.id,
+            order: videoIndex,
+            start: video.start,
+            end: video.end,
+            mediaId: video.mediaId,
+            description: video.description,
+          };
+        }),
+      };
+    });
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={async (values, formikHelpers) => {
         formikHelpers.setSubmitting(true);
-        console.log(values);
-        // values.insights = values.insights.map((insight) => {
-        //   insight.cluster = insight.cluster.map((cluster) => cluster.id);
-        //   insight.videoParts = insight.videoParts.map((videoPart) => ({
-        //     ...videoPart,
-        //     mediaId: videoPart.mediaId.toString(),
-        //   }));
-        //   return insight;
-        // }
-        // await saveDashboard({
-        //   campaign: id,
-        //   body: {
-        //     insights: values.insights,
-        //   },
-        // })
-        alert("Form submitted");
+        await saveDashboard({
+          campaign: id,
+          body: {
+            insights: mapFormInsightsForPatch(values.insights),
+            sentiments: [],
+          },
+        });
       }}
       validationSchema={validationSchema}
     >

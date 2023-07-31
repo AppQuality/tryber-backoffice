@@ -80,7 +80,7 @@ const Sidebar = ({
           </Button>
         )}
       </Card>
-      {step === 0 && (
+      {/* {step === 0 && (
         <Card title="Sezioni del form" className="aq-mb-3">
           <Steps direction="vertical" current={0}>
             <Steps.Step title="Sulla Campagna" />
@@ -88,7 +88,7 @@ const Sidebar = ({
             <Steps.Step title="Nel dettaglio" />
           </Steps>
         </Card>
-      )}
+      )} */}
     </>
   );
 };
