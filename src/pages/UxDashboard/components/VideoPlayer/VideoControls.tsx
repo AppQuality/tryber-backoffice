@@ -1,5 +1,5 @@
 import { Button } from "@appquality/appquality-design-system";
-import Video from "@appquality/stream-player";
+import Video, { useVideoContext } from "@appquality/stream-player";
 import styled from "styled-components";
 import { useFormikContext } from "formik";
 import {
@@ -27,7 +27,6 @@ const CustomTimer = styled(Video.Timer)`
   margin-right: 0;
   color: ${({ theme }) => theme.colors.white};
 `;
-const MuteButton = styled(Video.Mute)``;
 
 const ControlsWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.65);
@@ -64,8 +63,8 @@ const CenteredPlayPause = styled(Video.PlayPauseButton)`
   background-color: transparent;
   padding: 40px 0;
   svg {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     fill: white;
   }
 `;
@@ -80,16 +79,18 @@ const ChangeTime = styled(Video.ChangeTime)``;
 const FullScreen = styled(Video.FullScreen)``;
 
 export const VideoControls = ({
-  currentTime,
-  fieldName,
+  videoFieldName,
 }: {
-  currentTime?: number;
-  fieldName: string;
+  videoFieldName: string;
 }) => {
+  const { isFullScreen, context } = useVideoContext();
   const { setFieldValue } = useFormikContext();
   const fillEndTime = () => {
-    if (currentTime) {
-      setFieldValue(fieldName, Math.round(currentTime));
+    if (context.player?.currentTime) {
+      setFieldValue(
+        `${videoFieldName}.end`,
+        Math.round(context.player?.currentTime)
+      );
     } else {
       alert("Current time is not available");
     }
@@ -104,7 +105,7 @@ export const VideoControls = ({
       <ProgressBar className="progress-bar" />
       <OtherControls>
         <ChangeTime value={-10} i18n={{ icon: <ArrowCounterclockwise /> }} />
-        <MuteButton i18n={{ on: <VolumeUpFill />, off: <VolumeMuteFill /> }} />
+        <Video.Mute i18n={{ on: <VolumeUpFill />, off: <VolumeMuteFill /> }} />
         <Video.PlayPauseButton
           i18n={{ play: <PlayFill />, pause: <PauseFill /> }}
         />

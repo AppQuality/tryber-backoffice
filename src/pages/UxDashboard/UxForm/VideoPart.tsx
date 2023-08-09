@@ -1,7 +1,7 @@
 import { Field, TextareaField } from "@appquality/appquality-design-system";
 import Video from "@appquality/stream-player";
-import { FormValuesInterface } from "../../UxForm/FormProvider";
-import { VideoContent } from "../VideoContent";
+import { FormValuesInterface } from "./FormProvider";
+import VideoPlayer from "../components/VideoPlayer";
 
 const VideoPart = ({
   videopart,
@@ -16,7 +16,7 @@ const VideoPart = ({
     <>
       <div className="aq-mb-3">
         <Video start={videopart.start} src={videopart.url}>
-          <VideoContent fieldName={`${fieldName}[${videoPartIndex}].end`} />
+          <VideoPlayer videoFieldName={`${fieldName}[${videoPartIndex}]`} />
         </Video>
       </div>
       <Field

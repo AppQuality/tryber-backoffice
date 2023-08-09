@@ -13,7 +13,7 @@ import {
   useGetCampaignsByCampaignObservationsQuery,
 } from "src/services/tryberApi";
 import { useMemo } from "react";
-import VideoPart from "./VideoPart";
+import VideoPart from "../../UxForm/VideoPart";
 import { FormValuesInterface } from "../../UxForm/FormProvider";
 import { useAppSelector } from "src/store";
 
