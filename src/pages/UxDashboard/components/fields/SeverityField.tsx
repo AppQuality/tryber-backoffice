@@ -40,6 +40,7 @@ const SeverityField = ({
       <Select
         menuTargetQuery="body"
         options={severityOptions}
+        placeholder="Seleziona la seveerity"
         label="Severity"
         name={field.name}
         value={mapSeverityToSelectValue}

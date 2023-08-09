@@ -2,32 +2,30 @@ import { Field, TextareaField } from "@appquality/appquality-design-system";
 import Video from "@appquality/stream-player";
 import { FormValuesInterface } from "../../UxForm/FormProvider";
 import { VideoContent } from "../VideoContent";
-import { useAppSelector } from "src/store";
 
 const VideoPart = ({
   videopart,
-  index,
+  videoPartIndex,
+  fieldName,
 }: {
   videopart: FormValuesInterface["insights"][number]["videoPart"][number];
-  index: number;
+  videoPartIndex: number;
+  fieldName: string;
 }) => {
-  const { insightIndex } = useAppSelector((state) => state.uxDashboard);
   return (
     <>
       <div className="aq-mb-3">
         <Video start={videopart.start} src={videopart.url}>
-          <VideoContent
-            fieldName={`insights[${insightIndex}].videoPart[${index}].end`}
-          />
+          <VideoContent fieldName={`${fieldName}[${videoPartIndex}].end`} />
         </Video>
       </div>
       <Field
-        name={`insights[${insightIndex}].videoPart[${index}].end`}
+        name={`${fieldName}[${videoPartIndex}].end`}
         type="number"
         label="End"
       />
       <TextareaField
-        name={`insights[${insightIndex}].videoPart[${index}].description`}
+        name={`${fieldName}[${videoPartIndex}].description`}
         label="Note"
       />
     </>

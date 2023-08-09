@@ -22,7 +22,7 @@ const InsightSection = () => {
   const dispatch = useAppDispatch();
   return (
     <>
-      <Card title="Insights" className="aq-mb-2">
+      <Card title="Insights" className="aq-mb-3">
         <InsightsWrapper data-qa="insights-list" className="aq-mb-3">
           <FieldArray
             name="insights"
@@ -32,8 +32,9 @@ const InsightSection = () => {
                   onClose={() => setModalOpen(false)}
                   isOpen={modalOpen}
                   removeInsight={remove}
+                  fieldName={name}
                 />
-                {form.values.insights.map(
+                {form.values[name].map(
                   (
                     insight: FormValuesInterface["insights"][number],
                     index: number

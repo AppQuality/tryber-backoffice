@@ -51,15 +51,3 @@ export const InsightPillsWrapper = styled.div`
   gap: ${({ theme }) => theme.grid.sizes[1]};
   margin-bottom: ${({ theme }) => theme.grid.sizes[2]};
 `;
-
-export const VideoPartsWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 33.33%);
-  gap: 1rem;
-  margin-bottom: 1rem;
-  .play-pause-button {
-    display: block;
-  }
-  .progress-bar {
-  }
-`;

@@ -50,6 +50,7 @@ const ClusterField = ({
     <FormGroup>
       <Select
         menuTargetQuery="body"
+        placeholder="Seleziona uno o più cluster"
         isMulti
         options={clusterOptions}
         label="Cluster"
@@ -79,10 +80,6 @@ const ClusterField = ({
           }
         }}
       />
-      <Text small className="aq-mt-1 aq-text-primaryVariant">
-        Select one or more clusters, you can also select the General cluster to
-        target all clusters.
-      </Text>
       <ErrorMessage name={field.name} />
     </FormGroup>
   );
