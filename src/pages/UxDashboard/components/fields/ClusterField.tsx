@@ -2,7 +2,6 @@ import {
   ErrorMessage,
   FieldProps,
   FormGroup,
-  Text,
   Select,
 } from "@appquality/appquality-design-system";
 import { useMemo } from "react";

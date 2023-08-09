@@ -1,9 +1,4 @@
-import {
-  Card,
-  Button,
-  Steps,
-  Text,
-} from "@appquality/appquality-design-system";
+import { Card, Button, Text } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { FormValuesInterface } from "../UxForm/FormProvider";
 import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
@@ -27,7 +22,7 @@ const Sidebar = ({
         {step === 0 && (
           <>
             <Button
-              className="aq-mb-1"
+              className="aq-mb-4"
               type="primary"
               flat
               size="block"
@@ -41,20 +36,22 @@ const Sidebar = ({
         )}
         {step === 1 && (
           <Button
-            className="aq-mb-3"
+            className="aq-mb-4"
             type="primary"
             flat
             size="block"
             data-qa="close-dashboard-preview"
             onClick={() => setStep(0)}
           >
-            Back to Form
+            Torna alle modifiche
           </Button>
         )}
         {step === 0 && (
           <>
+            <Text className="aq-mb-2">
+              Per pubblicare passa prima dalla preview
+            </Text>
             <Button
-              className="aq-mb-1"
               htmlType="button"
               size="block"
               type="secondary"
@@ -64,36 +61,38 @@ const Sidebar = ({
             >
               Preview
             </Button>
-            <Text small className="aq-mb-3">
-              Per <strong>pubblicare</strong> passa prima dalla preview
-            </Text>
           </>
         )}
         {step === 1 && (
-          <Button
-            htmlType="button"
-            size="block"
-            type="secondary"
-            data-qa="close-dashboard-preview"
-            onClick={() => {
-              const res = saveDashboard({
-                campaign: id,
-                body: {
-                  status: "publish",
-                },
-              });
-              if ("error" in res) {
-                add({
-                  type: "danger",
-                  message: `something went wrong`,
+          <>
+            <Text className="aq-mb-2">
+              Pubblica per rendere disponibile la dashboard anche al cliente
+            </Text>
+            <Button
+              htmlType="button"
+              size="block"
+              type="secondary"
+              data-qa="close-dashboard-preview"
+              onClick={() => {
+                const res = saveDashboard({
+                  campaign: id,
+                  body: {
+                    status: "publish",
+                  },
                 });
-                return;
-              }
-              setStep(2);
-            }}
-          >
-            Publish
-          </Button>
+                if ("error" in res) {
+                  add({
+                    type: "danger",
+                    message: `something went wrong`,
+                  });
+                  return;
+                }
+                setStep(2);
+              }}
+            >
+              Pubblica
+            </Button>
+          </>
         )}
       </Card>
       {/* {step === 0 && (

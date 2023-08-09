@@ -1,25 +1,6 @@
 import { Steps } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 
-export const InsightsWrapper = styled.div`
-  display: grid;
-  grid-auto-rows: 1fr;
-  grid-template-columns: repeat(
-    3,
-    calc(33.33% - 6px)
-  ); // account for 6px cards border widths
-  gap: ${({ theme }) => theme.grid.sizes[2]};
-  justify-content: flex-start;
-  > div > div {
-    height: 100%;
-  }
-  .aq-card-body {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;
-  }
-`;
-
 export const AddNewInsightCTA = styled.div`
   cursor: pointer;
   width: 100%;
