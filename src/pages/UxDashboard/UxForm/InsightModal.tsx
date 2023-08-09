@@ -36,7 +36,7 @@ const InsightModal = ({
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
   const { submitForm, setFieldTouched, errors, resetForm } =
     useFormikContext<FormValuesInterface>();
-  const handleAdd = async () => {
+  const handleAdd = () => {
     if (errors.insights && errors.insights[insightIndex]) {
       setFieldTouched(`insights[${insightIndex}].title`);
       setFieldTouched(`insights[${insightIndex}].description`);
@@ -46,6 +46,7 @@ const InsightModal = ({
       return;
     }
     submitForm();
+    dispatch(resetInsight());
     onClose();
   };
   const handleClose = async () => {
