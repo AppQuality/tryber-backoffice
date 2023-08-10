@@ -13,8 +13,8 @@ import {
   useGetCampaignsByCampaignObservationsQuery,
 } from "src/services/tryberApi";
 import { useMemo } from "react";
-import VideoPart from "../../UxForm/Insights/VideoPart";
-import { FormValuesInterface } from "../../UxForm/FormProvider";
+import VideoPart from "./VideoPart";
+import { FormValuesInterface } from "../../FormProvider";
 import { useAppSelector } from "src/store";
 
 export type ObservationOption = SelectOptionType &

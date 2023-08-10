@@ -1,7 +1,7 @@
 import { Field, TextareaField } from "@appquality/appquality-design-system";
 import Video from "@appquality/stream-player";
-import { FormValuesInterface } from "../FormProvider";
-import VideoPlayer from "../../components/VideoPlayer";
+import { FormValuesInterface } from "../../FormProvider";
+import VideoPlayer from "../VideoPlayer";
 
 const VideoPart = ({
   videopart,

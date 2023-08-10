@@ -1,6 +1,6 @@
 import { Pill } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
-import { FormValuesInterface } from "../UxForm/FormProvider";
+import { FormValuesInterface } from "../FormProvider";
 
 interface SeverityPillProps {
   severity: FormValuesInterface["insights"][number]["severity"];

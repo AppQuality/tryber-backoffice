@@ -14,16 +14,14 @@ import {
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { resetInsight } from "../../uxDashboardSlice";
+import { resetInsight, setModalOpen } from "../../uxDashboardSlice";
 import styled from "styled-components";
-import SeverityField from "../../components/fields/SeverityField";
-import ClusterField from "../../components/fields/ClusterField";
-import Observations from "../../components/fields/Observations";
+import SeverityField from "../components/fields/SeverityField";
+import ClusterField from "../components/fields/ClusterField";
+import Observations from "../components/fields/Observations";
 import { FormValuesInterface } from "../FormProvider";
 
 interface InsightModalProps {
-  isOpen: boolean;
-  onClose: () => void;
   fieldName: string;
 }
 const StyledModal = styled(Modal)`
@@ -33,9 +31,11 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const InsightModal = ({ isOpen, onClose, fieldName }: InsightModalProps) => {
+const InsightModal = ({ fieldName }: InsightModalProps) => {
   const dispatch = useAppDispatch();
-  const { insightIndex } = useAppSelector((state) => state.uxDashboard);
+  const { insightIndex, isModalOpen } = useAppSelector(
+    (state) => state.uxDashboard
+  );
   const { submitForm, setFieldTouched, errors, resetForm } =
     useFormikContext<FormValuesInterface>();
   const handleAdd = () => {
@@ -49,12 +49,12 @@ const InsightModal = ({ isOpen, onClose, fieldName }: InsightModalProps) => {
     }
     submitForm();
     dispatch(resetInsight());
-    onClose();
+    dispatch(setModalOpen(false));
   };
   const handleClose = async () => {
     resetForm();
     dispatch(resetInsight());
-    onClose();
+    dispatch(setModalOpen(false));
   };
   const ModalFooter = () => {
     return (
@@ -77,7 +77,7 @@ const InsightModal = ({ isOpen, onClose, fieldName }: InsightModalProps) => {
   };
   return (
     <StyledModal
-      isOpen={isOpen}
+      isOpen={isModalOpen}
       onClose={handleClose}
       closeOnClickOutside={false}
       footer={<ModalFooter />}

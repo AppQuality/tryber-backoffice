@@ -7,7 +7,7 @@ import {
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
-import { FormValuesInterface } from "../../UxForm/FormProvider";
+import { FormValuesInterface } from "../../FormProvider";
 
 const clusterOptionGeneral = { label: "General", value: "all" };
 

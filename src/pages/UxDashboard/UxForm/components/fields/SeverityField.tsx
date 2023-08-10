@@ -4,7 +4,7 @@ import {
   Select,
 } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
-import { FormValuesInterface } from "../../UxForm/FormProvider";
+import { FormValuesInterface } from "../../FormProvider";
 
 export const severityOptions = [
   {
