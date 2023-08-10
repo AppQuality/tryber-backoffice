@@ -1,24 +1,30 @@
 import {
   BSCol,
   BSGrid,
-  Text,
-  Button,
   Container,
   PageTitle,
+  Steps,
 } from "@appquality/appquality-design-system";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
 import UxDashboardForm from "./UxForm";
 import { useParams } from "react-router-dom";
-import { StyledSteps } from "./components/styled";
-import { useState } from "react";
-import { Preview } from "./components/Preview";
-import Sidebar from "./components/Sidebar";
+import Preview from "./Preview";
+import Sidebar from "./Sidebar";
 import FormProvider from "./UxForm/FormProvider";
+import ResultsPage from "./ResultsPage";
+import { useAppSelector } from "src/store";
+import styled from "styled-components";
+
+const StyledSteps = styled(Steps)`
+  .step-status-icon {
+    background-color: ${({ theme }) => theme.colors.gray100};
+  }
+`;
 
 const UxDashboard = () => {
   const { id } = useParams<{ id: string }>();
-  const [step, setStep] = useState(0);
+  const { currentStep } = useAppSelector((state) => state.uxDashboard);
   const {
     data: permissions,
     isError,
@@ -50,33 +56,26 @@ const UxDashboard = () => {
           <BSGrid>
             <BSCol size="col-lg-9">
               <StyledSteps
-                current={step}
+                current={currentStep}
                 className="aq-mb-3"
                 direction="horizontal"
               >
                 <StyledSteps.Step isCompleted={true} title={"Form"} />
-                <StyledSteps.Step isCompleted={false} title={"Preview"} />
-                <StyledSteps.Step isCompleted={false} title={"Publication"} />
+                <StyledSteps.Step
+                  isCompleted={currentStep > 0}
+                  title={"Preview"}
+                />
+                <StyledSteps.Step
+                  isCompleted={currentStep > 1}
+                  title={"Publication"}
+                />
               </StyledSteps>
-              {step === 0 && <UxDashboardForm />}
-              {step === 1 && <Preview />}
-              {step === 2 && (
-                <div>
-                  <Text className="aq-mb-3">
-                    bravo/a hai pubblicato tutto{" "}
-                    <Button
-                      type="link"
-                      data-qa="back-to-form"
-                      onClick={() => setStep(0)}
-                    >
-                      Torna al form per apportare nuove modifiche
-                    </Button>
-                  </Text>
-                </div>
-              )}
+              {currentStep === 0 && <UxDashboardForm />}
+              {currentStep === 1 && <Preview />}
+              {currentStep === 2 && <ResultsPage />}
             </BSCol>
             <BSCol size="col-lg-3">
-              {step !== 2 && <Sidebar step={step} setStep={setStep} />}
+              <Sidebar />
             </BSCol>
           </BSGrid>
         </Container>

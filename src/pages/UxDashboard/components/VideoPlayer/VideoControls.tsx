@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { useFormikContext } from "formik";
 import {
   ArrowCounterclockwise,
-  ArrowClockwise,
   Scissors,
   PlayCircleFill,
   PauseCircleFill,

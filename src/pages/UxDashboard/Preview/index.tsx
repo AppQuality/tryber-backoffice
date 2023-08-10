@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledIframe = styled.iframe`
@@ -6,7 +7,8 @@ const StyledIframe = styled.iframe`
   border: none;
 `;
 
-export const Preview = () => {
+const Preview = () => {
+  const { id } = useParams<{ id: string }>();
   const origin =
     window.location.origin.includes("localhost") ||
     window.location.origin.includes("dev.")
@@ -15,8 +17,10 @@ export const Preview = () => {
   return (
     <StyledIframe
       title="preview"
-      src={`${origin}/campaigns/4845/preview`}
+      src={`${origin}/campaigns/${id}/preview`}
       data-qa="ux-dashboard-preview"
     />
   );
 };
+
+export default Preview;

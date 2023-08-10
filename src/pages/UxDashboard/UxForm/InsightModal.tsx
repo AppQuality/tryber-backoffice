@@ -24,7 +24,6 @@ import { FormValuesInterface } from "./FormProvider";
 interface InsightModalProps {
   isOpen: boolean;
   onClose: () => void;
-  removeInsight: (index: number) => void;
   fieldName: string;
 }
 const StyledModal = styled(Modal)`
@@ -34,23 +33,17 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const InsightModal = ({
-  isOpen,
-  onClose,
-  removeInsight,
-  fieldName,
-}: InsightModalProps) => {
-  console.log(fieldName);
+const InsightModal = ({ isOpen, onClose, fieldName }: InsightModalProps) => {
   const dispatch = useAppDispatch();
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
   const { submitForm, setFieldTouched, errors, resetForm } =
     useFormikContext<FormValuesInterface>();
   const handleAdd = () => {
     if (errors.insights && errors.insights[insightIndex]) {
-      setFieldTouched(`insights[${insightIndex}].title`);
-      setFieldTouched(`insights[${insightIndex}].description`);
-      setFieldTouched(`insights[${insightIndex}].cluster`);
-      setFieldTouched(`insights[${insightIndex}].severity`);
+      setFieldTouched(`${fieldName}[${insightIndex}].title`);
+      setFieldTouched(`${fieldName}[${insightIndex}].description`);
+      setFieldTouched(`${fieldName}[${insightIndex}].cluster`);
+      setFieldTouched(`${fieldName}[${insightIndex}].severity`);
       alert("compila tutti i campi obbligatori");
       return;
     }
@@ -102,14 +95,14 @@ const InsightModal = ({
             />
             <BSGrid>
               <BSCol>
-                <FormikField name={`insights[${insightIndex}].severity`}>
+                <FormikField name={`${fieldName}[${insightIndex}].severity`}>
                   {(fieldProps: FieldProps) => (
                     <SeverityField {...fieldProps} />
                   )}
                 </FormikField>
               </BSCol>
               <BSCol>
-                <FormikField name={`insights[${insightIndex}].cluster`}>
+                <FormikField name={`${fieldName}[${insightIndex}].cluster`}>
                   {(fieldProps: FieldProps) => <ClusterField {...fieldProps} />}
                 </FormikField>
               </BSCol>
@@ -123,13 +116,13 @@ const InsightModal = ({
           </Title>
           <BSCol size="col-lg-9">
             <Field
-              name={`insights[${insightIndex}].title`}
+              name={`${fieldName}[${insightIndex}].title`}
               label="Title"
               placeholder="Es: “Malfunzionamenti Form”"
             />
             <TextareaField
               height="8em"
-              name={`insights[${insightIndex}].description`}
+              name={`${fieldName}[${insightIndex}].description`}
               label="Description"
             />
           </BSCol>

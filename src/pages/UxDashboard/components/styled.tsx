@@ -20,12 +20,6 @@ export const AddNewInsightCTA = styled.div`
   }
 `;
 
-export const StyledSteps = styled(Steps)`
-  .step-status-icon {
-    background-color: ${({ theme }) => theme.colors.gray100};
-  }
-`;
-
 export const InsightPillsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;

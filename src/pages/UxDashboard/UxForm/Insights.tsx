@@ -32,7 +32,6 @@ const InsightSection = () => {
               <InsightModal
                 onClose={() => setModalOpen(false)}
                 isOpen={modalOpen}
-                removeInsight={remove}
                 fieldName={name}
               />
               {form.values[name].map(
