@@ -14,12 +14,12 @@ import {
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { resetInsight } from "../uxDashboardSlice";
+import { resetInsight } from "../../uxDashboardSlice";
 import styled from "styled-components";
-import SeverityField from "../components/fields/SeverityField";
-import ClusterField from "../components/fields/ClusterField";
-import Observations from "../components/fields/Observations";
-import { FormValuesInterface } from "./FormProvider";
+import SeverityField from "../../components/fields/SeverityField";
+import ClusterField from "../../components/fields/ClusterField";
+import Observations from "../../components/fields/Observations";
+import { FormValuesInterface } from "../FormProvider";
 
 interface InsightModalProps {
   isOpen: boolean;

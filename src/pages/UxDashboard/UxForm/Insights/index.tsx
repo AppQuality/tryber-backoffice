@@ -5,12 +5,12 @@ import {
   Card,
   Pill,
 } from "@appquality/appquality-design-system";
-import { AddNewInsightCTA, InsightPillsWrapper } from "../components/styled";
+import { AddNewInsightCTA, InsightPillsWrapper } from "../../components/styled";
 import { FieldArray, useFormikContext } from "formik";
-import { setInsightIndex, setSelectedInsight } from "../uxDashboardSlice";
-import SeverityPill from "../components/SeverityPill";
+import { setInsightIndex, setSelectedInsight } from "../../uxDashboardSlice";
+import SeverityPill from "../../components/SeverityPill";
 import { useState } from "react";
-import { FormValuesInterface } from "./FormProvider";
+import { FormValuesInterface } from "../FormProvider";
 import { useAppDispatch } from "src/store";
 import InsightModal from "./InsightModal";
 

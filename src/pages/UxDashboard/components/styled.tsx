@@ -1,4 +1,3 @@
-import { Steps } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 
 export const AddNewInsightCTA = styled.div`
