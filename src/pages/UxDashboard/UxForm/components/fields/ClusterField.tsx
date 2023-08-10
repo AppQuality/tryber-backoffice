@@ -76,10 +76,11 @@ const ClusterField = ({
                 })
               );
             }
+            return;
           }
         }}
       />
-      <ErrorMessage name={field.name} />
+      <ErrorMessage name={`${field.name}`} />
     </FormGroup>
   );
 };

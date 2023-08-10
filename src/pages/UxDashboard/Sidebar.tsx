@@ -14,6 +14,12 @@ const Sidebar = () => {
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   const { currentStep } = useAppSelector((state) => state.uxDashboard);
   const dispatch = useAppDispatch();
+
+  const handleSaveDraft = () => {
+    submitForm();
+  };
+
+  if (currentStep === 2) return null;
   return (
     <>
       <Card title="actions" className="aq-mb-3">
@@ -26,7 +32,8 @@ const Sidebar = () => {
               size="block"
               htmlType="submit"
               data-qa="submit-draft"
-              onClick={() => submitForm()}
+              disabled={typeof values.status === "undefined"}
+              onClick={handleSaveDraft}
             >
               Save Draft
             </Button>

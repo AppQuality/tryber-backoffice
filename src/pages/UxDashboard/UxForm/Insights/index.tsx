@@ -65,7 +65,7 @@ const InsightSection = () => {
                       videoParts: [],
                     });
                     dispatch(setInsightIndex(form.values.insights.length));
-                    setModalOpen(true);
+                    dispatch(setModalOpen(true));
                   }}
                 >
                   <span className="icon-big">+</span>

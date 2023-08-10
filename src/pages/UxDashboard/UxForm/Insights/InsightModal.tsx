@@ -42,8 +42,8 @@ const InsightModal = ({ fieldName }: InsightModalProps) => {
     if (errors.insights && errors.insights[insightIndex]) {
       setFieldTouched(`${fieldName}[${insightIndex}].title`);
       setFieldTouched(`${fieldName}[${insightIndex}].description`);
-      setFieldTouched(`${fieldName}[${insightIndex}].cluster`);
-      setFieldTouched(`${fieldName}[${insightIndex}].severity`);
+      setFieldTouched(`${fieldName}[${insightIndex}].cluster`); // could be a string or an object
+      setFieldTouched(`${fieldName}[${insightIndex}].severity.id`);
       alert("compila tutti i campi obbligatori");
       return;
     }

@@ -1,4 +1,5 @@
 import {
+  ErrorMessage,
   FieldProps,
   FormGroup,
   Select,
@@ -46,14 +47,15 @@ const SeverityField = ({
         onChange={(value) => {
           if (!value || typeof value.value === "undefined") {
             form.setFieldValue(field.name, undefined);
-            return;
+          } else {
+            form.setFieldValue(field.name, {
+              name: value.label,
+              id: parseInt(value.value),
+            });
           }
-          form.setFieldValue(field.name, {
-            name: value.label,
-            id: parseInt(value.value, 10),
-          });
         }}
       />
+      <ErrorMessage name={`${field.name}.id`} />
     </FormGroup>
   );
 };

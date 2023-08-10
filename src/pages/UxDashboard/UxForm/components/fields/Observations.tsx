@@ -16,6 +16,7 @@ import { useMemo } from "react";
 import VideoPart from "./VideoPart";
 import { FormValuesInterface } from "../../FormProvider";
 import { useAppSelector } from "src/store";
+import Video from "@appquality/stream-player";
 
 export type ObservationOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];
@@ -54,11 +55,13 @@ const Observations = () => {
                       key={videopart.id}
                     >
                       <Card>
-                        <VideoPart
-                          videopart={videopart}
-                          videoPartIndex={index}
-                          fieldName={name}
-                        />
+                        <Video start={videopart.start} src={videopart.url}>
+                          <VideoPart
+                            start={videopart.start}
+                            videoPartIndex={index}
+                            fieldName={name}
+                          />
+                        </Video>
                         <Button
                           flat
                           type="danger"

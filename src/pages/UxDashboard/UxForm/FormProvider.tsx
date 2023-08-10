@@ -95,7 +95,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
                 id: video.id,
                 order: videoIndex,
                 start: video.start,
-                end: video.end,
+                end: Math.round(video.end),
                 mediaId: video.mediaId,
                 description: video.description,
               };
@@ -115,12 +115,18 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             sentiments: [],
           },
         });
-        console.log(res);
         formikHelpers.setSubmitting(false);
         if ("error" in res) {
           add({
             type: "danger",
             message: `something went wrong`,
+            expire: 8,
+          });
+        } else {
+          add({
+            type: "success",
+            message: `Dashboard saved`,
+            expire: 8,
           });
         }
       }}
