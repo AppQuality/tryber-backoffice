@@ -124,11 +124,17 @@ export const VideoControls = ({
 }: {
   videoFieldName: string;
 }) => {
-  const { isFullScreen, context } = useVideoContext();
+  const { isFullScreen, context, setIsPlaying, setFullScreen, togglePlay } =
+    useVideoContext();
   const { setFieldValue } = useFormikContext();
   const fillEndTime = () => {
     if (context.player?.currentTime) {
       setFieldValue(`${videoFieldName}.end`, context.player.currentTime);
+      // setIsPlaying(false); not working in this version
+      if (context.isPlaying) {
+        togglePlay();
+      }
+      setFullScreen(false);
     } else {
       alert("Current time is not available");
     }
