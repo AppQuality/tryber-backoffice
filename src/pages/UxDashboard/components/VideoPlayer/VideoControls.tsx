@@ -16,25 +16,29 @@ import {
   PauseFill,
 } from "react-bootstrap-icons";
 
+const controlsMargin = "10px";
 const ProgressBar = styled(Video.ProgressBar)`
+  cursor: pointer;
+  height: 8px;
+  width: calc(100% - ${controlsMargin} * 2);
+  margin: ${controlsMargin} 0;
+  background: ${({ theme }) => theme.colors.gray500};
+  background: ${({ theme }) =>
+    `linear-gradient(180deg, rgba(0,0,0,0) 39%, ${theme.colors.gray500} 40%, ${theme.colors.gray500} 60%, rgba(0,0,0,0) 61%);`};
+  border-radius: 4px;
   :after {
-    background-color: ${({ theme }) => theme.colors.purple600};
+    background-color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) =>
+      `linear-gradient(180deg, rgba(0,0,0,0) 39%, ${theme.colors.white} 40%, ${theme.colors.white} 60%, rgba(0,0,0,0) 61%);`};
   }
-  background-color: ${({ theme }) => theme.colors.purple100};
 `;
 const CustomTimer = styled(Video.Timer)`
   margin-left: auto;
-  margin-right: 0;
+  margin-right: ${controlsMargin};
   color: ${({ theme }) => theme.colors.white};
 `;
 
 const ControlsWrapper = styled.div`
-  background-color: rgba(0, 0, 0, 0.65);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 5px;
   opacity: 0;
   transition: opacity 0.2s;
   position: absolute;
@@ -42,6 +46,16 @@ const ControlsWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.6) 74%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   svg {
     fill: white;
   }
@@ -55,28 +69,56 @@ const ControlsWrapper = styled.div`
 `;
 
 const CenteredPlayPause = styled(Video.PlayPauseButton)`
-  flex: 1 0 auto;
-  border-radius: 0;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  padding: 40px 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   svg {
     width: 40px;
     height: 40px;
-    fill: white;
   }
 `;
 
-const OtherControls = styled.div`
+const OtherControls = styled.div<{ isFullScreen?: boolean }>`
+  width: calc(100% - ${controlsMargin} * 2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  .player-control {
+    display: inline-flex;
+    cursor: pointer;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+  .player-control + .player-control {
+    margin-left: 5px;
+  }
+  ${({ isFullScreen }) =>
+    isFullScreen &&
+    `
+    .player-control {
+      width: 40px;
+      height: 40px;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+    .player-control + .player-control {
+      margin-left: 8px;
+    }
+  `}
 `;
-const ChangeTime = styled(Video.ChangeTime)``;
-const FullScreen = styled(Video.FullScreen)``;
 
 export const VideoControls = ({
   videoFieldName,
@@ -103,17 +145,27 @@ export const VideoControls = ({
       />
       <CustomTimer className={"timer"} />
       <ProgressBar className="progress-bar" />
-      <OtherControls>
-        <ChangeTime value={-10} i18n={{ icon: <ArrowCounterclockwise /> }} />
-        <Video.Mute i18n={{ on: <VolumeUpFill />, off: <VolumeMuteFill /> }} />
-        <Video.PlayPauseButton
-          i18n={{ play: <PlayFill />, pause: <PauseFill /> }}
+      <OtherControls isFullScreen={isFullScreen}>
+        <Video.Mute
+          className="player-control"
+          i18n={{ on: <VolumeUpFill />, off: <VolumeMuteFill /> }}
         />
-        <Button onClick={fillEndTime}>
-          <Scissors />
-        </Button>
-        <ChangeTime value={10} i18n={{ icon: <ArrowClockwise /> }} />
-        <FullScreen
+        <div>
+          <Video.ChangeTime
+            className="player-control"
+            value={-10}
+            i18n={{ icon: <ArrowCounterclockwise /> }}
+          />
+          <Video.PlayPauseButton
+            className="player-control"
+            i18n={{ play: <PlayFill />, pause: <PauseFill /> }}
+          />
+          <Button className="player-control" onClick={fillEndTime}>
+            <Scissors />
+          </Button>
+        </div>
+        <Video.FullScreen
+          className="player-control"
           i18n={{ enter: <ArrowsFullscreen />, exit: <FullscreenExit /> }}
         />
       </OtherControls>
