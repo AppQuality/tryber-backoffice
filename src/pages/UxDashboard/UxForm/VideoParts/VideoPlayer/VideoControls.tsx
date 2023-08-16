@@ -14,6 +14,7 @@ import {
   PlayFill,
   PauseFill,
 } from "react-bootstrap-icons";
+import { useState } from "react";
 
 const controlsMargin = "10px";
 const ProgressBar = styled(Video.ProgressBar)`
@@ -37,7 +38,7 @@ const CustomTimer = styled(Video.Timer)`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-const ControlsWrapper = styled.div`
+const ControlsWrapper = styled.div<{ show: boolean; isFullScreen: boolean }>`
   opacity: 0;
   transition: opacity 0.2s;
   position: absolute;
@@ -62,9 +63,13 @@ const ControlsWrapper = styled.div`
     background-color: transparent;
     border: none;
   }
-  :hover {
-    opacity: 1;
-  }
+  ${({ isFullScreen, show }) =>
+    (!isFullScreen || show) &&
+    `
+    &:hover {
+      opacity: 1;
+    }
+  `}
 `;
 
 const CenteredPlayPause = styled(Video.PlayPauseButton)`
@@ -124,6 +129,8 @@ export const VideoControls = ({
 }: {
   videoFieldName: string;
 }) => {
+  const [isPointerMoving, setIsPointerMoving] = useState(false);
+  const [timer, setTimer] = useState<any>();
   const { isFullScreen, context, setFullScreen, togglePlay } =
     useVideoContext();
   const { setFieldValue } = useFormikContext();
@@ -140,8 +147,23 @@ export const VideoControls = ({
     }
   };
 
+  const handleMove = () => {
+    setIsPointerMoving(true);
+    clearTimeout(timer);
+    setTimer(
+      setTimeout(() => {
+        setIsPointerMoving(false);
+      }, 1500)
+    );
+  };
+
   return (
-    <ControlsWrapper>
+    <ControlsWrapper
+      isFullScreen={isFullScreen}
+      onClick={handleMove}
+      onMouseMove={handleMove}
+      show={isPointerMoving}
+    >
       <CenteredPlayPause
         i18n={{ play: <PlayCircleFill />, pause: <PauseCircleFill /> }}
       />

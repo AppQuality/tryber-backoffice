@@ -57,8 +57,8 @@ const PlayerWrapper = styled.div<{
     `
     position: fixed;
     // we are inside a modal with a padding of 1rem
-    top: -1rem;
-    left: -1rem;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     background-color: black;

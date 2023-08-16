@@ -7,22 +7,47 @@ import {
   ErrorMessage,
   FormLabel,
   Button,
-  Card,
 } from "@appquality/appquality-design-system";
 import { useVideoContext } from "@appquality/stream-player";
 import VideoPlayer from "./VideoPlayer";
 import moment from "moment";
 import styled from "styled-components";
-import { ArrowsExpand, Icon0Circle } from "react-bootstrap-icons";
+import { GripVertical, Trash } from "react-bootstrap-icons";
+import { ListItemCard } from "./ListItemCard";
 
-const ListItem = styled(Card)`
-  @media (min-width: 768px) {
-    .video-list-item {
-      display: grid;
-      grid-template-columns: 350px 1fr 30px;
-      grid-gap: ${({ theme }) => theme.grid.sizes[3]};
-    }
+const Handler = styled.div`
+  margin: ${({ theme }) => theme.grid.sizes[4]} 0;
+  cursor: grab !important;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  color: ${({ theme }) => theme.colors.gray500};
+  transition: all 0.2s;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.gray100};
+    color: ${({ theme }) => theme.colors.gray900};
   }
+`;
+
+const Actions = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: ${({ theme }) => theme.grid.sizes[2]};
+  padding-bottom: ${({ theme }) => theme.grid.sizes[4]};
+`;
+
+const DeleteButton = styled(Button)`
+  border-radius: 50%;
+  border: none;
+  padding: 8px 4px;
+  transition: all 0.2s;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
 `;
 
 const VideoPart = ({
@@ -42,7 +67,7 @@ const VideoPart = ({
     context: { player },
   } = useVideoContext();
   return (
-    <ListItem bodyClass="video-list-item">
+    <ListItemCard>
       <VideoPlayer videoFieldName={`${fieldName}[${videoPartIndex}]`} />
       <div>
         <FormikField
@@ -92,24 +117,27 @@ const VideoPart = ({
         </FormikField>
         <TextareaField
           name={`${fieldName}[${videoPartIndex}].description`}
-          label="Note"
+          placeholder="Scrivi una nota o una descrizione"
+          height="4em"
         />
       </div>
-      <div>
-        <Button
+      <Actions>
+        <DeleteButton
           htmlType="button"
           type="danger"
+          flat
           onClick={() => {
-            remove(videoPartIndex);
+            window.confirm("Are you sure you wish to delete this item?") &&
+              remove(videoPartIndex);
           }}
         >
-          X
-        </Button>
-        <div {...handleDragProps} alt="move">
-          <ArrowsExpand color="black" />
-        </div>
-      </div>
-    </ListItem>
+          <Trash size={16} />
+        </DeleteButton>
+        <Handler {...handleDragProps} role="handler">
+          <GripVertical size={18} />
+        </Handler>
+      </Actions>
+    </ListItemCard>
   );
 };
 export default VideoPart;

@@ -16,6 +16,7 @@ interface DragNDropProviderProps<T> {
     index: number,
     dragHandleProps?: DraggableProvidedDragHandleProps | null
   ) => ReactNode;
+  className?: string;
 }
 
 const Wrapper = styled.div<{ isDraggingOver: boolean }>`
@@ -25,7 +26,6 @@ const Wrapper = styled.div<{ isDraggingOver: boolean }>`
 `;
 
 const DraggableItem = styled.div<{ isDragging: boolean }>`
-  cursor: handle;
   ${({ isDragging }) => isDragging && "cursor: handle;"};
 `;
 
@@ -33,6 +33,7 @@ function DragNDropProvider<T extends { internalId: string }>({
   onDragEnd,
   items,
   renderItem,
+  className,
 }: DragNDropProviderProps<T>) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -43,6 +44,7 @@ function DragNDropProvider<T extends { internalId: string }>({
       >
         {(provided, snapshot) => (
           <Wrapper
+            className={className}
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
           >

@@ -1,4 +1,4 @@
-import { Card, Select, Title } from "@appquality/appquality-design-system";
+import { Select, Title } from "@appquality/appquality-design-system";
 import { FieldArray } from "formik";
 import { useParams } from "react-router-dom";
 import {
@@ -14,6 +14,8 @@ import Video from "@appquality/stream-player";
 import { OnDragEndResponder } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import DragNDropProvider from "./DragNDropProvider";
+import { ListItemCard } from "./ListItemCard";
+import styled from "styled-components";
 
 export type VideoPartsOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];
@@ -48,6 +50,7 @@ const VideoParts = () => {
         return (
           <>
             <DragNDropProvider<FormVideoPart>
+              className="aq-mb-3"
               onDragEnd={handleDragEnd}
               items={videoParts}
               renderItem={(videopart, index, dragHandleProps) => (
@@ -62,31 +65,34 @@ const VideoParts = () => {
                 </Video>
               )}
             />
-            <Card shadow>
-              <Title size="s" className="aq-mb-2">
-                Aggiungi una nuova evidenza
-              </Title>
-              <Select
-                menuTargetQuery="body"
-                options={observationsOptions}
-                label="Seleziona lo spezzone video"
-                name={"observation"}
-                value={[]}
-                onChange={(value) => {
-                  if (!value) {
-                    return;
-                  }
-                  push({
-                    // push a new videopart to the field array
-                    start: value.time,
-                    mediaId: value.media.id,
-                    internalId: uuidv4(),
-                    url: value.media.url,
-                    streamUrl: value.media.streamUrl,
-                  });
-                }}
-              />
-            </Card>
+            <ListItemCard>
+              <div />
+              <div>
+                <Title size="s" className="aq-mb-2">
+                  Aggiungi una nuova evidenza
+                </Title>
+                <Select
+                  menuTargetQuery="body"
+                  options={observationsOptions}
+                  label="Seleziona lo spezzone video"
+                  name={"observation"}
+                  value={[]}
+                  onChange={(value) => {
+                    if (!value) {
+                      return;
+                    }
+                    push({
+                      // push a new videopart to the field array
+                      start: value.time,
+                      mediaId: value.media.id,
+                      internalId: uuidv4(),
+                      url: value.media.url,
+                      streamUrl: value.media.streamUrl,
+                    });
+                  }}
+                />
+              </div>
+            </ListItemCard>
           </>
         );
       }}

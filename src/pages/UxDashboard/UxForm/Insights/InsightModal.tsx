@@ -20,6 +20,7 @@ import SeverityField from "../components/fields/SeverityField";
 import ClusterField from "../components/fields/ClusterField";
 import VideoParts from "../VideoParts";
 import { FormValuesInterface } from "../FormProvider";
+import { useMemo } from "react";
 
 interface InsightModalProps {
   fieldName: string;
@@ -32,11 +33,9 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const InsightModal = ({ fieldName }: InsightModalProps) => {
+const ModalFooter = ({ fieldName }: { fieldName: string }) => {
   const dispatch = useAppDispatch();
-  const { insightIndex, isModalOpen } = useAppSelector(
-    (state) => state.uxDashboard
-  );
+  const { insightIndex } = useAppSelector((state) => state.uxDashboard);
   const { submitForm, setFieldTouched, errors, resetForm } =
     useFormikContext<FormValuesInterface>();
   const handleAdd = () => {
@@ -57,32 +56,41 @@ const InsightModal = ({ fieldName }: InsightModalProps) => {
     dispatch(resetInsight());
     dispatch(setModalOpen(false));
   };
-  const ModalFooter = () => {
-    return (
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          data-qa="discard-new-insight"
-          type="danger"
-          htmlType="reset"
-          flat
-          onClick={handleClose}
-          className="aq-mr-3"
-        >
-          Dismiss
-        </Button>
-        <Button data-qa="save-new-insight" onClick={handleAdd}>
-          Save
-        </Button>
-      </div>
-    );
+  return (
+    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <Button
+        data-qa="discard-new-insight"
+        type="danger"
+        flat
+        onClick={handleClose}
+        className="aq-mr-3"
+      >
+        Dismiss
+      </Button>
+      <Button htmlType="button" data-qa="save-new-insight" onClick={handleAdd}>
+        Save
+      </Button>
+    </div>
+  );
+};
+
+const InsightModal = ({ fieldName }: InsightModalProps) => {
+  const dispatch = useAppDispatch();
+  const { insightIndex, isModalOpen } = useAppSelector(
+    (state) => state.uxDashboard
+  );
+  const { resetForm } = useFormikContext<FormValuesInterface>();
+  const handleClose = async () => {
+    resetForm();
+    dispatch(resetInsight());
+    dispatch(setModalOpen(false));
   };
   return (
     <StyledModal
       isOpen={isModalOpen}
       onClose={handleClose}
       closeOnClickOutside={false}
-      footer={<ModalFooter />}
-      title="Scoperte"
+      footer={<ModalFooter fieldName={fieldName} />}
     >
       <div data-qa="insight-form">
         <BSGrid>
@@ -157,7 +165,7 @@ const InsightModal = ({ fieldName }: InsightModalProps) => {
         </BSGrid>
 
         <BSGrid>
-          <BSCol size="col-lg-9">
+          <BSCol size="col-lg-9" className="aq-mb-4 aq-pb-4">
             <Title size="s" className="aq-mb-2">
               Evidenze (Spezzoni Video)
             </Title>

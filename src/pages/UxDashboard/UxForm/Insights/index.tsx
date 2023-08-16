@@ -5,26 +5,7 @@ import { FormInsight } from "../FormProvider";
 import { InsightCard } from "./InsightCard";
 import { useAppDispatch } from "src/store";
 import InsightModal from "./InsightModal";
-import styled from "styled-components";
-
-const AddNewInsightCTA = styled.div`
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .icon-big {
-    font-size: 5rem;
-    line-height: 1;
-  }
-  transition: color 0.2s ease-in-out;
-  color: ${({ theme }) => theme.colors.gray400};
-  &:hover {
-    color: ${({ theme }) => theme.colors.gray800};
-  }
-`;
+import { AddNew } from "../components/AddNew";
 
 const InsightSection = () => {
   const dispatch = useAppDispatch();
@@ -51,7 +32,7 @@ const InsightSection = () => {
             ))}
             <BSCol size="col-lg-4">
               <Card shadow>
-                <AddNewInsightCTA
+                <AddNew
                   data-qa="add-new-insight"
                   onClick={() => {
                     push({
@@ -65,7 +46,7 @@ const InsightSection = () => {
                 >
                   <span className="icon-big">+</span>
                   <span>Aggiungi scoperta</span>
-                </AddNewInsightCTA>
+                </AddNew>
               </Card>
             </BSCol>
           </BSGrid>
