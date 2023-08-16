@@ -13,7 +13,10 @@ const PlayerWrapper = styled.div<{
   video {
     width: 100%;
     height: auto;
-    min-height: 200px;
+    min-height: 230px;
+    @media (min-width: ${({ theme }) => theme.grid.breakpoints.lg}) {
+      min-height: 175px;
+    }
   }
 
   ${({ isLoading }) =>
@@ -39,6 +42,14 @@ const PlayerWrapper = styled.div<{
     margin-left: -${theme.grid.sizes[3]};
     border-top-left-radius: ${theme.general.borderRadius};
     border-top-right-radius: ${theme.general.borderRadius};
+    // from card to list item in desktop  
+    @media (min-width: ${theme.grid.breakpoints.lg}) {
+      margin-top: 0;
+      margin-right: 0;
+      margin-left: 0;
+      border-top-right-radius: 0;
+      border-bottom-left-radius: ${theme.general.borderRadius};
+    }
   `}
 
   ${({ isFullScreen }) =>

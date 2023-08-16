@@ -26,8 +26,9 @@ interface InsightModalProps {
 }
 const StyledModal = styled(Modal)`
   .modal {
-    width: calc(100vw - 2rem);
-    height: calc(100vh - 2rem);
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
   }
 `;
 
