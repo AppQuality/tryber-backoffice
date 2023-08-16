@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FormValuesInterface } from "./UxForm/FormProvider";
+import { FormInsight } from "./UxForm/FormProvider";
 
 interface UxDashboardState {
-  selectedInsight?: FormValuesInterface["insights"][number];
+  selectedInsight?: FormInsight;
   insightIndex: number;
   currentStep: number;
   isModalOpen: boolean;
@@ -18,10 +18,7 @@ const selectionSlice = createSlice({
   name: "uxDashboard",
   initialState: initialState,
   reducers: {
-    setSelectedInsight(
-      state,
-      action: PayloadAction<FormValuesInterface["insights"][number]>
-    ) {
+    setSelectedInsight(state, action: PayloadAction<FormInsight>) {
       state.selectedInsight = action.payload;
     },
     setInsightIndex(state, action: PayloadAction<number>) {

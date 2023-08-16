@@ -6,6 +6,8 @@ import {
   FormGroup,
   ErrorMessage,
   FormLabel,
+  Button,
+  Card,
 } from "@appquality/appquality-design-system";
 import { useVideoContext } from "@appquality/stream-player";
 import VideoPlayer from "../VideoPlayer";
@@ -15,16 +17,18 @@ const VideoPart = ({
   start,
   videoPartIndex,
   fieldName,
+  remove,
 }: {
   start: number;
   videoPartIndex: number;
   fieldName: string;
+  remove: (index: number) => void;
 }) => {
   const {
     context: { player },
   } = useVideoContext();
   return (
-    <>
+    <Card>
       <div className="aq-mb-3">
         <VideoPlayer videoFieldName={`${fieldName}[${videoPartIndex}]`} />
       </div>
@@ -74,10 +78,14 @@ const VideoPart = ({
         )}
       </FormikField>
       <TextareaField
+        className="aq-mb-3"
         name={`${fieldName}[${videoPartIndex}].description`}
         label="Note"
       />
-    </>
+      <Button flat type="danger" onClick={() => remove(videoPartIndex)}>
+        Remove
+      </Button>
+    </Card>
   );
 };
 export default VideoPart;

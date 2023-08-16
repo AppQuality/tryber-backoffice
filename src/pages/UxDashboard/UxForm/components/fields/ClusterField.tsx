@@ -7,14 +7,11 @@ import {
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
-import { FormValuesInterface } from "../../FormProvider";
+import { FormInsight } from "../../FormProvider";
 
 const clusterOptionGeneral = { label: "General", value: "all" };
 
-const ClusterField = ({
-  form,
-  field,
-}: FieldProps<FormValuesInterface["insights"][number]["cluster"]>) => {
+const ClusterField = ({ form, field }: FieldProps<FormInsight["cluster"]>) => {
   const { id } = useParams<{ id: string }>();
   const { data, isError } = useGetCampaignsByCampaignClustersQuery({
     campaign: id,

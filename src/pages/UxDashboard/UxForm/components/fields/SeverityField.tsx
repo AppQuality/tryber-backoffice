@@ -5,7 +5,7 @@ import {
   Select,
 } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
-import { FormValuesInterface } from "../../FormProvider";
+import { FormInsight } from "../../FormProvider";
 
 export const severityOptions = [
   {
@@ -29,7 +29,7 @@ export const severityOptions = [
 const SeverityField = ({
   form,
   field,
-}: FieldProps<FormValuesInterface["insights"][number]["severity"]>) => {
+}: FieldProps<FormInsight["severity"]>) => {
   const mapSeverityToSelectValue = useMemo(() => {
     return typeof field.value === "object" && field.value !== null
       ? { label: field.value.name, value: field.value.id.toString() }

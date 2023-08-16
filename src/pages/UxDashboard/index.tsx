@@ -67,7 +67,7 @@ const UxDashboard = () => {
                 />
                 <StyledSteps.Step
                   isCompleted={currentStep > 1}
-                  title={"Publication"}
+                  title={"Publish"}
                 />
               </StyledSteps>
               {currentStep === 0 && <UxDashboardForm />}

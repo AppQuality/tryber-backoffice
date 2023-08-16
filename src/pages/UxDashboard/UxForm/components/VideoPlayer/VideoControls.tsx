@@ -124,7 +124,7 @@ export const VideoControls = ({
 }: {
   videoFieldName: string;
 }) => {
-  const { isFullScreen, context, setIsPlaying, setFullScreen, togglePlay } =
+  const { isFullScreen, context, setFullScreen, togglePlay } =
     useVideoContext();
   const { setFieldValue } = useFormikContext();
   const fillEndTime = () => {

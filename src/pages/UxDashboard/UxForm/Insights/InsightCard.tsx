@@ -1,7 +1,7 @@
 import { Card, Pill, Button } from "@appquality/appquality-design-system";
 import SeverityPill from "../components/SeverityPill";
 import { setInsightIndex, setModalOpen } from "../../uxDashboardSlice";
-import { FormValuesInterface } from "../FormProvider";
+import { FormInsight, FormValuesInterface } from "../FormProvider";
 import { useFormikContext } from "formik";
 import { useAppDispatch } from "src/store";
 import { setSelectedInsight } from "../../uxDashboardSlice";
@@ -15,7 +15,7 @@ const InsightPillsWrapper = styled.div`
 `;
 
 interface InsightCardProps {
-  insight: FormValuesInterface["insights"][number];
+  insight: FormInsight;
   index: number;
   removeInsight: (index: number) => void;
 }
@@ -27,7 +27,7 @@ export const InsightCard = ({
 }: InsightCardProps) => {
   const { submitForm } = useFormikContext<FormValuesInterface>();
   const dispatch = useAppDispatch();
-  function editInsight(insight: FormValuesInterface["insights"][number]): void {
+  function editInsight(insight: FormInsight): void {
     dispatch(setSelectedInsight(insight));
     dispatch(setModalOpen(true));
   }

@@ -162,7 +162,7 @@ const InsightModal = ({ fieldName }: InsightModalProps) => {
             </Title>
             <FormLabel
               htmlFor=""
-              label="Il numero consigliato di domande di ricerca è 3"
+              label="Aggiungi un’evidenza selezionando lo spezzone del video da collegare."
             />
             <Observations />
           </BSCol>

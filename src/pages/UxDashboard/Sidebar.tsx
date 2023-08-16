@@ -22,7 +22,7 @@ const Sidebar = () => {
   if (currentStep === 2) return null;
   return (
     <>
-      <Card title="actions" className="aq-mb-3">
+      <Card title="Azioni" className="aq-mb-3">
         {currentStep === 0 && (
           <>
             <Button

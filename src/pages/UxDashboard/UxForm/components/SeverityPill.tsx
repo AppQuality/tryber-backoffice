@@ -1,9 +1,9 @@
 import { Pill } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
-import { FormValuesInterface } from "../FormProvider";
+import { FormInsight } from "../FormProvider";
 
 interface SeverityPillProps {
-  severity: FormValuesInterface["insights"][number]["severity"];
+  severity: FormInsight["severity"];
 }
 const SeverityPill = ({ severity }: SeverityPillProps) => {
   const type = useMemo(() => {
