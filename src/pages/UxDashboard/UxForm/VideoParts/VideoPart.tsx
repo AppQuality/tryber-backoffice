@@ -10,15 +10,16 @@ import {
   Card,
 } from "@appquality/appquality-design-system";
 import { useVideoContext } from "@appquality/stream-player";
-import VideoPlayer from "../VideoPlayer";
+import VideoPlayer from "./VideoPlayer";
 import moment from "moment";
 import styled from "styled-components";
+import { ArrowsExpand, Icon0Circle } from "react-bootstrap-icons";
 
 const ListItem = styled(Card)`
   @media (min-width: 768px) {
     .video-list-item {
       display: grid;
-      grid-template-columns: 350px 1fr;
+      grid-template-columns: 350px 1fr 30px;
       grid-gap: ${({ theme }) => theme.grid.sizes[3]};
     }
   }
@@ -29,11 +30,13 @@ const VideoPart = ({
   videoPartIndex,
   fieldName,
   remove,
+  handleDragProps,
 }: {
   start: number;
   videoPartIndex: number;
   fieldName: string;
   remove: (index: number) => void;
+  handleDragProps: any;
 }) => {
   const {
     context: { player },
@@ -90,8 +93,21 @@ const VideoPart = ({
         <TextareaField
           name={`${fieldName}[${videoPartIndex}].description`}
           label="Note"
-          height="3em"
         />
+      </div>
+      <div>
+        <Button
+          htmlType="button"
+          type="danger"
+          onClick={() => {
+            remove(videoPartIndex);
+          }}
+        >
+          X
+        </Button>
+        <div {...handleDragProps} alt="move">
+          <ArrowsExpand color="black" />
+        </div>
       </div>
     </ListItem>
   );

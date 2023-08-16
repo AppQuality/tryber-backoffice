@@ -18,7 +18,7 @@ import { resetInsight, setModalOpen } from "../../uxDashboardSlice";
 import styled from "styled-components";
 import SeverityField from "../components/fields/SeverityField";
 import ClusterField from "../components/fields/ClusterField";
-import Observations from "../components/fields/Observations";
+import VideoParts from "../VideoParts";
 import { FormValuesInterface } from "../FormProvider";
 
 interface InsightModalProps {
@@ -165,7 +165,7 @@ const InsightModal = ({ fieldName }: InsightModalProps) => {
               htmlFor=""
               label="Aggiungi un’evidenza selezionando lo spezzone del video da collegare."
             />
-            <Observations />
+            <VideoParts />
           </BSCol>
           <BSCol size="col-lg-3" />
         </BSGrid>
