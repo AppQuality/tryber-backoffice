@@ -73,6 +73,8 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   const initialValues: FormValuesInterface = useMemo(
     () => ({
       status: currentData?.status,
+      campaignDescription: "",
+      questions: [],
       insights: currentData?.insight?.map((insight) => {
         return {
           id: insight.id,

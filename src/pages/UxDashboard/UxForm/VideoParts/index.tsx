@@ -15,7 +15,6 @@ import { OnDragEndResponder } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import DragNDropProvider from "./DragNDropProvider";
 import { ListItemCard } from "./ListItemCard";
-import styled from "styled-components";
 
 export type VideoPartsOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];

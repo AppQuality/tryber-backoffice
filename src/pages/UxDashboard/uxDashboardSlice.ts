@@ -5,12 +5,14 @@ interface UxDashboardState {
   selectedInsight?: FormInsight;
   insightIndex: number;
   currentStep: number;
+  currentFormSection: number;
   isModalOpen: boolean;
 }
 
 export const initialState: UxDashboardState = {
   insightIndex: 0,
   currentStep: 0,
+  currentFormSection: 0,
   isModalOpen: false,
 };
 
@@ -26,6 +28,9 @@ const selectionSlice = createSlice({
     },
     setCurrentStep(state, action: PayloadAction<number>) {
       state.currentStep = action.payload;
+    },
+    setCurrentFormSection(state, action: PayloadAction<number>) {
+      state.currentFormSection = action.payload;
     },
     setModalOpen(state, action: PayloadAction<boolean>) {
       state.isModalOpen = action.payload;
@@ -44,6 +49,7 @@ export const {
   setSelectedInsight,
   setInsightIndex,
   setCurrentStep,
+  setCurrentFormSection,
   setModalOpen,
   resetInsight,
   reset,

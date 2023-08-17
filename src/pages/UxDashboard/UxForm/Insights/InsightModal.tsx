@@ -20,7 +20,6 @@ import SeverityField from "../components/fields/SeverityField";
 import ClusterField from "../components/fields/ClusterField";
 import VideoParts from "../VideoParts";
 import { FormValuesInterface } from "../FormProvider";
-import { useMemo } from "react";
 
 interface InsightModalProps {
   fieldName: string;
@@ -163,7 +162,6 @@ const InsightModal = ({ fieldName }: InsightModalProps) => {
             </Card>
           </BSCol>
         </BSGrid>
-
         <BSGrid>
           <BSCol size="col-lg-9" className="aq-mb-4 aq-pb-4">
             <Title size="s" className="aq-mb-2">

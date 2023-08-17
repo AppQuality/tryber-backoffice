@@ -1,18 +1,25 @@
-import { Card, Button, Text } from "@appquality/appquality-design-system";
+import {
+  Card,
+  Button,
+  Text,
+  Steps,
+} from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { FormValuesInterface } from "./UxForm/FormProvider";
 import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
 import { useParams } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { setCurrentStep } from "./uxDashboardSlice";
+import { setCurrentFormSection, setCurrentStep } from "./uxDashboardSlice";
 
 const Sidebar = () => {
   const { id } = useParams<{ id: string }>();
   const { add } = siteWideMessageStore();
   const { submitForm, values } = useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
-  const { currentStep } = useAppSelector((state) => state.uxDashboard);
+  const { currentStep, currentFormSection } = useAppSelector(
+    (state) => state.uxDashboard
+  );
   const dispatch = useAppDispatch();
 
   const handleSaveDraft = () => {
@@ -21,7 +28,7 @@ const Sidebar = () => {
 
   if (currentStep === 2) return null;
   return (
-    <>
+    <div className="stick-to-header-lg">
       <Card title="Azioni" className="aq-mb-3">
         {currentStep === 0 && (
           <>
@@ -94,16 +101,19 @@ const Sidebar = () => {
           </>
         )}
       </Card>
-      {/* {step === 0 && (
-        <Card title="Sezioni del form" className="aq-mb-3">
-          <Steps direction="vertical" current={0}>
-            <Steps.Step title="Sulla Campagna" />
-            <Steps.Step title="Panoramica" />
-            <Steps.Step title="Nel dettaglio" />
-          </Steps>
-        </Card>
-      )} */}
-    </>
+      <Card title="Sezioni del form" className="aq-mb-3">
+        <Steps
+          direction="vertical"
+          current={currentFormSection}
+          clickHandler={(index, current) => {
+            dispatch(setCurrentFormSection(index));
+          }}
+        >
+          <Steps.Step title="Sulla Campagna" />
+          <Steps.Step title="Nel dettaglio" />
+        </Steps>
+      </Card>
+    </div>
   );
 };
 
