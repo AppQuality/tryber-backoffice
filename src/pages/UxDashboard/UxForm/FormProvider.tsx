@@ -62,6 +62,7 @@ export interface FormInsight {
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
   questions?: FormQuestion[];
+  usersQuality: string;
   insights?: FormInsight[];
 }
 
@@ -80,6 +81,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       status: currentData?.status,
       campaignDescription: "",
       questions: [],
+      usersQuality: "quantitativa",
       insights: currentData?.insight?.map((insight) => {
         return {
           id: insight.id,
@@ -126,6 +128,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         value: string().required("Campo obbligatorio"),
       })
     ),
+    usersQuality: string().required("Campo obbligatorio"),
     insights: array().of(
       object().shape({
         id: number(),

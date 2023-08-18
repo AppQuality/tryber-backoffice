@@ -2,20 +2,17 @@ import {
   BSCol,
   BSGrid,
   Card,
-  ErrorMessage,
   Input,
   FieldProps,
   FormLabel,
   FormikField,
-  Select,
   Text,
   TextareaField,
   Title,
 } from "@appquality/appquality-design-system";
-import { useFormikContext } from "formik";
+import UsersQualityField from "../components/fields/UsersQualityField";
 
 const Methodology = () => {
-  const { setFieldValue } = useFormikContext();
   return (
     <Card title="La metodologia usata" className="aq-mb-3">
       <BSGrid className="aq-mb-4">
@@ -63,20 +60,7 @@ const Methodology = () => {
           </FormikField>
         </BSCol>
         <BSCol size="col-lg-4">
-          <Select
-            placeholder=""
-            options={[
-              { label: "Qualitativa", value: "qualitativa" },
-              { label: "Quantitativa", value: "quantitativa" },
-            ]}
-            label="Tipologia"
-            name="usersQuality"
-            value={{ label: "Qualitativa", value: "qualitativa" }}
-            onChange={(value) => {
-              setFieldValue("users-quality", value);
-            }}
-          />
-          <ErrorMessage name="users-quality" />
+          <UsersQualityField />
         </BSCol>
       </BSGrid>
     </Card>
