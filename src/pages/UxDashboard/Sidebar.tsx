@@ -10,7 +10,11 @@ import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
 import { useParams } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { setCurrentFormSection, setCurrentStep } from "./uxDashboardSlice";
+import {
+  setCurrentFormSection,
+  setCurrentStep,
+  setIsProgrammaticallyScrolling,
+} from "./uxDashboardSlice";
 
 const Sidebar = () => {
   const { id } = useParams<{ id: string }>();
@@ -110,6 +114,7 @@ const Sidebar = () => {
             current={currentFormSection}
             clickHandler={(index, current) => {
               dispatch(setCurrentFormSection(index));
+              dispatch(setIsProgrammaticallyScrolling(true));
             }}
           >
             <Steps.Step title="Sulla Campagna" />

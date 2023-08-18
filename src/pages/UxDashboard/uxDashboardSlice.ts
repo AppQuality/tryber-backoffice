@@ -6,13 +6,15 @@ interface UxDashboardState {
   insightIndex: number;
   currentStep: number;
   currentFormSection: number;
+  isProgrammaticallyScrolling: boolean;
   isModalOpen: boolean;
 }
 
 export const initialState: UxDashboardState = {
   insightIndex: 0,
   currentStep: 0,
-  currentFormSection: 0,
+  currentFormSection: -1,
+  isProgrammaticallyScrolling: false,
   isModalOpen: false,
 };
 
@@ -32,6 +34,9 @@ const selectionSlice = createSlice({
     setCurrentFormSection(state, action: PayloadAction<number>) {
       state.currentFormSection = action.payload;
     },
+    setIsProgrammaticallyScrolling(state, action: PayloadAction<boolean>) {
+      state.isProgrammaticallyScrolling = action.payload;
+    },
     setModalOpen(state, action: PayloadAction<boolean>) {
       state.isModalOpen = action.payload;
     },
@@ -50,6 +55,7 @@ export const {
   setInsightIndex,
   setCurrentStep,
   setCurrentFormSection,
+  setIsProgrammaticallyScrolling,
   setModalOpen,
   resetInsight,
   reset,

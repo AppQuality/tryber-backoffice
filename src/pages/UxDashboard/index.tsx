@@ -23,6 +23,12 @@ const StyledSteps = styled(Steps)`
   }
 `;
 
+const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
+  @media (min-width: ${({ theme }) => theme.grid.breakpoints.lg}) {
+    order: ${({ lgOrder }) => lgOrder};
+  }
+`;
+
 const UxDashboard = () => {
   const { id } = useParams<{ id: string }>();
   const { currentStep } = useAppSelector((state) => state.uxDashboard);
@@ -74,7 +80,10 @@ const UxDashboard = () => {
             Tool di compilazione
           </PageTitle>
           <BSGrid>
-            <BSCol size="col-lg-9">
+            <ResponsiveCol size="col-lg-3" lgOrder={1}>
+              <Sidebar />
+            </ResponsiveCol>
+            <ResponsiveCol size="col-lg-9" lgOrder={0}>
               <StyledSteps
                 current={currentStep}
                 className="aq-mb-3"
@@ -93,10 +102,7 @@ const UxDashboard = () => {
               {currentStep === 0 && <UxDashboardForm />}
               {currentStep === 1 && <Preview />}
               {currentStep === 2 && <ResultsPage />}
-            </BSCol>
-            <BSCol size="col-lg-3">
-              <Sidebar />
-            </BSCol>
+            </ResponsiveCol>
           </BSGrid>
         </Container>
       </FormProvider>

@@ -5,7 +5,10 @@ import Methodology from "./campaign/Methodology";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { setCurrentFormSection } from "../uxDashboardSlice";
+import {
+  setCurrentFormSection,
+  setIsProgrammaticallyScrolling,
+} from "../uxDashboardSlice";
 
 const FormSection = ({
   title,
@@ -20,7 +23,9 @@ const FormSection = ({
   order: number;
   children: React.ReactNode;
 }) => {
-  const { currentFormSection } = useAppSelector((state) => state.uxDashboard);
+  const { currentFormSection, isProgrammaticallyScrolling } = useAppSelector(
+    (state) => state.uxDashboard
+  );
   const dispatch = useAppDispatch();
   function usePrevious(value: any) {
     const ref = useRef();
@@ -35,17 +40,39 @@ const FormSection = ({
   const previousViewState = usePrevious(inView);
 
   useEffect(() => {
+    // entering in view and not already in view
+    // aknowledge the change and set current form section
     if (
       inView &&
-      previousViewState !== inView &&
-      currentFormSection !== order
+      !previousViewState &&
+      currentFormSection !== order &&
+      !isProgrammaticallyScrolling
     ) {
       dispatch(setCurrentFormSection(order));
+      return;
     }
-    if (!inView && currentFormSection === order && entry) {
+    // animating click on navigation
+    if (
+      !inView &&
+      currentFormSection === order &&
+      isProgrammaticallyScrolling &&
+      entry
+    ) {
       entry.target.scrollIntoView({ behavior: "smooth" });
+      // approximated time to scroll
+      // set end of animation
+      setTimeout(() => dispatch(setIsProgrammaticallyScrolling(false)), 800);
+      return;
     }
-  }, [inView, previousViewState, dispatch, currentFormSection, entry, order]);
+  }, [
+    inView,
+    previousViewState,
+    dispatch,
+    currentFormSection,
+    entry,
+    order,
+    isProgrammaticallyScrolling,
+  ]);
   return (
     <section id={`form-section-${name}`} className="aq-mb-4" ref={ref}>
       <Title
