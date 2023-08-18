@@ -19,6 +19,11 @@ import { ListItemCard } from "./ListItemCard";
 export type VideoPartsOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];
 
+type NewInsightVideopart = Pick<
+  FormVideoPart,
+  "internalId" | "mediaId" | "start" | "url" | "streamUrl" | "description"
+>;
+
 const VideoParts = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetCampaignsByCampaignObservationsQuery({ campaign: id });
@@ -80,14 +85,15 @@ const VideoParts = () => {
                     if (!value) {
                       return;
                     }
-                    push({
-                      // push a new videopart to the field array
-                      start: value.time,
-                      mediaId: value.media.id,
+                    const newVideopart: NewInsightVideopart = {
                       internalId: uuidv4(),
+                      mediaId: value.media.id,
+                      start: value.time,
                       url: value.media.url,
                       streamUrl: value.media.streamUrl,
-                    });
+                      description: "",
+                    };
+                    push(newVideopart);
                   }}
                 />
               </div>

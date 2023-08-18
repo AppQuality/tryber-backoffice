@@ -6,6 +6,19 @@ import { InsightCard } from "./InsightCard";
 import { useAppDispatch } from "src/store";
 import InsightModal from "./InsightModal";
 import { AddNew } from "../components/AddNew";
+import { v4 as uuidv4 } from "uuid";
+
+type NewFormInsight = Pick<
+  FormInsight,
+  "internalId" | "title" | "description" | "videoPart"
+>;
+
+const newInsight: NewFormInsight = {
+  internalId: uuidv4(),
+  title: "",
+  description: "",
+  videoPart: [],
+};
 
 const InsightSection = () => {
   const dispatch = useAppDispatch();
@@ -35,11 +48,7 @@ const InsightSection = () => {
                 <AddNew
                   data-qa="add-new-insight"
                   onClick={() => {
-                    push({
-                      title: "",
-                      description: "",
-                      videoParts: [],
-                    });
+                    push(newInsight);
                     dispatch(setInsightIndex(form.values.insights.length));
                     dispatch(setModalOpen(true));
                   }}
