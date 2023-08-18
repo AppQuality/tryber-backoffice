@@ -50,36 +50,34 @@ const Methodology = () => {
         <Title size="s" className="aq-mb-2">
           Utenti coinvolti<span className="aq-text-danger">*</span>
         </Title>
-        <BSGrid>
-          <BSCol size="col-lg-6">
-            <FormLabel htmlFor="usersLoad" label="Numero di utenti" />
-            <FormikField name="usersLoad">
-              {(fieldProps: FieldProps) => (
-                <Input
-                  id={fieldProps.field.name}
-                  {...fieldProps.field}
-                  type="number"
-                />
-              )}
-            </FormikField>
-          </BSCol>
-          <BSCol size="col-lg-6">
-            <Select
-              placeholder=""
-              options={[
-                { label: "Qualitativa", value: "qualitativa" },
-                { label: "Quantitativa", value: "quantitativa" },
-              ]}
-              label="Tipologia"
-              name="usersQuality"
-              value={{ label: "Qualitativa", value: "qualitativa" }}
-              onChange={(value) => {
-                setFieldValue("users-quality", value);
-              }}
-            />
-            <ErrorMessage name="users-quality" />
-          </BSCol>
-        </BSGrid>
+        <BSCol size="col-lg-4">
+          <FormLabel htmlFor="usersLoad" label="Numero di utenti" />
+          <FormikField name="usersLoad">
+            {(fieldProps: FieldProps) => (
+              <Input
+                id={fieldProps.field.name}
+                {...fieldProps.field}
+                type="number"
+              />
+            )}
+          </FormikField>
+        </BSCol>
+        <BSCol size="col-lg-4">
+          <Select
+            placeholder=""
+            options={[
+              { label: "Qualitativa", value: "qualitativa" },
+              { label: "Quantitativa", value: "quantitativa" },
+            ]}
+            label="Tipologia"
+            name="usersQuality"
+            value={{ label: "Qualitativa", value: "qualitativa" }}
+            onChange={(value) => {
+              setFieldValue("users-quality", value);
+            }}
+          />
+          <ErrorMessage name="users-quality" />
+        </BSCol>
       </BSGrid>
     </Card>
   );
