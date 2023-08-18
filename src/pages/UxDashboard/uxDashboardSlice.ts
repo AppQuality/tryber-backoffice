@@ -13,7 +13,7 @@ interface UxDashboardState {
 export const initialState: UxDashboardState = {
   insightIndex: 0,
   currentStep: 0,
-  currentFormSection: -1,
+  currentFormSection: -199,
   isProgrammaticallyScrolling: false,
   isModalOpen: false,
 };
@@ -43,8 +43,9 @@ const selectionSlice = createSlice({
     resetInsight(state) {
       state.selectedInsight = undefined;
     },
-    reset() {
-      return initialState;
+    reset(state) {
+      state.selectedInsight = undefined;
+      state.insightIndex = 0;
     },
   },
 });

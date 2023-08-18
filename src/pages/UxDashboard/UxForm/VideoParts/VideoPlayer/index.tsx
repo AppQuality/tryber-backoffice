@@ -12,17 +12,12 @@ const PlayerWrapper = styled.div<{
 
   video {
     width: 100%;
-    height: auto;
-    min-height: 230px;
-    @media (min-width: ${({ theme }) => theme.grid.breakpoints.lg}) {
-      min-height: 175px;
-    }
+    max-height: 200px;
   }
 
   ${({ isLoading }) =>
     isLoading &&
     `
-    min-height: 200px;
     background: #eee;
     background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
     background-size: 200% 100%;
@@ -37,16 +32,10 @@ const PlayerWrapper = styled.div<{
   ${({ isFullScreen, theme }) =>
     !isFullScreen &&
     `
-    margin-top: -${theme.grid.sizes[3]};
-    margin-right: -${theme.grid.sizes[3]};
-    margin-left: -${theme.grid.sizes[3]};
     border-top-left-radius: ${theme.general.borderRadius};
     border-top-right-radius: ${theme.general.borderRadius};
     // from card to list item in desktop  
     @media (min-width: ${theme.grid.breakpoints.lg}) {
-      margin-top: 0;
-      margin-right: 0;
-      margin-left: 0;
       border-top-right-radius: 0;
       border-bottom-left-radius: ${theme.general.borderRadius};
     }
@@ -56,7 +45,6 @@ const PlayerWrapper = styled.div<{
     isFullScreen &&
     `
     position: fixed;
-    // we are inside a modal with a padding of 1rem
     top: 0;
     left: 0;
     width: 100vw;
@@ -64,7 +52,7 @@ const PlayerWrapper = styled.div<{
     background-color: black;
     z-index: 1000;
     video {
-      height: 100%;
+      max-height: 100vh;
     }
   `}
 `;

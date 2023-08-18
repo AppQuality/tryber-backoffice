@@ -113,6 +113,7 @@ const Sidebar = () => {
             direction="vertical"
             current={currentFormSection}
             clickHandler={(index, current) => {
+              if (index === current) return;
               dispatch(setCurrentFormSection(index));
               dispatch(setIsProgrammaticallyScrolling(true));
             }}

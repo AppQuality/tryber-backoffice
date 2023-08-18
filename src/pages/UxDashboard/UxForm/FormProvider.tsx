@@ -7,9 +7,7 @@ import {
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
 } from "src/services/tryberApi";
-import { useAppDispatch } from "src/store";
 import { string, array, object, number, lazy } from "yup";
-import { reset } from "../uxDashboardSlice";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 
 export interface FormQuestion {
@@ -69,7 +67,6 @@ export interface FormValuesInterface {
 const FormProvider = ({ children }: { children: ReactNode }) => {
   const { add } = siteWideMessageStore();
   const { id } = useParams<{ id: string }>();
-  const dispatch = useAppDispatch();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   const { currentData, isLoading, isError, error, refetch } =
     useGetCampaignsByCampaignUxQuery({
@@ -217,9 +214,9 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             expire: 8,
           });
         }
+        refetch();
       }}
       onReset={() => {
-        dispatch(reset());
         refetch();
       }}
       validationSchema={validationSchema}
