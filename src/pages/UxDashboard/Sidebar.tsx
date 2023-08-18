@@ -15,7 +15,8 @@ import { setCurrentFormSection, setCurrentStep } from "./uxDashboardSlice";
 const Sidebar = () => {
   const { id } = useParams<{ id: string }>();
   const { add } = siteWideMessageStore();
-  const { submitForm, values } = useFormikContext<FormValuesInterface>();
+  const { submitForm, values, isSubmitting } =
+    useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   const { currentStep, currentFormSection } = useAppSelector(
     (state) => state.uxDashboard
@@ -39,7 +40,7 @@ const Sidebar = () => {
               size="block"
               htmlType="submit"
               data-qa="submit-draft"
-              disabled={typeof values.status === "undefined"}
+              disabled={typeof values.status === "undefined" || isSubmitting}
               onClick={handleSaveDraft}
             >
               Save Draft
@@ -53,7 +54,7 @@ const Sidebar = () => {
               type="secondary"
               data-qa="open-dashboard-preview"
               onClick={() => dispatch(setCurrentStep(1))}
-              disabled={typeof values.status === "undefined"}
+              disabled={typeof values.status === "undefined" || isSubmitting}
             >
               Preview
             </Button>
@@ -79,6 +80,7 @@ const Sidebar = () => {
               size="block"
               type="secondary"
               data-qa="close-dashboard-preview"
+              disabled={isSubmitting}
               onClick={() => {
                 const res = saveDashboard({
                   campaign: id,
