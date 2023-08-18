@@ -13,13 +13,6 @@ type NewFormInsight = Pick<
   "internalId" | "title" | "description" | "videoPart"
 >;
 
-const newInsight: NewFormInsight = {
-  internalId: uuidv4(),
-  title: "",
-  description: "",
-  videoPart: [],
-};
-
 const InsightSection = () => {
   const dispatch = useAppDispatch();
   return (
@@ -48,6 +41,12 @@ const InsightSection = () => {
                 <AddNew
                   data-qa="add-new-insight"
                   onClick={() => {
+                    const newInsight: NewFormInsight = {
+                      internalId: uuidv4(),
+                      title: "",
+                      description: "",
+                      videoPart: [],
+                    };
                     push(newInsight);
                     dispatch(setInsightIndex(form.values.insights.length));
                     dispatch(setModalOpen(true));

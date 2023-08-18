@@ -13,7 +13,7 @@ import { useAppSelector } from "src/store";
 import Video from "@appquality/stream-player";
 import { OnDragEndResponder } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
-import DragNDropProvider from "./DragNDropProvider";
+import DragNDropProvider from "../DragNDropProvider";
 import { ListItemCard } from "./ListItemCard";
 
 export type VideoPartsOption = SelectOptionType &

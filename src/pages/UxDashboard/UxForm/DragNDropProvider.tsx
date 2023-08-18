@@ -19,10 +19,10 @@ interface DragNDropProviderProps<T> {
   className?: string;
 }
 
-const Wrapper = styled.div<{ isDraggingOver: boolean }>`
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: ${({ theme }) => theme.grid.sizes[3]};
+const Wrapper = styled.div<{ isDraggingOver?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.grid.sizes[3]};
 `;
 
 const DraggableItem = styled.div<{ isDragging: boolean }>`
@@ -48,10 +48,10 @@ function DragNDropProvider<T extends { internalId: string }>({
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
           >
-            {items.map((videopart: T, index) => (
+            {items.map((item: T, index) => (
               <Draggable
-                key={`${videopart.internalId}`}
-                draggableId={`${videopart.internalId}`}
+                key={`${item.internalId}`}
+                draggableId={`${item.internalId}`}
                 index={index}
               >
                 {(provided, snapshot) => (
@@ -61,7 +61,7 @@ function DragNDropProvider<T extends { internalId: string }>({
                     {...provided.draggableProps}
                   >
                     {renderItem &&
-                      renderItem(videopart, index, provided.dragHandleProps)}
+                      renderItem(item, index, provided.dragHandleProps)}
                   </DraggableItem>
                 )}
               </Draggable>

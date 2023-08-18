@@ -8,6 +8,11 @@ import {
   Title,
 } from "@appquality/appquality-design-system";
 import { FieldArray } from "formik";
+import { v4 as uuidv4 } from "uuid";
+import QuestionField from "../components/fields/QuestionField";
+import { FormQuestion } from "../FormProvider";
+import { OnDragEndResponder } from "react-beautiful-dnd";
+import DragNDropProvider from "../DragNDropProvider";
 
 const Goal = () => {
   return (
@@ -48,17 +53,48 @@ const Goal = () => {
           />
           <FieldArray
             name="questions"
-            render={({ form, remove, push, name }) => (
-              <div>
-                {form.values[name].map((item: any, index: number) => (
-                  <Card>{item.title}</Card>
-                ))}
-                <Card shadow>
-                  <span>+</span>
-                  <span>Aggiungi domanda di ricerca</span>
-                </Card>
-              </div>
-            )}
+            render={({ form, remove, push, move, name }) => {
+              const questions = form.values[name];
+              const handleDragEnd: OnDragEndResponder = (result) => {
+                if (!result.destination) {
+                  return;
+                }
+                move(result.source.index, result.destination.index);
+              };
+              return (
+                <>
+                  <DragNDropProvider<FormQuestion>
+                    className="aq-mb-3"
+                    onDragEnd={handleDragEnd}
+                    items={questions}
+                    renderItem={(question, index, dragHandleProps) => (
+                      <div {...dragHandleProps}>
+                        <QuestionField
+                          index={index}
+                          remove={remove}
+                          name={name}
+                        />
+                      </div>
+                    )}
+                  />
+                  <Card shadow>
+                    <div
+                      data-qa="add-new-question"
+                      onClick={() => {
+                        const newQuestion = {
+                          internalId: uuidv4(),
+                          value: "",
+                        };
+                        push(newQuestion);
+                      }}
+                    >
+                      <span>+ </span>
+                      <span>Aggiungi domanda di ricerca</span>
+                    </div>
+                  </Card>
+                </>
+              );
+            }}
           />
         </BSCol>
         <BSCol size="col-lg-4">

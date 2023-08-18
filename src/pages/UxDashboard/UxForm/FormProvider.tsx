@@ -12,6 +12,10 @@ import { string, array, object, number, lazy } from "yup";
 import { reset } from "../uxDashboardSlice";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 
+export interface FormQuestion {
+  internalId: string;
+  value: string;
+}
 export interface FormVideoPart {
   id?: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insight"]
@@ -57,6 +61,7 @@ export interface FormInsight {
 }
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
+  questions?: FormQuestion[];
   insights?: FormInsight[];
 }
 
@@ -115,6 +120,12 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
 
   const validationSchema = object({
     status: string(),
+    questions: array().of(
+      object().shape({
+        internalId: string().required("Campo obbligatorio"),
+        value: string().required("Campo obbligatorio"),
+      })
+    ),
     insights: array().of(
       object().shape({
         id: number(),
