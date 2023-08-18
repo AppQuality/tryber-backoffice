@@ -27,7 +27,7 @@ const Sidebar = () => {
     submitForm();
   };
 
-  if (currentStep === 2) return null;
+  if (currentStep >= 2) return null;
   return (
     <div className="stick-to-header-lg">
       <Card title="Azioni" className="aq-mb-3">
@@ -103,18 +103,20 @@ const Sidebar = () => {
           </>
         )}
       </Card>
-      <Card title="Sezioni del form" className="aq-mb-3">
-        <Steps
-          direction="vertical"
-          current={currentFormSection}
-          clickHandler={(index, current) => {
-            dispatch(setCurrentFormSection(index));
-          }}
-        >
-          <Steps.Step title="Sulla Campagna" />
-          <Steps.Step title="Nel dettaglio" />
-        </Steps>
-      </Card>
+      {currentStep === 0 && (
+        <Card title="Sezioni del form" className="aq-mb-3">
+          <Steps
+            direction="vertical"
+            current={currentFormSection}
+            clickHandler={(index, current) => {
+              dispatch(setCurrentFormSection(index));
+            }}
+          >
+            <Steps.Step title="Sulla Campagna" />
+            <Steps.Step title="Nel dettaglio" />
+          </Steps>
+        </Card>
+      )}
     </div>
   );
 };
