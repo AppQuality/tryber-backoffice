@@ -17,26 +17,26 @@ export interface FormQuestion {
 export interface FormVideoPart {
   id?: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insights"]
-  >[number]["videoPart"][number]["id"];
+  >[number]["videoParts"][number]["id"];
   internalId: string;
   end: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insights"]
-  >[number]["videoPart"][number]["end"];
+  >[number]["videoParts"][number]["end"];
   description: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insights"]
-  >[number]["videoPart"][number]["description"];
+  >[number]["videoParts"][number]["description"];
   start: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insights"]
-  >[number]["videoPart"][number]["start"];
+  >[number]["videoParts"][number]["start"];
   mediaId: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insights"]
-  >[number]["videoPart"][number]["mediaId"];
+  >[number]["videoParts"][number]["mediaId"];
   streamUrl: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insights"]
-  >[number]["videoPart"][number]["streamUrl"];
+  >[number]["videoParts"][number]["streamUrl"];
   url: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insights"]
-  >[number]["videoPart"][number]["url"];
+  >[number]["videoParts"][number]["url"];
 }
 export interface FormInsight {
   id?: NonNullable<
@@ -90,7 +90,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             name: insight.severity.name,
           },
           cluster: insight.clusters,
-          videoPart: insight.videoPart.map((video) => {
+          videoPart: insight.videoParts.map((video) => {
             return {
               id: video.id,
               internalId: uuidv4(),
@@ -114,7 +114,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   if (isError && "status" in error && error.status === 403) {
     // 404 is for data not found but the campaign exists
     // campaign does not exist
-    return <Container>Error...</Container>;
+    return <Container>qui Error...</Container>;
   }
 
   const validationSchema = object({
@@ -173,7 +173,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         clusterIds: Array.isArray(insight.cluster)
           ? insight.cluster.map((cluster) => cluster.id)
           : insight.cluster,
-        videoPart: !insight.videoPart
+        videoParts: !insight.videoPart
           ? []
           : insight.videoPart.map((video, videoIndex) => {
               return {

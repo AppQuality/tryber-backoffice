@@ -1182,7 +1182,7 @@ export type GetCampaignsByCampaignUxApiResponse =
             id: number;
             name: string;
           }[];
-      videoPart: {
+      videoParts: {
         id: number;
         start: number;
         end: number;
@@ -1224,7 +1224,7 @@ export type PatchCampaignsByCampaignUxApiArg = {
           severityId: number;
           order: number;
           clusterIds: number[] | "all";
-          videoPart: {
+          videoParts: {
             id?: number;
             start: number;
             end: number;
