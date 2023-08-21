@@ -8,14 +8,13 @@ import {
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
 import UxDashboardForm from "./UxForm";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Preview from "./Preview";
 import Sidebar from "./Sidebar";
 import FormProvider from "./UxForm/FormProvider";
 import ResultsPage from "./ResultsPage";
 import { useAppSelector } from "src/store";
 import styled from "styled-components";
-import { useEffect } from "react";
 
 const StyledSteps = styled(Steps)`
   .step-status-icon {
@@ -32,29 +31,11 @@ const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
 const UxDashboard = () => {
   const { id } = useParams<{ id: string }>();
   const { currentStep } = useAppSelector((state) => state.uxDashboard);
-  const { pathname, hash, key } = useLocation();
   const {
     data: permissions,
     isError,
     isLoading,
   } = useGetUsersMePermissionsQuery();
-
-  useEffect(() => {
-    // if not a hash link, scroll to top
-    if (hash === "") {
-      window.scrollTo(0, 0);
-    }
-    // else scroll to id
-    else {
-      setTimeout(() => {
-        const id = hash.replace("#", "");
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView();
-        }
-      }, 0);
-    }
-  }, [pathname, hash, key]);
 
   if (isLoading) {
     return <Container>Loading...</Container>;

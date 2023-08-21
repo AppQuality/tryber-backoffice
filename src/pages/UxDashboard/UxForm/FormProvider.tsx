@@ -16,45 +16,45 @@ export interface FormQuestion {
 }
 export interface FormVideoPart {
   id?: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["videoPart"][number]["id"];
   internalId: string;
   end: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["videoPart"][number]["end"];
   description: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["videoPart"][number]["description"];
   start: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["videoPart"][number]["start"];
   mediaId: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["videoPart"][number]["mediaId"];
   streamUrl: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["videoPart"][number]["streamUrl"];
   url: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["videoPart"][number]["url"];
 }
 export interface FormInsight {
   id?: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["id"];
   internalId: string;
   title: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["title"];
   description: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["description"];
   severity: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
+    GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["severity"];
   cluster: NonNullable<
-    GetCampaignsByCampaignUxApiResponse["insight"]
-  >[number]["cluster"];
+    GetCampaignsByCampaignUxApiResponse["insights"]
+  >[number]["clusters"];
   videoPart?: FormVideoPart[];
 }
 export interface FormValuesInterface {
@@ -79,7 +79,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       campaignDescription: "",
       questions: [],
       usersQuality: "quantitativa",
-      insights: currentData?.insight?.map((insight) => {
+      insights: currentData?.insights?.map((insight) => {
         return {
           id: insight.id,
           internalId: uuidv4(),
@@ -89,7 +89,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             id: insight.severity.id,
             name: insight.severity.name,
           },
-          cluster: insight.cluster,
+          cluster: insight.clusters,
           videoPart: insight.videoPart.map((video) => {
             return {
               id: video.id,

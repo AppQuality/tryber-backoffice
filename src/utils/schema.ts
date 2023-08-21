@@ -1531,7 +1531,9 @@ export interface operations {
           "application/json": {
             /** @enum {string} */
             status: "draft" | "published" | "draft-modified";
-            insight?: {
+            goal: string;
+            usersNumber: number;
+            insights?: {
               id: number;
               title: string;
               description: string;
@@ -1539,7 +1541,7 @@ export interface operations {
                 id: number;
                 name: string;
               };
-              cluster:
+              clusters:
                 | "all"
                 | {
                     id: number;
@@ -1557,11 +1559,19 @@ export interface operations {
             }[];
             sentiments: {
               value: number;
+              comment: string;
               cluster: {
                 id: number;
                 name: string;
               };
             }[];
+            metodology: {
+              name: string;
+              description: string;
+              /** @enum {string} */
+              type: "qualitative" | "quantitative";
+            };
+            questions: string[];
           };
         };
       };

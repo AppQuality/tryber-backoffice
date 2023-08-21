@@ -1166,7 +1166,9 @@ export type PutCampaignsByCampaignTasksAndTaskApiArg = {
 export type GetCampaignsByCampaignUxApiResponse =
   /** status 200 A UseCase linked with the Campaign */ {
     status: "draft" | "published" | "draft-modified";
-    insight?: {
+    goal: string;
+    usersNumber: number;
+    insights?: {
       id: number;
       title: string;
       description: string;
@@ -1174,7 +1176,7 @@ export type GetCampaignsByCampaignUxApiResponse =
         id: number;
         name: string;
       };
-      cluster:
+      clusters:
         | "all"
         | {
             id: number;
@@ -1192,11 +1194,18 @@ export type GetCampaignsByCampaignUxApiResponse =
     }[];
     sentiments: {
       value: number;
+      comment: string;
       cluster: {
         id: number;
         name: string;
       };
     }[];
+    metodology: {
+      name: string;
+      description: string;
+      type: "qualitative" | "quantitative";
+    };
+    questions: string[];
   };
 export type GetCampaignsByCampaignUxApiArg = {
   /** A campaign id */
