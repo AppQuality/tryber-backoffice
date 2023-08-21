@@ -115,7 +115,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   if (isError && "status" in error && error.status === 403) {
     // 404 is for data not found but the campaign exists
     // campaign does not exist
-    return <Container>qui Error...</Container>;
+    return <Container>Error...</Container>;
   }
 
   const validationSchema = object({

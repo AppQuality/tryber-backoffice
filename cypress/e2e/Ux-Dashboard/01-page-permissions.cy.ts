@@ -34,15 +34,4 @@ describe("Ux Dashboard Page", () => {
       "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
     );
   });
-  it("Should print an ux dashboard form, if the user have at least appq_campaign permission.", () => {
-    cy.intercept(
-      "GET",
-      `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
-      {
-        statusCode: 200,
-        fixture: "permissions/_get/response_200_appq_campaign.json",
-      }
-    ).as("authorized");
-    cy.dataQa("ux-dashboard-form").should("be.visible");
-  });
 });

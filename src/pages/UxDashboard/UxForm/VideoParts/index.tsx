@@ -43,65 +43,67 @@ const VideoParts = () => {
   );
 
   return (
-    <FieldArray name={fieldName}>
-      {({ remove, push, move }) => {
-        const handleDragEnd: OnDragEndResponder = (result) => {
-          if (!result.destination) {
-            return;
-          }
-          move(result.source.index, result.destination.index);
-        };
-        return (
-          <>
-            <DragNDropProvider<FormVideoPart>
-              className="aq-mb-3"
-              onDragEnd={handleDragEnd}
-              items={videoParts}
-              renderItem={(videopart, index, dragHandleProps) => (
-                <Video start={videopart.start} src={videopart.url}>
-                  <VideoPart
-                    start={videopart.start}
-                    videoPartIndex={index}
-                    fieldName={fieldName}
-                    remove={remove}
-                    handleDragProps={dragHandleProps}
+    <div id="video-parts">
+      <FieldArray name={fieldName}>
+        {({ remove, push, move }) => {
+          const handleDragEnd: OnDragEndResponder = (result) => {
+            if (!result.destination) {
+              return;
+            }
+            move(result.source.index, result.destination.index);
+          };
+          return (
+            <>
+              <DragNDropProvider<FormVideoPart>
+                className="aq-mb-3"
+                onDragEnd={handleDragEnd}
+                items={videoParts}
+                renderItem={(videopart, index, dragHandleProps) => (
+                  <Video start={videopart.start} src={videopart.url}>
+                    <VideoPart
+                      start={videopart.start}
+                      videoPartIndex={index}
+                      fieldName={fieldName}
+                      remove={remove}
+                      handleDragProps={dragHandleProps}
+                    />
+                  </Video>
+                )}
+              />
+              <ListItemCard>
+                <div />
+                <div>
+                  <Title size="s" className="aq-mb-2">
+                    Aggiungi una nuova evidenza
+                  </Title>
+                  <Select
+                    menuTargetQuery="body"
+                    options={observationsOptions}
+                    label="Seleziona lo spezzone video"
+                    name={"observation"}
+                    value={[]}
+                    onChange={(value) => {
+                      if (!value) {
+                        return;
+                      }
+                      const newVideopart: NewInsightVideopart = {
+                        internalId: uuidv4(),
+                        mediaId: value.media.id,
+                        start: value.time,
+                        url: value.media.url,
+                        streamUrl: value.media.streamUrl,
+                        description: "",
+                      };
+                      push(newVideopart);
+                    }}
                   />
-                </Video>
-              )}
-            />
-            <ListItemCard>
-              <div />
-              <div>
-                <Title size="s" className="aq-mb-2">
-                  Aggiungi una nuova evidenza
-                </Title>
-                <Select
-                  menuTargetQuery="body"
-                  options={observationsOptions}
-                  label="Seleziona lo spezzone video"
-                  name={"observation"}
-                  value={[]}
-                  onChange={(value) => {
-                    if (!value) {
-                      return;
-                    }
-                    const newVideopart: NewInsightVideopart = {
-                      internalId: uuidv4(),
-                      mediaId: value.media.id,
-                      start: value.time,
-                      url: value.media.url,
-                      streamUrl: value.media.streamUrl,
-                      description: "",
-                    };
-                    push(newVideopart);
-                  }}
-                />
-              </div>
-            </ListItemCard>
-          </>
-        );
-      }}
-    </FieldArray>
+                </div>
+              </ListItemCard>
+            </>
+          );
+        }}
+      </FieldArray>
+    </div>
   );
 };
 

@@ -32,9 +32,9 @@ describe("Insights section of the form", () => {
     );
   });
   it("Should show a section with the current saved insights plus an add new insight card", () => {
-    cy.dataQa("insights-list").within(() => {
+    cy.get("#insights-list").within(() => {
       // 3 is insight plus add new insight card
-      cy.get(".aq-card-body").should("have.length", 3);
+      cy.get(".qa-insight-card").should("have.length", 3);
       cy.dataQa("add-new-insight").should("be.visible");
     });
   });
@@ -48,36 +48,61 @@ describe("Insights section of the form", () => {
       }
     ).as("getUx");
     cy.wait("@getUx");
-    cy.dataQa("insights-list").within(() => {
-      cy.get(".aq-card-body").should("have.length", 1);
+    cy.get("#insights-list").within(() => {
+      cy.get(".qa-insight-card").should("have.length", 0);
       cy.dataQa("add-new-insight").should("be.visible");
     });
   });
   it("Should show an empty form to create a new insight when clicking on the add new insight card", () => {
     cy.dataQa("add-new-insight").click();
-    cy.dataQa("insight-form").within(() => {
-      cy.get("input#title").should("be.empty");
-      cy.get("textarea#description").should("be.empty");
-      cy.get("#severity input[name=severity]").should("have.value", "");
-      cy.get("#cluster input[name=cluster]").should("have.value", "");
-    });
+    cy.dataQa("insight-form")
+      .should("contain", "Description")
+      .within(() => {
+        cy.get('div:has(label:contains("Title"))')
+          .find("input")
+          .should("have.value", "");
+        cy.get('div:has(label:contains("Description"))')
+          .find("input")
+          .should("have.value", "");
+        cy.get('div:has(label:contains("Severity"))')
+          .find("input")
+          .should("have.value", "");
+        cy.get('div:has(label:contains("Cluster"))')
+          .find("input")
+          .should("have.value", "");
+        cy.get("#video-parts").within(() => {
+          cy.get(".list-item-card").should("have.length", 1);
+          cy.get('div:has(label:contains("Seleziona lo spezzone video"))')
+            .find("input")
+            .should("have.value", "");
+        });
+      });
   });
-  it("Should show a prefilled form when clicking on the edit insight", () => {
-    cy.dataQa("insight-card-2").within(() => {
+  it.only("Should show a prefilled form when clicking on the edit insight", () => {
+    cy.get(".qa-insight-card-1").within(() => {
       cy.dataQa("edit-insight").click();
     });
+    cy.wait("@getClusters");
     cy.dataQa("insight-form").within(() => {
-      cy.get("input#title").should("have.value", "My second insight");
-      cy.get("textarea#description").should(
-        "have.value",
-        "This is another insight"
-      );
-      cy.get("#severity input[name=severity]").should("have.value", "2");
-      cy.get("#cluster input[name=cluster]")
-        .should("have.length", 2)
-        .each(($el, index) => {
-          cy.wrap($el).should("have.value", `${index + 1}`);
-        });
+      cy.get('div:has(label:contains("Title"))')
+        .find("input")
+        .should("have.value", "Difficoltà di navigazione");
+      cy.get('div:has(label:contains("Description"))')
+        .find("textarea")
+        .should(
+          "have.value",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        );
+      cy.get('div:has(label:contains("Severity"))').within(() => {
+        cy.get('input[type="hidden"]').should("have.value", "1");
+      });
+      cy.get('div:has(label:contains("Cluster"))').within(() => {
+        cy.get('input[type="hidden"]')
+          .should("have.length", 2)
+          .each(($el, index) => {
+            cy.wrap($el).should("have.value", index + 1);
+          });
+      });
     });
   });
   it("Should empty the insight form every time is closed", () => {

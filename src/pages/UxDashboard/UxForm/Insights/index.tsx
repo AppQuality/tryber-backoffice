@@ -20,52 +20,54 @@ const InsightSection = () => {
   const { values } = useFormikContext<FormValuesInterface>();
   const insights = values[fieldName];
   return (
-    <Card title="Scoperte" className="aq-mb-3">
-      <FieldArray
-        name={fieldName}
-        render={({ form, remove, push, name }) => (
-          <BSGrid data-qa="insights-list" className="aq-mb-3">
-            <InsightModal remove={remove} />
-            {insights &&
-              insights.map((insight, index: number) => (
-                <BSCol
-                  size="col-lg-4"
-                  className="aq-mb-4"
-                  key={insight.id}
-                  data-qa={`insight-card-${insight.id}`}
-                >
-                  <InsightCard
-                    insight={insight}
-                    index={index}
-                    removeInsight={remove}
-                  />
-                </BSCol>
-              ))}
-            <BSCol size="col-lg-4">
-              <Card shadow>
-                <AddNew
-                  data-qa="add-new-insight"
-                  onClick={() => {
-                    const newInsight: NewFormInsight = {
-                      internalId: uuidv4(),
-                      title: "",
-                      description: "",
-                      videoParts: [],
-                    };
-                    push(newInsight);
-                    dispatch(setInsightIndex(form.values.insights.length));
-                    dispatch(setModalOpen(true));
-                  }}
-                >
-                  <span className="icon-big">+</span>
-                  <span>Aggiungi scoperta</span>
-                </AddNew>
-              </Card>
-            </BSCol>
-          </BSGrid>
-        )}
-      />
-    </Card>
+    <div id="insights-list">
+      <Card title="Scoperte" className="aq-mb-3">
+        <FieldArray
+          name={fieldName}
+          render={({ form, remove, push, name }) => (
+            <BSGrid className="aq-mb-3">
+              <InsightModal remove={remove} />
+              {insights &&
+                insights.map((insight, index: number) => (
+                  <BSCol
+                    size="col-lg-4"
+                    className="aq-mb-4"
+                    key={insight.id}
+                    data-qa={`insight-card-${insight.id}`}
+                  >
+                    <InsightCard
+                      insight={insight}
+                      index={index}
+                      removeInsight={remove}
+                    />
+                  </BSCol>
+                ))}
+              <BSCol size="col-lg-4">
+                <Card shadow>
+                  <AddNew
+                    data-qa="add-new-insight"
+                    onClick={() => {
+                      const newInsight: NewFormInsight = {
+                        internalId: uuidv4(),
+                        title: "",
+                        description: "",
+                        videoParts: [],
+                      };
+                      push(newInsight);
+                      dispatch(setInsightIndex(form.values.insights.length));
+                      dispatch(setModalOpen(true));
+                    }}
+                  >
+                    <span className="icon-big">+</span>
+                    <span>Aggiungi scoperta</span>
+                  </AddNew>
+                </Card>
+              </BSCol>
+            </BSGrid>
+          )}
+        />
+      </Card>
+    </div>
   );
 };
 

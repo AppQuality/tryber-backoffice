@@ -32,7 +32,7 @@ export const InsightCard = ({
     dispatch(setModalOpen(true));
   }
   return (
-    <Card title={insight.title}>
+    <Card title={insight.title} className={`qa-insight-card-${index}`}>
       <div className="aq-mb-3">{insight.description}</div>
       <div>
         <InsightPillsWrapper className="aq-mb-3">
