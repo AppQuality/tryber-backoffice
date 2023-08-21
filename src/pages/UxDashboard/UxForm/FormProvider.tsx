@@ -55,13 +55,13 @@ export interface FormInsight {
   cluster: NonNullable<
     GetCampaignsByCampaignUxApiResponse["insights"]
   >[number]["clusters"];
-  videoPart?: FormVideoPart[];
+  videoParts: FormVideoPart[];
 }
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
-  questions?: FormQuestion[];
+  questions: FormQuestion[];
   usersQuality: string;
-  insights?: FormInsight[];
+  insights: FormInsight[];
 }
 
 const FormProvider = ({ children }: { children: ReactNode }) => {
@@ -79,31 +79,32 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       campaignDescription: "",
       questions: [],
       usersQuality: "quantitativa",
-      insights: currentData?.insights?.map((insight) => {
-        return {
-          id: insight.id,
-          internalId: uuidv4(),
-          title: insight.title,
-          description: insight.description,
-          severity: {
-            id: insight.severity.id,
-            name: insight.severity.name,
-          },
-          cluster: insight.clusters,
-          videoPart: insight.videoParts.map((video) => {
-            return {
-              id: video.id,
-              internalId: uuidv4(),
-              start: video.start,
-              end: video.end,
-              description: video.description,
-              mediaId: video.mediaId,
-              streamUrl: video.streamUrl,
-              url: video.url,
-            };
-          }),
-        };
-      }),
+      insights:
+        currentData?.insights?.map((insight) => {
+          return {
+            id: insight.id,
+            internalId: uuidv4(),
+            title: insight.title,
+            description: insight.description,
+            severity: {
+              id: insight.severity.id,
+              name: insight.severity.name,
+            },
+            cluster: insight.clusters,
+            videoParts: insight.videoParts.map((video) => {
+              return {
+                id: video.id,
+                internalId: uuidv4(),
+                start: video.start,
+                end: video.end,
+                description: video.description,
+                mediaId: video.mediaId,
+                streamUrl: video.streamUrl,
+                url: video.url,
+              };
+            }),
+          };
+        }) || [],
     }),
     [currentData]
   );
@@ -173,9 +174,9 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         clusterIds: Array.isArray(insight.cluster)
           ? insight.cluster.map((cluster) => cluster.id)
           : insight.cluster,
-        videoParts: !insight.videoPart
+        videoParts: !insight.videoParts
           ? []
-          : insight.videoPart.map((video, videoIndex) => {
+          : insight.videoParts.map((video, videoIndex) => {
               return {
                 id: video.id,
                 order: videoIndex,

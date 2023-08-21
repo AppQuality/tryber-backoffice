@@ -8,7 +8,7 @@ import {
 import { useMemo } from "react";
 import { useFormikContext } from "formik";
 import VideoPart from "./VideoPart";
-import { FormVideoPart } from "../FormProvider";
+import { FormValuesInterface, FormVideoPart } from "../FormProvider";
 import { useAppSelector } from "src/store";
 import Video from "@appquality/stream-player";
 import { OnDragEndResponder } from "react-beautiful-dnd";
@@ -28,9 +28,9 @@ const VideoParts = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetCampaignsByCampaignObservationsQuery({ campaign: id });
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
-  const { getFieldProps } = useFormikContext();
-  const fieldName = `insights[${insightIndex}].videoPart`;
-  const videoParts = getFieldProps(fieldName).value;
+  const { values } = useFormikContext<FormValuesInterface>();
+  const fieldName = `insights[${insightIndex}].videoParts`;
+  const videoParts = values.insights[insightIndex].videoParts;
 
   const observationsOptions: VideoPartsOption[] = useMemo(
     () =>

@@ -20,9 +20,10 @@ import SeverityField from "../components/fields/SeverityField";
 import ClusterField from "../components/fields/ClusterField";
 import VideoParts from "../VideoParts";
 import { FormValuesInterface } from "../FormProvider";
+import { useMemo } from "react";
 
 interface InsightModalProps {
-  fieldName: string;
+  remove: (index: number) => void;
 }
 const StyledModal = styled(Modal)`
   .modal {
@@ -32,11 +33,23 @@ const StyledModal = styled(Modal)`
   }
 `;
 
-const ModalFooter = ({ fieldName }: { fieldName: string }) => {
+const fieldName = "insights";
+
+const ModalFooter = ({ remove }: InsightModalProps) => {
   const dispatch = useAppDispatch();
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
-  const { submitForm, setFieldTouched, errors, resetForm } =
-    useFormikContext<FormValuesInterface>();
+  const {
+    submitForm,
+    setFieldTouched,
+    setFieldValue,
+    errors,
+    values,
+    initialValues,
+  } = useFormikContext<FormValuesInterface>();
+  const isNewInsight = useMemo(
+    () => !values[fieldName][insightIndex].id,
+    [values, insightIndex]
+  );
   const handleAdd = () => {
     if (errors.insights && errors.insights[insightIndex]) {
       setFieldTouched(`${fieldName}[${insightIndex}].title`);
@@ -51,9 +64,13 @@ const ModalFooter = ({ fieldName }: { fieldName: string }) => {
     dispatch(setModalOpen(false));
   };
   const handleClose = async () => {
-    resetForm();
     dispatch(resetInsight());
     dispatch(setModalOpen(false));
+  };
+  const handleDismiss = async () => {
+    if (isNewInsight) remove(insightIndex);
+    if (!isNewInsight) setFieldValue(fieldName, initialValues[fieldName]);
+    handleClose();
   };
   return (
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -61,7 +78,7 @@ const ModalFooter = ({ fieldName }: { fieldName: string }) => {
         data-qa="discard-new-insight"
         type="danger"
         flat
-        onClick={handleClose}
+        onClick={handleDismiss}
         className="aq-mr-3"
       >
         Dismiss
@@ -73,14 +90,12 @@ const ModalFooter = ({ fieldName }: { fieldName: string }) => {
   );
 };
 
-const InsightModal = ({ fieldName }: InsightModalProps) => {
+const InsightModal = ({ remove }: InsightModalProps) => {
   const dispatch = useAppDispatch();
   const { insightIndex, isModalOpen } = useAppSelector(
     (state) => state.uxDashboard
   );
-  const { resetForm } = useFormikContext<FormValuesInterface>();
   const handleClose = async () => {
-    resetForm();
     dispatch(resetInsight());
     dispatch(setModalOpen(false));
   };
@@ -89,7 +104,7 @@ const InsightModal = ({ fieldName }: InsightModalProps) => {
       isOpen={isModalOpen}
       onClose={handleClose}
       closeOnClickOutside={false}
-      footer={<ModalFooter fieldName={fieldName} />}
+      footer={<ModalFooter remove={remove} />}
     >
       <div data-qa="insight-form">
         <BSGrid>

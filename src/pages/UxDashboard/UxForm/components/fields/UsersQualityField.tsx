@@ -6,9 +6,11 @@ import {
 } from "@appquality/appquality-design-system";
 import { FormValuesInterface } from "../../FormProvider";
 
+// todo: collegare type dalle api
 const usersQualityOptions = [
   { label: "Qualitativa", value: "qualitativa" },
   { label: "Quantitativa", value: "quantitativa" },
+  { label: "Quali-Quantitativa", value: "quali-quantitativa" },
 ];
 
 const emptyOption = { label: "" };
