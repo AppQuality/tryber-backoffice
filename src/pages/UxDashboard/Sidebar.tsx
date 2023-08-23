@@ -51,7 +51,7 @@ const Sidebar = () => {
               size="block"
               htmlType="submit"
               data-qa="submit-draft"
-              disabled={typeof values.status === "undefined" || isSubmitting}
+              disabled={isSubmitting}
               onClick={handleSaveDraft}
             >
               Save Draft
