@@ -6,7 +6,7 @@ describe("Insights section of the form", () => {
       `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
       {
         statusCode: 200,
-        fixture: "permissions/_get/response_200_appq_campaign.json",
+        fixture: "permissions/_get/response_200_appq_campaign",
       }
     ).as("authorized");
     cy.intercept(
@@ -14,7 +14,7 @@ describe("Insights section of the form", () => {
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
       {
         statusCode: 200,
-        fixture: "campaigns/id/ux/_get/response_200_draft_with_insights.json",
+        fixture: "campaigns/id/ux/_get/response_200_draft_with_insights",
       }
     ).as("getUx");
     cy.intercept(
@@ -22,7 +22,7 @@ describe("Insights section of the form", () => {
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/clusters`,
       {
         statusCode: 200,
-        fixture: "campaigns/id/clusters/_get/response_200_items.json",
+        fixture: "campaigns/id/clusters/_get/response_200_items",
       }
     ).as("getClusters");
     cy.visit(
@@ -103,15 +103,45 @@ describe("Insights section of the form", () => {
       });
     });
   });
-  it.only('Should clear the single insight form when clicking to dismiss in the "new insight" modal', () => {
+  it('Should clear the single insight form when clicking to dismiss in the "new insight" modal', () => {
     cy.dataQa("add-new-insight").click();
-    cy.dataQa("insight-form").within(() => {
-      cy.dataQa("discard-insight-changes").click();
+    cy.dataQa("insight-form")
+      .parents(".modal")
+      .within(() => {
+        cy.dataQa("discard-insight-changes").click();
+      });
+    cy.fixture(
+      "campaigns/id/ux/_get/response_200_draft_with_insights.json"
+    ).then((uxJson) => {
+      cy.dataQa("insight-card", { startsWith: true }).should(
+        "have.length",
+        uxJson.insights.length
+      );
     });
   });
   it.only('Should clear the single insight form when clicking to dismiss in the "edit insight" modal', () => {
     cy.dataQa("insight-card-1").within(() => {
       cy.dataQa("edit-insight").click();
+    });
+    cy.dataQa("insight-form")
+      .parents(".modal")
+      .within(() => {
+        cy.dataQa("discard-insight-changes").click();
+      });
+    cy.fixture(
+      "campaigns/id/ux/_get/response_200_draft_with_insights.json"
+    ).then((uxJson) => {
+      cy.dataQa("insight-card-1").within(() => {
+        cy.get(".aq-card-title").should("have.text", uxJson.insights[1].title);
+        cy.get(".aq-card-body").should(
+          "contain",
+          uxJson.insights[1].description
+        );
+
+        cy.dataQa("insight-pills", { startsWith: true })
+          .children()
+          .should("have.length", uxJson.insights[1].clusters.length + 1);
+      });
     });
   });
 });
