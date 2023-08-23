@@ -21,7 +21,12 @@ const SeverityPill = ({ severity }: SeverityPillProps) => {
     }
   }, [severity.name]);
   return (
-    <Pill className="aq-mr-1" type={type} flat>
+    <Pill
+      className="aq-mr-1"
+      type={type}
+      flat
+      data-qa={`severity-pill-${severity.name}`}
+    >
       {severity.name}
     </Pill>
   );

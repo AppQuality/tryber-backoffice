@@ -75,7 +75,7 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
   return (
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
       <Button
-        data-qa="discard-new-insight"
+        data-qa="discard-insight-changes"
         type="danger"
         flat
         onClick={handleDismiss}
@@ -142,12 +142,15 @@ const InsightModal = ({ remove }: InsightModalProps) => {
               name={`${fieldName}[${insightIndex}].title`}
               label="Title"
               placeholder="Es: “Malfunzionamenti Form”"
+              data-qa="insight-title"
             />
-            <TextareaField
-              height="8em"
-              name={`${fieldName}[${insightIndex}].description`}
-              label="Description"
-            />
+            <div data-qa="insight-description">
+              <TextareaField
+                height="8em"
+                name={`${fieldName}[${insightIndex}].description`}
+                label="Description"
+              />
+            </div>
           </BSCol>
           <BSCol size="col-lg-3">
             <FormLabel htmlFor="" label="Cos’è questo campo?" />

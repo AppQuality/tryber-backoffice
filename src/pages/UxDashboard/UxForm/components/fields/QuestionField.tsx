@@ -26,6 +26,7 @@ const QuestionField = ({ index, remove, name }: QuestionFieldProps) => {
         <Styled>
           <Input
             id={field.name}
+            data-qa="question"
             type="text"
             placeholder='Es. Gli utenti vedono la CTA "Trova in negozio" nel PDP?'
             extra={{

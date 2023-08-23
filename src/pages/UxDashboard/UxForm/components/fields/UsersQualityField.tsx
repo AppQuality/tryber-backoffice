@@ -21,6 +21,7 @@ const UsersQualityField = () => {
         <>
           <Select
             placeholder=""
+            data-qa="users-quality-select"
             options={usersQualityOptions}
             isClearable={false}
             label="Tipologia"

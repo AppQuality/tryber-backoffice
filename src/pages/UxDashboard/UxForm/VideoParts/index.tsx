@@ -70,7 +70,7 @@ const VideoParts = () => {
                   </Video>
                 )}
               />
-              <ListItemCard>
+              <ListItemCard data-qa="add-new-videopart">
                 <div />
                 <div>
                   <Title size="s" className="aq-mb-2">

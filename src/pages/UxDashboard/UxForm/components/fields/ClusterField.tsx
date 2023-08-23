@@ -45,6 +45,7 @@ const ClusterField = ({ form, field }: FieldProps<FormInsight["cluster"]>) => {
   return (
     <FormGroup>
       <Select
+        data-qa="cluster-select"
         menuTargetQuery="body"
         placeholder="Seleziona uno o più cluster"
         isMulti

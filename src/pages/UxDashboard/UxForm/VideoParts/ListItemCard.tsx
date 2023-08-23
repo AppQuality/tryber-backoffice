@@ -1,8 +1,7 @@
 import { Card } from "@appquality/appquality-design-system";
-import { ReactNode } from "react";
 import styled from "styled-components";
 
-const StyledCard = styled(Card)`
+export const ListItemCard = styled(Card)`
   @media (min-width: 768px) {
     .aq-card-body {
       display: grid;
@@ -22,7 +21,3 @@ const StyledCard = styled(Card)`
     }
   }
 `;
-
-export const ListItemCard = ({ children }: { children: ReactNode }) => (
-  <StyledCard bodyClass="list-item-card">{children}</StyledCard>
-);

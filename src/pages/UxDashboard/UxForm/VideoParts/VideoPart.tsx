@@ -67,7 +67,7 @@ const VideoPart = ({
     context: { player },
   } = useVideoContext();
   return (
-    <ListItemCard>
+    <ListItemCard data-qa={`insight-videopart-${videoPartIndex}`}>
       <VideoPlayer videoFieldName={`${fieldName}[${videoPartIndex}]`} />
       <div>
         <FormikField
@@ -93,6 +93,7 @@ const VideoPart = ({
               <FormLabel htmlFor={field.name} label="End" />
               <Input
                 type="time"
+                data-qa="videopart-end"
                 id={field.name}
                 extra={{
                   name: field.name,
@@ -124,6 +125,7 @@ const VideoPart = ({
       <Actions>
         <DeleteButton
           htmlType="button"
+          data-qa="delete-videopart"
           type="danger"
           flat
           onClick={() => {
