@@ -2,7 +2,7 @@
   "status": "draft",
   "goal": "this is goal",
   "usersNumber": 0,
-  "metodology": {
+  "methodology": {
     "name": "UX Challenge",
     "description": "UX Challenge",
     "type": "qualitative"

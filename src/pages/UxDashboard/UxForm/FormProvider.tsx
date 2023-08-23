@@ -60,7 +60,7 @@ export interface FormInsight {
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
   goal: GetCampaignsByCampaignUxApiResponse["goal"];
-  metodology: GetCampaignsByCampaignUxApiResponse["metodology"];
+  methodology: GetCampaignsByCampaignUxApiResponse["methodology"];
   questions: FormQuestion[];
   usersNumber: GetCampaignsByCampaignUxApiResponse["usersNumber"];
   insights: FormInsight[];
@@ -79,7 +79,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       status: currentData?.status,
       goal: currentData?.goal || "",
-      metodology: currentData?.metodology || {
+      methodology: currentData?.methodology || {
         name: "qualitative",
         type: "qualitative",
         description: "",
@@ -134,7 +134,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   const validationSchema = object({
     status: string(),
     goal: string().required("Campo obbligatorio"),
-    metodology: object().shape({
+    methodology: object().shape({
       name: string().required("Campo obbligatorio"),
       type: string().required("Campo obbligatorio"),
       description: string().required("Campo obbligatorio"),
@@ -217,7 +217,8 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
           campaign: id,
           body: {
             goal: values.goal,
-            metodology: values.metodology,
+            questions: values.questions.map((question) => question.value),
+            methodology: values.methodology,
             usersNumber: values.usersNumber,
             insights: mapFormInsightsForPatch(values.insights) || [],
             sentiments: [],

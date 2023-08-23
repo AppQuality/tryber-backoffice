@@ -23,12 +23,12 @@ const Methodology = () => {
           Tipologia di test<span className="aq-text-danger">*</span>
         </Title>
         <Title size="m" variant className="aq-mb-3">
-          {values.metodology.name}
+          {values.methodology.name}
         </Title>
         <BSCol size="col-lg-8">
           <TextareaField
             height="10em"
-            name="metodology.description"
+            name="methodology.description"
             label="Breve descrizione"
           />
         </BSCol>

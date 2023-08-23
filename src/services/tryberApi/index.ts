@@ -1200,7 +1200,7 @@ export type GetCampaignsByCampaignUxApiResponse =
         name: string;
       };
     }[];
-    metodology: {
+    methodology: {
       name: string;
       type: "qualitative" | "quantitative" | "quali-quantitative";
       description: string;
@@ -1239,10 +1239,11 @@ export type PatchCampaignsByCampaignUxApiArg = {
           clusterId: number;
           value: number;
         }[];
-        metodology: {
+        methodology: {
           type: "qualitative" | "quantitative" | "quali-quantitative";
           description: string;
         };
+        questions: string[];
       }
     | {
         status: "publish";

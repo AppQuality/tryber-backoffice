@@ -8,7 +8,7 @@ import { FormValuesInterface } from "../../FormProvider";
 
 interface UsersQualityOption {
   label: string;
-  value: FormValuesInterface["metodology"]["type"];
+  value: FormValuesInterface["methodology"]["type"];
 }
 // todo: collegare type dalle api
 const usersQualityOptions: UsersQualityOption[] = [
@@ -20,11 +20,11 @@ const usersQualityOptions: UsersQualityOption[] = [
 const emptyOption = { label: "" };
 const UsersQualityField = () => {
   return (
-    <FormikField name="metodology.type">
+    <FormikField name="methodology.type">
       {({
         field,
         form,
-      }: FieldProps<FormValuesInterface["metodology"]["type"]>) => (
+      }: FieldProps<FormValuesInterface["methodology"]["type"]>) => (
         <>
           <Select
             placeholder=""
