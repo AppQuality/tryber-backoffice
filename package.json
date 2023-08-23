@@ -98,7 +98,7 @@
     "@types/react-transition-group": "^4.4.4",
     "@types/styled-components": "^5.1.23",
     "@types/uuid": "^8.3.4",
-    "cypress": "^12.16.0",
+    "cypress": "^12.17.4",
     "jest-canvas-mock": "^2.4.0",
     "msw": "^0.47.4",
     "openapi-typescript": "^5.2.0",
