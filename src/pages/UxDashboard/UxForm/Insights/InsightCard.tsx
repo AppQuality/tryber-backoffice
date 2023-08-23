@@ -35,7 +35,7 @@ export const InsightCard = ({
     <Card title={insight.title} data-qa={`insight-card-${index}`}>
       <div className="aq-mb-3">{insight.description}</div>
       <div>
-        <InsightPillsWrapper className="aq-mb-3">
+        <InsightPillsWrapper className="aq-mb-3" data-qa={`insight-pills`}>
           {insight?.severity && <SeverityPill severity={insight.severity} />}
           {Array.isArray(insight.cluster) &&
             insight.cluster.map((cluster) => (

@@ -51,6 +51,7 @@ const UxDashboard = () => {
   }
 
   if (permissions?.appq_campaign === true) {
+    // todo: discuss about appq_video_dashboard permission (change tests)
     return (
       <FormProvider>
         <Container>
