@@ -119,7 +119,7 @@ describe("Insights section of the form", () => {
       );
     });
   });
-  it.only('Should clear the single insight form when clicking to dismiss in the "edit insight" modal', () => {
+  it('Should clear the single insight form when clicking to dismiss in the "edit insight" modal', () => {
     cy.dataQa("insight-card-1").within(() => {
       cy.dataQa("edit-insight").click();
     });
@@ -137,10 +137,13 @@ describe("Insights section of the form", () => {
           "contain",
           uxJson.insights[1].description
         );
-
         cy.dataQa("insight-pills", { startsWith: true })
           .children()
-          .should("have.length", uxJson.insights[1].clusters.length + 1);
+          .should(
+            "have.length",
+            uxJson.insights[1].clusters.length +
+              (uxJson.insights[1].severity.name ? 1 : 0)
+          );
       });
     });
   });
