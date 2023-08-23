@@ -22,11 +22,7 @@ const Goal = () => {
           Obiettivo della campagna<span className="aq-text-danger">*</span>
         </Title>
         <BSCol size="col-lg-8">
-          <TextareaField
-            height="10em"
-            name="campaignDescription"
-            label="Breve descrizione"
-          />
+          <TextareaField height="10em" name="goal" label="Breve descrizione" />
         </BSCol>
         <BSCol size="col-lg-4">
           <FormLabel htmlFor="" label="Cos’è questo campo?" />

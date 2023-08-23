@@ -19,7 +19,7 @@ import {
 const Sidebar = () => {
   const { id } = useParams<{ id: string }>();
   const { add } = siteWideMessageStore();
-  const { submitForm, values, isSubmitting } =
+  const { submitForm, values, isSubmitting, errors } =
     useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   const { currentStep, currentFormSection } = useAppSelector(
@@ -28,6 +28,13 @@ const Sidebar = () => {
   const dispatch = useAppDispatch();
 
   const handleSaveDraft = () => {
+    if (Object.keys(errors).length > 0) {
+      add({
+        type: "danger",
+        message: `compila tutti i campi obbligatori, ${JSON.stringify(errors)}`,
+      });
+      return;
+    }
     submitForm();
   };
 

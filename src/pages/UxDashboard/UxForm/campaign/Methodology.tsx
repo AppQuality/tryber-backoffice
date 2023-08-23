@@ -10,9 +10,12 @@ import {
   TextareaField,
   Title,
 } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
 import UsersQualityField from "../components/fields/UsersQualityField";
+import { FormValuesInterface } from "../FormProvider";
 
 const Methodology = () => {
+  const { values } = useFormikContext<FormValuesInterface>();
   return (
     <Card title="La metodologia usata" className="aq-mb-3">
       <BSGrid className="aq-mb-4">
@@ -20,12 +23,12 @@ const Methodology = () => {
           Tipologia di test<span className="aq-text-danger">*</span>
         </Title>
         <Title size="m" variant className="aq-mb-3">
-          Usability Test
+          {values.metodology.name}
         </Title>
         <BSCol size="col-lg-8">
           <TextareaField
             height="10em"
-            name="testDescription"
+            name="metodology.description"
             label="Breve descrizione"
           />
         </BSCol>
@@ -48,8 +51,8 @@ const Methodology = () => {
           Utenti coinvolti<span className="aq-text-danger">*</span>
         </Title>
         <BSCol size="col-lg-4">
-          <FormLabel htmlFor="usersLoad" label="Numero di utenti" />
-          <FormikField name="usersLoad">
+          <FormLabel htmlFor="usersNumber" label="Numero di utenti" />
+          <FormikField name="usersNumber">
             {(fieldProps: FieldProps) => (
               <Input
                 id={fieldProps.field.name}

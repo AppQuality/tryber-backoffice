@@ -29,6 +29,9 @@ const QuestionField = ({ index, remove, name }: QuestionFieldProps) => {
             data-qa="question"
             type="text"
             placeholder='Es. Gli utenti vedono la CTA "Trova in negozio" nel PDP?'
+            onChange={(value) => {
+              form.setFieldValue(field.name, value);
+            }}
             extra={{
               onBlur: () => {
                 field.onBlur(field.name);

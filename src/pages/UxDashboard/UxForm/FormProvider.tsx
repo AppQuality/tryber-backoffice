@@ -59,8 +59,10 @@ export interface FormInsight {
 }
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
+  goal: GetCampaignsByCampaignUxApiResponse["goal"];
+  metodology: GetCampaignsByCampaignUxApiResponse["metodology"];
   questions: FormQuestion[];
-  usersQuality: string;
+  usersNumber: GetCampaignsByCampaignUxApiResponse["usersNumber"];
   insights: FormInsight[];
 }
 
@@ -76,9 +78,20 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   const initialValues: FormValuesInterface = useMemo(
     () => ({
       status: currentData?.status,
-      campaignDescription: "",
-      questions: [],
-      usersQuality: "quantitativa",
+      goal: currentData?.goal || "",
+      metodology: currentData?.metodology || {
+        name: "qualitative",
+        type: "qualitative",
+        description: "",
+      },
+      questions:
+        currentData?.questions?.map((question) => {
+          return {
+            internalId: uuidv4(),
+            value: question,
+          };
+        }, []) || [],
+      usersNumber: currentData?.usersNumber || 0,
       insights:
         currentData?.insights?.map((insight) => {
           return {
@@ -120,13 +133,19 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
 
   const validationSchema = object({
     status: string(),
+    goal: string().required("Campo obbligatorio"),
+    metodology: object().shape({
+      name: string().required("Campo obbligatorio"),
+      type: string().required("Campo obbligatorio"),
+      description: string().required("Campo obbligatorio"),
+    }),
+    usersNumber: number().required("Campo obbligatorio"),
     questions: array().of(
       object().shape({
         internalId: string().required("Campo obbligatorio"),
         value: string().required("Campo obbligatorio"),
       })
     ),
-    usersQuality: string().required("Campo obbligatorio"),
     insights: array().of(
       object().shape({
         id: number(),
@@ -197,6 +216,9 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         const res = await saveDashboard({
           campaign: id,
           body: {
+            goal: values.goal,
+            metodology: values.metodology,
+            usersNumber: values.usersNumber,
             insights: mapFormInsightsForPatch(values.insights) || [],
             sentiments: [],
           },
