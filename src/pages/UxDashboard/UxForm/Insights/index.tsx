@@ -1,4 +1,10 @@
-import { Card } from "@appquality/appquality-design-system";
+import {
+  BSCol,
+  BSGrid,
+  Card,
+  FormLabel,
+  Title,
+} from "@appquality/appquality-design-system";
 import { FieldArray } from "formik";
 import { setInsightIndex, setModalOpen } from "../../uxDashboardSlice";
 import { FormInsight, FormValuesInterface } from "../FormProvider";
@@ -26,32 +32,44 @@ const InsightSection = () => {
         render={({ form, remove, push, name }) => (
           <>
             <InsightModal remove={remove} />
-            <div className="aq-mb-3">
-              {insights &&
-                insights.map((insight, index: number) => (
-                  <InsightCard
-                    insight={insight}
-                    index={index}
-                    removeInsight={remove}
-                  />
-                ))}
-              <AddNew
-                data-qa="add-new-insight"
-                onClick={() => {
-                  const newInsight: NewFormInsight = {
-                    internalId: uuidv4(),
-                    title: "",
-                    description: "",
-                    videoParts: [],
-                  };
-                  push(newInsight);
-                  dispatch(setInsightIndex(form.values.insights.length));
-                  dispatch(setModalOpen(true));
-                }}
-              >
-                Aggiungi scoperta
-              </AddNew>
-            </div>
+
+            <BSGrid className="aq-mb-3">
+              <BSCol size="col-lg-8">
+                {insights &&
+                  insights.map((insight, index: number) => (
+                    <InsightCard
+                      insight={insight}
+                      index={index}
+                      removeInsight={remove}
+                    />
+                  ))}
+                <AddNew
+                  data-qa="add-new-insight"
+                  onClick={() => {
+                    const newInsight: NewFormInsight = {
+                      internalId: uuidv4(),
+                      title: "",
+                      description: "",
+                      videoParts: [],
+                    };
+                    push(newInsight);
+                    dispatch(setInsightIndex(form.values.insights.length));
+                    dispatch(setModalOpen(true));
+                  }}
+                >
+                  Aggiungi scoperta
+                </AddNew>
+              </BSCol>
+              <BSCol size="col-lg-4">
+                <FormLabel htmlFor="" label="Cos’è questo campo?" />
+                <Card>
+                  <Title size="xs" className="aq-text-info">
+                    È l’executive summary del test, dove ogni scoperta è
+                    associata ad uno o più video.
+                  </Title>
+                </Card>
+              </BSCol>
+            </BSGrid>
           </>
         )}
       />
