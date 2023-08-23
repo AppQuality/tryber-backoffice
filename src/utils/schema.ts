@@ -1567,9 +1567,9 @@ export interface operations {
             }[];
             metodology: {
               name: string;
-              description: string;
               /** @enum {string} */
-              type: "qualitative" | "quantitative";
+              type: "qualitative" | "quantitative" | "quali-quantitative";
+              description: string;
             };
             questions: string[];
           };
@@ -1600,6 +1600,8 @@ export interface operations {
       content: {
         "application/json":
           | {
+              goal: string;
+              usersNumber: number;
               insights: {
                 id?: number;
                 title: string;
@@ -1620,6 +1622,11 @@ export interface operations {
                 clusterId: number;
                 value: number;
               }[];
+              metodology: {
+                /** @enum {string} */
+                type: "qualitative" | "quantitative" | "quali-quantitative";
+                description: string;
+              };
             }
           | {
               /** @enum {string} */

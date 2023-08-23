@@ -1202,8 +1202,8 @@ export type GetCampaignsByCampaignUxApiResponse =
     }[];
     metodology: {
       name: string;
+      type: "qualitative" | "quantitative" | "quali-quantitative";
       description: string;
-      type: "qualitative" | "quantitative";
     };
     questions: string[];
   };
@@ -1217,6 +1217,8 @@ export type PatchCampaignsByCampaignUxApiArg = {
   campaign: string;
   body:
     | {
+        goal: string;
+        usersNumber: number;
         insights: {
           id?: number;
           title: string;
@@ -1237,6 +1239,10 @@ export type PatchCampaignsByCampaignUxApiArg = {
           clusterId: number;
           value: number;
         }[];
+        metodology: {
+          type: "qualitative" | "quantitative" | "quali-quantitative";
+          description: string;
+        };
       }
     | {
         status: "publish";
