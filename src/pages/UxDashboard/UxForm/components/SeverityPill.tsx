@@ -8,7 +8,7 @@ interface SeverityPillProps {
 const SeverityPill = ({ severity }: SeverityPillProps) => {
   const type = useMemo(() => {
     switch (severity.name) {
-      case "Critical":
+      case "Major":
         return "danger";
       case "Minor":
         return "warning";

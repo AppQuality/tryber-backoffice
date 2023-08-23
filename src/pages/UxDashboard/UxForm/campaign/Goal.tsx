@@ -13,6 +13,7 @@ import QuestionField from "../components/fields/QuestionField";
 import { FormQuestion } from "../FormProvider";
 import { OnDragEndResponder } from "react-beautiful-dnd";
 import DragNDropProvider from "../DragNDropProvider";
+import { AddNew } from "../components/AddNew";
 
 const Goal = () => {
   return (
@@ -73,21 +74,18 @@ const Goal = () => {
                       </div>
                     )}
                   />
-                  <Card shadow>
-                    <div
-                      data-qa="add-new-question"
-                      onClick={() => {
-                        const newQuestion = {
-                          internalId: uuidv4(),
-                          value: "",
-                        };
-                        push(newQuestion);
-                      }}
-                    >
-                      <span>+ </span>
-                      <span>Aggiungi domanda di ricerca</span>
-                    </div>
-                  </Card>
+                  <AddNew
+                    data-qa="add-new-question"
+                    onClick={() => {
+                      const newQuestion = {
+                        internalId: uuidv4(),
+                        value: "",
+                      };
+                      push(newQuestion);
+                    }}
+                  >
+                    Aggiungi domanda di ricerca
+                  </AddNew>
                 </>
               );
             }}

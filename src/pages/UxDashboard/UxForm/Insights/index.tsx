@@ -1,4 +1,4 @@
-import { BSCol, BSGrid, Card } from "@appquality/appquality-design-system";
+import { Card } from "@appquality/appquality-design-system";
 import { FieldArray } from "formik";
 import { setInsightIndex, setModalOpen } from "../../uxDashboardSlice";
 import { FormInsight, FormValuesInterface } from "../FormProvider";
@@ -24,45 +24,35 @@ const InsightSection = () => {
       <FieldArray
         name={fieldName}
         render={({ form, remove, push, name }) => (
-          <BSGrid className="aq-mb-3">
+          <>
             <InsightModal remove={remove} />
-            {insights &&
-              insights.map((insight, index: number) => (
-                <BSCol
-                  size="col-lg-4"
-                  className="aq-mb-4"
-                  key={insight.id}
-                  data-qa={`insight-card-${insight.id}`}
-                >
+            <div className="aq-mb-3">
+              {insights &&
+                insights.map((insight, index: number) => (
                   <InsightCard
                     insight={insight}
                     index={index}
                     removeInsight={remove}
                   />
-                </BSCol>
-              ))}
-            <BSCol size="col-lg-4">
-              <Card shadow>
-                <AddNew
-                  data-qa="add-new-insight"
-                  onClick={() => {
-                    const newInsight: NewFormInsight = {
-                      internalId: uuidv4(),
-                      title: "",
-                      description: "",
-                      videoParts: [],
-                    };
-                    push(newInsight);
-                    dispatch(setInsightIndex(form.values.insights.length));
-                    dispatch(setModalOpen(true));
-                  }}
-                >
-                  <span className="icon-big">+</span>
-                  <span>Aggiungi scoperta</span>
-                </AddNew>
-              </Card>
-            </BSCol>
-          </BSGrid>
+                ))}
+              <AddNew
+                data-qa="add-new-insight"
+                onClick={() => {
+                  const newInsight: NewFormInsight = {
+                    internalId: uuidv4(),
+                    title: "",
+                    description: "",
+                    videoParts: [],
+                  };
+                  push(newInsight);
+                  dispatch(setInsightIndex(form.values.insights.length));
+                  dispatch(setModalOpen(true));
+                }}
+              >
+                Aggiungi scoperta
+              </AddNew>
+            </div>
+          </>
         )}
       />
     </Card>

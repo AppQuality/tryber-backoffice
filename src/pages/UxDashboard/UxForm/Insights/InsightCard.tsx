@@ -1,17 +1,22 @@
-import { Card, Pill, Button } from "@appquality/appquality-design-system";
+import {
+  Card,
+  Pill,
+  Button,
+  Title,
+} from "@appquality/appquality-design-system";
 import SeverityPill from "../components/SeverityPill";
 import { setInsightIndex, setModalOpen } from "../../uxDashboardSlice";
 import { FormInsight, FormValuesInterface } from "../FormProvider";
 import { useFormikContext } from "formik";
 import { useAppDispatch } from "src/store";
 import { setSelectedInsight } from "../../uxDashboardSlice";
+import { Film } from "react-bootstrap-icons";
 import styled from "styled-components";
 
 const InsightPillsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.grid.sizes[1]};
-  margin-bottom: ${({ theme }) => theme.grid.sizes[2]};
 `;
 
 interface InsightCardProps {
@@ -19,6 +24,18 @@ interface InsightCardProps {
   index: number;
   removeInsight: (index: number) => void;
 }
+
+const CardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const CardFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 export const InsightCard = ({
   insight,
@@ -31,10 +48,55 @@ export const InsightCard = ({
     dispatch(setSelectedInsight(insight));
     dispatch(setModalOpen(true));
   }
+
+  const Actions = () => (
+    <div style={{ display: "flex", gap: "5px" }}>
+      <Button
+        htmlType="button"
+        flat
+        type="danger"
+        size="sm"
+        onClick={() => {
+          window.confirm("Are you sure you wish to delete this item?") &&
+            removeInsight(index);
+          submitForm();
+        }}
+        data-qa="delete-insight"
+      >
+        Delete
+      </Button>
+      <Button
+        htmlType="button"
+        flat
+        size="sm"
+        type="primary"
+        onClick={() => {
+          editInsight(insight);
+          dispatch(setInsightIndex(index));
+        }}
+        data-qa="edit-insight"
+      >
+        Edit
+      </Button>
+    </div>
+  );
+
   return (
-    <Card title={insight.title} data-qa={`insight-card-${index}`}>
+    <Card
+      className="aq-mb-3"
+      title={
+        <CardHeader>
+          Scoperta {index + 1}
+          <Actions />
+        </CardHeader>
+      }
+      data-qa={`insight-card-${index}`}
+    >
+      <Title size="s" className="aq-mb-3">
+        {insight.title}
+      </Title>
       <div className="aq-mb-3">{insight.description}</div>
-      <div>
+      <CardFooter>
         <InsightPillsWrapper className="aq-mb-3" data-qa={`insight-pills`}>
           {insight?.severity && <SeverityPill severity={insight.severity} />}
           {Array.isArray(insight.cluster) &&
@@ -49,36 +111,11 @@ export const InsightCard = ({
             </Pill>
           )}
         </InsightPillsWrapper>
-        <div style={{ display: "flex", gap: "5px" }}>
-          <Button
-            htmlType="button"
-            flat
-            type="danger"
-            size="block"
-            onClick={() => {
-              window.confirm("Are you sure you wish to delete this item?") &&
-                removeInsight(index);
-              submitForm();
-            }}
-            data-qa="delete-insight"
-          >
-            Delete
-          </Button>
-          <Button
-            htmlType="button"
-            flat
-            type="primary"
-            size="block"
-            onClick={() => {
-              editInsight(insight);
-              dispatch(setInsightIndex(index));
-            }}
-            data-qa="edit-insight"
-          >
-            Edit
-          </Button>
+        <div>
+          <Film size={16} style={{ marginBottom: "-2px" }} />{" "}
+          {insight.videoParts.length} video
         </div>
-      </div>
+      </CardFooter>
     </Card>
   );
 };

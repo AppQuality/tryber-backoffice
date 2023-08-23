@@ -132,7 +132,7 @@ describe("Insights section of the form", () => {
       "campaigns/id/ux/_get/response_200_draft_with_insights.json"
     ).then((uxJson) => {
       cy.dataQa("insight-card-1").within(() => {
-        cy.get(".aq-card-title").should("have.text", uxJson.insights[1].title);
+        cy.get(".aq-card-body").should("contain", uxJson.insights[1].title);
         cy.get(".aq-card-body").should(
           "contain",
           uxJson.insights[1].description
