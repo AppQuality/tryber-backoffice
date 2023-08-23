@@ -35,7 +35,10 @@ const VideoParts = () => {
   const observationsOptions: VideoPartsOption[] = useMemo(
     () =>
       data?.items.map((observation) => ({
-        label: observation.name,
+        label:
+          observation.name +
+          observation.tester.name +
+          observation.cluster?.name,
         value: observation.id.toString(),
         ...observation,
       })) || [],
