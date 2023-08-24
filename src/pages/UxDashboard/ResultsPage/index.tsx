@@ -7,6 +7,7 @@ import { ReactComponent as Success } from "./assets/success.svg";
 import { ReactComponent as Fail } from "./assets/fail.svg";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const ResultsPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const { status, setStatus } = useFormikContext<FormValuesInterface>();
+  const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   const origin =
     window.location.origin.includes("localhost") ||
     window.location.origin.includes("dev.")
@@ -39,14 +41,36 @@ const ResultsPage = () => {
           </span>
         )}
       </Title>
-      <Button
-        as="a"
-        href={`${origin}/campaigns/${id}`}
-        className="aq-mb-3"
-        data-qa="go-to-campaign-page"
-      >
-        Vai alla pagina delle campagne
-      </Button>
+      {status === "success" ? (
+        <Button
+          as="a"
+          href={`${origin}/campaigns/${id}`}
+          className="aq-mb-3"
+          data-qa="go-to-campaign-page"
+        >
+          Vai alla campagna
+        </Button>
+      ) : (
+        <Button
+          onClick={() => {
+            const res = saveDashboard({
+              campaign: id,
+              body: {
+                status: "publish",
+              },
+            });
+            if ("error" in res) {
+              setStatus("error");
+            } else {
+              setStatus("success");
+            }
+          }}
+          className="aq-mb-3"
+          data-qa="go-to-campaign-page"
+        >
+          Riprova
+        </Button>
+      )}
       <Button
         className="aq-mb-3"
         flat
