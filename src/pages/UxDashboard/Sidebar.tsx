@@ -19,7 +19,7 @@ import {
 const Sidebar = () => {
   const { id } = useParams<{ id: string }>();
   const { add } = siteWideMessageStore();
-  const { submitForm, values, isSubmitting, errors } =
+  const { submitForm, values, isSubmitting, errors, setStatus } =
     useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   const { currentStep, currentFormSection } = useAppSelector(
@@ -100,11 +100,9 @@ const Sidebar = () => {
                   },
                 });
                 if ("error" in res) {
-                  add({
-                    type: "danger",
-                    message: `something went wrong`,
-                  });
-                  return;
+                  setStatus("error");
+                } else {
+                  setStatus("success");
                 }
                 dispatch(setCurrentStep(2));
               }}
