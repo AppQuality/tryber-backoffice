@@ -44,9 +44,17 @@ describe("In case of user with the right permissions", () => {
       `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
       {
         statusCode: 200,
-        fixture: "permissions/_get/response_200_appq_campaign.json",
+        fixture: "permissions/_get/response_200_appq_campaign",
       }
     ).as("enoughPermissions");
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
+      {
+        statusCode: 200,
+        fixture: "campaigns/id/ux/_get/response/200_draft_with_insights",
+      }
+    ).as("getUx");
     cy.visit(
       `${Cypress.env("CAMPAINGS_PAGE")}/4904${Cypress.env(
         "UX_DASHBOARD_PAGE"

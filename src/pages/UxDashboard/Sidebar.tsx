@@ -90,7 +90,7 @@ const Sidebar = () => {
               htmlType="button"
               size="block"
               type="secondary"
-              data-qa="close-dashboard-preview"
+              data-qa="publish-dashboard"
               disabled={isSubmitting}
               onClick={() => {
                 const res = saveDashboard({

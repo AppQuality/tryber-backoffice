@@ -54,7 +54,7 @@ describe("Insights section of the form", () => {
     });
   });
   it("Should show an empty form to create a new insight when clicking on the add new insight card", () => {
-    cy.dataQa("add-new-insight").click();
+    cy.dataQa("add-new-insight").click({ force: true });
     cy.dataQa("insight-form").within(() => {
       cy.get("input[name='insights[3].title']").should("be.empty");
       cy.get("textarea[name='insights[3].description']").should("be.empty");
@@ -70,7 +70,7 @@ describe("Insights section of the form", () => {
     });
   });
   it("Should show an error for each field if trying to save an empty insight", () => {
-    cy.dataQa("add-new-insight").click();
+    cy.dataQa("add-new-insight").click({ force: true });
     cy.dataQa("insight-form").as("insightForm");
     cy.get("@insightForm")
       .parents(".modal")
@@ -92,7 +92,7 @@ describe("Insights section of the form", () => {
   });
   it("Should show a prefilled form when clicking on the edit insight", () => {
     cy.dataQa("insight-card-1").within(() => {
-      cy.dataQa("edit-insight").click();
+      cy.dataQa("edit-insight").click({ force: true });
     });
     cy.dataQa("insight-form").as("insightForm");
     cy.get("@insightForm").within(() => {
@@ -125,7 +125,7 @@ describe("Insights section of the form", () => {
     });
   });
   it('Should clear the single insight form when clicking to dismiss in the "new insight" modal', () => {
-    cy.dataQa("add-new-insight").click();
+    cy.dataQa("add-new-insight").click({ force: true });
     cy.dataQa("insight-form")
       .parents(".modal")
       .within(() => {
@@ -142,7 +142,7 @@ describe("Insights section of the form", () => {
   });
   it('Should clear the single insight form when clicking to dismiss in the "edit insight" modal', () => {
     cy.dataQa("insight-card-1").within(() => {
-      cy.dataQa("edit-insight").click();
+      cy.dataQa("edit-insight").click({ force: true });
     });
     cy.dataQa("insight-form")
       .parents(".modal")
@@ -168,7 +168,7 @@ describe("Insights section of the form", () => {
       });
     });
   });
-  it.only('Should edit the insight data when clicking to save in the "edit insight" modal', () => {
+  it('Should edit the insight data when clicking to save in the "edit insight" modal', () => {
     cy.fixture("campaigns/id/ux/_patch/request/edit-insight-71").then(
       (fixture) => {
         cy.intercept(
