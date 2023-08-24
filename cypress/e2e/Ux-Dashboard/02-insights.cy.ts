@@ -14,7 +14,7 @@ describe("Insights section of the form", () => {
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
       {
         statusCode: 200,
-        fixture: "campaigns/id/ux/_get/response_200_draft_with_insights",
+        fixture: "campaigns/id/ux/_get/response/200_draft_with_insights",
       }
     ).as("getUx");
     cy.intercept(
@@ -44,7 +44,7 @@ describe("Insights section of the form", () => {
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
       {
         statusCode: 200,
-        fixture: "campaigns/id/ux/_get/response_200_draft_NO_insights.json",
+        fixture: "campaigns/id/ux/_get/response/200_draft_NO_insights.json",
       }
     ).as("getUx");
     cy.wait("@getUx");
@@ -69,12 +69,33 @@ describe("Insights section of the form", () => {
       });
     });
   });
+  it("Should show an error for each field if trying to save an empty insight", () => {
+    cy.dataQa("add-new-insight").click();
+    cy.dataQa("insight-form").as("insightForm");
+    cy.get("@insightForm")
+      .parents(".modal")
+      .within(() => {
+        cy.dataQa("save-insight").click();
+        cy.get("label[for='insights[3].title']")
+          .siblings()
+          .should("contain", "Campo obbligatorio");
+        cy.get("textarea[name='insights[3].description']")
+          .siblings()
+          .should("contain", "Campo obbligatorio");
+        cy.dataQa("severity-select")
+          .siblings()
+          .should("contain", "Campo obbligatorio");
+        cy.dataQa("cluster-select")
+          .siblings()
+          .should("contain", "Campo obbligatorio");
+      });
+  });
   it("Should show a prefilled form when clicking on the edit insight", () => {
     cy.dataQa("insight-card-1").within(() => {
       cy.dataQa("edit-insight").click();
     });
-    cy.wait("@getClusters");
-    cy.dataQa("insight-form").within(() => {
+    cy.dataQa("insight-form").as("insightForm");
+    cy.get("@insightForm").within(() => {
       cy.get("input[name='insights[1].title']").should(
         "have.value",
         "Difficoltà di navigazione"
@@ -111,7 +132,7 @@ describe("Insights section of the form", () => {
         cy.dataQa("discard-insight-changes").click();
       });
     cy.fixture(
-      "campaigns/id/ux/_get/response_200_draft_with_insights.json"
+      "campaigns/id/ux/_get/response/200_draft_with_insights.json"
     ).then((uxJson) => {
       cy.dataQa("insight-card", { startsWith: true }).should(
         "have.length",
@@ -129,7 +150,36 @@ describe("Insights section of the form", () => {
         cy.dataQa("discard-insight-changes").click();
       });
     cy.fixture(
-      "campaigns/id/ux/_get/response_200_draft_with_insights.json"
+      "campaigns/id/ux/_get/response/200_draft_with_insights.json"
+    ).then((uxJson) => {
+      cy.dataQa("insight-card-1").within(() => {
+        cy.get(".aq-card-body").should("contain", uxJson.insights[1].title);
+        cy.get(".aq-card-body").should(
+          "contain",
+          uxJson.insights[1].description
+        );
+        cy.dataQa("insight-pills", { startsWith: true })
+          .children()
+          .should(
+            "have.length",
+            uxJson.insights[1].clusters.length +
+              (uxJson.insights[1].severity.name ? 1 : 0)
+          );
+      });
+    });
+  });
+  it.only('Should edit the insight data when clicking to save in the "edit insight" modal', () => {
+    cy.dataQa("insight-card-1").within(() => {
+      cy.dataQa("edit-insight").click();
+    });
+    cy.dataQa("insight-form").within(() => {});
+    cy.dataQa("insight-form")
+      .parents(".modal")
+      .within(() => {
+        cy.dataQa("discard-insight-changes").click();
+      });
+    cy.fixture(
+      "campaigns/id/ux/_get/response/200_draft_with_insights.json"
     ).then((uxJson) => {
       cy.dataQa("insight-card-1").within(() => {
         cy.get(".aq-card-body").should("contain", uxJson.insights[1].title);

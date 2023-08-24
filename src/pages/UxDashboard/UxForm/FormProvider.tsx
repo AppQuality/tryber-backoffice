@@ -91,7 +91,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             value: question,
           };
         }, []) || [],
-      usersNumber: currentData?.usersNumber || 0,
+      usersNumber: currentData?.usersNumber || "",
       insights:
         currentData?.insights?.map((insight) => {
           return {
@@ -140,12 +140,14 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       description: string().required("Campo obbligatorio"),
     }),
     usersNumber: number().required("Campo obbligatorio"),
-    questions: array().of(
-      object().shape({
-        internalId: string().required("Campo obbligatorio"),
-        value: string().required("Campo obbligatorio"),
-      })
-    ),
+    questions: array()
+      .of(
+        object().shape({
+          internalId: string().required("Campo obbligatorio"),
+          value: string().required("Campo obbligatorio"),
+        })
+      )
+      .min(1, "Campo obbligatorio"),
     insights: array().of(
       object().shape({
         id: number(),

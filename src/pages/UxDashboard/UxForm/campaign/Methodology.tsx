@@ -9,6 +9,7 @@ import {
   Text,
   TextareaField,
   Title,
+  Field,
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import UsersQualityField from "../components/fields/UsersQualityField";
@@ -51,16 +52,7 @@ const Methodology = () => {
           Utenti coinvolti<span className="aq-text-danger">*</span>
         </Title>
         <BSCol size="col-lg-4">
-          <FormLabel htmlFor="usersNumber" label="Numero di utenti" />
-          <FormikField name="usersNumber">
-            {(fieldProps: FieldProps) => (
-              <Input
-                id={fieldProps.field.name}
-                {...fieldProps.field}
-                type="number"
-              />
-            )}
-          </FormikField>
+          <Field type="number" name="usersNumber" label="Numero di utenti" />
         </BSCol>
         <BSCol size="col-lg-4">
           <UsersQualityField />

@@ -83,7 +83,7 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
       >
         Dismiss
       </Button>
-      <Button htmlType="button" data-qa="save-new-insight" onClick={handleAdd}>
+      <Button htmlType="button" data-qa="save-insight" onClick={handleAdd}>
         Save
       </Button>
     </div>

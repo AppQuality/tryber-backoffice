@@ -23,10 +23,9 @@ const QuestionField = ({ index, remove, name }: QuestionFieldProps) => {
   return (
     <FormikField name={`${name}[${index}].value`}>
       {({ field, form }: FieldProps) => (
-        <Styled>
+        <Styled data-qa={`question-${index}`}>
           <Input
             id={field.name}
-            data-qa="question"
             type="text"
             placeholder='Es. Gli utenti vedono la CTA "Trova in negozio" nel PDP?'
             onChange={(value) => {

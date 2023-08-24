@@ -137,10 +137,10 @@
   resolved "https://registry.npmjs.org/@appquality/mobiscroll/-/mobiscroll-5.10.1.tgz"
   integrity sha512-A9YVu/5aFcmd6WtLEfr//x20mV5w9O3X5nsooYW43HMdfrx1fKcPfarCk9fHyyov1h0S9DdrzR7Dl/sciL7usA==
 
-"@appquality/stream-player@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@appquality/stream-player/-/stream-player-1.0.3.tgz#cd8f1599c37de1edb2162cbce332e356d020b5f8"
-  integrity sha512-kZBmDxb3BokBRKU9k3d9Z04rOCGq0UzK2u/iKilcQxp5wsHyPwweXki+6DaqMcZJMjLxKBfsq3QUCxpOMtZXmw==
+"@appquality/stream-player@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@appquality/stream-player/-/stream-player-1.0.4.tgz#d1a87be1e04f25b39a539b9eff2e8aa0b38627df"
+  integrity sha512-RMhzbf9uDLCWIHwVQf5LSOYbenrM/RNQkCSjtayrRBj4pcVs42gvnIa0TgPflZDEFL/jxTHthu1eL0U2NhKxWg==
   dependencies:
     hls.js "^1.4.8"
 

@@ -2,6 +2,7 @@ import {
   BSCol,
   BSGrid,
   Card,
+  ErrorMessage,
   FormLabel,
   Text,
   TextareaField,
@@ -90,6 +91,7 @@ const Goal = () => {
               );
             }}
           />
+          <ErrorMessage name="questions" />
         </BSCol>
         <BSCol size="col-lg-4">
           <FormLabel htmlFor="" label="Cos’è questo campo?" />

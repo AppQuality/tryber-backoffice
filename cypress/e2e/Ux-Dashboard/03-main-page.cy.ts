@@ -6,7 +6,7 @@ describe("Main page", () => {
       `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
       {
         statusCode: 200,
-        fixture: "permissions/_get/response_200_appq_campaign.json",
+        fixture: "permissions/_get/response_200_appq_campaign",
       }
     ).as("authorized");
     cy.intercept(
@@ -14,7 +14,7 @@ describe("Main page", () => {
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
       {
         statusCode: 200,
-        fixture: "campaigns/id/ux/_get/response_200_draft_with_insights.json",
+        fixture: "campaigns/id/ux/_get/response/200_draft_with_insights",
       }
     ).as("getUx");
     cy.visit(
