@@ -1,6 +1,15 @@
 {
   "goal": "this is goal",
-  "questions": ["question 1", "question 2", "question 3"],
+  "questions": [
+    {
+      "id": 1,
+      "name": "question 1"
+    },
+    {
+      "id": 2,
+      "name": "question 2"
+    }
+  ],
   "methodology": {
     "name": "UX Challenge",
     "description": "UX Challenge",

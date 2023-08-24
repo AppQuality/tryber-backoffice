@@ -1,4 +1,4 @@
-import { Select, Title } from "@appquality/appquality-design-system";
+import { Card, Select, Title } from "@appquality/appquality-design-system";
 import { FieldArray } from "formik";
 import { useParams } from "react-router-dom";
 import {
@@ -14,7 +14,8 @@ import Video from "@appquality/stream-player";
 import { OnDragEndResponder } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import DragNDropProvider from "../DragNDropProvider";
-import { ListItemCard } from "./ListItemCard";
+import { Plus } from "react-bootstrap-icons";
+import styled from "styled-components";
 
 export type VideoPartsOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];
@@ -23,6 +24,22 @@ type NewInsightVideopart = Pick<
   FormVideoPart,
   "internalId" | "mediaId" | "start" | "url" | "streamUrl" | "description"
 >;
+
+const StyledAddNewEvidence = styled.div`
+  display: grid;
+  grid-template-columns: 165px 1fr;
+  grid-template-rows: 1fr;
+  gap: ${({ theme }) => theme.grid.spacing.default};
+`;
+
+const PlusContainer = styled.div`
+  @media (min-width: ${({ theme }) => theme.grid.breakpoints.lg}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${({ theme }) => theme.colors.gray50};
+  }
+`;
 
 const VideoParts = () => {
   const { id } = useParams<{ id: string }>();
@@ -62,7 +79,10 @@ const VideoParts = () => {
                 onDragEnd={handleDragEnd}
                 items={videoParts}
                 renderItem={(videopart, index, dragHandleProps) => (
-                  <Video start={videopart.start} src={videopart.url}>
+                  <Video
+                    start={videopart.start}
+                    src={videopart.streamUrl || videopart.url}
+                  >
                     <VideoPart
                       start={videopart.start}
                       videoPartIndex={index}
@@ -73,35 +93,39 @@ const VideoParts = () => {
                   </Video>
                 )}
               />
-              <ListItemCard data-qa="add-new-videopart">
-                <div />
-                <div>
-                  <Title size="s" className="aq-mb-2">
-                    Aggiungi una nuova evidenza
-                  </Title>
-                  <Select
-                    menuTargetQuery="body"
-                    options={observationsOptions}
-                    label="Seleziona lo spezzone video"
-                    name={"observation"}
-                    value={[]}
-                    onChange={(value) => {
-                      if (!value) {
-                        return;
-                      }
-                      const newVideopart: NewInsightVideopart = {
-                        internalId: uuidv4(),
-                        mediaId: value.media.id,
-                        start: value.time,
-                        url: value.media.url,
-                        streamUrl: value.media.streamUrl,
-                        description: "",
-                      };
-                      push(newVideopart);
-                    }}
-                  />
-                </div>
-              </ListItemCard>
+              <Card shadow data-qa="add-new-videopart">
+                <StyledAddNewEvidence>
+                  <PlusContainer>
+                    <Plus size={100} className="aq-mr-2" />
+                  </PlusContainer>
+                  <div>
+                    <Title size="s" className="aq-mb-2">
+                      Aggiungi una nuova evidenza
+                    </Title>
+                    <Select
+                      menuTargetQuery="body"
+                      options={observationsOptions}
+                      label="Seleziona lo spezzone video"
+                      name={"observation"}
+                      value={[]}
+                      onChange={(value) => {
+                        if (!value) {
+                          return;
+                        }
+                        const newVideopart: NewInsightVideopart = {
+                          internalId: uuidv4(),
+                          mediaId: value.media.id,
+                          start: value.time,
+                          url: value.media.url,
+                          streamUrl: value.media.streamUrl,
+                          description: "",
+                        };
+                        push(newVideopart);
+                      }}
+                    />
+                  </div>
+                </StyledAddNewEvidence>
+              </Card>
             </>
           );
         }}
