@@ -21,7 +21,7 @@ interface QuestionFieldProps {
 
 const QuestionField = ({ index, remove, name }: QuestionFieldProps) => {
   return (
-    <FormikField name={`${name}[${index}].value`}>
+    <FormikField name={`${name}[${index}].name`}>
       {({ field, form }: FieldProps) => (
         <Styled data-qa={`question-${index}`}>
           <Input

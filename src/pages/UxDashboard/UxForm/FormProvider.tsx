@@ -12,7 +12,8 @@ import siteWideMessageStore from "src/redux/siteWideMessages";
 
 export interface FormQuestion {
   internalId: string;
-  value: string;
+  name: GetCampaignsByCampaignUxApiResponse["questions"][number]["name"];
+  id?: GetCampaignsByCampaignUxApiResponse["questions"][number]["id"];
 }
 export interface FormVideoPart {
   id?: NonNullable<
@@ -88,7 +89,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         currentData?.questions?.map((question) => {
           return {
             internalId: uuidv4(),
-            value: question,
+            ...question,
           };
         }, []) || [],
       usersNumber: currentData?.usersNumber,
@@ -144,7 +145,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       .of(
         object().shape({
           internalId: string().required("Campo obbligatorio"),
-          value: string().required("Campo obbligatorio"),
+          name: string().required("Campo obbligatorio"),
         })
       )
       .min(1, "Campo obbligatorio"),
@@ -222,7 +223,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
           campaign: id,
           body: {
             goal: values.goal,
-            questions: values.questions.map((question) => question.value),
+            questions: values.questions,
             methodology: values.methodology,
             usersNumber: values.usersNumber,
             insights: mapFormInsightsForPatch(values.insights) || [],

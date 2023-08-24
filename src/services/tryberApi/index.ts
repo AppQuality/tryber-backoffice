@@ -1205,7 +1205,10 @@ export type GetCampaignsByCampaignUxApiResponse =
       type: "qualitative" | "quantitative" | "quali-quantitative";
       description: string;
     };
-    questions: string[];
+    questions: {
+      id: number;
+      name: string;
+    }[];
   };
 export type GetCampaignsByCampaignUxApiArg = {
   /** A campaign id */
@@ -1243,7 +1246,10 @@ export type PatchCampaignsByCampaignUxApiArg = {
           type: "qualitative" | "quantitative" | "quali-quantitative";
           description: string;
         };
-        questions: string[];
+        questions: {
+          id?: number;
+          name: string;
+        }[];
       }
     | {
         status: "publish";

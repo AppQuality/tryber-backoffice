@@ -80,7 +80,7 @@ const Goal = () => {
                     onClick={() => {
                       const newQuestion = {
                         internalId: uuidv4(),
-                        value: "",
+                        name: "",
                       };
                       push(newQuestion);
                     }}

@@ -1571,7 +1571,10 @@ export interface operations {
               type: "qualitative" | "quantitative" | "quali-quantitative";
               description: string;
             };
-            questions: string[];
+            questions: {
+              id: number;
+              name: string;
+            }[];
           };
         };
       };
@@ -1627,7 +1630,10 @@ export interface operations {
                 type: "qualitative" | "quantitative" | "quali-quantitative";
                 description: string;
               };
-              questions: string[];
+              questions: {
+                id?: number;
+                name: string;
+              }[];
             }
           | {
               /** @enum {string} */
