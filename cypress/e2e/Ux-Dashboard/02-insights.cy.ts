@@ -169,32 +169,29 @@ describe("Insights section of the form", () => {
     });
   });
   it.only('Should edit the insight data when clicking to save in the "edit insight" modal', () => {
-    cy.dataQa("insight-card-1").within(() => {
-      cy.dataQa("edit-insight").click();
-    });
-    cy.dataQa("insight-form").within(() => {});
-    cy.dataQa("insight-form")
-      .parents(".modal")
-      .within(() => {
-        cy.dataQa("discard-insight-changes").click();
-      });
-    cy.fixture(
-      "campaigns/id/ux/_get/response/200_draft_with_insights.json"
-    ).then((uxJson) => {
-      cy.dataQa("insight-card-1").within(() => {
-        cy.get(".aq-card-body").should("contain", uxJson.insights[1].title);
-        cy.get(".aq-card-body").should(
-          "contain",
-          uxJson.insights[1].description
-        );
-        cy.dataQa("insight-pills", { startsWith: true })
-          .children()
-          .should(
-            "have.length",
-            uxJson.insights[1].clusters.length +
-              (uxJson.insights[1].severity.name ? 1 : 0)
-          );
-      });
-    });
+    cy.fixture("campaigns/id/ux/_patch/request/edit-insight-71").then(
+      (fixture) => {
+        cy.intercept(
+          "PATCH",
+          `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
+          {}
+        ).as("patchUx");
+        cy.dataQa("insight-card-1").within(() => {
+          cy.dataQa("edit-insight").click({ force: true });
+        });
+        cy.dataQa("insight-form").within(() => {
+          cy.get("input[name='insights[1].title']").type(" edited");
+          cy.get("textarea[name='insights[1].description']").type(" edited");
+          cy.get("[name='insights[1].videoParts[0].end']")
+            .clear()
+            .type("00:01:00");
+        });
+        cy.get('[data-qa="save-insight"]').click();
+        cy.wait("@patchUx").then((interception) => {
+          expect(interception.request.body).to.deep.eq(fixture);
+        });
+        cy.get(".toastr-success").should("be.visible");
+      }
+    );
   });
 });

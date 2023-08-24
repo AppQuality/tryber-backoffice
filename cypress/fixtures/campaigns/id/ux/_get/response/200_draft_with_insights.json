@@ -1,7 +1,7 @@
 {
   "status": "draft",
   "goal": "this is goal",
-  "usersNumber": 0,
+  "usersNumber": 10,
   "methodology": {
     "name": "UX Challenge",
     "description": "UX Challenge",
@@ -106,5 +106,5 @@
     }
   ],
   "sentiments": [],
-  "questions": []
+  "questions": ["question 1", "question 2", "question 3"]
 }

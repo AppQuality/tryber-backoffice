@@ -62,7 +62,7 @@ export interface FormValuesInterface {
   goal: GetCampaignsByCampaignUxApiResponse["goal"];
   methodology: GetCampaignsByCampaignUxApiResponse["methodology"];
   questions: FormQuestion[];
-  usersNumber: GetCampaignsByCampaignUxApiResponse["usersNumber"];
+  usersNumber?: GetCampaignsByCampaignUxApiResponse["usersNumber"];
   insights: FormInsight[];
 }
 
@@ -91,7 +91,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             value: question,
           };
         }, []) || [],
-      usersNumber: currentData?.usersNumber || "",
+      usersNumber: currentData?.usersNumber,
       insights:
         currentData?.insights?.map((insight) => {
           return {
@@ -214,6 +214,9 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       initialValues={initialValues}
       enableReinitialize
       onSubmit={async (values, formikHelpers) => {
+        // todo: better typing for values because validationSchema prevent usersNumber to be undefined
+        if (values.usersNumber === undefined) return;
+
         formikHelpers.setSubmitting(true);
         const res = await saveDashboard({
           campaign: id,

@@ -119,6 +119,7 @@ const VideoPart = ({
         <TextareaField
           name={`${fieldName}[${videoPartIndex}].description`}
           placeholder="Scrivi una nota o una descrizione"
+          label="Descrizione"
           height="4em"
         />
       </div>

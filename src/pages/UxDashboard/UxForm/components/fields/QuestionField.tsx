@@ -26,6 +26,7 @@ const QuestionField = ({ index, remove, name }: QuestionFieldProps) => {
         <Styled data-qa={`question-${index}`}>
           <Input
             id={field.name}
+            value={field.value}
             type="text"
             placeholder='Es. Gli utenti vedono la CTA "Trova in negozio" nel PDP?'
             onChange={(value) => {
