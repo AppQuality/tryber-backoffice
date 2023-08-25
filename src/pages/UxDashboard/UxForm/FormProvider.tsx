@@ -110,7 +110,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
                 id: video.id,
                 internalId: uuidv4(),
                 start: video.start,
-                end: video.end,
+                end: video.end - video.start,
                 description: video.description,
                 mediaId: video.mediaId,
                 streamUrl: video.streamUrl,

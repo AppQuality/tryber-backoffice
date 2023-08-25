@@ -15,6 +15,7 @@ import {
   PauseFill,
 } from "react-bootstrap-icons";
 import { useState } from "react";
+import { FormValuesInterface } from "../../FormProvider";
 
 const controlsMargin = "10px";
 const ProgressBar = styled(Video.ProgressBar)`
@@ -133,10 +134,17 @@ export const VideoControls = ({
   const [timer, setTimer] = useState<any>();
   const { isFullScreen, context, setFullScreen, togglePlay } =
     useVideoContext();
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, getFieldMeta } =
+    useFormikContext<FormValuesInterface>();
   const fillEndTime = () => {
     if (context.player?.currentTime) {
-      setFieldValue(`${videoFieldName}.end`, context.player.currentTime);
+      const start = getFieldMeta<
+        FormValuesInterface["insights"][number]["videoParts"][number]
+      >(`${videoFieldName}`).value.start;
+      setFieldValue(
+        `${videoFieldName}.end`,
+        context.player.currentTime - start
+      );
       // setIsPlaying(false); not working in this version
       if (context.isPlaying) {
         togglePlay();
