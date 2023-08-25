@@ -54,7 +54,9 @@ const VideoParts = () => {
       data?.items.map((observation) => ({
         label:
           observation.name +
+          " - " +
           observation.tester.name +
+          " - " +
           observation.cluster?.name,
         value: observation.id.toString(),
         ...observation,
