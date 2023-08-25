@@ -39,7 +39,12 @@ const QuestionField = ({ index, remove, name }: QuestionFieldProps) => {
               },
             }}
           />
-          <Button type="danger" flat onClick={() => remove(index)}>
+          <Button
+            type="danger"
+            flat
+            onClick={() => remove(index)}
+            data-qa={`delete-question-${index}`}
+          >
             Elimina
           </Button>
           <ErrorMessage name={field.name} />

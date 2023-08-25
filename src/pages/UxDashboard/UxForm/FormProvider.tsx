@@ -144,7 +144,6 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     questions: array()
       .of(
         object().shape({
-          internalId: string().required("Campo obbligatorio"),
           name: string().required("Campo obbligatorio"),
         })
       )
@@ -156,7 +155,6 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         description: string().required("Campo obbligatorio"),
         severity: object()
           .shape({
-            id: number().required("Campo obbligatorio"),
             name: string().required("Campo obbligatorio"),
           })
           .required("Campo obbligatorio"),
@@ -166,7 +164,6 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             : array()
                 .of(
                   object().shape({
-                    id: number().required("Campo obbligatorio"),
                     name: string().required("Campo obbligatorio"),
                   })
                 )
@@ -174,10 +171,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         ),
         videoPart: array().of(
           object().shape({
-            id: number(),
-            start: number().required("Campo obbligatorio"),
             end: number().required("Campo obbligatorio"),
-            mediaId: number().required("Campo obbligatorio"),
             description: string().required("Campo obbligatorio"),
           })
         ),

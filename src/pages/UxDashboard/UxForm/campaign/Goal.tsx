@@ -87,11 +87,13 @@ const Goal = () => {
                   >
                     Aggiungi domanda di ricerca
                   </AddNew>
+                  {typeof form.getFieldMeta(name).error === "string" && (
+                    <ErrorMessage name="questions" />
+                  )}
                 </>
               );
             }}
           />
-          <ErrorMessage name="questions" />
         </BSCol>
         <BSCol size="col-lg-4">
           <FormLabel htmlFor="" label="Cos’è questo campo?" />
