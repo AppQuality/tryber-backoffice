@@ -58,7 +58,7 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
       setFieldTouched(`${fieldName}[${insightIndex}].severity.id`);
 
       const insightErrors = errors[fieldName][insightIndex];
-      Object.keys(insightErrors).forEach((key, i) => {
+      Object.keys(insightErrors).forEach((key) => {
         if (
           key === "videoParts" &&
           typeof insightErrors === "object" &&
