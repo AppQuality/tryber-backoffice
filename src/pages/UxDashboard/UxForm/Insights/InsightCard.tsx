@@ -57,9 +57,10 @@ export const InsightCard = ({
         type="danger"
         size="sm"
         onClick={() => {
-          window.confirm("Are you sure you wish to delete this item?") &&
+          if (window.confirm("Are you sure you wish to delete this item?")) {
             removeInsight(index);
-          submitForm();
+            submitForm();
+          }
         }}
         data-qa="delete-insight"
       >
