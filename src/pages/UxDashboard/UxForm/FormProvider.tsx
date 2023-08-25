@@ -81,7 +81,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       status: currentData?.status,
       goal: currentData?.goal || "",
       methodology: currentData?.methodology || {
-        name: "qualitative",
+        name: "",
         type: "qualitative",
         description: "",
       },
@@ -203,7 +203,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
                 id: video.id,
                 order: videoIndex,
                 start: video.start,
-                end: Math.round(video.end),
+                end: Math.round(video.end) + video.start,
                 mediaId: video.mediaId,
                 description: video.description,
               };
