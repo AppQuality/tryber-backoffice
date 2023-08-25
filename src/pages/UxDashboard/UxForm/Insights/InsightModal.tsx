@@ -56,6 +56,7 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
       setFieldTouched(`${fieldName}[${insightIndex}].description`);
       setFieldTouched(`${fieldName}[${insightIndex}].cluster`); // could be a string or an object
       setFieldTouched(`${fieldName}[${insightIndex}].severity.name`);
+
       alert("compila tutti i campi obbligatori");
       return;
     }
