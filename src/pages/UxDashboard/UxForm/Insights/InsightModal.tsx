@@ -51,12 +51,28 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
     [values, insightIndex]
   );
   const handleAdd = () => {
-    if (errors.insights && errors.insights[insightIndex]) {
+    if (errors[fieldName] && errors[fieldName][insightIndex]) {
       setFieldTouched(`${fieldName}[${insightIndex}].title`);
       setFieldTouched(`${fieldName}[${insightIndex}].description`);
       setFieldTouched(`${fieldName}[${insightIndex}].cluster`); // could be a string or an object
-      setFieldTouched(`${fieldName}[${insightIndex}].severity.name`);
+      setFieldTouched(`${fieldName}[${insightIndex}].severity.id`);
 
+      const insightErrors = errors[fieldName][insightIndex];
+      Object.keys(insightErrors).forEach((key, i) => {
+        if (
+          key === "videoParts" &&
+          typeof insightErrors === "object" &&
+          typeof insightErrors.videoParts !== "string"
+        ) {
+          insightErrors.videoParts?.forEach((videoPart, videoPartIndex) => {
+            Object.keys(videoPart).forEach((videoPartKey) => {
+              setFieldTouched(
+                `${fieldName}[${insightIndex}].videoParts[${videoPartIndex}].${videoPartKey}`
+              );
+            });
+          });
+        }
+      });
       alert("compila tutti i campi obbligatori");
       return;
     }
