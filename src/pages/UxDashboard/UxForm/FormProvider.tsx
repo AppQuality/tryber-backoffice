@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import {
   GetCampaignsByCampaignUxApiResponse,
+  useGetCampaignsByCampaignQuery,
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
 } from "src/services/tryberApi";
@@ -76,12 +77,15 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       campaign: id,
     });
 
+  const { data: campaignData, isLoading: campaignDataLoading } =
+    useGetCampaignsByCampaignQuery({ campaign: id });
+
   const initialValues: FormValuesInterface = useMemo(
     () => ({
       status: currentData?.status,
       goal: currentData?.goal || "",
       methodology: currentData?.methodology || {
-        name: "",
+        name: campaignData?.type || "",
         type: "qualitative",
         description: "",
       },
@@ -120,10 +124,10 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
           };
         }) || [],
     }),
-    [currentData]
+    [currentData, campaignData]
   );
 
-  if (isLoading) {
+  if (isLoading || campaignDataLoading) {
     return <Container>Loading...</Container>;
   }
   if (isError && "status" in error && error.status === 403) {
