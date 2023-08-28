@@ -56,19 +56,24 @@ const VideoPart = ({
   fieldName,
   remove,
   handleDragProps,
+  title,
 }: {
   start: number;
   videoPartIndex: number;
   fieldName: string;
   remove: (index: number) => void;
   handleDragProps: any;
+  title?: string;
 }) => {
   const {
     context: { player },
   } = useVideoContext();
   return (
     <ListItemCard data-qa={`insight-videopart-${videoPartIndex}`}>
-      <VideoPlayer videoFieldName={`${fieldName}[${videoPartIndex}]`} />
+      <VideoPlayer
+        videoFieldName={`${fieldName}[${videoPartIndex}]`}
+        title={title}
+      />
       <div>
         <FormikField
           name={`${fieldName}[${videoPartIndex}].end`}

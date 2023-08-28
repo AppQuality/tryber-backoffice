@@ -33,10 +33,26 @@ const ProgressBar = styled(Video.ProgressBar)`
       `linear-gradient(180deg, rgba(0,0,0,0) 39%, ${theme.colors.white} 40%, ${theme.colors.white} 60%, rgba(0,0,0,0) 61%);`};
   }
 `;
-const CustomTimer = styled(Video.Timer)`
-  margin-left: auto;
-  margin-right: ${controlsMargin};
+const InfoContainer = styled.div<{ isFullScreen?: boolean }>`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px 0 10px;
   color: ${({ theme }) => theme.colors.white};
+  .video-title {
+    align-self: flex-start;
+  }
+  .video-timer {
+    align-self: flex-end;
+  }
+  ${({ isFullScreen }) =>
+    isFullScreen &&
+    `
+    flex-direction: row;
+  `}
 `;
 
 const ControlsWrapper = styled.div<{ show: boolean; isFullScreen: boolean }>`
@@ -127,8 +143,10 @@ const OtherControls = styled.div<{ isFullScreen?: boolean }>`
 
 export const VideoControls = ({
   videoFieldName,
+  title,
 }: {
   videoFieldName: string;
+  title?: string;
 }) => {
   const [isPointerMoving, setIsPointerMoving] = useState(false);
   const [timer, setTimer] = useState<any>();
@@ -175,7 +193,10 @@ export const VideoControls = ({
       <CenteredPlayPause
         i18n={{ play: <PlayCircleFill />, pause: <PauseCircleFill /> }}
       />
-      <CustomTimer className={"timer"} />
+      <InfoContainer>
+        <strong className="video-title">{title}</strong>
+        <Video.Timer className={"video-timer"} />
+      </InfoContainer>
       <ProgressBar className="progress-bar" />
       <OtherControls isFullScreen={isFullScreen}>
         <Video.Mute

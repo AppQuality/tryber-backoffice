@@ -90,6 +90,11 @@ const VideoParts = () => {
                       fieldName={fieldName}
                       remove={remove}
                       handleDragProps={dragHandleProps}
+                      title={
+                        observationsOptions.find(
+                          (option) => option.media.id === videopart.mediaId
+                        )?.label
+                      }
                     />
                   </Video>
                 )}
