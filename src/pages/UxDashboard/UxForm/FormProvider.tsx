@@ -136,7 +136,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     status: string(),
     goal: string().required("Campo obbligatorio"),
     methodology: object().shape({
-      name: string().required("Campo obbligatorio"),
+      name: string(),
       type: string().required("Campo obbligatorio"),
       description: string().required("Campo obbligatorio"),
     }),
