@@ -58,6 +58,10 @@ const UxDashboard = () => {
           <PageTitle
             heading="UX Campaign Overview Dashboard"
             subtitle={`Campagna ${id}`}
+            back={{
+              text: "Vai alla dashboard video",
+              navigation: `${window.location.origin}/campaigns/video/${id}/`,
+            }}
           >
             Tool di compilazione
           </PageTitle>
