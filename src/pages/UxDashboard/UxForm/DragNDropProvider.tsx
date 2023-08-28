@@ -23,6 +23,9 @@ const Wrapper = styled.div<{ isDraggingOver?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.grid.sizes[3]};
+  > *:last-child {
+    margin-bottom: ${({ theme }) => theme.grid.sizes[3]};
+  }
 `;
 
 const DraggableItem = styled.div<{ isDragging: boolean }>`

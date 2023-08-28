@@ -77,7 +77,6 @@ const VideoParts = () => {
           return (
             <>
               <DragNDropProvider<FormVideoPart>
-                className="aq-mb-3"
                 onDragEnd={handleDragEnd}
                 items={videoParts}
                 renderItem={(videopart, index, dragHandleProps) => (

@@ -62,7 +62,6 @@ const Goal = () => {
               return (
                 <>
                   <DragNDropProvider<FormQuestion>
-                    className="aq-mb-3"
                     onDragEnd={handleDragEnd}
                     items={questions}
                     renderItem={(question, index, dragHandleProps) => (

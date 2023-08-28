@@ -77,7 +77,7 @@ const UxDashboard = () => {
             <ResponsiveCol size="col-lg-9" lgOrder={0}>
               <StyledSteps
                 current={currentStep}
-                className="aq-mb-3"
+                className="aq-my-4"
                 direction="horizontal"
               >
                 <StyledSteps.Step isCompleted={true} title={"Form"} />
