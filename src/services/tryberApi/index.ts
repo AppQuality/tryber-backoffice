@@ -973,6 +973,7 @@ export type GetCampaignsOwnersApiArg = void;
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
   title: string;
+  type: string;
 };
 export type GetCampaignsByCampaignApiArg = {
   /** A campaign id */
