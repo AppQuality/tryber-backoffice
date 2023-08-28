@@ -6,7 +6,10 @@ import {
   Steps,
 } from "@appquality/appquality-design-system";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
-import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
+import {
+  useGetCampaignsByCampaignQuery,
+  useGetUsersMePermissionsQuery,
+} from "src/services/tryberApi";
 import UxDashboardForm from "./UxForm";
 import { useParams } from "react-router-dom";
 import Preview from "./Preview";
@@ -37,6 +40,8 @@ const UxDashboard = () => {
     isLoading,
   } = useGetUsersMePermissionsQuery();
 
+  const { data: campaign } = useGetCampaignsByCampaignQuery({ campaign: id });
+
   if (isLoading) {
     return <Container>Loading...</Container>;
   }
@@ -57,7 +62,7 @@ const UxDashboard = () => {
         <Container>
           <PageTitle
             heading="UX Campaign Overview Dashboard"
-            subtitle={`Campagna ${id}`}
+            subtitle={`Campagna ${id} - ${campaign?.title}`}
             back={{
               text: "Vai alla dashboard video",
               navigation: `${window.location.origin}/campaigns/video/${id}/`,
