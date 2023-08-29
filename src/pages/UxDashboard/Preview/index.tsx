@@ -12,8 +12,8 @@ const Preview = () => {
   const origin =
     window.location.origin.includes("localhost") ||
     window.location.origin.includes("dev.")
-      ? "https://unguess.tryber.me/"
-      : "https://unguess.tryber.me/";
+      ? "https://unguess.tryber.me"
+      : "https://unguess.tryber.me";
   return (
     <StyledIframe
       title="preview"
