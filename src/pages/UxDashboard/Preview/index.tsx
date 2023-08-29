@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { isDev } from "src/utils/isDevEnvironment";
 import styled from "styled-components";
 
 const StyledIframe = styled.iframe`
@@ -9,11 +10,9 @@ const StyledIframe = styled.iframe`
 
 const Preview = () => {
   const { id } = useParams<{ id: string }>();
-  const origin =
-    window.location.origin.includes("localhost") ||
-    window.location.origin.includes("dev.")
-      ? "https://dev-unguess.tryber.me"
-      : "https://unguess.tryber.me";
+  const origin = isDev()
+    ? "https://dev-unguess.tryber.me"
+    : "https://unguess.tryber.me";
   return (
     <StyledIframe
       title="preview"

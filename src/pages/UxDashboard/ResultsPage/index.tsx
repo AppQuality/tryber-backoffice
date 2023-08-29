@@ -1,13 +1,14 @@
 import { Button, Title } from "@appquality/appquality-design-system";
-import { setCurrentStep } from "../uxDashboardSlice";
-import { useAppDispatch } from "src/store";
 import { useFormikContext } from "formik";
-import { FormValuesInterface } from "../UxForm/FormProvider";
-import { ReactComponent as Success } from "./assets/success.svg";
-import { ReactComponent as Fail } from "./assets/fail.svg";
-import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
+import { useAppDispatch } from "src/store";
+import { isDev } from "src/utils/isDevEnvironment";
+import styled from "styled-components";
+import { FormValuesInterface } from "../UxForm/FormProvider";
+import { setCurrentStep } from "../uxDashboardSlice";
+import { ReactComponent as Fail } from "./assets/fail.svg";
+import { ReactComponent as Success } from "./assets/success.svg";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -21,11 +22,7 @@ const ResultsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { status, setStatus } = useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
-  const origin =
-    window.location.origin.includes("localhost") ||
-    window.location.origin.includes("dev.")
-      ? "https://dev.unguess.io"
-      : "https://unguess.io";
+  const origin = isDev() ? "https://dev.unguess.io" : "https://app.unguess.io";
 
   return (
     <StyledContainer>
