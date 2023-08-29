@@ -25,3 +25,5 @@ yarn-error.log*
 generate-devel-token.json
 
 .idea/
+
+generate-devel-token-*

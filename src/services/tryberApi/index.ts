@@ -193,6 +193,39 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.taskOptional,
       }),
     }),
+    getCampaignsByCampaignUx: build.query<
+      GetCampaignsByCampaignUxApiResponse,
+      GetCampaignsByCampaignUxApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/ux` }),
+    }),
+    patchCampaignsByCampaignUx: build.mutation<
+      PatchCampaignsByCampaignUxApiResponse,
+      PatchCampaignsByCampaignUxApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/ux`,
+        method: "PATCH",
+        body: queryArg.body,
+      }),
+    }),
+    getCampaignsByCampaignClusters: build.query<
+      GetCampaignsByCampaignClustersApiResponse,
+      GetCampaignsByCampaignClustersApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/clusters`,
+      }),
+    }),
+    getCampaignsByCampaignObservations: build.query<
+      GetCampaignsByCampaignObservationsApiResponse,
+      GetCampaignsByCampaignObservationsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/observations`,
+        params: { filterBy: queryArg.filterBy },
+      }),
+    }),
     postCampaignsForms: build.mutation<
       PostCampaignsFormsApiResponse,
       PostCampaignsFormsApiArg
@@ -940,6 +973,7 @@ export type GetCampaignsOwnersApiArg = void;
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
   title: string;
+  type: string;
 };
 export type GetCampaignsByCampaignApiArg = {
   /** A campaign id */
@@ -1129,6 +1163,135 @@ export type PutCampaignsByCampaignTasksAndTaskApiArg = {
   task: string;
   /** The data to edit in the UseCase linked to the Campaign */
   taskOptional: TaskOptional;
+};
+export type GetCampaignsByCampaignUxApiResponse =
+  /** status 200 A UseCase linked with the Campaign */ {
+    status: "draft" | "published" | "draft-modified";
+    goal: string;
+    usersNumber: number;
+    insights?: {
+      id: number;
+      title: string;
+      description: string;
+      severity: {
+        id: number;
+        name: string;
+      };
+      clusters:
+        | "all"
+        | {
+            id: number;
+            name: string;
+          }[];
+      videoParts: {
+        id: number;
+        start: number;
+        end: number;
+        mediaId: number;
+        url: string;
+        streamUrl: string;
+        description: string;
+      }[];
+    }[];
+    sentiments: {
+      value: number;
+      comment: string;
+      cluster: {
+        id: number;
+        name: string;
+      };
+    }[];
+    methodology: {
+      name: string;
+      type: "qualitative" | "quantitative" | "quali-quantitative";
+      description: string;
+    };
+    questions: {
+      id: number;
+      name: string;
+    }[];
+  };
+export type GetCampaignsByCampaignUxApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
+export type PatchCampaignsByCampaignUxApiResponse = /** status 200 OK */ {};
+export type PatchCampaignsByCampaignUxApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body:
+    | {
+        goal: string;
+        usersNumber: number;
+        insights: {
+          id?: number;
+          title: string;
+          description: string;
+          severityId: number;
+          order: number;
+          clusterIds: number[] | "all";
+          videoParts: {
+            id?: number;
+            start: number;
+            end: number;
+            mediaId: number;
+            description: string;
+            order: number;
+          }[];
+        }[];
+        sentiments: {
+          clusterId: number;
+          value: number;
+        }[];
+        methodology: {
+          type: "qualitative" | "quantitative" | "quali-quantitative";
+          description: string;
+        };
+        questions: {
+          id?: number;
+          name: string;
+        }[];
+      }
+    | {
+        status: "publish";
+      };
+};
+export type GetCampaignsByCampaignClustersApiResponse =
+  /** status 200 A UseCase linked with the Campaign */ {
+    items: {
+      id: number;
+      name: string;
+    }[];
+  };
+export type GetCampaignsByCampaignClustersApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
+export type GetCampaignsByCampaignObservationsApiResponse =
+  /** status 200 A UseCase linked with the Campaign */ {
+    items: {
+      id: number;
+      name: string;
+      time: number;
+      tester: {
+        id: number;
+        name: string;
+      };
+      cluster: {
+        id: number;
+        name: string;
+      };
+      media: {
+        id: number;
+        url: string;
+        streamUrl: string;
+      };
+    }[];
+  };
+export type GetCampaignsByCampaignObservationsApiArg = {
+  /** A campaign id */
+  campaign: string;
+  filterBy?: any;
 };
 export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
   id: number;
@@ -2485,6 +2648,10 @@ export const {
   usePostCampaignsByCampaignTasksMutation,
   useGetCampaignsByCampaignTasksAndTaskQuery,
   usePutCampaignsByCampaignTasksAndTaskMutation,
+  useGetCampaignsByCampaignUxQuery,
+  usePatchCampaignsByCampaignUxMutation,
+  useGetCampaignsByCampaignClustersQuery,
+  useGetCampaignsByCampaignObservationsQuery,
   usePostCampaignsFormsMutation,
   useGetCampaignsFormsQuery,
   useGetCampaignsFormsByFormIdQuery,

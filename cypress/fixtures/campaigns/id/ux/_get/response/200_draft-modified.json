@@ -1,0 +1,12 @@
+{
+  "status": "draft-modified",
+  "goal": "this is goal",
+  "usersNumber": 0,
+  "methodology": {
+    "name": "UX Challenge",
+    "description": "UX Challenge",
+    "type": "qualitative"
+  },
+  "sentiments": [],
+  "questions": []
+}

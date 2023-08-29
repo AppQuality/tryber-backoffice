@@ -6,6 +6,7 @@ import jotformReducer from "src/pages/Jotform/jotformSlice";
 import campaignPreselectionReducer from "src/pages/campaigns/preselectionForm/preselectionSlice";
 import campaignPreselectionListReducer from "src/pages/campaigns/preselectionFormList/preselectionListSlice";
 import selectionReducer from "src/pages/campaigns/selection/selectionSlice";
+import uxDashboardReducer from "src/pages/UxDashboard/uxDashboardSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   campaignPreselection: campaignPreselectionReducer,
   campaignPreselectionList: campaignPreselectionListReducer,
   selection: selectionReducer,
+  uxDashboard: uxDashboardReducer,
   [tryberApiSlice.reducerPath]: tryberApiSlice.reducer,
 });
 
