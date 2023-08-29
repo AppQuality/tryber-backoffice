@@ -5,6 +5,9 @@ import {
 import { components, operations } from "src/utils/schema";
 
 declare global {
+  let react_env: {
+    REACT_APP_ENV: string;
+  };
   type Theme = typeof aqBootstrapTheme;
   type ApiOperations = operations;
   type HttpError = HttpError;
