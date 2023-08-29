@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { addMessage, removeMessage } from "./actionCreators";
 
-export default () => {
+const SiteWideMessages = () => {
   const messages: Array<SiteWideMessageItem> = useSelector(
     (state: GeneralState) => state.messages.messages,
     shallowEqual
@@ -18,3 +18,5 @@ export default () => {
       dispatch(removeMessage({ uuid })),
   };
 };
+
+export default SiteWideMessages;

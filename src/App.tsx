@@ -23,6 +23,7 @@ import Prospect from "./pages/Prospect";
 import AgreementsList from "./pages/agreements/list";
 import SingleAgreementEdit from "./pages/agreements/view-edit";
 import SingleAgreementNew from "./pages/agreements/new";
+import UxDashboard from "./pages/UxDashboard";
 
 function App() {
   return (
@@ -58,6 +59,10 @@ function App() {
             <Route
               path="/backoffice/campaigns/:id/selection"
               component={SelectionPage}
+            />
+            <Route
+              path="/backoffice/campaigns/:id/ux-dashboard"
+              component={UxDashboard}
             />
             <Route path="/backoffice/campaigns" component={Campaigns} />
             <Route
