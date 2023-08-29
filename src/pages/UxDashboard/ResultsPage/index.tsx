@@ -3,6 +3,7 @@ import { useFormikContext } from "formik";
 import { useParams } from "react-router-dom";
 import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
+import { isDev } from "src/utils/isDevEnvironment";
 import styled from "styled-components";
 import { FormValuesInterface } from "../UxForm/FormProvider";
 import { setCurrentStep } from "../uxDashboardSlice";
@@ -21,11 +22,7 @@ const ResultsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { status, setStatus } = useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
-  const origin =
-    window.location.origin.includes("localhost") ||
-    window.location.origin.includes("dev.")
-      ? "https://dev.unguess.io"
-      : "https://app.unguess.io";
+  const origin = isDev() ? "https://dev.unguess.io" : "https://app.unguess.io";
 
   return (
     <StyledContainer>
