@@ -80,14 +80,8 @@ const VideoPart = ({
           validate={(value: number) => {
             if (player) {
               let error;
-              if (value > player.totalTime) {
+              if (value > player.totalTime - start) {
                 error = "Non puoi tagliare oltre la durata del video";
-              }
-              if (value < start) {
-                error =
-                  "Non puoi tagliare prima dello start che hai impostato a " +
-                  moment.utc(start * 1000).format("HH:mm:ss") +
-                  "";
               }
               return error;
             }
