@@ -2,6 +2,8 @@ FROM node:16.19-alpine3.17 as base
 
 COPY package.json ./
 COPY yarn.lock ./
+ARG NPM_TOKEN  
+RUN echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
 RUN ["yarn", "install", "--frozen-lockfile", "--ignore-scripts"]
 RUN rm -f .npmrc
 
