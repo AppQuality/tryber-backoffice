@@ -1,15 +1,15 @@
 import { Container, Formik } from "@appquality/appquality-design-system";
 import { ReactNode, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   GetCampaignsByCampaignUxApiResponse,
   useGetCampaignsByCampaignQuery,
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
 } from "src/services/tryberApi";
-import { string, array, object, number, lazy } from "yup";
-import siteWideMessageStore from "src/redux/siteWideMessages";
+import { v4 as uuidv4 } from "uuid";
+import { array, lazy, number, object, string } from "yup";
 
 export interface FormQuestion {
   internalId: string;
@@ -87,7 +87,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       methodology: currentData?.methodology || {
         name: campaignData?.type || "",
         type: "qualitative",
-        description: "",
+        description: campaignData?.typeDescription || "",
       },
       questions:
         currentData?.questions?.map((question) => {
