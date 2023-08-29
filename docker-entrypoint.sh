@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CONFIG_FILE_PATH="/build/static/env-config.js"
+CONFIG_FILE_PATH="/build/backoffice/static/env-config.js"
 
 # Recreate config file
 rm -rf $CONFIG_FILE_PATH
