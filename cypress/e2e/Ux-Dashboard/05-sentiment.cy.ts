@@ -35,10 +35,34 @@ describe("Sentiment section of the form: ", () => {
     cy.dataQa("sentiment-chart-section").should("be.visible");
     cy.dataQa("add-new-sentiment-chart").should("be.visible");
   });
-  it.only("the add new sentiment button should open an empty sentiment chart form with a card for each cluster", () => {
+  it("The add new sentiment button should open an empty sentiment chart form with a card for each cluster", () => {
     cy.dataQa("add-new-sentiment-chart").click({ force: true });
     cy.dataQa("sentiment-chart-form").within(() => {
-      cy.dataQa("sentiment-score-card").should("have.length", 2);
+      cy.dataQa("sentiment-score-card-", { startsWith: true }).should(
+        "have.length",
+        2
+      );
+    });
+  });
+  it("The sentiment card should have cluster title, and a score radio input and a note textarea", () => {
+    cy.dataQa("add-new-sentiment-chart").click({ force: true });
+    cy.dataQa("sentiment-chart-form").within(() => {
+      cy.dataQa("sentiment-score-card-", { startsWith: true }).each(
+        (card, index) => {
+          cy.wrap(card)
+            .find(".aq-card-title")
+            .should("contain", `${index + 1}. UC ${index + 1}`);
+          cy.wrap(card)
+            .find("input[type=radio]")
+            .should("have.length", 5)
+            .each((radio, index) => {
+              cy.wrap(radio)
+                .should("have.attr", "value", index + 1)
+                .should("not.be.checked");
+            });
+          cy.wrap(card).find("textarea").should("be.empty");
+        }
+      );
     });
   });
 });

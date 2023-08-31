@@ -1,8 +1,6 @@
 import {
   Button,
   Modal,
-  Field,
-  TextareaField,
   Title,
   Text,
   FormLabel,
@@ -10,7 +8,6 @@ import {
   BSCol,
   Card,
 } from "@appquality/appquality-design-system";
-import { useFormikContext } from "formik";
 import { useAppDispatch, useAppSelector } from "src/store";
 import {
   resetInsight,
@@ -18,10 +15,9 @@ import {
   setSentimentModalOpen,
 } from "../../uxDashboardSlice";
 import styled from "styled-components";
-import { FormValuesInterface } from "../FormProvider";
-import { fieldName } from ".";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useParams } from "react-router-dom";
+import SentimentCard from "./SentimentCard";
 
 const StyledModal = styled(Modal)`
   .modal {
@@ -90,19 +86,8 @@ const SentimentChartModal = () => {
             Sentiment
           </Title>
           <BSCol size="col-lg-9">
-            {data?.items.map(() => (
-              <Card data-qa="sentiment-score-card" className="aq-mb-3">
-                <Field
-                  name={`${fieldName}.score`}
-                  label="Score"
-                  data-qa="sentiment-score"
-                />
-                <TextareaField
-                  height="8em"
-                  name={`${fieldName}.description`}
-                  label="Description"
-                />
-              </Card>
+            {data?.items.map((cluster, index) => (
+              <SentimentCard cluster={cluster} index={index} />
             ))}
           </BSCol>
           <BSCol size="col-lg-3">
