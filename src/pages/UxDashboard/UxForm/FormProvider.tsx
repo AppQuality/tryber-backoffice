@@ -59,6 +59,12 @@ export interface FormInsight {
   >[number]["clusters"];
   videoParts: FormVideoPart[];
 }
+
+export interface FormSentiment {
+  cluster: string;
+  score: number;
+  note: string;
+}
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
   goal: GetCampaignsByCampaignUxApiResponse["goal"];
@@ -66,6 +72,7 @@ export interface FormValuesInterface {
   questions: FormQuestion[];
   usersNumber?: GetCampaignsByCampaignUxApiResponse["usersNumber"];
   insights: FormInsight[];
+  sentiments: FormSentiment[];
 }
 
 const FormProvider = ({ children }: { children: ReactNode }) => {
@@ -123,6 +130,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             }),
           };
         }) || [],
+      sentiments: [],
     }),
     [currentData, campaignData]
   );

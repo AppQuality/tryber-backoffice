@@ -6,7 +6,7 @@ import {
   Title,
 } from "@appquality/appquality-design-system";
 import { FieldArray } from "formik";
-import { setInsightIndex, setModalOpen } from "../../uxDashboardSlice";
+import { setInsightIndex, setInsightModalOpen } from "../../uxDashboardSlice";
 import { FormInsight, FormValuesInterface } from "../FormProvider";
 import { useFormikContext } from "formik";
 import { InsightCard } from "./InsightCard";
@@ -20,9 +20,10 @@ type NewFormInsight = Pick<
   "internalId" | "title" | "description" | "videoParts"
 >;
 
+export const fieldName = "insights";
+
 const InsightSection = () => {
   const dispatch = useAppDispatch();
-  const fieldName = "insights";
   const { values } = useFormikContext<FormValuesInterface>();
   const insights = values[fieldName];
   return (
@@ -54,7 +55,7 @@ const InsightSection = () => {
                     };
                     push(newInsight);
                     dispatch(setInsightIndex(form.values.insights.length));
-                    dispatch(setModalOpen(true));
+                    dispatch(setInsightModalOpen(true));
                   }}
                 >
                   Aggiungi scoperta

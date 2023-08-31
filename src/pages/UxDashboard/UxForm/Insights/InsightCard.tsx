@@ -5,7 +5,7 @@ import {
   Title,
 } from "@appquality/appquality-design-system";
 import SeverityPill from "../components/SeverityPill";
-import { setInsightIndex, setModalOpen } from "../../uxDashboardSlice";
+import { setInsightIndex, setInsightModalOpen } from "../../uxDashboardSlice";
 import { FormInsight, FormValuesInterface } from "../FormProvider";
 import { useFormikContext } from "formik";
 import { useAppDispatch } from "src/store";
@@ -46,7 +46,7 @@ export const InsightCard = ({
   const dispatch = useAppDispatch();
   function editInsight(insight: FormInsight): void {
     dispatch(setSelectedInsight(insight));
-    dispatch(setModalOpen(true));
+    dispatch(setInsightModalOpen(true));
   }
 
   const Actions = () => (

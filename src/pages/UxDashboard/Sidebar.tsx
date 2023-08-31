@@ -123,6 +123,7 @@ const Sidebar = () => {
             }}
           >
             <Steps.Step title="Sulla Campagna" />
+            <Steps.Step title="Panoramica" />
             <Steps.Step title="Nel dettaglio" />
           </Steps>
         </Card>

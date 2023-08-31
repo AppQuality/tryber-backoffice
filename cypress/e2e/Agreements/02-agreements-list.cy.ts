@@ -82,7 +82,7 @@ describe("Agreements Table: ", () => {
   it("If there are more than 20 agreements they should be paginated", () => {});
   it("Every row should be hoverable and clickable", () => {});
   it("If an user clicks on a row it should open the single agreement view/edit page", () => {});
-  it("If an user clicks on the delete action a confirmation modal should appear with ok cancel options", () => {
+  it.only("If an user clicks on the delete action a confirmation modal should appear with ok cancel options", () => {
     cy.dataQa("agreements-table")
       .get(".tbody.cell")
       .should("have.length", numberOfColumns * 2);

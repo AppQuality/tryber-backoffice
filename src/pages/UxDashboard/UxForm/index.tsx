@@ -9,6 +9,7 @@ import {
   setCurrentFormSection,
   setIsProgrammaticallyScrolling,
 } from "../uxDashboardSlice";
+import SentimentSection from "./Sentiment";
 
 const FormSection = ({
   title,
@@ -103,6 +104,14 @@ const UxDashboardForm = () => {
         </FormSection>
         <FormSection
           order={1}
+          name="results"
+          title="Panoramica"
+          subtitle="Com'è stata l'esperienza complessiva degli utenti con il prodotto"
+        >
+          <SentimentSection />
+        </FormSection>
+        <FormSection
+          order={2}
           name="insights"
           title="Punti principali"
           subtitle="Cosa abbiamo scoperto dell’esperienza utente"

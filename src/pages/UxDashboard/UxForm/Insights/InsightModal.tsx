@@ -14,13 +14,14 @@ import {
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { resetInsight, setModalOpen } from "../../uxDashboardSlice";
+import { resetInsight, setInsightModalOpen } from "../../uxDashboardSlice";
 import styled from "styled-components";
 import SeverityField from "../components/fields/SeverityField";
 import ClusterField from "../components/fields/ClusterField";
 import VideoParts from "../VideoParts";
 import { FormValuesInterface } from "../FormProvider";
 import { useMemo } from "react";
+import { fieldName } from ".";
 
 interface InsightModalProps {
   remove: (index: number) => void;
@@ -32,8 +33,6 @@ const StyledModal = styled(Modal)`
     max-height: 100vh;
   }
 `;
-
-const fieldName = "insights";
 
 const ModalFooter = ({ remove }: InsightModalProps) => {
   const dispatch = useAppDispatch();
@@ -78,11 +77,11 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
     }
     submitForm();
     dispatch(resetInsight());
-    dispatch(setModalOpen(false));
+    dispatch(setInsightModalOpen(false));
   };
   const handleClose = async () => {
     dispatch(resetInsight());
-    dispatch(setModalOpen(false));
+    dispatch(setInsightModalOpen(false));
   };
   const handleDismiss = async () => {
     if (isNewInsight) remove(insightIndex);
@@ -109,16 +108,16 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
 
 const InsightModal = ({ remove }: InsightModalProps) => {
   const dispatch = useAppDispatch();
-  const { insightIndex, isModalOpen } = useAppSelector(
+  const { insightIndex, isInsightModalOpen } = useAppSelector(
     (state) => state.uxDashboard
   );
   const handleClose = async () => {
     dispatch(resetInsight());
-    dispatch(setModalOpen(false));
+    dispatch(setInsightModalOpen(false));
   };
   return (
     <StyledModal
-      isOpen={isModalOpen}
+      isOpen={isInsightModalOpen}
       onClose={handleClose}
       closeOnClickOutside={false}
       footer={<ModalFooter remove={remove} />}
