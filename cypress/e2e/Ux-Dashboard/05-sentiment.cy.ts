@@ -65,7 +65,7 @@ describe("Sentiment section of the form: ", () => {
       );
     });
   });
-  it.only("the sentiment chart form should have a dismiss button that should close the modal and dismiss all changes", () => {
+  it("the sentiment chart form should have a dismiss button that should close the modal and dismiss all changes", () => {
     cy.dataQa("add-new-sentiment-chart").click({ force: true });
     cy.dataQa("sentiment-chart-form")
       .parents(".modal")
@@ -74,5 +74,59 @@ describe("Sentiment section of the form: ", () => {
       });
     cy.dataQa("sentiment-chart-form").should("not.exist");
     cy.dataQa("add-new-sentiment-chart").should("be.visible");
+  });
+});
+
+describe("Sentiment Chart with already saved data: ", () => {
+  beforeEach(() => {
+    cy.clearCookies();
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
+      {
+        statusCode: 200,
+        fixture: "permissions/_get/response_200_appq_campaign",
+      }
+    ).as("authorized");
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
+      {
+        statusCode: 200,
+        fixture: "campaigns/id/ux/_get/response/200_draft_with_sentiments",
+      }
+    ).as("getUx");
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/clusters`,
+      {
+        statusCode: 200,
+        fixture: "campaigns/id/clusters/_get/response_200_items",
+      }
+    ).as("getClusters");
+    cy.visit(
+      `${Cypress.env("CAMPAINGS_PAGE")}/4904${Cypress.env(
+        "UX_DASHBOARD_PAGE"
+      )}/`
+    );
+  });
+  it("Should print sentiments in a recap card", () => {
+    cy.fixture("campaigns/id/ux/_get/response/200_draft_with_sentiments").then(
+      (response) => {
+        cy.dataQa("sentiment-chart-section").within(() => {
+          cy.dataQa("sentiment-card-", { startsWith: true })
+            .should("have.length", response.sentiments.length)
+            .each((card, index) => {
+              cy.wrap(card)
+                .find(".aq-card-title")
+                .should("contain", `${index + 1}. UC ${index + 1}`);
+              cy.wrap(card).find(".aq-card-body").should("contain", "Molto");
+              cy.wrap(card)
+                .find(".aq-card-body")
+                .should("contain", response.sentiments[index].comment);
+            });
+        });
+      }
+    );
   });
 });

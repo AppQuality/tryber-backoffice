@@ -1,0 +1,30 @@
+{
+  "status": "draft",
+  "goal": "this is goal",
+  "usersNumber": 10,
+  "methodology": {
+    "name": "UX Challenge",
+    "description": "UX Challenge",
+    "type": "qualitative"
+  },
+  "sentiments": [
+    {
+      "id": 5,
+      "value": 5,
+      "comment": "Questo è un commento del researcher Questo è un commento del researcher Questo è un commento del researcher (x3)",
+      "cluster": {
+        "id": 1,
+        "name": "Use Case 2 - Carrello"
+      }
+    },
+    {
+      "id": 6,
+      "value": 1,
+      "comment": "Questo è un commento del researcher Questo è un commento del researcher (x2)",
+      "cluster": {
+        "id": 2,
+        "name": "Use Case 3 - Profilo"
+      }
+    }
+  ]
+}
