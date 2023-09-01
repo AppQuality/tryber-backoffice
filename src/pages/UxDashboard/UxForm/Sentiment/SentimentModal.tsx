@@ -9,15 +9,14 @@ import {
   Card,
 } from "@appquality/appquality-design-system";
 import { useAppDispatch, useAppSelector } from "src/store";
-import {
-  resetInsight,
-  setInsightModalOpen,
-  setSentimentModalOpen,
-} from "../../uxDashboardSlice";
+import { setSentimentModalOpen } from "../../uxDashboardSlice";
+import { useFormikContext } from "formik";
 import styled from "styled-components";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useParams } from "react-router-dom";
 import SentimentCard from "./SentimentCard";
+import { FormValuesInterface } from "../FormProvider";
+import { fieldName } from ".";
 
 const StyledModal = styled(Modal)`
   .modal {
@@ -29,21 +28,13 @@ const StyledModal = styled(Modal)`
 
 const ModalFooter = () => {
   const dispatch = useAppDispatch();
-  // const {
-  //   submitForm,
-  //   setFieldTouched,
-  //   setFieldValue,
-  //   errors,
-  //   values,
-  //   initialValues,
-  // } = useFormikContext<FormValuesInterface>();
-
+  const { setFieldValue, initialValues } =
+    useFormikContext<FormValuesInterface>();
   const closeModal = async () => {
     dispatch(setSentimentModalOpen(false));
-    //if (isNewInsight) remove(insightIndex);
-    //if (!isNewInsight) setFieldValue(fieldName, initialValues[fieldName]);
   };
   const handleDismiss = async () => {
+    setFieldValue(fieldName, initialValues[fieldName]);
     closeModal();
   };
   return (
@@ -65,19 +56,17 @@ const ModalFooter = () => {
 };
 
 const SentimentChartModal = () => {
-  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const { data } = useGetCampaignsByCampaignClustersQuery({ campaign: id });
   const { isSentimentModalOpen } = useAppSelector((state) => state.uxDashboard);
-  const handleClose = async () => {
-    dispatch(resetInsight());
-    dispatch(setInsightModalOpen(false));
-  };
+
   return (
     <StyledModal
       isOpen={isSentimentModalOpen}
-      onClose={handleClose}
       closeOnClickOutside={false}
+      onClose={() => {
+        /* silence */
+      }}
       footer={<ModalFooter />}
     >
       <div data-qa="sentiment-chart-form">
