@@ -65,4 +65,14 @@ describe("Sentiment section of the form: ", () => {
       );
     });
   });
+  it.only("the sentiment chart form should have a dismiss button that should close the modal and dismiss all changes", () => {
+    cy.dataQa("add-new-sentiment-chart").click({ force: true });
+    cy.dataQa("sentiment-chart-form")
+      .parents(".modal")
+      .within(() => {
+        cy.dataQa("discard-sentiments").click();
+      });
+    cy.dataQa("sentiment-chart-form").should("not.exist");
+    cy.dataQa("add-new-sentiment-chart").should("be.visible");
+  });
 });

@@ -107,19 +107,16 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
 };
 
 const InsightModal = ({ remove }: InsightModalProps) => {
-  const dispatch = useAppDispatch();
   const { insightIndex, isInsightModalOpen } = useAppSelector(
     (state) => state.uxDashboard
   );
-  const handleClose = async () => {
-    dispatch(resetInsight());
-    dispatch(setInsightModalOpen(false));
-  };
   return (
     <StyledModal
       isOpen={isInsightModalOpen}
-      onClose={handleClose}
       closeOnClickOutside={false}
+      onClose={() => {
+        /* silence */
+      }}
       footer={<ModalFooter remove={remove} />}
     >
       <div data-qa="insight-form">

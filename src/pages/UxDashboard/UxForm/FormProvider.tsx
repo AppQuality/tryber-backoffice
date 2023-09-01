@@ -61,8 +61,12 @@ export interface FormInsight {
 }
 
 export interface FormSentiment {
-  cluster: string;
-  score: number;
+  clusterId: NonNullable<
+    GetCampaignsByCampaignUxApiResponse["sentiments"]
+  >[number]["cluster"]["id"];
+  value: NonNullable<
+    GetCampaignsByCampaignUxApiResponse["sentiments"]
+  >[number]["value"];
   note: string;
 }
 export interface FormValuesInterface {
@@ -130,7 +134,14 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             }),
           };
         }) || [],
-      sentiments: [],
+      sentiments:
+        currentData?.sentiments?.map((sentiment) => {
+          return {
+            clusterId: sentiment.cluster.id,
+            value: sentiment.value,
+            note: sentiment.comment,
+          };
+        }) || [],
     }),
     [currentData, campaignData]
   );
