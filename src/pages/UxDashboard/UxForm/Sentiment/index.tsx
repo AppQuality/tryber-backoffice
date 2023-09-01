@@ -1,13 +1,17 @@
-import { useAppDispatch } from "src/store";
+import { Button, Card } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
-import { AddNew } from "../components/AddNew";
-import { Card } from "@appquality/appquality-design-system";
-import { FormValuesInterface } from "../FormProvider";
-import SentimentChartModal from "./SentimentModal";
-import SentimentCard from "./SentimentCard";
-import { setSentimentModalOpen } from "../../uxDashboardSlice";
 import { useParams } from "react-router-dom";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
+import { useAppDispatch } from "src/store";
+import {
+  setSentimentDeleteModalOpen,
+  setSentimentModalOpen,
+} from "../../uxDashboardSlice";
+import { FormValuesInterface } from "../FormProvider";
+import { AddNew } from "../components/AddNew";
+import SentimentCard from "./SentimentCard";
+import SentimentDeleteModal from "./SentimentDeleteModal";
+import SentimentChartModal from "./SentimentModal";
 
 export const fieldName = "sentiments";
 
@@ -19,11 +23,24 @@ const SentimentSection = () => {
   const sentiments = values[fieldName];
   return (
     <Card
-      title="Sentiment"
+      title={
+        <div data-qa="sentiment-chart-section-title">
+          <div>Sentiment</div>
+          <div>
+            <Button
+              data-qa="delete-sentiment-chart-button"
+              onClick={() => dispatch(setSentimentDeleteModalOpen(true))}
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      }
       className="aq-mb-3"
       data-qa="sentiment-chart-section"
     >
       <SentimentChartModal />
+      <SentimentDeleteModal />
       {sentiments &&
         sentiments.map((sentiment, index: number) => (
           <SentimentCard
