@@ -128,5 +128,35 @@ describe("Sentiment Chart with already saved data: ", () => {
         });
       }
     );
+  it("Should print a sentiment section ", () => {
+    cy.dataQa("sentiment-chart-section").should("be.visible");
+  });
+  it("Should print a delete button in the sentiment section title ", () => {
+    cy.dataQa("sentiment-chart-section").should("be.visible");
+    cy.dataQa("sentiment-chart-section").within(() => {
+      cy.dataQa("sentiment-chart-section-title").within(() => {
+        cy.dataQa("delete-sentiment-chart-button").should("be.visible");
+      });
+    });
+  });
+  it("Should open a confirmation modal when clicking on the delete button ", () => {
+    cy.dataQa("sentiment-chart-section").should("be.visible");
+    cy.dataQa("sentiment-chart-section").within(() => {
+      cy.dataQa("sentiment-chart-section-title").within(() => {
+        cy.dataQa("delete-sentiment-chart-button").click({ force: true });
+      });
+    });
+    cy.dataQa("delete-sentiment-chart-modal").should("be.visible");
+  });
+  it("Should close the confirmation modal when clicking outside ", () => {
+    cy.dataQa("sentiment-chart-section").should("be.visible");
+    cy.dataQa("sentiment-chart-section").within(() => {
+      cy.dataQa("sentiment-chart-section-title").within(() => {
+        cy.dataQa("delete-sentiment-chart-button").click({ force: true });
+      });
+    });
+    cy.dataQa("delete-sentiment-chart-modal").should("be.visible");
+    cy.get("body").click(0, 0);
+    cy.dataQa("delete-sentiment-chart-modal").should("not.exist");
   });
 });

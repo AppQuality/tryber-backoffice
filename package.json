@@ -60,7 +60,7 @@
     "prepare": "npx husky install",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "generate-schema": ". ./.env.development; npx openapi-typescript $REACT_APP_API_URL/reference/ --output src/utils/schema.ts ",
-    "start": "craco start",
+    "start": "craco --openssl-legacy-provider start",
     "build": "react-scripts build && npm run move",
     "test": "test:e2e && test:unit",
     "test:e2e": "start-server-and-test start http://127.0.0.1:3000/backoffice/ cy:run",

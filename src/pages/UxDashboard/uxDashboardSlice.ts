@@ -9,6 +9,7 @@ interface UxDashboardState {
   isProgrammaticallyScrolling: boolean;
   isInsightModalOpen: boolean;
   isSentimentModalOpen: boolean;
+  isSentimentDeleteModalOpen: boolean;
 }
 
 export const initialState: UxDashboardState = {
@@ -18,6 +19,7 @@ export const initialState: UxDashboardState = {
   isProgrammaticallyScrolling: false,
   isInsightModalOpen: false,
   isSentimentModalOpen: false,
+  isSentimentDeleteModalOpen: false,
 };
 
 const selectionSlice = createSlice({
@@ -45,6 +47,9 @@ const selectionSlice = createSlice({
     setSentimentModalOpen(state, action: PayloadAction<boolean>) {
       state.isSentimentModalOpen = action.payload;
     },
+    setSentimentDeleteModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSentimentDeleteModalOpen = action.payload;
+    },
     resetInsight(state) {
       state.selectedInsight = undefined;
     },
@@ -64,6 +69,7 @@ export const {
   setIsProgrammaticallyScrolling,
   setInsightModalOpen,
   setSentimentModalOpen,
+  setSentimentDeleteModalOpen,
   resetInsight,
   reset,
 } = actions;
