@@ -14,7 +14,7 @@ import { useFormikContext } from "formik";
 import styled from "styled-components";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useParams } from "react-router-dom";
-import SentimentCard from "./SentimentCard";
+import FormSentimentCard from "./FormSentimentCard";
 import { FormValuesInterface } from "../FormProvider";
 import { fieldName } from ".";
 
@@ -76,7 +76,7 @@ const SentimentChartModal = () => {
           </Title>
           <BSCol size="col-lg-9">
             {data?.items.map((cluster, index) => (
-              <SentimentCard cluster={cluster} index={index} />
+              <FormSentimentCard cluster={cluster} index={index} />
             ))}
           </BSCol>
           <BSCol size="col-lg-3">
