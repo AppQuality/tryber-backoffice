@@ -42,31 +42,31 @@ const SentimentCard = ({
       id: 1,
       name: "Molto Negativo",
       value: "1",
-      icon: <Sentiment1 />,
+      icon: <Sentiment1 style={{ marginTop: "3px" }} />,
     },
     {
       id: 2,
       name: "Negativo",
       value: "2",
-      icon: <Sentiment2 />,
+      icon: <Sentiment2 style={{ marginTop: "3px" }} />,
     },
     {
       id: 3,
       name: "Neutro",
       value: "3",
-      icon: <Sentiment3 />,
+      icon: <Sentiment3 style={{ marginTop: "3px" }} />,
     },
     {
       id: 4,
       name: "Positivo",
       value: "4",
-      icon: <Sentiment4 />,
+      icon: <Sentiment4 style={{ marginTop: "3px" }} />,
     },
     {
       id: 5,
       name: "Molto Positivo",
       value: "5",
-      icon: <Sentiment5 />,
+      icon: <Sentiment5 style={{ marginTop: "3px" }} />,
     },
   ];
 
