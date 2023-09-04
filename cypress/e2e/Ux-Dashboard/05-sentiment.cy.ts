@@ -120,6 +120,7 @@ describe("Sentiment Chart with already saved data: ", () => {
               cy.wrap(card)
                 .find(".aq-card-title")
                 .should("contain", `${index + 1}. UC ${index + 1}`);
+              // TODO: change this to the real sentiment but the value name is not in the fixture
               cy.wrap(card).find(".aq-card-body").should("contain", "Molto");
               cy.wrap(card)
                 .find(".aq-card-body")
@@ -138,6 +139,47 @@ describe("Sentiment Chart with already saved data: ", () => {
       cy.dataQa("sentiment-chart-section-title").within(() => {
         cy.dataQa("delete-sentiment-chart-button").should("be.visible");
       });
+    });
+  });
+  it("Should print an edit button in the sentiment section title", () => {
+    cy.dataQa("sentiment-chart-section").within(() => {
+      cy.dataQa("edit-sentiment-chart").should("be.visible");
+    });
+  });
+  it("Should open a precompiled sentiment chart form when clicking on the edit button", () => {
+    cy.dataQa("sentiment-chart-section").within(() => {
+      cy.dataQa("edit-sentiment-chart").click({ force: true });
+    });
+    cy.dataQa("sentiment-chart-form").within(() => {
+      cy.dataQa("sentiment-score-card-", { startsWith: true })
+        .should("have.length", 2)
+        .each((card, cardIndex) => {
+          cy.fixture(
+            "campaigns/id/ux/_get/response/200_draft_with_sentiments"
+          ).then((response) => {
+            cy.wrap(card)
+              .find(".aq-card-title")
+              .should("contain", `${cardIndex + 1}. UC ${cardIndex + 1}`);
+            cy.wrap(card)
+              .find("input[type=radio]")
+              .should("have.length", 5)
+              .each((radio, radioIndex) => {
+                cy.wrap(radio)
+                  .should("have.attr", "value", radioIndex + 1)
+                  .then(($radio) => {
+                    if (
+                      response.sentiments[cardIndex].value ===
+                      radioIndex + 1
+                    ) {
+                      cy.wrap($radio).should("be.checked");
+                    }
+                  });
+              });
+            cy.wrap(card)
+              .find("textarea")
+              .should("have.value", response.sentiments[cardIndex].comment);
+          });
+        });
     });
   });
   it("Should open a confirmation modal when clicking on the delete button ", () => {
