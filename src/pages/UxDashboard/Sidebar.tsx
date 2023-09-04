@@ -6,7 +6,10 @@ import {
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { FormValuesInterface } from "./UxForm/FormProvider";
-import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
+import {
+  useGetCampaignsByCampaignUxQuery,
+  usePatchCampaignsByCampaignUxMutation,
+} from "src/services/tryberApi";
 import { useParams } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import { useAppDispatch, useAppSelector } from "src/store";
@@ -22,6 +25,9 @@ const Sidebar = () => {
   const { submitForm, values, isSubmitting, setStatus, isValid } =
     useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
+  const { refetch } = useGetCampaignsByCampaignUxQuery({
+    campaign: id,
+  });
   const { currentStep, currentFormSection } = useAppSelector(
     (state) => state.uxDashboard
   );
@@ -92,18 +98,23 @@ const Sidebar = () => {
               data-qa="publish-dashboard"
               disabled={isSubmitting}
               onClick={() => {
-                const res = saveDashboard({
+                saveDashboard({
                   campaign: id,
                   body: {
                     status: "publish",
                   },
-                });
-                if ("error" in res) {
-                  setStatus("error");
-                } else {
-                  setStatus("success");
-                }
-                dispatch(setCurrentStep(2));
+                })
+                  .unwrap()
+                  .then((res) => {
+                    setStatus("success");
+                    refetch();
+                  })
+                  .catch((err) => {
+                    setStatus("error");
+                  })
+                  .finally(() => {
+                    dispatch(setCurrentStep(2));
+                  });
               }}
             >
               Pubblica
