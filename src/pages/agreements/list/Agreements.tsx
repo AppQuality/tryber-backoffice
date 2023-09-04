@@ -3,15 +3,15 @@ import {
   Pagination,
   Table,
 } from "@appquality/appquality-design-system";
+import { ReactComponent as EditIcon } from "src/assets/edit.svg";
+import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   useDeleteAgreementsByAgreementIdMutation,
   useGetAgreementsQuery,
 } from "src/services/tryberApi";
 import styled from "styled-components";
-import { ReactComponent as EditIcon } from "src/assets/edit.svg";
-import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
 import { useFiltersAgreementsContext } from "./FilterContext";
-import siteWideMessageStore from "src/redux/siteWideMessages";
 
 const TableContainer = styled.div`
   background-color: white;
@@ -51,6 +51,11 @@ export const Agreements = () => {
       title: "Unit price",
       dataIndex: "unitPrice",
       key: "unitPrice",
+    },
+    {
+      title: "Amount",
+      dataIndex: "value",
+      key: "value",
     },
     {
       title: "Start date",
@@ -117,6 +122,9 @@ export const Agreements = () => {
                 id: a.id,
                 title: a.title,
                 tokens: a.tokens,
+                value: `${(a.unitPrice * a.tokens)
+                  .toFixed(2)
+                  .replace(/\.00$/, "")}€`,
                 unitPrice: a.unitPrice,
                 startDate: a.startDate,
                 expirationDate: a.expirationDate,
