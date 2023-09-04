@@ -1,12 +1,40 @@
 import { Button, Modal, ModalBody } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
 import { useAppDispatch, useAppSelector } from "src/store";
+import styled from "styled-components";
 import { setSentimentDeleteModalOpen } from "../../uxDashboardSlice";
+import { FormValuesInterface } from "../FormProvider";
 
-const ModalFooter = () => {
+const ModalFooterWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+`;
+
+const ModalFooter = ({ close }: { close: () => void }) => {
+  const { setFieldValue, submitForm } = useFormikContext<FormValuesInterface>();
+
   return (
-    <div>
-      <Button>Confirm</Button>
-    </div>
+    <ModalFooterWrapper>
+      <Button
+        data-qa="confirm-delete-sentiment-chart-button"
+        onClick={close}
+        flat
+      >
+        Cancel
+      </Button>
+      <Button
+        data-qa="cancel-delete-sentiment-chart-button"
+        onClick={() => {
+          setFieldValue("sentiments", []);
+          submitForm();
+          close();
+        }}
+        type="danger"
+      >
+        Confirm
+      </Button>
+    </ModalFooterWrapper>
   );
 };
 
@@ -24,10 +52,12 @@ const SentimentDeleteModal = () => {
       size="small"
       isOpen={isSentimentDeleteModalOpen}
       onClose={closeModal}
-      footer={<ModalFooter />}
+      footer={<ModalFooter close={closeModal} />}
     >
       <ModalBody>
-        <div data-qa="delete-sentiment-chart-modal">Modal content</div>
+        <div data-qa="delete-sentiment-chart-modal">
+          Vuoi davvero cancellare tutti i dati del sentiment chart?
+        </div>
       </ModalBody>
     </Modal>
   );
