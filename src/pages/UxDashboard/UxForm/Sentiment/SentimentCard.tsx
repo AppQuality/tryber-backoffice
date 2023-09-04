@@ -46,7 +46,7 @@ const SentimentCard = ({
         </div>
         <div>
           <FormLabel htmlFor="" label="Breve commento" />
-          <div>{sentiment.note}</div>
+          <div>{sentiment.comment}</div>
         </div>
       </Wrapper>
     </Card>

@@ -63,7 +63,7 @@ const FormSentimentCard = ({
       </FormGroup>
       <TextareaField
         height="8em"
-        name={`${fieldName}[${index}].note`}
+        name={`${fieldName}[${index}].comment`}
         label="Breve commento (max 100 caratteri)"
       />
     </Card>

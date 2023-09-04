@@ -67,7 +67,7 @@ export interface FormSentiment {
   value: NonNullable<
     GetCampaignsByCampaignUxApiResponse["sentiments"]
   >[number]["value"];
-  note: string;
+  comment: string;
 }
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
@@ -140,7 +140,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             id: sentiment.id,
             clusterId: sentiment.cluster.id,
             value: sentiment.value,
-            note: sentiment.comment,
+            comment: sentiment.comment,
           };
         }) || [],
     }),
@@ -205,7 +205,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     sentiments: array().of(
       object().shape({
         value: number().required("Campo obbligatorio"),
-        note: string()
+        comment: string()
           .max(100, "Massimo 100 caratteri")
           .required("Campo obbligatorio"),
       })
@@ -254,7 +254,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             methodology: values.methodology,
             usersNumber: values.usersNumber,
             insights: mapFormInsightsForPatch(values.insights) || [],
-            sentiments: [],
+            sentiments: values.sentiments,
           },
         });
         formikHelpers.setSubmitting(false);
