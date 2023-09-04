@@ -128,6 +128,7 @@ describe("Sentiment Chart with already saved data: ", () => {
         });
       }
     );
+  });
   it("Should print a sentiment section ", () => {
     cy.dataQa("sentiment-chart-section").should("be.visible");
   });
