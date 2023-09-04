@@ -14,7 +14,7 @@ export default ({}) => {
   const [once, setOnce] = useState(0);
   useEffect(() => {
     if (id) {
-      getOnePopup(id)
+      getOnePopup(parseInt(id))
         .then((data) => {
           if (data.content) {
             setBase64(data.content);
