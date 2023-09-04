@@ -3,6 +3,7 @@ import { useFormikContext } from "formik";
 import { useParams } from "react-router-dom";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
+import styled from "styled-components";
 import {
   setSentimentDeleteModalOpen,
   setSentimentModalOpen,
@@ -15,6 +16,13 @@ import SentimentChartModal from "./SentimentModal";
 
 export const fieldName = "sentiments";
 
+const SentimentSectionWrapper = styled.div`
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const SentimentSection = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
@@ -24,17 +32,20 @@ const SentimentSection = () => {
   return (
     <Card
       title={
-        <div data-qa="sentiment-chart-section-title">
+        <SentimentSectionWrapper data-qa="sentiment-chart-section-title">
           <div>Sentiment</div>
           <div>
             <Button
+              flat
+              size="sm"
+              type="danger"
               data-qa="delete-sentiment-chart-button"
               onClick={() => dispatch(setSentimentDeleteModalOpen(true))}
             >
               Delete
             </Button>
           </div>
-        </div>
+        </SentimentSectionWrapper>
       }
       className="aq-mb-3"
       data-qa="sentiment-chart-section"
