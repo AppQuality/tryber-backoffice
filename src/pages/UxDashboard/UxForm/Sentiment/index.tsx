@@ -37,6 +37,17 @@ const SentimentSection = () => {
           <div>
             <Button
               flat
+              className="aq-mr-2"
+              size="sm"
+              data-qa="edit-sentiment-chart"
+              onClick={() => {
+                dispatch(setSentimentModalOpen(true));
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              flat
               size="sm"
               type="danger"
               data-qa="delete-sentiment-chart-button"

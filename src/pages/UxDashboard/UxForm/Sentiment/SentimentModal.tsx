@@ -28,7 +28,7 @@ const StyledModal = styled(Modal)`
 
 const ModalFooter = () => {
   const dispatch = useAppDispatch();
-  const { setFieldValue, initialValues } =
+  const { setFieldValue, initialValues, errors, setFieldTouched, submitForm } =
     useFormikContext<FormValuesInterface>();
   const closeModal = async () => {
     dispatch(setSentimentModalOpen(false));
@@ -36,6 +36,14 @@ const ModalFooter = () => {
   const handleDismiss = async () => {
     setFieldValue(fieldName, initialValues[fieldName]);
     closeModal();
+  };
+  const handleSave = () => {
+    if (errors[fieldName]) {
+      alert("compila tutti i campi obbligatori");
+      return;
+    }
+    submitForm();
+    dispatch(setSentimentModalOpen(false));
   };
   return (
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -48,7 +56,11 @@ const ModalFooter = () => {
       >
         Dismiss
       </Button>
-      <Button htmlType="button" data-qa="save-sentiment-chart">
+      <Button
+        htmlType="button"
+        data-qa="save-sentiment-chart"
+        onClick={handleSave}
+      >
         Save
       </Button>
     </div>

@@ -137,6 +137,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       sentiments:
         currentData?.sentiments?.map((sentiment) => {
           return {
+            id: sentiment.id,
             clusterId: sentiment.cluster.id,
             value: sentiment.value,
             note: sentiment.comment,
@@ -199,6 +200,14 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             description: string().required("Campo obbligatorio"),
           })
         ),
+      })
+    ),
+    sentiments: array().of(
+      object().shape({
+        value: number().required("Campo obbligatorio"),
+        note: string()
+          .max(100, "Massimo 100 caratteri")
+          .required("Campo obbligatorio"),
       })
     ),
   });

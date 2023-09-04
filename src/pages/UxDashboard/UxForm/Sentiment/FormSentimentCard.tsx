@@ -31,7 +31,8 @@ const FormSentimentCard = ({
 }) => {
   const { getFieldMeta, setFieldValue } =
     useFormikContext<FormValuesInterface>();
-  const value = getFieldMeta(`${fieldName}[${index}].score`).value;
+  const value = getFieldMeta(`${fieldName}[${index}]`)
+    .value as FormValuesInterface["sentiments"][number];
 
   return (
     <Card
@@ -40,20 +41,20 @@ const FormSentimentCard = ({
       title={`${index + 1}. ${cluster.name}`}
     >
       <FormGroup>
-        <FormLabel htmlFor={`${fieldName}[${index}].score`} label="Sentiment" />
+        <FormLabel htmlFor={`${fieldName}[${index}].value`} label="Sentiment" />
         <ScoreWrapper>
           {sentimentTypes.map((sentiment) => (
             <RadioWrapper>
               <Radio
                 data-qa="sentiment-score"
-                onChange={(val) =>
-                  setFieldValue(`${fieldName}[${index}].score`, val)
-                }
+                onChange={(val) => {
+                  setFieldValue(`${fieldName}[${index}].value`, parseInt(val));
+                }}
                 label={<div style={{ marginTop: "3px" }}>{sentiment.icon}</div>}
                 id={`${fieldName}-${index}-score-${sentiment.id}`}
                 value={sentiment.value}
-                name={`${fieldName}[${index}].score`}
-                checked={value === sentiment.value}
+                name={`${fieldName}[${index}].value`}
+                checked={value?.value === parseInt(sentiment.value)}
               />
               <span>{sentiment.name}</span>
             </RadioWrapper>
@@ -62,8 +63,8 @@ const FormSentimentCard = ({
       </FormGroup>
       <TextareaField
         height="8em"
-        name={`${fieldName}[${index}].description`}
-        label="Breve commento"
+        name={`${fieldName}[${index}].note`}
+        label="Breve commento (max 100 caratteri)"
       />
     </Card>
   );
