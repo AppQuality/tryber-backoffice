@@ -98,19 +98,23 @@ const Sidebar = () => {
               data-qa="publish-dashboard"
               disabled={isSubmitting}
               onClick={() => {
-                const res = saveDashboard({
+                saveDashboard({
                   campaign: id,
                   body: {
                     status: "publish",
                   },
-                });
-                if ("error" in res) {
-                  setStatus("error");
-                } else {
-                  setStatus("success");
-                  refetch();
-                }
-                dispatch(setCurrentStep(2));
+                })
+                  .unwrap()
+                  .then((res) => {
+                    setStatus("success");
+                    refetch();
+                  })
+                  .catch((err) => {
+                    setStatus("error");
+                  })
+                  .finally(() => {
+                    dispatch(setCurrentStep(2));
+                  });
               }}
             >
               Pubblica
