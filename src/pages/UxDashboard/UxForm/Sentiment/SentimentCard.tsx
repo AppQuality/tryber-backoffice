@@ -1,4 +1,4 @@
-import { Card, FormLabel } from "@appquality/appquality-design-system";
+import { Card, FormLabel, Title } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import { FormSentiment } from "../FormProvider";
 import { sentimentTypes } from "./sentimentTypes";
@@ -37,18 +37,25 @@ const SentimentCard = ({
       className="aq-mb-3"
       title={title}
     >
-      <Wrapper>
-        <div>
-          <FormLabel htmlFor="" label="Sentiment" />
-          <Score>
-            {currentValue?.icon} <small>{currentValue?.name}</small>
-          </Score>
-        </div>
-        <div>
-          <FormLabel htmlFor="" label="Breve commento" />
-          <div>{sentiment.comment}</div>
-        </div>
-      </Wrapper>
+      {currentValue?.value ? (
+        <Wrapper>
+          <div>
+            <FormLabel htmlFor="" label="Sentiment" />
+            <Score>
+              {currentValue?.icon} <small>{currentValue?.name}</small>
+            </Score>
+          </div>
+          <div>
+            <FormLabel htmlFor="" label="Breve commento" />
+            <div>{sentiment.comment}</div>
+          </div>
+        </Wrapper>
+      ) : (
+        <Title size="s" className="aq-text-danger">
+          Questo cluster non ha un sentiment associato. Clicca su Edit e
+          completalo
+        </Title>
+      )}
     </Card>
   );
 };

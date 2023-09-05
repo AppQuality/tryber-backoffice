@@ -94,6 +94,21 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   const { data: campaignData, isLoading: campaignDataLoading } =
     useGetCampaignsByCampaignQuery({ campaign: id });
 
+  const currentSentiments =
+    currentData?.sentiments && currentData.sentiments.length
+      ? currentData.sentiments
+      : [];
+  const initialSentiments = clusters?.items.map((cluster) => {
+    const sentiment = currentSentiments.find(
+      (sentiment) => sentiment.cluster.id === cluster.id
+    );
+    return {
+      clusterId: cluster.id,
+      value: sentiment?.value || -1,
+      comment: sentiment?.comment || "",
+    };
+  });
+
   const initialValues: FormValuesInterface = useMemo(
     () => ({
       status: currentData?.status,
@@ -137,23 +152,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             }),
           };
         }) || [],
-      sentiments:
-        currentData?.sentiments && currentData.sentiments.length
-          ? currentData.sentiments.map((sentiment) => {
-              return {
-                id: sentiment.id,
-                clusterId: sentiment.cluster.id,
-                value: sentiment.value,
-                comment: sentiment.comment,
-              };
-            })
-          : clusters?.items.map((cluster) => {
-              return {
-                clusterId: cluster.id,
-                value: -1,
-                comment: "",
-              };
-            }),
+      sentiments: initialSentiments,
       // for validation to work we need to populate the array with empty values
     }),
     [currentData, campaignData, clusters]
