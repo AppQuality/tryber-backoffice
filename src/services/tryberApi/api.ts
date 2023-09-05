@@ -30,6 +30,7 @@ export const api = createApi({
     "Languages",
     "Levels",
     "Prospect",
+    "UX",
   ],
   endpoints: () => ({}), // auto generated npm run generate-api
 });
