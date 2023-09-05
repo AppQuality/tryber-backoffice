@@ -22,7 +22,7 @@ import {
 const Sidebar = () => {
   const { id } = useParams<{ id: string }>();
   const { add } = siteWideMessageStore();
-  const { submitForm, values, isSubmitting, setStatus, isValid } =
+  const { submitForm, values, errors, isSubmitting, setStatus, isValid } =
     useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   const { refetch } = useGetCampaignsByCampaignUxQuery({

@@ -28,7 +28,7 @@ const SentimentCard = ({
   title: string;
 }) => {
   const currentValue = sentimentTypes.find((item) => {
-    return item.value === sentiment.value.toString();
+    return item.value === sentiment.value?.toString();
   });
 
   return (
