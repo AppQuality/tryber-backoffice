@@ -1,7 +1,10 @@
 import { Button, Card } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { useParams } from "react-router-dom";
-import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
+import {
+  useGetCampaignsByCampaignClustersQuery,
+  useGetCampaignsByCampaignUxQuery,
+} from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import styled from "styled-components";
 import {
@@ -27,7 +30,12 @@ const SentimentSection = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const { values } = useFormikContext<FormValuesInterface>();
-  const { data } = useGetCampaignsByCampaignClustersQuery({ campaign: id });
+  const { data: clusterData } = useGetCampaignsByCampaignClustersQuery({
+    campaign: id,
+  });
+  const { data: uxData } = useGetCampaignsByCampaignUxQuery({
+    campaign: id,
+  });
   const sentiments = values[fieldName];
   return (
     <Card
@@ -67,17 +75,18 @@ const SentimentSection = () => {
     >
       <SentimentChartModal />
       <SentimentDeleteModal />
-      {sentiments &&
+      {uxData?.sentiments && uxData.sentiments.length > 0 && sentiments ? (
         sentiments.map((sentiment, index: number) => (
           <SentimentCard
             sentiment={sentiment}
             title={`${index + 1}. ${
-              data?.items.find((cluster) => cluster.id === sentiment.clusterId)
-                ?.name
+              clusterData?.items.find(
+                (cluster) => cluster.id === sentiment?.clusterId
+              )?.name
             }`}
           />
-        ))}
-      {sentiments.length < 1 && (
+        ))
+      ) : (
         <AddNew
           data-qa="add-new-sentiment-chart"
           onClick={() => {

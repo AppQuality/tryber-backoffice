@@ -6,7 +6,7 @@ import {
   TextareaField,
 } from "@appquality/appquality-design-system";
 import { fieldName } from ".";
-import { FormValuesInterface } from "../FormProvider";
+import { FormSentiment, FormValuesInterface } from "../FormProvider";
 import { useFormikContext } from "formik";
 import styled from "styled-components";
 import { sentimentTypes } from "./sentimentTypes";
@@ -31,8 +31,7 @@ const FormSentimentCard = ({
 }) => {
   const { getFieldMeta, setFieldValue } =
     useFormikContext<FormValuesInterface>();
-  const value = getFieldMeta(`${fieldName}[${index}]`)
-    .value as FormValuesInterface["sentiments"][number];
+  const value = getFieldMeta(`${fieldName}[${index}]`).value as FormSentiment;
 
   return (
     <Card
@@ -44,7 +43,7 @@ const FormSentimentCard = ({
         <FormLabel htmlFor={`${fieldName}[${index}].value`} label="Sentiment" />
         <ScoreWrapper>
           {sentimentTypes.map((sentiment) => (
-            <RadioWrapper>
+            <RadioWrapper key={sentiment.id}>
               <Radio
                 data-qa="sentiment-score"
                 onChange={(val) => {

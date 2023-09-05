@@ -1,6 +1,6 @@
 import { Card, FormLabel } from "@appquality/appquality-design-system";
 import styled from "styled-components";
-import { FormValuesInterface } from "../FormProvider";
+import { FormSentiment } from "../FormProvider";
 import { sentimentTypes } from "./sentimentTypes";
 
 const Wrapper = styled.div`
@@ -24,7 +24,7 @@ const SentimentCard = ({
   sentiment,
   title,
 }: {
-  sentiment: FormValuesInterface["sentiments"][number];
+  sentiment: FormSentiment;
   title: string;
 }) => {
   const currentValue = sentimentTypes.find((item) => {

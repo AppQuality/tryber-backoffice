@@ -10,7 +10,7 @@ import {
 } from "@appquality/appquality-design-system";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { setSentimentModalOpen } from "../../uxDashboardSlice";
-import { useFormikContext } from "formik";
+import { useFormikContext, FieldArray } from "formik";
 import styled from "styled-components";
 import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useParams } from "react-router-dom";
@@ -28,8 +28,17 @@ const StyledModal = styled(Modal)`
 
 const ModalFooter = () => {
   const dispatch = useAppDispatch();
-  const { setFieldValue, initialValues, errors, setFieldTouched, submitForm } =
-    useFormikContext<FormValuesInterface>();
+  const { id } = useParams<{ id: string }>();
+  const {
+    setFieldValue,
+    initialValues,
+    errors,
+    getFieldMeta,
+    getFieldHelpers,
+    getFieldProps,
+    setFieldTouched,
+    submitForm,
+  } = useFormikContext<FormValuesInterface>();
   const closeModal = async () => {
     dispatch(setSentimentModalOpen(false));
   };
@@ -42,6 +51,22 @@ const ModalFooter = () => {
       alert("compila tutti i campi obbligatori");
       return;
     }
+    // touch untouched fields
+    initialValues[fieldName]?.forEach((value, index) => {
+      setFieldTouched(`sentiments[${index}]`, true, true);
+      setFieldTouched(`sentiments[${index}].comment`, true, true);
+      setFieldTouched(`sentiments[${index}].value`, true, true);
+    });
+    // check if there are errors after touching
+    initialValues[fieldName]?.forEach(async (value, index) => {
+      if (
+        getFieldMeta(`sentiments[${index}].comment`).error ||
+        getFieldMeta(`sentiments[${index}].value`).error
+      ) {
+        alert("compila tutti i campi obbligatori");
+        return;
+      }
+    });
     submitForm();
     dispatch(setSentimentModalOpen(false));
   };
@@ -88,7 +113,11 @@ const SentimentChartModal = () => {
           </Title>
           <BSCol size="col-lg-9">
             {data?.items.map((cluster, index) => (
-              <FormSentimentCard cluster={cluster} index={index} />
+              <FormSentimentCard
+                key={cluster.id}
+                cluster={cluster}
+                index={index}
+              />
             ))}
           </BSCol>
           <BSCol size="col-lg-3">

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   GetCampaignsByCampaignUxApiResponse,
+  useGetCampaignsByCampaignClustersQuery,
   useGetCampaignsByCampaignQuery,
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
@@ -76,7 +77,7 @@ export interface FormValuesInterface {
   questions: FormQuestion[];
   usersNumber?: GetCampaignsByCampaignUxApiResponse["usersNumber"];
   insights: FormInsight[];
-  sentiments: FormSentiment[];
+  sentiments?: FormSentiment[];
 }
 
 const FormProvider = ({ children }: { children: ReactNode }) => {
@@ -87,7 +88,9 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     useGetCampaignsByCampaignUxQuery({
       campaign: id,
     });
-
+  const { data: clusters } = useGetCampaignsByCampaignClustersQuery({
+    campaign: id,
+  });
   const { data: campaignData, isLoading: campaignDataLoading } =
     useGetCampaignsByCampaignQuery({ campaign: id });
 
@@ -135,16 +138,25 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
           };
         }) || [],
       sentiments:
-        currentData?.sentiments?.map((sentiment) => {
-          return {
-            id: sentiment.id,
-            clusterId: sentiment.cluster.id,
-            value: sentiment.value,
-            comment: sentiment.comment,
-          };
-        }) || [],
+        currentData?.sentiments && currentData.sentiments.length
+          ? currentData.sentiments.map((sentiment) => {
+              return {
+                id: sentiment.id,
+                clusterId: sentiment.cluster.id,
+                value: sentiment.value,
+                comment: sentiment.comment,
+              };
+            })
+          : clusters?.items.map((cluster) => {
+              return {
+                clusterId: cluster.id,
+                value: -1,
+                comment: "",
+              };
+            }),
+      // for validation to work we need to populate the array with empty values
     }),
-    [currentData, campaignData]
+    [currentData, campaignData, clusters]
   );
 
   if (isLoading || campaignDataLoading) {
@@ -196,7 +208,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         ),
         videoParts: array().of(
           object().shape({
-            end: number().required("Campo obbligatorio"),
+            end: number().min(0).max(5).required("Campo obbligatorio"),
             description: string().required("Campo obbligatorio"),
           })
         ),
@@ -257,7 +269,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             methodology: values.methodology,
             usersNumber: values.usersNumber,
             insights: mapFormInsightsForPatch(values.insights) || [],
-            sentiments: values.sentiments,
+            sentiments: values.sentiments || [],
           },
         });
         formikHelpers.setSubmitting(false);
