@@ -1,10 +1,7 @@
 import { Button, Card } from "@appquality/appquality-design-system";
-import { useFormikContext, FieldArray } from "formik";
+import { FieldArray, useFormikContext } from "formik";
 import { useParams } from "react-router-dom";
-import {
-  useGetCampaignsByCampaignClustersQuery,
-  useGetCampaignsByCampaignUxQuery,
-} from "src/services/tryberApi";
+import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import styled from "styled-components";
 import {
@@ -33,9 +30,6 @@ const SentimentSection = () => {
   const { data: clusterData } = useGetCampaignsByCampaignClustersQuery({
     campaign: id,
   });
-  const { data: uxData } = useGetCampaignsByCampaignUxQuery({
-    campaign: id,
-  });
   const { data: clusters } = useGetCampaignsByCampaignClustersQuery({
     campaign: id,
   });
@@ -46,7 +40,7 @@ const SentimentSection = () => {
         <SentimentSectionWrapper data-qa="sentiment-chart-section-title">
           <div>Sentiment</div>
           <div>
-            {uxData?.sentiments && uxData?.sentiments.length > 0 && (
+            {sentiments && sentiments.length > 0 && (
               <>
                 <Button
                   flat
