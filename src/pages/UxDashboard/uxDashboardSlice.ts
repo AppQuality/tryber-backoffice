@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FormInsight } from "./UxForm/FormProvider";
 
+type PublishStatus = "idle" | "publishing" | "success" | "failed";
 interface UxDashboardState {
   selectedInsight?: FormInsight;
   insightIndex: number;
@@ -10,6 +11,7 @@ interface UxDashboardState {
   isInsightModalOpen: boolean;
   isSentimentModalOpen: boolean;
   isSentimentDeleteModalOpen: boolean;
+  publishStatus: PublishStatus;
 }
 
 export const initialState: UxDashboardState = {
@@ -20,6 +22,7 @@ export const initialState: UxDashboardState = {
   isInsightModalOpen: false,
   isSentimentModalOpen: false,
   isSentimentDeleteModalOpen: false,
+  publishStatus: "idle",
 };
 
 const selectionSlice = createSlice({
@@ -50,6 +53,9 @@ const selectionSlice = createSlice({
     setSentimentDeleteModalOpen(state, action: PayloadAction<boolean>) {
       state.isSentimentDeleteModalOpen = action.payload;
     },
+    setPublishStatus(state, action: PayloadAction<PublishStatus>) {
+      state.publishStatus = action.payload;
+    },
     resetInsight(state) {
       state.selectedInsight = undefined;
     },
@@ -70,6 +76,7 @@ export const {
   setInsightModalOpen,
   setSentimentModalOpen,
   setSentimentDeleteModalOpen,
+  setPublishStatus,
   resetInsight,
   reset,
 } = actions;

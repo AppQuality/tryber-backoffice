@@ -1,5 +1,5 @@
 import { Button, Card } from "@appquality/appquality-design-system";
-import { useFormikContext } from "formik";
+import { useFormikContext, FieldArray } from "formik";
 import { useParams } from "react-router-dom";
 import {
   useGetCampaignsByCampaignClustersQuery,
@@ -34,6 +34,9 @@ const SentimentSection = () => {
     campaign: id,
   });
   const { data: uxData } = useGetCampaignsByCampaignUxQuery({
+    campaign: id,
+  });
+  const { data: clusters } = useGetCampaignsByCampaignClustersQuery({
     campaign: id,
   });
   const sentiments = values[fieldName];
@@ -75,27 +78,43 @@ const SentimentSection = () => {
     >
       <SentimentChartModal />
       <SentimentDeleteModal />
-      {uxData?.sentiments && uxData.sentiments.length > 0 && sentiments ? (
-        sentiments.map((sentiment, index: number) => (
-          <SentimentCard
-            sentiment={sentiment}
-            title={`${index + 1}. ${
-              clusterData?.items.find(
-                (cluster) => cluster.id === sentiment?.clusterId
-              )?.name
-            }`}
-          />
-        ))
-      ) : (
-        <AddNew
-          data-qa="add-new-sentiment-chart"
-          onClick={() => {
-            dispatch(setSentimentModalOpen(true));
-          }}
-        >
-          Aggiungi Grafico Sentiment
-        </AddNew>
-      )}
+      <FieldArray
+        name={fieldName}
+        render={({ push }) => (
+          <>
+            {sentiments && sentiments.length > 0 ? (
+              sentiments.map((sentiment, index: number) => (
+                <SentimentCard
+                  key={sentiment.clusterId}
+                  sentiment={sentiment}
+                  title={`${index + 1}. ${
+                    clusterData?.items.find(
+                      (cluster) => cluster.id === sentiment?.clusterId
+                    )?.name
+                  }`}
+                />
+              ))
+            ) : (
+              <AddNew
+                key="add-new-sentiment-chart"
+                data-qa="add-new-sentiment-chart"
+                onClick={() => {
+                  clusters?.items.forEach((cluster) => {
+                    push({
+                      clusterId: cluster.id,
+                      value: -1,
+                      comment: "",
+                    });
+                  });
+                  dispatch(setSentimentModalOpen(true));
+                }}
+              >
+                Aggiungi Grafico Sentiment
+              </AddNew>
+            )}
+          </>
+        )}
+      />
     </Card>
   );
 };

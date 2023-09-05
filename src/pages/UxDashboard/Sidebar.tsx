@@ -6,10 +6,7 @@ import {
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { FormValuesInterface } from "./UxForm/FormProvider";
-import {
-  useGetCampaignsByCampaignUxQuery,
-  usePatchCampaignsByCampaignUxMutation,
-} from "src/services/tryberApi";
+import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
 import { useParams } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import { useAppDispatch, useAppSelector } from "src/store";
@@ -17,18 +14,16 @@ import {
   setCurrentFormSection,
   setCurrentStep,
   setIsProgrammaticallyScrolling,
+  setPublishStatus,
 } from "./uxDashboardSlice";
 
 const Sidebar = () => {
   const { id } = useParams<{ id: string }>();
   const { add } = siteWideMessageStore();
-  const { submitForm, values, isSubmitting, setStatus, isValid } =
+  const { submitForm, values, isSubmitting, isValid } =
     useFormikContext<FormValuesInterface>();
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
-  const { refetch } = useGetCampaignsByCampaignUxQuery({
-    campaign: id,
-  });
-  const { currentStep, currentFormSection } = useAppSelector(
+  const { currentStep, currentFormSection, publishStatus } = useAppSelector(
     (state) => state.uxDashboard
   );
   const dispatch = useAppDispatch();
@@ -96,8 +91,9 @@ const Sidebar = () => {
               size="block"
               type="secondary"
               data-qa="publish-dashboard"
-              disabled={isSubmitting}
+              disabled={publishStatus === "publishing"}
               onClick={() => {
+                dispatch(setPublishStatus("publishing"));
                 saveDashboard({
                   campaign: id,
                   body: {
@@ -106,11 +102,10 @@ const Sidebar = () => {
                 })
                   .unwrap()
                   .then((res) => {
-                    setStatus("success");
-                    refetch();
+                    dispatch(setPublishStatus("success"));
                   })
                   .catch((err) => {
-                    setStatus("error");
+                    dispatch(setPublishStatus("failed"));
                   })
                   .finally(() => {
                     dispatch(setCurrentStep(2));

@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   GetCampaignsByCampaignUxApiResponse,
-  useGetCampaignsByCampaignClustersQuery,
   useGetCampaignsByCampaignQuery,
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
@@ -88,26 +87,8 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     useGetCampaignsByCampaignUxQuery({
       campaign: id,
     });
-  const { data: clusters } = useGetCampaignsByCampaignClustersQuery({
-    campaign: id,
-  });
   const { data: campaignData, isLoading: campaignDataLoading } =
     useGetCampaignsByCampaignQuery({ campaign: id });
-
-  const currentSentiments =
-    currentData?.sentiments && currentData.sentiments.length
-      ? currentData.sentiments
-      : [];
-  const initialSentiments = clusters?.items.map((cluster) => {
-    const sentiment = currentSentiments.find(
-      (sentiment) => sentiment.cluster.id === cluster.id
-    );
-    return {
-      clusterId: cluster.id,
-      value: sentiment?.value || -1,
-      comment: sentiment?.comment || "",
-    };
-  });
 
   const initialValues: FormValuesInterface = useMemo(
     () => ({
@@ -152,10 +133,19 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             }),
           };
         }) || [],
-      sentiments: initialSentiments,
-      // for validation to work we need to populate the array with empty values
+      sentiments:
+        currentData?.sentiments && currentData.sentiments.length
+          ? currentData.sentiments.map((sentiment) => {
+              return {
+                id: sentiment.id,
+                clusterId: sentiment.cluster.id,
+                value: sentiment.value,
+                comment: sentiment.comment,
+              };
+            })
+          : [],
     }),
-    [currentData, campaignData, clusters]
+    [currentData, campaignData]
   );
 
   if (isLoading || campaignDataLoading) {

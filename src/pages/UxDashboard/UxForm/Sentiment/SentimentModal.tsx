@@ -28,7 +28,6 @@ const StyledModal = styled(Modal)`
 
 const ModalFooter = () => {
   const dispatch = useAppDispatch();
-  const { id } = useParams<{ id: string }>();
   const {
     setFieldValue,
     initialValues,
@@ -45,11 +44,11 @@ const ModalFooter = () => {
     closeModal();
   };
   const handleSave = async () => {
-    const errors = await validateForm(values);
-    initialValues[fieldName]?.forEach((value, index) => {
+    values[fieldName]?.forEach((value, index) => {
       setFieldTouched(`sentiments[${index}].comment`, true, true);
       setFieldTouched(`sentiments[${index}].value`, true, true);
     });
+    const errors = await validateForm(values);
     if (errors[fieldName]) {
       alert("compila tutti i campi obbligatori");
       return;
