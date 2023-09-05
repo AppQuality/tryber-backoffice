@@ -61,10 +61,11 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "generate-schema": ". ./.env.development; npx openapi-typescript $REACT_APP_API_URL/reference/ --output src/utils/schema.ts ",
     "start": "craco start",
+    "start:ssl": "craco --openssl-legacy-provider start",
     "build": "react-scripts build && npm run move",
     "test": "test:e2e && test:unit",
-    "test:e2e": "start-server-and-test start http://127.0.0.1:3000/clickday/ cy:run",
-    "test:ci": "start-server-and-test start http://127.0.0.1:3000/clickday/ cy:run",
+    "test:e2e": "start-server-and-test start http://127.0.0.1:3000/backoffice/ cy:run",
+    "test:ci": "start-server-and-test start http://127.0.0.1:3000/backoffice/ cy:run",
     "test:unit": "react-scripts test",
     "cy:run": "cypress run --e2e --browser chrome",
     "cy:open": "cypress open --e2e --browser chrome",
@@ -104,6 +105,7 @@
     "openapi-typescript": "^5.2.0",
     "react-error-overlay": "6.0.9",
     "react-scripts": "^4.0.3",
+    "start-server-and-test": "^2.0.0",
     "ts-node": "^10.9.1"
   },
   "resolutions": {

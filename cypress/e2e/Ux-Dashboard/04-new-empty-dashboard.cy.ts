@@ -28,11 +28,12 @@ describe("Main page", () => {
   });
   it("all fields are empty or default", () => {
     cy.get("[name='goal']").should("be.empty");
-    cy.get("[name='methodology.description']").should("be.empty");
+    cy.get("[name='methodology.description']").should("not.be.empty");
     cy.get("[name='usersNumber']").should("have.value", "");
     cy.get("[name='methodology.type']").should("have.value", "qualitative");
     cy.dataQa("question-", { startsWith: true }).should("have.length", 0);
     cy.dataQa("insight-card-", { startsWith: true }).should("have.length", 0);
+    cy.dataQa("sentiment-card-", { startsWith: true }).should("have.length", 0);
   });
   it("Submit button is enabled, clicking on show error messages for all the fields", () => {
     cy.intercept(
@@ -47,7 +48,7 @@ describe("Main page", () => {
       .should("contain", "Campo obbligatorio");
     cy.get("[name='methodology.description']")
       .siblings()
-      .should("contain", "Campo obbligatorio");
+      .should("not.contain", "Campo obbligatorio");
     cy.get("label[for='usersNumber']")
       .siblings()
       .should("contain", "Campo obbligatorio");

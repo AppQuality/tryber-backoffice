@@ -49,7 +49,7 @@ describe("New Single Agreement Page:", () => {
   });
   it("There should be a form with input for start date", () => {
     const today = new Date();
-    const day = today.getDate();
+    const day = today.toLocaleString("default", { day: "2-digit" });
     const month = today.toLocaleString("default", { month: "2-digit" });
     const year = today.getFullYear();
     cy.dataQa("startDate").within(() => {
@@ -64,7 +64,7 @@ describe("New Single Agreement Page:", () => {
   });
   it("There should be a form with input for close date", () => {
     const today = new Date();
-    const day = today.getDate();
+    const day = today.toLocaleString("default", { day: "2-digit" });
     const month = today.toLocaleString("default", { month: "2-digit" });
     const year = today.getFullYear();
     cy.dataQa("expirationDate").within(() => {

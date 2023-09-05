@@ -1,23 +1,22 @@
 import {
-  Button,
-  Modal,
-  Title,
-  Text,
-  FormLabel,
-  BSGrid,
   BSCol,
+  BSGrid,
+  Button,
   Card,
+  FormLabel,
+  Modal,
+  Text,
+  Title,
 } from "@appquality/appquality-design-system";
-import { useAppDispatch, useAppSelector } from "src/store";
-import {
-  resetInsight,
-  setInsightModalOpen,
-  setSentimentModalOpen,
-} from "../../uxDashboardSlice";
-import styled from "styled-components";
-import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
+import { useFormikContext } from "formik";
 import { useParams } from "react-router-dom";
-import SentimentCard from "./SentimentCard";
+import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
+import { useAppDispatch, useAppSelector } from "src/store";
+import styled from "styled-components";
+import { fieldName } from ".";
+import { setSentimentModalOpen } from "../../uxDashboardSlice";
+import { FormValuesInterface } from "../FormProvider";
+import FormSentimentCard from "./FormSentimentCard";
 
 const StyledModal = styled(Modal)`
   .modal {
@@ -29,22 +28,34 @@ const StyledModal = styled(Modal)`
 
 const ModalFooter = () => {
   const dispatch = useAppDispatch();
-  // const {
-  //   submitForm,
-  //   setFieldTouched,
-  //   setFieldValue,
-  //   errors,
-  //   values,
-  //   initialValues,
-  // } = useFormikContext<FormValuesInterface>();
-
+  const { id } = useParams<{ id: string }>();
+  const {
+    setFieldValue,
+    initialValues,
+    values,
+    validateForm,
+    setFieldTouched,
+    submitForm,
+  } = useFormikContext<FormValuesInterface>();
   const closeModal = async () => {
     dispatch(setSentimentModalOpen(false));
-    //if (isNewInsight) remove(insightIndex);
-    //if (!isNewInsight) setFieldValue(fieldName, initialValues[fieldName]);
   };
   const handleDismiss = async () => {
+    setFieldValue(fieldName, initialValues[fieldName]);
     closeModal();
+  };
+  const handleSave = async () => {
+    const errors = await validateForm(values);
+    initialValues[fieldName]?.forEach((value, index) => {
+      setFieldTouched(`sentiments[${index}].comment`, true, true);
+      setFieldTouched(`sentiments[${index}].value`, true, true);
+    });
+    if (errors[fieldName]) {
+      alert("compila tutti i campi obbligatori");
+      return;
+    }
+    submitForm();
+    dispatch(setSentimentModalOpen(false));
   };
   return (
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -57,7 +68,11 @@ const ModalFooter = () => {
       >
         Dismiss
       </Button>
-      <Button htmlType="button" data-qa="save-sentiment-chart">
+      <Button
+        htmlType="button"
+        data-qa="save-sentiment-chart"
+        onClick={handleSave}
+      >
         Save
       </Button>
     </div>
@@ -65,19 +80,17 @@ const ModalFooter = () => {
 };
 
 const SentimentChartModal = () => {
-  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const { data } = useGetCampaignsByCampaignClustersQuery({ campaign: id });
   const { isSentimentModalOpen } = useAppSelector((state) => state.uxDashboard);
-  const handleClose = async () => {
-    dispatch(resetInsight());
-    dispatch(setInsightModalOpen(false));
-  };
+
   return (
     <StyledModal
       isOpen={isSentimentModalOpen}
-      onClose={handleClose}
       closeOnClickOutside={false}
+      onClose={() => {
+        /* silence */
+      }}
       footer={<ModalFooter />}
     >
       <div data-qa="sentiment-chart-form">
@@ -87,7 +100,11 @@ const SentimentChartModal = () => {
           </Title>
           <BSCol size="col-lg-9">
             {data?.items.map((cluster, index) => (
-              <SentimentCard cluster={cluster} index={index} />
+              <FormSentimentCard
+                key={cluster.id}
+                cluster={cluster}
+                index={index}
+              />
             ))}
           </BSCol>
           <BSCol size="col-lg-3">
