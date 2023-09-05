@@ -250,7 +250,10 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
           campaign: id,
           body: {
             goal: values.goal,
-            questions: values.questions,
+            questions: values.questions.map((question) => ({
+              id: question.id,
+              name: question.name,
+            })),
             methodology: values.methodology,
             usersNumber: values.usersNumber,
             insights: mapFormInsightsForPatch(values.insights) || [],
