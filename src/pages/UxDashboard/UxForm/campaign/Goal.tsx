@@ -57,7 +57,25 @@ const Goal = () => {
                 if (!result.destination) {
                   return;
                 }
-                move(result.source.index, result.destination.index);
+
+                if (
+                  !questions[result.source.index] ||
+                  !questions[result.destination.index]
+                ) {
+                  return;
+                }
+
+                const srcKey = `questions[${result.source.index}].name`;
+                const destKey = `questions[${result.destination.index}].name`;
+                const srcValue = questions[result.source.index].name;
+                const destValue = questions[result.destination.index].name;
+
+                if (srcValue === destValue) {
+                  return;
+                }
+
+                form.setFieldValue(srcKey, destValue);
+                form.setFieldValue(destKey, srcValue);
               };
               return (
                 <>
