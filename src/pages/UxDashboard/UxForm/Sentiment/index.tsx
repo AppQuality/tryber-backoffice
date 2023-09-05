@@ -35,26 +35,30 @@ const SentimentSection = () => {
         <SentimentSectionWrapper data-qa="sentiment-chart-section-title">
           <div>Sentiment</div>
           <div>
-            <Button
-              flat
-              className="aq-mr-2"
-              size="sm"
-              data-qa="edit-sentiment-chart"
-              onClick={() => {
-                dispatch(setSentimentModalOpen(true));
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              flat
-              size="sm"
-              type="danger"
-              data-qa="delete-sentiment-chart-button"
-              onClick={() => dispatch(setSentimentDeleteModalOpen(true))}
-            >
-              Delete
-            </Button>
+            {sentiments.length > 0 && (
+              <>
+                <Button
+                  flat
+                  className="aq-mr-2"
+                  size="sm"
+                  data-qa="edit-sentiment-chart"
+                  onClick={() => {
+                    dispatch(setSentimentModalOpen(true));
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  flat
+                  size="sm"
+                  type="danger"
+                  data-qa="delete-sentiment-chart-button"
+                  onClick={() => dispatch(setSentimentDeleteModalOpen(true))}
+                >
+                  Delete
+                </Button>
+              </>
+            )}
           </div>
         </SentimentSectionWrapper>
       }
