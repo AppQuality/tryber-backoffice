@@ -208,7 +208,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         ),
         videoParts: array().of(
           object().shape({
-            end: number().min(0).max(5).required("Campo obbligatorio"),
+            end: number().required("Campo obbligatorio"),
             description: string().required("Campo obbligatorio"),
           })
         ),
