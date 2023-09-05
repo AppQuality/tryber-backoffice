@@ -43,7 +43,7 @@ const SentimentSection = () => {
         <SentimentSectionWrapper data-qa="sentiment-chart-section-title">
           <div>Sentiment</div>
           <div>
-            {sentiments.length > 0 && (
+            {uxData?.sentiments && uxData?.sentiments.length > 0 && (
               <>
                 <Button
                   flat
