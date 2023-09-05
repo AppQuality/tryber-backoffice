@@ -7,6 +7,7 @@ import {
   TextareaField,
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { fieldName } from ".";
 import { FormSentiment, FormValuesInterface } from "../FormProvider";
@@ -34,6 +35,9 @@ const FormSentimentCard = ({
     useFormikContext<FormValuesInterface>();
   const value = getFieldMeta(`${fieldName}[${index}]`).value as FormSentiment;
 
+  useEffect(() => {
+    setFieldValue(`${fieldName}[${index}].clusterId`, cluster.id);
+  }, []);
   return (
     <Card
       data-qa={`sentiment-score-card-${index}`}
