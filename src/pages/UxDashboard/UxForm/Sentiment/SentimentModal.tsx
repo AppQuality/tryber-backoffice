@@ -1,22 +1,22 @@
 import {
-  Button,
-  Modal,
-  Title,
-  Text,
-  FormLabel,
-  BSGrid,
   BSCol,
+  BSGrid,
+  Button,
   Card,
+  FormLabel,
+  Modal,
+  Text,
+  Title,
 } from "@appquality/appquality-design-system";
-import { useAppDispatch, useAppSelector } from "src/store";
-import { setSentimentModalOpen } from "../../uxDashboardSlice";
-import { useFormikContext, FieldArray } from "formik";
-import styled from "styled-components";
-import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
+import { useFormikContext } from "formik";
 import { useParams } from "react-router-dom";
-import FormSentimentCard from "./FormSentimentCard";
-import { FormValuesInterface } from "../FormProvider";
+import { useGetCampaignsByCampaignClustersQuery } from "src/services/tryberApi";
+import { useAppDispatch, useAppSelector } from "src/store";
+import styled from "styled-components";
 import { fieldName } from ".";
+import { setSentimentModalOpen } from "../../uxDashboardSlice";
+import { FormValuesInterface } from "../FormProvider";
+import FormSentimentCard from "./FormSentimentCard";
 
 const StyledModal = styled(Modal)`
   .modal {
@@ -32,10 +32,8 @@ const ModalFooter = () => {
   const {
     setFieldValue,
     initialValues,
-    errors,
-    getFieldMeta,
-    getFieldHelpers,
-    getFieldProps,
+    values,
+    validateForm,
     setFieldTouched,
     submitForm,
   } = useFormikContext<FormValuesInterface>();
@@ -46,27 +44,16 @@ const ModalFooter = () => {
     setFieldValue(fieldName, initialValues[fieldName]);
     closeModal();
   };
-  const handleSave = () => {
+  const handleSave = async () => {
+    const errors = await validateForm(values);
+    initialValues[fieldName]?.forEach((value, index) => {
+      setFieldTouched(`sentiments[${index}].comment`, true, true);
+      setFieldTouched(`sentiments[${index}].value`, true, true);
+    });
     if (errors[fieldName]) {
       alert("compila tutti i campi obbligatori");
       return;
     }
-    // touch untouched fields
-    initialValues[fieldName]?.forEach((value, index) => {
-      setFieldTouched(`sentiments[${index}]`, true, true);
-      setFieldTouched(`sentiments[${index}].comment`, true, true);
-      setFieldTouched(`sentiments[${index}].value`, true, true);
-    });
-    // check if there are errors after touching
-    initialValues[fieldName]?.forEach(async (value, index) => {
-      if (
-        getFieldMeta(`sentiments[${index}].comment`).error ||
-        getFieldMeta(`sentiments[${index}].value`).error
-      ) {
-        alert("compila tutti i campi obbligatori");
-        return;
-      }
-    });
     submitForm();
     dispatch(setSentimentModalOpen(false));
   };

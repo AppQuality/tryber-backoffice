@@ -1,14 +1,15 @@
 import {
   Card,
+  ErrorMessage,
   FormGroup,
   FormLabel,
   Radio,
   TextareaField,
 } from "@appquality/appquality-design-system";
-import { fieldName } from ".";
-import { FormSentiment, FormValuesInterface } from "../FormProvider";
 import { useFormikContext } from "formik";
 import styled from "styled-components";
+import { fieldName } from ".";
+import { FormSentiment, FormValuesInterface } from "../FormProvider";
 import { sentimentTypes } from "./sentimentTypes";
 
 const ScoreWrapper = styled.div`
@@ -59,6 +60,7 @@ const FormSentimentCard = ({
             </RadioWrapper>
           ))}
         </ScoreWrapper>
+        <ErrorMessage name={`${fieldName}[${index}].value`} />
       </FormGroup>
       <TextareaField
         height="8em"

@@ -216,7 +216,10 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     ),
     sentiments: array().of(
       object().shape({
-        value: number().required("Campo obbligatorio"),
+        value: number()
+          .min(1, "Campo obbligatorio")
+          .max(5, "Campo obbligatorio")
+          .required("Campo obbligatorio"),
         comment: string()
           .max(100, "Massimo 100 caratteri")
           .required("Campo obbligatorio"),
