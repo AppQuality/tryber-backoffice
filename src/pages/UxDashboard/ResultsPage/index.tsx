@@ -27,7 +27,7 @@ const ResultsPage = () => {
       {publishStatus === "success" ? <Success /> : <Fail />}
       <Title size="ms" className="aq-mb-3">
         {publishStatus === "success" ? (
-          <span>La preview è stata pubblicata correttamente!"</span>
+          <span>La preview è stata pubblicata correttamente!</span>
         ) : (
           <span>
             La pubblicazione della preview non è andata a buon fine!
