@@ -35,7 +35,7 @@ const initialState: AdminPaymentsState = {
   },
 };
 
-export default (state = initialState, action: PaymentActions) => {
+const reducer = (state = initialState, action: PaymentActions) => {
   switch (action.type) {
     case "admin/payments/updatePendingReqs":
       return {
@@ -141,3 +141,5 @@ export default (state = initialState, action: PaymentActions) => {
       return state;
   }
 };
+
+export default reducer;

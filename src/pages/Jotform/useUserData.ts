@@ -1,6 +1,6 @@
 import { useGetUsersMeQuery } from "src/services/tryberApi";
 
-export default () => {
+const useUserData = () => {
   const { data, error, isFetching, isLoading } = useGetUsersMeQuery({
     fields: "role",
   });
@@ -11,3 +11,5 @@ export default () => {
     isFetching,
   };
 };
+
+export default useUserData;

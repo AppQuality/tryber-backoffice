@@ -1,4 +1,4 @@
-export default (token = false) => {
+const getAllPopups = (token = false) => {
   if (process.env.REACT_APP_DEFAULT_TOKEN)
     token = process.env.REACT_APP_DEFAULT_TOKEN;
   var myHeaders = new Headers();
@@ -21,3 +21,5 @@ export default (token = false) => {
       .then((data) => resolve(data))
   );
 };
+
+export default getAllPopups;
