@@ -15,7 +15,7 @@ import ShowOnce from "./ShowOnce";
 import TargetSelect from "./TargetSelect";
 import { PreviewModal } from "src/features/PreviewModal";
 
-export default ({ onSave, children, json, data = false }: EditorProps) => {
+const useEditor = ({ onSave, children, json, data = false }: EditorProps) => {
   const [title, setTitle] = useState((data && data.title) || "");
   const [targets, setTargets] = useState((data && data.targets) || "all");
   const [once, setOnce] = useState((data && data.once) || 0);
@@ -113,3 +113,4 @@ export default ({ onSave, children, json, data = false }: EditorProps) => {
     </>
   );
 };
+export default useEditor;
