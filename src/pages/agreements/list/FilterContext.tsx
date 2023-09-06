@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from "react";
-import useSearchParams from "./useSearchParams";
 
 type Filters = {
   customers?: {
@@ -36,7 +35,6 @@ const Context = createContext<{
 });
 
 const FiltersContext = ({ children }: { children: React.ReactNode }) => {
-  const queryParams = useSearchParams();
   const [filters, setFilters] = useState({});
   const [order, setOrder] = useState<typeof DefaultOrder>(DefaultOrder);
   const [page, setPage] = useState(1);

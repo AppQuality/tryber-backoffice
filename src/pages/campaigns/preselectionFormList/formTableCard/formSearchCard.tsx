@@ -1,4 +1,4 @@
-import { Card, Input } from "@appquality/appquality-design-system";
+import { Input } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import useDebounce from "src/hooks/useDebounce";
 import { useAppDispatch } from "src/store";

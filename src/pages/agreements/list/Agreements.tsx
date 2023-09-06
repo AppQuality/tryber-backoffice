@@ -23,7 +23,7 @@ export const Agreements = () => {
   const [deleteAgreement] = useDeleteAgreementsByAgreementIdMutation();
   const { add } = siteWideMessageStore();
   const { filters, page, setPage } = useFiltersAgreementsContext();
-  const { data, isLoading, isError, refetch } = useGetAgreementsQuery({
+  const { data, refetch } = useGetAgreementsQuery({
     ...(filters.customers && {
       filterBy: { customer: filters.customers?.map((c) => c.id).join() },
     }),
