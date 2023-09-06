@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import getAllPopups from "src/api/getAllPopups";
 
-export default ({}) => {
+const usePopupsList = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -79,3 +79,5 @@ export default ({}) => {
     </div>
   );
 };
+
+export default usePopupsList;

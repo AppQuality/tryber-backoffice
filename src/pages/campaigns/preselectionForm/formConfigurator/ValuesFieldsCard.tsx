@@ -1,5 +1,4 @@
 import { FC, useEffect } from "react";
-import { QuestionField } from "src/pages/campaigns/preselectionForm/formConfigurator/QuestionField";
 import { OptionsField } from "src/pages/campaigns/preselectionForm/formConfigurator/OptionsField";
 import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect";
 import {

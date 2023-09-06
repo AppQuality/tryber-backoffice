@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import createPopup from "src/api/createPopup";
 import Editor from "src/features/Editor";
 
-export default ({}) => {
+const usePopupsCreate = () => {
   let history = useHistory();
   return (
     <div className="popupContainer">
@@ -62,3 +62,5 @@ export default ({}) => {
     </div>
   );
 };
+
+export default usePopupsCreate;

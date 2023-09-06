@@ -1,4 +1,4 @@
-export default ({ content, title, profiles, once }, token = false) => {
+const createPopup = ({ content, title, profiles, once }, token = false) => {
   if (process.env.REACT_APP_DEFAULT_TOKEN)
     token = process.env.REACT_APP_DEFAULT_TOKEN;
   var myHeaders = new Headers();
@@ -10,11 +10,12 @@ export default ({ content, title, profiles, once }, token = false) => {
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
-    body: raw
+    body: raw,
   };
 
-  return fetch(
-    process.env.REACT_APP_API_URL + "/popups/",
-    requestOptions
-  ).then(response => response.json());
+  return fetch(process.env.REACT_APP_API_URL + "/popups/", requestOptions).then(
+    (response) => response.json()
+  );
 };
+
+export default createPopup;
