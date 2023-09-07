@@ -1195,6 +1195,7 @@ export type GetCampaignsByCampaignUxApiResponse =
       }[];
     }[];
     sentiments: {
+      id: number;
       value: number;
       comment: string;
       cluster: {
@@ -1241,8 +1242,10 @@ export type PatchCampaignsByCampaignUxApiArg = {
           }[];
         }[];
         sentiments: {
+          id?: number;
           clusterId: number;
           value: number;
+          comment: string;
         }[];
         methodology: {
           type: "qualitative" | "quantitative" | "quali-quantitative";

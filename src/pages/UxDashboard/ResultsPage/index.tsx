@@ -1,12 +1,10 @@
 import { Button, Title } from "@appquality/appquality-design-system";
-import { useFormikContext } from "formik";
 import { useParams } from "react-router-dom";
 import { usePatchCampaignsByCampaignUxMutation } from "src/services/tryberApi";
-import { useAppDispatch } from "src/store";
+import { useAppDispatch, useAppSelector } from "src/store";
 import { isDev } from "src/utils/isDevEnvironment";
 import styled from "styled-components";
-import { FormValuesInterface } from "../UxForm/FormProvider";
-import { setCurrentStep } from "../uxDashboardSlice";
+import { setCurrentStep, setPublishStatus } from "../uxDashboardSlice";
 import { ReactComponent as Fail } from "./assets/fail.svg";
 import { ReactComponent as Success } from "./assets/success.svg";
 
@@ -20,16 +18,16 @@ const StyledContainer = styled.div`
 const ResultsPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const { status, setStatus } = useFormikContext<FormValuesInterface>();
+  const { publishStatus } = useAppSelector((state) => state.uxDashboard);
   const [saveDashboard] = usePatchCampaignsByCampaignUxMutation();
   const origin = isDev() ? "https://dev.unguess.io" : "https://app.unguess.io";
 
   return (
     <StyledContainer>
-      {status === "success" ? <Success /> : <Fail />}
+      {publishStatus === "success" ? <Success /> : <Fail />}
       <Title size="ms" className="aq-mb-3">
-        {status === "success" ? (
-          <span>La preview è stata pubblicata correttamente!"</span>
+        {publishStatus === "success" ? (
+          <span>La preview è stata pubblicata correttamente!</span>
         ) : (
           <span>
             La pubblicazione della preview non è andata a buon fine!
@@ -38,7 +36,7 @@ const ResultsPage = () => {
           </span>
         )}
       </Title>
-      {status === "success" ? (
+      {publishStatus === "success" ? (
         <Button
           as="a"
           href={`${origin}/campaigns/${id}`}
@@ -50,17 +48,20 @@ const ResultsPage = () => {
       ) : (
         <Button
           onClick={() => {
-            const res = saveDashboard({
+            dispatch(setPublishStatus("publishing"));
+            saveDashboard({
               campaign: id,
               body: {
                 status: "publish",
               },
-            });
-            if ("error" in res) {
-              setStatus("error");
-            } else {
-              setStatus("success");
-            }
+            })
+              .unwrap()
+              .then((res) => {
+                dispatch(setPublishStatus("success"));
+              })
+              .catch((err) => {
+                dispatch(setPublishStatus("failed"));
+              });
           }}
           className="aq-mb-3"
           data-qa="go-to-campaign-page"
@@ -73,7 +74,7 @@ const ResultsPage = () => {
         flat
         data-qa="back-to-form"
         onClick={() => {
-          setStatus(undefined);
+          dispatch(setPublishStatus("idle"));
           dispatch(setCurrentStep(0));
         }}
       >

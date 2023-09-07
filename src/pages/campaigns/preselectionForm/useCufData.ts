@@ -1,6 +1,6 @@
 import { useGetCustomUserFieldsQuery } from "src/services/tryberApi";
 
-export default () => {
+const useCufData = () => {
   const { data } = useGetCustomUserFieldsQuery();
   const getAllOptions = async (cufId: number): Promise<number[]> => {
     let cufOptions: number[] = [];
@@ -19,3 +19,5 @@ export default () => {
     getAllOptions: getAllOptions,
   };
 };
+
+export default useCufData;

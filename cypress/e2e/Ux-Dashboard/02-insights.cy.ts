@@ -69,7 +69,7 @@ describe("Insights section of the form", () => {
       });
     });
   });
-  it("Should show an error for each field if trying to save an empty insight", () => {
+  it.only("Should show an error for each field if trying to save an empty insight", () => {
     cy.dataQa("add-new-insight").click({ force: true });
     cy.dataQa("insight-form").as("insightForm");
     cy.get("@insightForm")

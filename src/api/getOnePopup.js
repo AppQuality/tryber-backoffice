@@ -1,6 +1,6 @@
 import getAllPopups from "./getAllPopups";
 
-export default (id, token = false) => {
+const getOnePopup = (id, token = false) => {
   return new Promise((resolve, reject) =>
     getAllPopups(token)
       .then((data) => {
@@ -12,3 +12,5 @@ export default (id, token = false) => {
       .catch(reject)
   );
 };
+
+export default getOnePopup;

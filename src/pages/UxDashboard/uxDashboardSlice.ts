@@ -1,13 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FormInsight } from "./UxForm/FormProvider";
 
+type PublishStatus = "idle" | "publishing" | "success" | "failed";
 interface UxDashboardState {
   selectedInsight?: FormInsight;
   insightIndex: number;
   currentStep: number;
   currentFormSection: number;
   isProgrammaticallyScrolling: boolean;
-  isModalOpen: boolean;
+  isInsightModalOpen: boolean;
+  isSentimentModalOpen: boolean;
+  isSentimentDeleteModalOpen: boolean;
+  publishStatus: PublishStatus;
 }
 
 export const initialState: UxDashboardState = {
@@ -15,7 +19,10 @@ export const initialState: UxDashboardState = {
   currentStep: 0,
   currentFormSection: -199,
   isProgrammaticallyScrolling: false,
-  isModalOpen: false,
+  isInsightModalOpen: false,
+  isSentimentModalOpen: false,
+  isSentimentDeleteModalOpen: false,
+  publishStatus: "idle",
 };
 
 const selectionSlice = createSlice({
@@ -37,8 +44,17 @@ const selectionSlice = createSlice({
     setIsProgrammaticallyScrolling(state, action: PayloadAction<boolean>) {
       state.isProgrammaticallyScrolling = action.payload;
     },
-    setModalOpen(state, action: PayloadAction<boolean>) {
-      state.isModalOpen = action.payload;
+    setInsightModalOpen(state, action: PayloadAction<boolean>) {
+      state.isInsightModalOpen = action.payload;
+    },
+    setSentimentModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSentimentModalOpen = action.payload;
+    },
+    setSentimentDeleteModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSentimentDeleteModalOpen = action.payload;
+    },
+    setPublishStatus(state, action: PayloadAction<PublishStatus>) {
+      state.publishStatus = action.payload;
     },
     resetInsight(state) {
       state.selectedInsight = undefined;
@@ -57,7 +73,10 @@ export const {
   setCurrentStep,
   setCurrentFormSection,
   setIsProgrammaticallyScrolling,
-  setModalOpen,
+  setInsightModalOpen,
+  setSentimentModalOpen,
+  setSentimentDeleteModalOpen,
+  setPublishStatus,
   resetInsight,
   reset,
 } = actions;

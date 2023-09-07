@@ -5,7 +5,7 @@ import getOnePopup from "src/api/getOnePopup";
 import updatePopup from "src/api/updatePopup";
 import Editor from "src/features/Editor";
 
-export default ({}) => {
+const usePopupsUpdate = () => {
   let { id } = useParams<{ id: string }>();
   let history = useHistory();
   let [base64, setBase64] = useState<false | string>(false);
@@ -66,3 +66,5 @@ export default ({}) => {
     </div>
   );
 };
+
+export default usePopupsUpdate;

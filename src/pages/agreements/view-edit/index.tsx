@@ -19,7 +19,7 @@ const EditAgreementPage = () => {
   const history = useHistory();
   const { add } = siteWideMessageStore();
   // todo: understand better which data is being fetched here
-  const { data, currentData, isLoading, isFetching, isError, refetch } =
+  const { currentData, isLoading, isFetching, isError, refetch } =
     useGetAgreementsByAgreementIdQuery({
       agreementId: id,
     });

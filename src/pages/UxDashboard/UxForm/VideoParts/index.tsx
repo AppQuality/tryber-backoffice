@@ -1,21 +1,20 @@
 import { Card, Select, Title } from "@appquality/appquality-design-system";
-import { FieldArray } from "formik";
+import Video from "@appquality/stream-player";
+import { FieldArray, useFormikContext } from "formik";
+import { useMemo } from "react";
+import { OnDragEndResponder } from "react-beautiful-dnd";
+import { Plus } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
 import {
   GetCampaignsByCampaignObservationsApiResponse,
   useGetCampaignsByCampaignObservationsQuery,
 } from "src/services/tryberApi";
-import { useMemo } from "react";
-import { useFormikContext } from "formik";
-import VideoPart from "./VideoPart";
-import { FormValuesInterface, FormVideoPart } from "../FormProvider";
 import { useAppSelector } from "src/store";
-import Video from "@appquality/stream-player";
-import { OnDragEndResponder } from "react-beautiful-dnd";
+import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import DragNDropProvider from "../DragNDropProvider";
-import { Plus } from "react-bootstrap-icons";
-import styled from "styled-components";
+import { FormValuesInterface, FormVideoPart } from "../FormProvider";
+import VideoPart from "./VideoPart";
 
 export type VideoPartsOption = SelectOptionType &
   GetCampaignsByCampaignObservationsApiResponse["items"][number];
@@ -85,6 +84,7 @@ const VideoParts = () => {
                     src={videopart.streamUrl || videopart.url}
                   >
                     <VideoPart
+                      key={videopart.internalId}
                       start={videopart.start}
                       videoPartIndex={index}
                       fieldName={fieldName}

@@ -1,7 +1,9 @@
 import adminPayments from "./adminPayments/reducer";
 import messages from "./siteWideMessages/reducer";
 
-export default {
+const reducer = {
   messages,
   adminPayments,
 };
+
+export default reducer;

@@ -59,6 +59,16 @@ export interface FormInsight {
   >[number]["clusters"];
   videoParts: FormVideoPart[];
 }
+
+export interface FormSentiment {
+  clusterId: NonNullable<
+    GetCampaignsByCampaignUxApiResponse["sentiments"]
+  >[number]["cluster"]["id"];
+  value: NonNullable<
+    GetCampaignsByCampaignUxApiResponse["sentiments"]
+  >[number]["value"];
+  comment: string;
+}
 export interface FormValuesInterface {
   status?: GetCampaignsByCampaignUxApiResponse["status"];
   goal: GetCampaignsByCampaignUxApiResponse["goal"];
@@ -66,6 +76,7 @@ export interface FormValuesInterface {
   questions: FormQuestion[];
   usersNumber?: GetCampaignsByCampaignUxApiResponse["usersNumber"];
   insights: FormInsight[];
+  sentiments?: FormSentiment[];
 }
 
 const FormProvider = ({ children }: { children: ReactNode }) => {
@@ -76,7 +87,6 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     useGetCampaignsByCampaignUxQuery({
       campaign: id,
     });
-
   const { data: campaignData, isLoading: campaignDataLoading } =
     useGetCampaignsByCampaignQuery({ campaign: id });
 
@@ -123,6 +133,17 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
             }),
           };
         }) || [],
+      sentiments:
+        currentData?.sentiments && currentData.sentiments.length
+          ? currentData.sentiments.map((sentiment) => {
+              return {
+                id: sentiment.id,
+                clusterId: sentiment.cluster.id,
+                value: sentiment.value,
+                comment: sentiment.comment,
+              };
+            })
+          : [],
     }),
     [currentData, campaignData]
   );
@@ -182,6 +203,17 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         ),
       })
     ),
+    sentiments: array().of(
+      object().shape({
+        value: number()
+          .min(1, "Campo obbligatorio")
+          .max(5, "Campo obbligatorio")
+          .required("Campo obbligatorio"),
+        comment: string()
+          .max(100, "Massimo 100 caratteri")
+          .required("Campo obbligatorio"),
+      })
+    ),
   });
 
   const mapFormInsightsForPatch = (insights: FormValuesInterface["insights"]) =>
@@ -222,11 +254,14 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
           campaign: id,
           body: {
             goal: values.goal,
-            questions: values.questions,
+            questions: values.questions.map((question) => ({
+              id: question.id,
+              name: question.name,
+            })),
             methodology: values.methodology,
             usersNumber: values.usersNumber,
             insights: mapFormInsightsForPatch(values.insights) || [],
-            sentiments: [],
+            sentiments: values.sentiments || [],
           },
         });
         formikHelpers.setSubmitting(false);
