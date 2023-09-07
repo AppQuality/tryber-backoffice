@@ -14,6 +14,7 @@ import moment from "moment";
 import styled from "styled-components";
 import { GripVertical, Trash } from "react-bootstrap-icons";
 import { ListItemCard } from "./ListItemCard";
+import { videoCitMaxChar } from "../FormProvider";
 
 const Handler = styled.div`
   margin: ${({ theme }) => theme.grid.sizes[4]} 0;
@@ -117,11 +118,12 @@ const VideoPart = ({
         </FormikField>
         <TextareaField
           name={`${fieldName}[${videoPartIndex}].description`}
-          counterMax={60}
+          counterMax={videoCitMaxChar}
           placeholder="Scrivi una nota o una descrizione"
           label={
             <div>
-              Citazione utente <strong>(Massimo 60 caratteri)</strong>
+              Citazione utente{" "}
+              <strong>(Massimo {videoCitMaxChar} caratteri)</strong>
             </div>
           }
           height="4em"

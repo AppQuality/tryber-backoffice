@@ -10,7 +10,11 @@ import { useFormikContext } from "formik";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { fieldName } from ".";
-import { FormSentiment, FormValuesInterface } from "../FormProvider";
+import {
+  FormSentiment,
+  FormValuesInterface,
+  sentimentNoteMaxChar,
+} from "../FormProvider";
 import { sentimentTypes } from "./sentimentTypes";
 
 const ScoreWrapper = styled.div`
@@ -68,11 +72,12 @@ const FormSentimentCard = ({
       </FormGroup>
       <TextareaField
         height="8em"
-        counterMax={100}
+        counterMax={sentimentNoteMaxChar}
         name={`${fieldName}[${index}].comment`}
         label={
           <div>
-            Breve commento <strong>(max 100 caratteri)</strong>
+            Breve commento{" "}
+            <strong>(max {sentimentNoteMaxChar} caratteri)</strong>
           </div>
         }
       />
