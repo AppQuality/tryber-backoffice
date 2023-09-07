@@ -117,8 +117,13 @@ const VideoPart = ({
         </FormikField>
         <TextareaField
           name={`${fieldName}[${videoPartIndex}].description`}
+          counterMax={60}
           placeholder="Scrivi una nota o una descrizione"
-          label="Citazione utente"
+          label={
+            <div>
+              Citazione utente <strong>(Massimo 60 caratteri)</strong>
+            </div>
+          }
           height="4em"
         />
       </div>

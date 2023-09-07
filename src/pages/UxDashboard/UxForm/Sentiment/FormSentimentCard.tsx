@@ -37,7 +37,7 @@ const FormSentimentCard = ({
 
   useEffect(() => {
     setFieldValue(`${fieldName}[${index}].clusterId`, cluster.id);
-  }, []);
+  }, [cluster.id, index, setFieldValue]);
   return (
     <Card
       data-qa={`sentiment-score-card-${index}`}
