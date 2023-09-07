@@ -1,12 +1,24 @@
-const numberOfColumns = 10;
+const numberOfColumns = 11;
 
 describe("Agreements Page:", () => {
   beforeEach(() => {
     cy.clearCookies();
     cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/agreements?`, {
       statusCode: 200,
-      fixture: "/agreements/_get/response-items-no-filtered.json",
-    }).as("loggedIn");
+      fixture: "/agreements/_get/response-items-no-filtered",
+    }).as("getAgreements");
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/agreements?start=0&limit=10`,
+      {
+        statusCode: 200,
+        fixture: "/agreements/_get/response-items-limit10",
+      }
+    ).as("getAgreementslimit");
+    cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/customers`, {
+      statusCode: 200,
+      fixture: "/customers/_get/response-200-success",
+    }).as("getAgreements");
     cy.visit(`${Cypress.env("AGREEMENTS_PAGE")}/`);
   });
   it("Should print a customer agreements table", () => {
@@ -27,7 +39,15 @@ describe("Customer multiselect: ", () => {
     cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/agreements?`, {
       statusCode: 200,
       fixture: "/agreements/_get/response-items-no-filtered.json",
-    }).as("loggedIn");
+    }).as("getAgreements");
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/agreements?start=0&limit=10`,
+      {
+        statusCode: 200,
+        fixture: "/agreements/_get/response-items-limit10",
+      }
+    ).as("getAgreements2");
     cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/customers`, {
       statusCode: 200,
       fixture: "/customers/_get/response-200-success.json",

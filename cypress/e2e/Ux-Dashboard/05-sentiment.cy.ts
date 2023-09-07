@@ -9,6 +9,10 @@ describe("Sentiment section of the form: ", () => {
         fixture: "permissions/_get/response_200_appq_campaign",
       }
     ).as("authorized");
+    cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904`, {
+      statusCode: 200,
+      fixture: "campaigns/id/_get/response/200",
+    }).as("getCampaign");
     cy.intercept(
       "GET",
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
@@ -46,6 +50,7 @@ describe("Sentiment section of the form: ", () => {
   });
   it("The sentiment card should have cluster title, and a score radio input and a note textarea", () => {
     cy.dataQa("add-new-sentiment-chart").click({ force: true });
+    cy.wait("@getClusters");
     cy.dataQa("sentiment-chart-form").within(() => {
       cy.dataQa("sentiment-score-card-", { startsWith: true }).each(
         (card, index) => {
