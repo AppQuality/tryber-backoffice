@@ -12,6 +12,7 @@ import { useAppDispatch } from "src/store";
 import { setSelectedInsight } from "../../uxDashboardSlice";
 import { Film } from "react-bootstrap-icons";
 import styled from "styled-components";
+import Handler from "../components/Handler";
 
 const InsightPillsWrapper = styled.div`
   display: flex;
@@ -23,7 +24,18 @@ interface InsightCardProps {
   insight: FormInsight;
   index: number;
   removeInsight: (index: number) => void;
+  dragHandleProps?: any;
 }
+
+const StyledCard = styled(Card)`
+  .insight-card-body {
+    padding-top: ${({ theme }) => theme.grid.sizes[3]};
+    padding-bottom: ${({ theme }) => theme.grid.sizes[3]};
+    padding-right: ${({ theme }) => theme.grid.sizes[3]};
+    display: grid;
+    grid-template-columns: 30px 1fr;
+  }
+`;
 
 const CardHeader = styled.div`
   display: flex;
@@ -41,6 +53,7 @@ export const InsightCard = ({
   insight,
   removeInsight,
   index,
+  dragHandleProps,
 }: InsightCardProps) => {
   const { submitForm } = useFormikContext<FormValuesInterface>();
   const dispatch = useAppDispatch();
@@ -83,7 +96,8 @@ export const InsightCard = ({
   );
 
   return (
-    <Card
+    <StyledCard
+      bodyClass="insight-card-body"
       className="aq-mb-3"
       title={
         <CardHeader>
@@ -93,30 +107,33 @@ export const InsightCard = ({
       }
       data-qa={`insight-card-${index}`}
     >
-      <Title size="s" className="aq-mb-3">
-        {insight.title}
-      </Title>
-      <div className="aq-mb-3">{insight.description}</div>
-      <CardFooter>
-        <InsightPillsWrapper data-qa={`insight-pills`}>
-          {insight?.severity && <SeverityPill severity={insight.severity} />}
-          {Array.isArray(insight.cluster) &&
-            insight.cluster.map((cluster) => (
-              <Pill type="primary" className="aq-mr-1" key={cluster.id} flat>
-                {cluster.name}
+      <Handler handleDragProps={dragHandleProps} />
+      <div>
+        <Title size="s" className="aq-mb-3">
+          {insight.title}
+        </Title>
+        <div className="aq-mb-3">{insight.description}</div>
+        <CardFooter>
+          <InsightPillsWrapper data-qa={`insight-pills`}>
+            {insight?.severity && <SeverityPill severity={insight.severity} />}
+            {Array.isArray(insight.cluster) &&
+              insight.cluster.map((cluster) => (
+                <Pill type="primary" className="aq-mr-1" key={cluster.id} flat>
+                  {cluster.name}
+                </Pill>
+              ))}
+            {insight.cluster && !Array.isArray(insight.cluster) && (
+              <Pill type="primary" className="aq-mr-1" flat>
+                General
               </Pill>
-            ))}
-          {insight.cluster && !Array.isArray(insight.cluster) && (
-            <Pill type="primary" className="aq-mr-1" flat>
-              General
-            </Pill>
-          )}
-        </InsightPillsWrapper>
-        <div>
-          <Film size={16} style={{ marginBottom: "-2px" }} />{" "}
-          {insight.videoParts.length} video
-        </div>
-      </CardFooter>
-    </Card>
+            )}
+          </InsightPillsWrapper>
+          <div>
+            <Film size={16} style={{ marginBottom: "-2px" }} />{" "}
+            {insight.videoParts.length} video
+          </div>
+        </CardFooter>
+      </div>
+    </StyledCard>
   );
 };

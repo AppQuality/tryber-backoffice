@@ -83,13 +83,12 @@ const Goal = () => {
                     onDragEnd={handleDragEnd}
                     items={questions}
                     renderItem={(question, index, dragHandleProps) => (
-                      <div {...dragHandleProps}>
-                        <QuestionField
-                          index={index}
-                          remove={remove}
-                          name={name}
-                        />
-                      </div>
+                      <QuestionField
+                        index={index}
+                        remove={remove}
+                        name={name}
+                        dragHandleProps={dragHandleProps}
+                      />
                     )}
                   />
                   <AddNew

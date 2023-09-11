@@ -6,24 +6,32 @@ import {
   FieldProps,
 } from "@appquality/appquality-design-system";
 import styled from "styled-components";
+import Handler from "../Handler";
 
 const Styled = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto;
-  grid-column-gap: ${({ theme }) => theme.grid.sizes[3]};
+  grid-template-columns: 20px 1fr auto;
+  grid-column-gap: ${({ theme }) => theme.grid.sizes[2]};
 `;
 
 interface QuestionFieldProps {
   index: number;
   remove: (index: number) => void;
   name: string;
+  dragHandleProps?: any;
 }
 
-const QuestionField = ({ index, remove, name }: QuestionFieldProps) => {
+const QuestionField = ({
+  index,
+  remove,
+  name,
+  dragHandleProps,
+}: QuestionFieldProps) => {
   return (
     <FormikField name={`${name}[${index}].name`}>
       {({ field, form }: FieldProps) => (
         <Styled data-qa={`question-${index}`}>
+          {dragHandleProps && <Handler handleDragProps={dragHandleProps} />}
           <Input
             id={field.name}
             value={field.value}
