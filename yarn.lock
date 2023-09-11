@@ -105,10 +105,10 @@
     ajv-draft-04 "^1.0.0"
     call-me-maybe "^1.0.1"
 
-"@appquality/appquality-design-system@^1.0.46":
-  version "1.0.46"
-  resolved "https://registry.yarnpkg.com/@appquality/appquality-design-system/-/appquality-design-system-1.0.46.tgz#d9e08e9a3fe9fb904f6f9394c0d353f396c746fa"
-  integrity sha512-HxS54Tmg1Wc4xQZ0Zk/YfCtJUutK+16U2BYVddUVOsSUF430HeViX0gqnkT4+rg8KKkq9ET55SIXCMPRAVd6GA==
+"@appquality/appquality-design-system@^1.0.49":
+  version "1.0.49"
+  resolved "https://registry.yarnpkg.com/@appquality/appquality-design-system/-/appquality-design-system-1.0.49.tgz#24c60574c27854d47446925668ea3fbecbbb1bfe"
+  integrity sha512-kpOHwhxPxXxd0+cHPK8MQHsSx6nTECYtPyMqe/h/AVAoWzD6aW5zsrbclNQxmt0JWm4mbldKRp17Q6WNsZGq3Q==
   dependencies:
     "@appquality/mobiscroll" "^5.10.1"
     formik "^2.2.9"

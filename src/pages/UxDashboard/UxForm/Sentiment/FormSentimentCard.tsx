@@ -10,7 +10,11 @@ import { useFormikContext } from "formik";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { fieldName } from ".";
-import { FormSentiment, FormValuesInterface } from "../FormProvider";
+import {
+  FormSentiment,
+  FormValuesInterface,
+  sentimentNoteMaxChar,
+} from "../FormProvider";
 import { sentimentTypes } from "./sentimentTypes";
 
 const ScoreWrapper = styled.div`
@@ -37,7 +41,7 @@ const FormSentimentCard = ({
 
   useEffect(() => {
     setFieldValue(`${fieldName}[${index}].clusterId`, cluster.id);
-  }, []);
+  }, [cluster.id, index, setFieldValue]);
   return (
     <Card
       data-qa={`sentiment-score-card-${index}`}
@@ -68,8 +72,14 @@ const FormSentimentCard = ({
       </FormGroup>
       <TextareaField
         height="8em"
+        counterMax={sentimentNoteMaxChar}
         name={`${fieldName}[${index}].comment`}
-        label="Breve commento (max 100 caratteri)"
+        label={
+          <div>
+            Breve commento{" "}
+            <strong>(max {sentimentNoteMaxChar} caratteri)</strong>
+          </div>
+        }
       />
     </Card>
   );

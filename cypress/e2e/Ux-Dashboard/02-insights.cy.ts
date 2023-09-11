@@ -9,6 +9,10 @@ describe("Insights section of the form", () => {
         fixture: "permissions/_get/response_200_appq_campaign",
       }
     ).as("authorized");
+    cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904`, {
+      statusCode: 200,
+      fixture: "campaigns/id/_get/response/200",
+    }).as("getCampaign");
     cy.intercept(
       "GET",
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
@@ -25,6 +29,14 @@ describe("Insights section of the form", () => {
         fixture: "campaigns/id/clusters/_get/response_200_items",
       }
     ).as("getClusters");
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/observations?`,
+      {
+        statusCode: 200,
+        fixture: "campaigns/id/observations/_get/200",
+      }
+    ).as("getObservations");
     cy.visit(
       `${Cypress.env("CAMPAINGS_PAGE")}/4904${Cypress.env(
         "UX_DASHBOARD_PAGE"
@@ -69,7 +81,7 @@ describe("Insights section of the form", () => {
       });
     });
   });
-  it.only("Should show an error for each field if trying to save an empty insight", () => {
+  it("Should show an error for each field if trying to save an empty insight", () => {
     cy.dataQa("add-new-insight").click({ force: true });
     cy.dataQa("insight-form").as("insightForm");
     cy.get("@insightForm")
@@ -79,7 +91,7 @@ describe("Insights section of the form", () => {
         cy.get("label[for='insights[3].title']")
           .siblings()
           .should("contain", "Campo obbligatorio");
-        cy.get("textarea[name='insights[3].description']")
+        cy.get("label[for='insights[3].description']")
           .siblings()
           .should("contain", "Campo obbligatorio");
         cy.dataQa("severity-select")
@@ -186,7 +198,7 @@ describe("Insights section of the form", () => {
             .clear()
             .type("00:01:00");
         });
-        cy.get('[data-qa="save-insight"]').click();
+        cy.get('[data-qa="save-insight"]').click({ force: true });
         cy.wait("@patchUx").then((interception) => {
           expect(interception.request.body).to.deep.eq(fixture);
         });

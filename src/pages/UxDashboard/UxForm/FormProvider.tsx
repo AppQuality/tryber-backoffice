@@ -79,6 +79,8 @@ export interface FormValuesInterface {
   sentiments?: FormSentiment[];
 }
 
+export const sentimentNoteMaxChar = 100;
+export const videoCitMaxChar = 150;
 const FormProvider = ({ children }: { children: ReactNode }) => {
   const { add } = siteWideMessageStore();
   const { id } = useParams<{ id: string }>();
@@ -198,7 +200,9 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
         videoParts: array().of(
           object().shape({
             end: number().required("Campo obbligatorio"),
-            description: string().required("Campo obbligatorio"),
+            description: string()
+              .max(videoCitMaxChar, `Massimo ${videoCitMaxChar} caratteri`)
+              .required("Campo obbligatorio"),
           })
         ),
       })
@@ -210,7 +214,10 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
           .max(5, "Campo obbligatorio")
           .required("Campo obbligatorio"),
         comment: string()
-          .max(100, "Massimo 100 caratteri")
+          .max(
+            sentimentNoteMaxChar,
+            `Massimo ${sentimentNoteMaxChar} caratteri`
+          )
           .required("Campo obbligatorio"),
       })
     ),
