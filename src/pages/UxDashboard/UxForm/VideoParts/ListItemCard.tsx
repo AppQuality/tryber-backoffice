@@ -5,16 +5,16 @@ export const ListItemCard = styled(Card)`
   @media (min-width: 768px) {
     .aq-card-body {
       display: grid;
-      grid-template-columns: 350px 1fr 50px;
+      grid-template-columns: 20px 350px 1fr 50px;
       grid-gap: ${({ theme }) => theme.grid.sizes[3]};
       margin: 0;
-      > div:first-child {
+      > div:nth-child(2) {
         background-color: ${({ theme }) => theme.colors.gray900};
         display: flex;
         align-items: center;
         justify-content: center;
       }
-      > div:nth-child(2) {
+      > div:nth-child(3) {
         padding-top: ${({ theme }) => theme.grid.sizes[3]};
         padding-bottom: ${({ theme }) => theme.grid.sizes[3]};
       }
