@@ -1,4 +1,4 @@
-import Video, { useVideoContext } from "@appquality/stream-player";
+import Video from "@appquality/stream-player";
 import styled from "styled-components";
 import { VideoControls } from "./VideoControls";
 import { useEffect, useRef, useState } from "react";
