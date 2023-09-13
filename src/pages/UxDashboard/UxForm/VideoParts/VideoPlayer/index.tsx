@@ -64,7 +64,7 @@ const VideoPlayer = ({
   videoFieldName: string;
   title?: string;
 }) => {
-  const { isFullScreen } = useVideoContext();
+  const [isFullScreen, setFullScreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<HTMLDivElement>(null);
 
@@ -83,7 +83,12 @@ const VideoPlayer = ({
     >
       <Video.Player />
       {!isLoading && (
-        <VideoControls videoFieldName={videoFieldName} title={title} />
+        <VideoControls
+          videoFieldName={videoFieldName}
+          title={title}
+          isFullScreen={isFullScreen}
+          setFullScreen={setFullScreen}
+        />
       )}
     </PlayerWrapper>
   );
