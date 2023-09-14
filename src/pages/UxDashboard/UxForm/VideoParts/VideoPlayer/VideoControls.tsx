@@ -144,14 +144,17 @@ const OtherControls = styled.div<{ isFullScreen?: boolean }>`
 export const VideoControls = ({
   videoFieldName,
   title,
+  isFullScreen,
+  setFullScreen,
 }: {
   videoFieldName: string;
   title?: string;
+  isFullScreen: boolean;
+  setFullScreen: (isFullScreen: boolean) => void;
 }) => {
   const [isPointerMoving, setIsPointerMoving] = useState(false);
   const [timer, setTimer] = useState<any>();
-  const { isFullScreen, context, setFullScreen, togglePlay } =
-    useVideoContext();
+  const { context, togglePlay } = useVideoContext();
   const { setFieldValue, getFieldMeta } =
     useFormikContext<FormValuesInterface>();
   const fillEndTime = () => {
@@ -217,10 +220,21 @@ export const VideoControls = ({
             <Scissors />
           </Button>
         </div>
-        <Video.FullScreen
-          className="player-control"
-          i18n={{ enter: <ArrowsFullscreen />, exit: <FullscreenExit /> }}
-        />
+        <div className="player-control">
+          {isFullScreen ? (
+            <FullscreenExit
+              onClick={() => {
+                setFullScreen(false);
+              }}
+            />
+          ) : (
+            <ArrowsFullscreen
+              onClick={() => {
+                setFullScreen(true);
+              }}
+            />
+          )}
+        </div>
       </OtherControls>
     </ControlsWrapper>
   );

@@ -1,4 +1,4 @@
-import Video, { useVideoContext } from "@appquality/stream-player";
+import Video from "@appquality/stream-player";
 import styled from "styled-components";
 import { VideoControls } from "./VideoControls";
 import { useEffect, useRef, useState } from "react";
@@ -64,7 +64,7 @@ const VideoPlayer = ({
   videoFieldName: string;
   title?: string;
 }) => {
-  const { isFullScreen } = useVideoContext();
+  const [isFullScreen, setFullScreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<HTMLDivElement>(null);
 
@@ -83,7 +83,12 @@ const VideoPlayer = ({
     >
       <Video.Player />
       {!isLoading && (
-        <VideoControls videoFieldName={videoFieldName} title={title} />
+        <VideoControls
+          videoFieldName={videoFieldName}
+          title={title}
+          isFullScreen={isFullScreen}
+          setFullScreen={setFullScreen}
+        />
       )}
     </PlayerWrapper>
   );
