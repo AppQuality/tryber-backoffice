@@ -184,7 +184,7 @@ const InsightModal = ({ remove }: InsightModalProps) => {
               </Text>
               <Text small>Ad esempio:</Text>
               <Text className="aq-mb-2">
-                ”Criticità sull’esperienza desktop”
+                ”Criticità sull'esperienza desktop”
               </Text>
               <Title size="xs" className="aq-text-info">
                 Descrivi poi brevemente in cosa consiste il

@@ -12,24 +12,10 @@ import { useVideoContext } from "@appquality/stream-player";
 import VideoPlayer from "./VideoPlayer";
 import moment from "moment";
 import styled from "styled-components";
-import { GripVertical, Trash } from "react-bootstrap-icons";
+import { Trash } from "react-bootstrap-icons";
 import { ListItemCard } from "./ListItemCard";
-
-const Handler = styled.div`
-  margin: ${({ theme }) => theme.grid.sizes[4]} 0;
-  cursor: grab !important;
-  flex: 1 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
-  color: ${({ theme }) => theme.colors.gray500};
-  transition: all 0.2s;
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.gray100};
-    color: ${({ theme }) => theme.colors.gray900};
-  }
-`;
+import { videoCitMaxChar } from "../FormProvider";
+import Handler from "../components/Handler";
 
 const Actions = styled.div`
   display: flex;
@@ -70,6 +56,7 @@ const VideoPart = ({
   } = useVideoContext();
   return (
     <ListItemCard data-qa={`insight-videopart-${videoPartIndex}`}>
+      <Handler handleDragProps={handleDragProps} />
       <VideoPlayer
         videoFieldName={`${fieldName}[${videoPartIndex}]`}
         title={title}
@@ -117,8 +104,14 @@ const VideoPart = ({
         </FormikField>
         <TextareaField
           name={`${fieldName}[${videoPartIndex}].description`}
+          counterMax={videoCitMaxChar}
           placeholder="Scrivi una nota o una descrizione"
-          label="Citazione utente"
+          label={
+            <div>
+              Citazione utente{" "}
+              <strong>(Massimo {videoCitMaxChar} caratteri)</strong>
+            </div>
+          }
           height="4em"
         />
       </div>
@@ -135,9 +128,6 @@ const VideoPart = ({
         >
           <Trash size={16} />
         </DeleteButton>
-        <Handler {...handleDragProps} role="handler">
-          <GripVertical size={18} />
-        </Handler>
       </Actions>
     </ListItemCard>
   );

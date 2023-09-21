@@ -113,6 +113,7 @@ const VideoParts = () => {
                       options={observationsOptions}
                       label="Seleziona lo spezzone video"
                       name={"observation"}
+                      menuPlacement="top"
                       value={[]}
                       onChange={(value) => {
                         if (!value) {

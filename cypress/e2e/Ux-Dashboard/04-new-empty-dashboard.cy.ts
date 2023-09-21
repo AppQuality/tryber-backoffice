@@ -9,6 +9,10 @@ describe("Main page", () => {
         fixture: "permissions/_get/response_200_appq_campaign",
       }
     ).as("authorized");
+    cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904`, {
+      statusCode: 200,
+      fixture: "campaigns/id/_get/response/200",
+    }).as("getCampaign");
     cy.intercept(
       "GET",
       `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
@@ -42,11 +46,13 @@ describe("Main page", () => {
     ).as("patchUx");
     cy.dataQa("submit-draft").should("be.enabled");
     cy.dataQa("submit-draft").click();
-    cy.get("[name='goal']").siblings().should("contain", "Campo obbligatorio");
+    cy.get("label[for='goal']")
+      .siblings()
+      .should("contain", "Campo obbligatorio");
     cy.dataQa("add-new-question")
       .siblings()
       .should("contain", "Campo obbligatorio");
-    cy.get("[name='methodology.description']")
+    cy.get("label[for='methodology.description']")
       .siblings()
       .should("not.contain", "Campo obbligatorio");
     cy.get("label[for='usersNumber']")

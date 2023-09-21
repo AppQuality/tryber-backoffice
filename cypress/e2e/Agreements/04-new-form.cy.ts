@@ -1,6 +1,14 @@
 describe("New Single Agreement Page:", () => {
   beforeEach(() => {
     cy.clearCookies();
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/users/me?fields=role`,
+      {
+        statusCode: 200,
+        fixture: "users/me/_get/200_role_admin",
+      }
+    ).as("enoughPermissions");
     cy.intercept("GET", `${Cypress.env("REACT_APP_API_URL")}/customers`, {
       statusCode: 200,
       fixture: "/customers/_get/response-200-success.json",

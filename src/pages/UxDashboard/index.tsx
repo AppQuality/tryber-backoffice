@@ -66,6 +66,7 @@ const UxDashboard = () => {
             back={{
               text: "Vai alla dashboard video",
               navigation: `${window.location.origin}/campaigns/video/${id}/`,
+              target: "_blank",
             }}
           >
             Tool di compilazione

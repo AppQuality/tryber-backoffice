@@ -20,7 +20,7 @@
     {
       "id": 70,
       "title": "Malfunzionamento form",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus lorem, maximus sit amet fermentum ac, venenatis eu sapien. In hac habitasse platea dictumst.",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       "order": 0,
       "severityId": 1,
       "clusterIds": [1],
@@ -31,7 +31,7 @@
           "start": 0,
           "end": 97,
           "mediaId": 73579,
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus lorem, maximus sit amet fermentum ac, venenatis eu sapien"
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         },
         {
           "id": 251,
@@ -39,7 +39,7 @@
           "start": 22,
           "end": 101,
           "mediaId": 73577,
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         },
         {
           "id": 252,
@@ -47,7 +47,7 @@
           "start": 0,
           "end": 152,
           "mediaId": 73578,
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         }
       ]
     },
@@ -72,7 +72,7 @@
     {
       "id": 72,
       "title": "Criticità Pagina Prodotto",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus lorem, maximus sit amet fermentum ac, venenatis eu sapien. In hac habitasse platea dictumst. Etiam sodales nibh turpis, at condimentum arcu vehicula eget. Donec sollicitudin dapibus ",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       "order": 2,
       "severityId": 2,
       "clusterIds": [1],
@@ -83,7 +83,7 @@
           "start": 0,
           "end": 106,
           "mediaId": 73589,
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus lorem, maximus sit amet fermentum ac, venenatis eu sapien. In hac habitasse platea dictumst. Etiam sodales nibh turpis,"
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         }
       ]
     }
