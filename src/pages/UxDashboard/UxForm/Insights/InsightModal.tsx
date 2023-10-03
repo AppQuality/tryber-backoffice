@@ -19,7 +19,10 @@ import styled from "styled-components";
 import SeverityField from "../components/fields/SeverityField";
 import ClusterField from "../components/fields/ClusterField";
 import VideoParts from "../VideoParts";
-import { FormValuesInterface } from "../FormProvider";
+import {
+  FormValuesInterface,
+  insightDescriptionMaxChar,
+} from "../FormProvider";
 import { useMemo } from "react";
 import { fieldName } from ".";
 
@@ -160,8 +163,16 @@ const InsightModal = ({ remove }: InsightModalProps) => {
             <div data-qa="insight-description">
               <TextareaField
                 height="8em"
+                counterMax={insightDescriptionMaxChar}
                 name={`${fieldName}[${insightIndex}].description`}
-                label="Description"
+                label={
+                  <div>
+                    Descrizione{" "}
+                    <strong>
+                      (Massimo {insightDescriptionMaxChar} caratteri)
+                    </strong>
+                  </div>
+                }
               />
             </div>
           </BSCol>
