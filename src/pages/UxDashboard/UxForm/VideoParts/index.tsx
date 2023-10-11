@@ -92,7 +92,9 @@ const VideoParts = () => {
                       handleDragProps={dragHandleProps}
                       title={
                         observationsOptions.find(
-                          (option) => option.media.id === videopart.mediaId
+                          (option) =>
+                            option.media.id === videopart.mediaId &&
+                            option.time === videopart.start
                         )?.label
                       }
                     />
