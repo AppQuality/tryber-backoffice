@@ -14,6 +14,7 @@ import {
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { useAppDispatch, useAppSelector } from "src/store";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import { resetInsight, setInsightModalOpen } from "../../uxDashboardSlice";
 import styled from "styled-components";
 import SeverityField from "../components/fields/SeverityField";
@@ -39,6 +40,7 @@ const StyledModal = styled(Modal)`
 
 const ModalFooter = ({ remove }: InsightModalProps) => {
   const dispatch = useAppDispatch();
+  const { add } = siteWideMessageStore();
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
   const {
     submitForm,
@@ -77,6 +79,24 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
       });
       alert("compila tutti i campi obbligatori");
       return;
+    }
+    if (Object.keys(errors).length > 0) {
+      add({
+        type: "warning",
+        message: (
+          <Text>
+            <strong>
+              Attenzione! Hai inserito una scoperta, ma la bozza non è salvata
+            </strong>
+            <div>
+              La bozza non è stata salvata automaticamente perchè manca la
+              compilazione di alcuni dati obbligatori. Compilati e salva la
+              bozza.
+            </div>
+          </Text>
+        ),
+        expire: 8,
+      });
     }
     submitForm();
     dispatch(resetInsight());
