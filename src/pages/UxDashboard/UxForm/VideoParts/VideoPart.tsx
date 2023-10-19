@@ -43,6 +43,7 @@ const VideoPart = ({
   remove,
   handleDragProps,
   title,
+  isMoved,
 }: {
   start: number;
   videoPartIndex: number;
@@ -50,6 +51,7 @@ const VideoPart = ({
   remove: (index: number) => void;
   handleDragProps: any;
   title?: string;
+  isMoved?: boolean;
 }) => {
   const {
     context: { player },
@@ -65,6 +67,8 @@ const VideoPart = ({
         <FormikField
           name={`${fieldName}[${videoPartIndex}].end`}
           validate={(value: number) => {
+            if (isMoved) return;
+
             if (player) {
               let error;
               if (value > player.totalTime - start) {
