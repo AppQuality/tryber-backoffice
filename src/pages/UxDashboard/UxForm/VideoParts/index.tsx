@@ -111,7 +111,6 @@ const VideoParts = () => {
                       Aggiungi una nuova evidenza
                     </Title>
                     <Select
-                      menuTargetQuery="body"
                       options={observationsOptions}
                       label="Seleziona lo spezzone video"
                       name={"observation"}
