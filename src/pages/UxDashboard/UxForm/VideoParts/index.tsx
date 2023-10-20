@@ -1,7 +1,7 @@
 import { Card, Select, Title } from "@appquality/appquality-design-system";
 import Video from "@appquality/stream-player";
 import { FieldArray, useFormikContext } from "formik";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { OnDragEndResponder } from "react-beautiful-dnd";
 import { Plus } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
@@ -44,10 +44,10 @@ const VideoParts = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetCampaignsByCampaignObservationsQuery({ campaign: id });
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
-  const { values } = useFormikContext<FormValuesInterface>();
+  const formikContext = useFormikContext<FormValuesInterface>();
+  const { values } = formikContext;
   const fieldName = `insights[${insightIndex}].videoParts`;
   const videoParts = values.insights[insightIndex].videoParts;
-  const [isMoved, setIsMoved] = useState(false);
 
   const observationsOptions: VideoPartsOption[] = useMemo(
     () =>
@@ -73,7 +73,7 @@ const VideoParts = () => {
               return;
             }
             move(result.source.index, result.destination.index);
-            setIsMoved(true);
+            formikContext.setFieldTouched(fieldName, false);
           };
           return (
             <>
@@ -99,7 +99,6 @@ const VideoParts = () => {
                             option.time === videopart.start
                         )?.label
                       }
-                      isMoved={isMoved}
                     />
                   </Video>
                 )}

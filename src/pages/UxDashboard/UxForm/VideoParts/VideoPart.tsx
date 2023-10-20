@@ -16,6 +16,7 @@ import { Trash } from "react-bootstrap-icons";
 import { ListItemCard } from "./ListItemCard";
 import { videoCitMaxChar } from "../FormProvider";
 import Handler from "../components/Handler";
+import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 
 const Actions = styled.div`
   display: flex;
@@ -43,19 +44,18 @@ const VideoPart = ({
   remove,
   handleDragProps,
   title,
-  isMoved,
 }: {
   start: number;
   videoPartIndex: number;
   fieldName: string;
   remove: (index: number) => void;
-  handleDragProps: any;
+  handleDragProps?: DraggableProvidedDragHandleProps | null;
   title?: string;
-  isMoved?: boolean;
 }) => {
   const {
     context: { player },
   } = useVideoContext();
+
   return (
     <ListItemCard data-qa={`insight-videopart-${videoPartIndex}`}>
       <Handler handleDragProps={handleDragProps} />
@@ -67,8 +67,6 @@ const VideoPart = ({
         <FormikField
           name={`${fieldName}[${videoPartIndex}].end`}
           validate={(value: number) => {
-            if (isMoved) return;
-
             if (player) {
               let error;
               if (value > player.totalTime - start) {
@@ -100,6 +98,7 @@ const VideoPart = ({
                     field.name,
                     moment.duration(value).asSeconds()
                   );
+                  form.setFieldTouched(field.name);
                 }}
               />
               <ErrorMessage name={field.name} />
