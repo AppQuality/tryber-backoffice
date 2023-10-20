@@ -21,6 +21,14 @@ describe("Main page", () => {
         fixture: "campaigns/id/ux/_get/response/404",
       }
     ).as("getUx");
+    cy.intercept(
+      "GET",
+      `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/clusters`,
+      {
+        statusCode: 200,
+        fixture: "campaigns/id/clusters/_get/response_200_items",
+      }
+    ).as("getClusters");
     cy.visit(
       `${Cypress.env("CAMPAINGS_PAGE")}/4904${Cypress.env(
         "UX_DASHBOARD_PAGE"
@@ -63,5 +71,25 @@ describe("Main page", () => {
     cy.dataQa("add-new-question").click();
     cy.dataQa("question-0").should("be.visible");
     cy.dataQa("question-", { startsWith: true }).should("have.length", 1);
+  });
+  it("should alert the user who try to save a new insight if the insight could not be saved (for absent mandatory fields in the main form)", function () {
+    const spy = cy.spy();
+    cy.intercept(
+      "PATCH",
+      `${Cypress.env("REACT_APP_API_URL")}/campaigns/4904/ux`,
+      spy
+    ).as("patchUx");
+    cy.dataQa("add-new-insight").click();
+
+    cy.get("input[name='insights[0].title']").type("test");
+    cy.get("textarea[name='insights[0].description']").type("test");
+
+    cy.dataQa("severity-select").click();
+    cy.get("#react-select-5-option-0").click();
+    cy.dataQa("cluster-select").click();
+    cy.get("#react-select-7-option-0").click();
+    cy.get('[data-qa="save-insight"]').click({ force: true });
+    cy.wait(500).then(() => expect(spy).not.to.have.been.called);
+    cy.get(".toastr-warning").should("be.visible");
   });
 });
