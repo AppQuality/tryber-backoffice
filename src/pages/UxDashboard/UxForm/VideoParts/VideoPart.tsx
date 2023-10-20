@@ -92,7 +92,11 @@ const VideoPart = ({
                     form.validateField(field.name);
                   },
                 }}
-                value={moment.utc(field.value * 1000).format("HH:mm:ss")}
+                value={
+                  !field.value
+                    ? "00:00:00"
+                    : moment.utc(field.value * 1000).format("HH:mm:ss")
+                }
                 onChange={(value) => {
                   form.setFieldValue(
                     field.name,
