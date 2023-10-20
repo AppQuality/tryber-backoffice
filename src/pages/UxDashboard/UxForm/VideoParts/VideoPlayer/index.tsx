@@ -4,6 +4,7 @@ import { VideoControls } from "./VideoControls";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const PlayerWrapper = styled.div<{
+  isFullScreen?: boolean;
   isLoading?: boolean;
 }>`
   position: relative;
@@ -13,6 +14,20 @@ const PlayerWrapper = styled.div<{
     width: 100%;
     max-height: 200px;
   }
+
+  ${({ isFullScreen }) =>
+    isFullScreen &&
+    `
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      display: block;
+      margin: 0 auto;
+      max-height: 100%;
+    }
+  `}
 
   ${({ isLoading }) =>
     isLoading &&
@@ -100,7 +115,11 @@ const VideoPlayer = ({
       });
   }, []);
   return (
-    <PlayerWrapper isLoading={isLoading} ref={playerRef}>
+    <PlayerWrapper
+      isFullScreen={isFullScreen}
+      isLoading={isLoading}
+      ref={playerRef}
+    >
       <Video.Player />
       {!isLoading && (
         <VideoControls
