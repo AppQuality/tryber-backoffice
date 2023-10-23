@@ -46,7 +46,7 @@ const VideoParts = () => {
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
   const { values } = useFormikContext<FormValuesInterface>();
   const fieldName = `insights[${insightIndex}].videoParts`;
-  const videoParts = values.insights[insightIndex].videoParts;
+  const videoParts = values?.insights[insightIndex]?.videoParts;
 
   const observationsOptions: VideoPartsOption[] = useMemo(
     () =>

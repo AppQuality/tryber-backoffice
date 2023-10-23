@@ -51,24 +51,25 @@ function DragNDropProvider<T extends { internalId: string }>({
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
           >
-            {items.map((item: T, index) => (
-              <Draggable
-                key={`${item.internalId}`}
-                draggableId={`${item.internalId}`}
-                index={index}
-              >
-                {(provided, snapshot) => (
-                  <DraggableItem
-                    isDragging={snapshot.isDragging}
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                  >
-                    {renderItem &&
-                      renderItem(item, index, provided.dragHandleProps)}
-                  </DraggableItem>
-                )}
-              </Draggable>
-            ))}
+            {items &&
+              items.map((item: T, index) => (
+                <Draggable
+                  key={`${item?.internalId}`}
+                  draggableId={`${item.internalId}`}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <DraggableItem
+                      isDragging={snapshot.isDragging}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                    >
+                      {renderItem &&
+                        renderItem(item, index, provided.dragHandleProps)}
+                    </DraggableItem>
+                  )}
+                </Draggable>
+              ))}
             {provided.placeholder}
           </Wrapper>
         )}

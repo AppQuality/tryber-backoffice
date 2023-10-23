@@ -130,7 +130,7 @@ export const InsightCard = ({
           </InsightPillsWrapper>
           <div>
             <Film size={16} style={{ marginBottom: "-2px" }} />{" "}
-            {insight.videoParts.length} video
+            {insight?.videoParts?.length} video
           </div>
         </CardFooter>
       </div>

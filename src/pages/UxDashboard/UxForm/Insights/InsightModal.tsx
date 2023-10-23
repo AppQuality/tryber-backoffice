@@ -49,7 +49,7 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
     initialValues,
   } = useFormikContext<FormValuesInterface>();
   const isNewInsight = useMemo(
-    () => !values[fieldName][insightIndex].id,
+    () => !values[fieldName][insightIndex]?.id,
     [values, insightIndex]
   );
   const handleAdd = () => {
@@ -60,21 +60,25 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
       setFieldTouched(`${fieldName}[${insightIndex}].severity.id`);
 
       const insightErrors = errors[fieldName][insightIndex];
-      Object.keys(insightErrors).forEach((key) => {
-        if (
-          key === "videoParts" &&
-          typeof insightErrors === "object" &&
-          typeof insightErrors.videoParts !== "string"
-        ) {
-          insightErrors.videoParts?.forEach((videoPart, videoPartIndex) => {
-            Object.keys(videoPart).forEach((videoPartKey) => {
-              setFieldTouched(
-                `${fieldName}[${insightIndex}].videoParts[${videoPartIndex}].${videoPartKey}`
-              );
+      insightErrors &&
+        Object.keys(insightErrors).forEach((key) => {
+          if (
+            key === "videoParts" &&
+            typeof insightErrors === "object" &&
+            typeof insightErrors.videoParts !== "string" &&
+            insightErrors.videoParts &&
+            insightErrors.videoParts.length > 0
+          ) {
+            insightErrors.videoParts?.forEach((videoPart, videoPartIndex) => {
+              videoPart &&
+                Object.keys(videoPart).forEach((videoPartKey) => {
+                  setFieldTouched(
+                    `${fieldName}[${insightIndex}].videoParts[${videoPartIndex}].${videoPartKey}`
+                  );
+                });
             });
-          });
-        }
-      });
+          }
+        });
       alert("compila tutti i campi obbligatori");
       return;
     }
