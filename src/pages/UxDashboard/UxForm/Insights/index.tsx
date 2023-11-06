@@ -30,6 +30,7 @@ const InsightSection = () => {
   const insights = values[fieldName];
   return (
     <Card title="Scoperte" className="aq-mb-3" data-qa="insights-list">
+      test e2e
       <FieldArray
         name={fieldName}
         render={({ form, remove, push, move }) => {
