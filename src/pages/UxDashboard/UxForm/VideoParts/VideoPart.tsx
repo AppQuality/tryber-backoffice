@@ -8,15 +8,15 @@ import {
   FormLabel,
   Button,
 } from "@appquality/appquality-design-system";
-import { useVideoContext } from "@appquality/stream-player";
-import VideoPlayer from "./VideoPlayer";
+import StreamPlayer from "@appquality/tryber-streamplayer";
 import moment from "moment";
 import styled from "styled-components";
 import { Trash } from "react-bootstrap-icons";
 import { ListItemCard } from "./ListItemCard";
-import { videoCitMaxChar } from "../FormProvider";
+import { FormVideoPart, videoCitMaxChar } from "../FormProvider";
 import Handler from "../components/Handler";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
+import { useFormikContext } from "formik";
 
 const Actions = styled.div`
   display: flex;
@@ -38,44 +38,34 @@ const DeleteButton = styled(Button)`
 `;
 
 const VideoPart = ({
-  start,
+  videopart,
   videoPartIndex,
   fieldName,
   remove,
   handleDragProps,
   title,
 }: {
-  start: number;
+  videopart: FormVideoPart;
   videoPartIndex: number;
   fieldName: string;
   remove: (index: number) => void;
   handleDragProps?: DraggableProvidedDragHandleProps | null;
   title?: string;
 }) => {
-  const {
-    context: { player },
-  } = useVideoContext();
-
+  const { setFieldValue } = useFormikContext();
   return (
     <ListItemCard data-qa={`insight-videopart-${videoPartIndex}`}>
       <Handler handleDragProps={handleDragProps} />
-      <VideoPlayer
-        videoFieldName={`${fieldName}[${videoPartIndex}]`}
+      <StreamPlayer
+        src={videopart.streamUrl || videopart.url}
+        onTrimHandle={(time) => {
+          const start = videopart.start || 0;
+          setFieldValue(`${fieldName}[${videoPartIndex}].end`, time - start);
+        }}
         title={title}
       />
       <div>
-        <FormikField
-          name={`${fieldName}[${videoPartIndex}].end`}
-          validate={(value: number) => {
-            if (player) {
-              let error;
-              if (value > player.totalTime - start) {
-                error = "Non puoi tagliare oltre la durata del video";
-              }
-              return error;
-            }
-          }}
-        >
+        <FormikField name={`${fieldName}[${videoPartIndex}].end`}>
           {({ field, form }: FieldProps) => (
             <FormGroup>
               <FormLabel htmlFor={field.name} label="End" />

@@ -1,5 +1,5 @@
 import { Card, Select, Title } from "@appquality/appquality-design-system";
-import Video from "@appquality/stream-player";
+import StreamPlayer from "@appquality/tryber-streamplayer";
 import { FieldArray, useFormikContext } from "formik";
 import { useMemo } from "react";
 import { OnDragEndResponder } from "react-beautiful-dnd";
@@ -81,26 +81,21 @@ const VideoParts = () => {
                 onDragEnd={handleDragEnd}
                 items={videoParts}
                 renderItem={(videopart, index, dragHandleProps) => (
-                  <Video
-                    start={videopart.start}
-                    src={videopart.streamUrl || videopart.url}
-                  >
-                    <VideoPart
-                      key={videopart.internalId}
-                      start={videopart.start}
-                      videoPartIndex={index}
-                      fieldName={fieldName}
-                      remove={remove}
-                      handleDragProps={dragHandleProps}
-                      title={
-                        observationsOptions.find(
-                          (option) =>
-                            option.media.id === videopart.mediaId &&
-                            option.time === videopart.start
-                        )?.label
-                      }
-                    />
-                  </Video>
+                  <VideoPart
+                    key={videopart.internalId}
+                    videopart={videopart}
+                    videoPartIndex={index}
+                    fieldName={fieldName}
+                    remove={remove}
+                    handleDragProps={dragHandleProps}
+                    title={
+                      observationsOptions.find(
+                        (option) =>
+                          option.media.id === videopart.mediaId &&
+                          option.time === videopart.start
+                      )?.label
+                    }
+                  />
                 )}
               />
               <Card shadow data-qa="add-new-videopart">
