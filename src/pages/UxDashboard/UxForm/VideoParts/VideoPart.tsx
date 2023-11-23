@@ -59,8 +59,7 @@ const VideoPart = ({
       <StreamPlayer
         src={videopart.streamUrl || videopart.url}
         onTrimHandle={(time) => {
-          const start = videopart.start || 0;
-          setFieldValue(`${fieldName}[${videoPartIndex}].end`, time - start);
+          setFieldValue(`${fieldName}[${videoPartIndex}].end`, time);
         }}
         title={title}
       />
