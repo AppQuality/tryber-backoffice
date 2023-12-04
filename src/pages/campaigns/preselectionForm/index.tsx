@@ -30,6 +30,7 @@ import { v4 as uuidv4 } from "uuid";
 import { getCustomQuestionTypeLabel } from "./getCustomQuestionTypeLabel";
 import { CopyLinkButton } from "src/pages/campaigns/preselectionFormList/CopyLinkButton";
 import { getProfileTypeLabel } from "./getProfileTypeLabel";
+import { PageTemplate } from "src/features/PageTemplate";
 
 const PreselectionForm = () => {
   const history = useHistory();
@@ -160,164 +161,166 @@ const PreselectionForm = () => {
     }
   }, [savedData]);
   return (
-    <OpsUserContainer>
-      <PageTitle
-        size="regular"
-        back={{
-          text: "Back to list",
-          navigation: "/backoffice/campaigns/preselection-forms",
-        }}
-      >
-        <span>{id ? "Edit Preselection Form" : "New Preselection Form"}</span>
-        <CopyLinkButton id={id} />
-      </PageTitle>
-      <Formik
-        enableReinitialize={!saveEdit}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          const fieldsToSend = values.fields.map((field) => {
-            const newField: PreselectionFormQuestion & { id?: number } = {
-              ...(field.questionId ? { id: field.questionId } : {}),
-              question: field.question,
-              short_name: field.shortTitle,
-              type: field.type,
-            };
-            if (field.options) {
-              // @ts-ignore
-              newField.options = field.options;
-            }
-            if ("selectedOptions" in field && field.selectedOptions) {
-              if (field.selectedOptions[0]?.value === "-1") {
-                getAllOptions(field.cufId).then((res) => {
-                  newField.options = res;
-                });
-              } else {
-                newField.options = field.selectedOptions.map((o) =>
-                  parseInt(o.value)
+    <PageTemplate>
+      <OpsUserContainer>
+        <PageTitle
+          size="regular"
+          back={{
+            text: "Back to list",
+            navigation: "/backoffice/campaigns/preselection-forms",
+          }}
+        >
+          <span>{id ? "Edit Preselection Form" : "New Preselection Form"}</span>
+          <CopyLinkButton id={id} />
+        </PageTitle>
+        <Formik
+          enableReinitialize={!saveEdit}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={async (values) => {
+            const fieldsToSend = values.fields.map((field) => {
+              const newField: PreselectionFormQuestion & { id?: number } = {
+                ...(field.questionId ? { id: field.questionId } : {}),
+                question: field.question,
+                short_name: field.shortTitle,
+                type: field.type,
+              };
+              if (field.options) {
+                // @ts-ignore
+                newField.options = field.options;
+              }
+              if ("selectedOptions" in field && field.selectedOptions) {
+                if (field.selectedOptions[0]?.value === "-1") {
+                  getAllOptions(field.cufId).then((res) => {
+                    newField.options = res;
+                  });
+                } else {
+                  newField.options = field.selectedOptions.map((o) =>
+                    parseInt(o.value)
+                  );
+                }
+              }
+              return newField;
+            });
+            if (id) {
+              setSaveEdit(true);
+              const args: PutCampaignsFormsByFormIdApiArg = {
+                formId: id,
+                body: {
+                  name: values.formTitle,
+                  // @ts-ignore
+                  fields: fieldsToSend,
+                },
+              };
+              if (values.campaign?.value)
+                args.body.campaign = parseInt(values.campaign?.value);
+              const res = await editForm(args);
+              if (res && "data" in res) {
+                history.push(
+                  `/backoffice/campaigns/preselection-forms/${res.data.id}`
                 );
+                add({ type: "success", message: "Form saved" });
+              } else {
+                const errorCode =
+                  "error" in res && "data" in res.error
+                    ? (res.error.data as { code: string }).code
+                    : false;
+                switch (errorCode) {
+                  case "CAMPAIGN_ID_ALREADY_ASSIGNED":
+                    add({
+                      type: "danger",
+                      message: "This campaign already has a form assigned",
+                    });
+                    break;
+                  case "NO_ACCESS_TO_CAMPAIGN":
+                    add({
+                      type: "danger",
+                      message:
+                        "You can't assign a form to a campaign you don't own",
+                    });
+                    break;
+                  default:
+                    add({
+                      type: "danger",
+                      message: "There was an error",
+                    });
+                    break;
+                }
               }
-            }
-            return newField;
-          });
-          if (id) {
-            setSaveEdit(true);
-            const args: PutCampaignsFormsByFormIdApiArg = {
-              formId: id,
-              body: {
-                name: values.formTitle,
-                // @ts-ignore
-                fields: fieldsToSend,
-              },
-            };
-            if (values.campaign?.value)
-              args.body.campaign = parseInt(values.campaign?.value);
-            const res = await editForm(args);
-            if (res && "data" in res) {
-              history.push(
-                `/backoffice/campaigns/preselection-forms/${res.data.id}`
-              );
-              add({ type: "success", message: "Form saved" });
             } else {
-              const errorCode =
-                "error" in res && "data" in res.error
-                  ? (res.error.data as { code: string }).code
-                  : false;
-              switch (errorCode) {
-                case "CAMPAIGN_ID_ALREADY_ASSIGNED":
-                  add({
-                    type: "danger",
-                    message: "This campaign already has a form assigned",
-                  });
-                  break;
-                case "NO_ACCESS_TO_CAMPAIGN":
-                  add({
-                    type: "danger",
-                    message:
-                      "You can't assign a form to a campaign you don't own",
-                  });
-                  break;
-                default:
-                  add({
-                    type: "danger",
-                    message: "There was an error",
-                  });
-                  break;
+              const args: PostCampaignsFormsApiArg = {
+                body: {
+                  name: values.formTitle,
+                  // @ts-ignore
+                  fields: fieldsToSend,
+                },
+              };
+              if (values.campaign?.value)
+                args.body.campaign = parseInt(values.campaign?.value);
+              const res = await createForm(args);
+              if (res && "data" in res) {
+                history.push(
+                  `/backoffice/campaigns/preselection-forms/${res.data.id}`
+                );
+                add({ type: "success", message: "Form saved" });
+              } else {
+                const errorCode =
+                  "error" in res && "data" in res.error
+                    ? (res.error.data as { code: string }).code
+                    : false;
+                switch (errorCode) {
+                  case "CAMPAIGN_ID_ALREADY_ASSIGNED":
+                    add({
+                      type: "danger",
+                      message: "This campaign already has a form assigned",
+                    });
+                    break;
+                  case "NO_ACCESS_TO_CAMPAIGN":
+                    add({
+                      type: "danger",
+                      message:
+                        "You can't assign a form to a campaign you don't own",
+                    });
+                    break;
+                  default:
+                    add({
+                      type: "danger",
+                      message: "There was an error",
+                    });
+                    break;
+                }
               }
             }
-          } else {
-            const args: PostCampaignsFormsApiArg = {
-              body: {
-                name: values.formTitle,
-                // @ts-ignore
-                fields: fieldsToSend,
-              },
-            };
-            if (values.campaign?.value)
-              args.body.campaign = parseInt(values.campaign?.value);
-            const res = await createForm(args);
-            if (res && "data" in res) {
-              history.push(
-                `/backoffice/campaigns/preselection-forms/${res.data.id}`
-              );
-              add({ type: "success", message: "Form saved" });
-            } else {
-              const errorCode =
-                "error" in res && "data" in res.error
-                  ? (res.error.data as { code: string }).code
-                  : false;
-              switch (errorCode) {
-                case "CAMPAIGN_ID_ALREADY_ASSIGNED":
-                  add({
-                    type: "danger",
-                    message: "This campaign already has a form assigned",
-                  });
-                  break;
-                case "NO_ACCESS_TO_CAMPAIGN":
-                  add({
-                    type: "danger",
-                    message:
-                      "You can't assign a form to a campaign you don't own",
-                  });
-                  break;
-                default:
-                  add({
-                    type: "danger",
-                    message: "There was an error",
-                  });
-                  break;
-              }
-            }
-          }
-          // scroll to form title
-          const selector = `[id="formTitle"]`;
-          const formTitleElement = document.querySelector(
-            selector
-          ) as HTMLElement;
-          formTitleElement?.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        }}
-      >
-        <Form>
-          <BSGrid className="aq-my-4">
-            <BSCol size="col-lg-4">
-              <FieldsSelectors />
-            </BSCol>
-            <BSCol size="col-lg-8">
-              {savedData.isLoading || savedData.isFetching ? (
-                <Card>...loading</Card>
-              ) : savedData.error || (id && !savedData.data) ? (
-                <Card>...error retrieving form</Card>
-              ) : (
-                <FormConfigurator />
-              )}
-            </BSCol>
-          </BSGrid>
-        </Form>
-      </Formik>
-    </OpsUserContainer>
+            // scroll to form title
+            const selector = `[id="formTitle"]`;
+            const formTitleElement = document.querySelector(
+              selector
+            ) as HTMLElement;
+            formTitleElement?.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+          }}
+        >
+          <Form>
+            <BSGrid className="aq-my-4">
+              <BSCol size="col-lg-4">
+                <FieldsSelectors />
+              </BSCol>
+              <BSCol size="col-lg-8">
+                {savedData.isLoading || savedData.isFetching ? (
+                  <Card>...loading</Card>
+                ) : savedData.error || (id && !savedData.data) ? (
+                  <Card>...error retrieving form</Card>
+                ) : (
+                  <FormConfigurator />
+                )}
+              </BSCol>
+            </BSGrid>
+          </Form>
+        </Formik>
+      </OpsUserContainer>
+    </PageTemplate>
   );
 };
 

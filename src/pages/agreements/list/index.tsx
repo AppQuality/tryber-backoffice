@@ -13,6 +13,7 @@ import { Agreements } from "./Agreements";
 import { ReactNode } from "react";
 import { useGetAgreementsQuery } from "src/services/tryberApi";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
+import { PageTemplate } from "src/features/PageTemplate";
 
 const FluidContainer = styled.div`
     padding: 2rem;
@@ -54,39 +55,41 @@ const AgreementsListPageContent = ({ children }: { children: ReactNode }) => {
 };
 
 const AgreementsListPage = () => (
-  <AgreementsListPageContent>
-    <FluidContainer>
-      <FlexContainer>
-        <Title size="m">Agreements List</Title>
-        <HeaderButton
-          as="a"
-          href={`/backoffice/agreements/new`}
-          className="aq-mr-2"
-          id="add-new-agreement-btn"
-        >
-          + Add New
-        </HeaderButton>
-      </FlexContainer>
-      <Card className="aq-pb-4">
-        <FilterContext>
-          <div
-            className="aq-mb-4"
-            style={{
-              margin: "1rem 0",
-            }}
-            data-qa="customers-select"
+  <PageTemplate>
+    <AgreementsListPageContent>
+      <FluidContainer>
+        <FlexContainer>
+          <Title size="m">Agreements List</Title>
+          <HeaderButton
+            as="a"
+            href={`/backoffice/agreements/new`}
+            className="aq-mr-2"
+            id="add-new-agreement-btn"
           >
-            <CustomersFilter />
-          </div>
-          <BSGrid>
-            <BSCol size="col-lg-12">
-              <Agreements />
-            </BSCol>
-          </BSGrid>
-        </FilterContext>
-      </Card>
-    </FluidContainer>
-  </AgreementsListPageContent>
+            + Add New
+          </HeaderButton>
+        </FlexContainer>
+        <Card className="aq-pb-4">
+          <FilterContext>
+            <div
+              className="aq-mb-4"
+              style={{
+                margin: "1rem 0",
+              }}
+              data-qa="customers-select"
+            >
+              <CustomersFilter />
+            </div>
+            <BSGrid>
+              <BSCol size="col-lg-12">
+                <Agreements />
+              </BSCol>
+            </BSGrid>
+          </FilterContext>
+        </Card>
+      </FluidContainer>
+    </AgreementsListPageContent>
+  </PageTemplate>
 );
 
 export default AgreementsListPage;

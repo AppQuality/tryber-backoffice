@@ -12,6 +12,7 @@ import Filters from "./Filters";
 import TagsFilter from "./Filters/TagsFilter";
 import Stats from "./Stats";
 import Table from "./Table";
+import { PageTemplate } from "src/features/PageTemplate";
 
 const FluidContainer = styled.div`
     max-width: 90%;
@@ -28,41 +29,43 @@ const BugsList = () => {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
 
   return (
-    <FluidContainer>
-      <Title size="m">Bug List - CP-{id}</Title>
-      <Stats
-        id={id}
-        isOpen={isStatsModalOpen}
-        setIsOpen={setIsStatsModalOpen}
-      />
-      <HeaderButton
-        as="a"
-        href={`/wp-admin/admin.php?page=mvc_campaigns`}
-        type="secondary"
-        className="aq-mr-2"
-      >
-        {"<"} To Campaign List
-      </HeaderButton>
-      <HeaderButton as="a" href={`/campaigns/${id}`} className="aq-mr-2">
-        {"<"} To Dashboard
-      </HeaderButton>
-      <HeaderButton onClick={() => setIsStatsModalOpen(true)}>
-        Stats
-      </HeaderButton>
-      <FilterContext>
-        <div className="aq-my-3">
-          <Filters id={id} />
-        </div>
-        <div className="aq-mb-4">
-          <TagsFilter id={id} />
-        </div>
-        <BSGrid>
-          <BSCol size="col-lg-12">
-            <Table id={id} />
-          </BSCol>
-        </BSGrid>
-      </FilterContext>
-    </FluidContainer>
+    <PageTemplate>
+      <FluidContainer>
+        <Title size="m">Bug List - CP-{id}</Title>
+        <Stats
+          id={id}
+          isOpen={isStatsModalOpen}
+          setIsOpen={setIsStatsModalOpen}
+        />
+        <HeaderButton
+          as="a"
+          href={`/wp-admin/admin.php?page=mvc_campaigns`}
+          type="secondary"
+          className="aq-mr-2"
+        >
+          {"<"} To Campaign List
+        </HeaderButton>
+        <HeaderButton as="a" href={`/campaigns/${id}`} className="aq-mr-2">
+          {"<"} To Dashboard
+        </HeaderButton>
+        <HeaderButton onClick={() => setIsStatsModalOpen(true)}>
+          Stats
+        </HeaderButton>
+        <FilterContext>
+          <div className="aq-my-3">
+            <Filters id={id} />
+          </div>
+          <div className="aq-mb-4">
+            <TagsFilter id={id} />
+          </div>
+          <BSGrid>
+            <BSCol size="col-lg-12">
+              <Table id={id} />
+            </BSCol>
+          </BSGrid>
+        </FilterContext>
+      </FluidContainer>
+    </PageTemplate>
   );
 };
 
