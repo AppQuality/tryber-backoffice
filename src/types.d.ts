@@ -14,4 +14,8 @@ declare global {
   type ApiComponents = components;
   type SelectOptionType = SelectType.Option;
   type OrderType = "DESC" | "ASC";
+
+  var _env_: {
+    REACT_APP_ENVIRONMENT: string;
+  };
 }
