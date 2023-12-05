@@ -1,3 +1,3 @@
 window._env_ = {
-  REACT_APP_ENV: "local",
+  REACT_APP_ENVIRONMENT: "local",
 };
