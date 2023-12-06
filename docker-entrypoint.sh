@@ -7,7 +7,7 @@ rm -rf $CONFIG_FILE_PATH
 touch $CONFIG_FILE_PATH
 
 # Add assignment
-echo "window._env_ = {" > $CONFIG_FILE_PATH
+echo "window.react_env = {" > $CONFIG_FILE_PATH
 
 VARIABLES=$(printenv | grep REACT_APP)
 

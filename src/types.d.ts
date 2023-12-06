@@ -12,7 +12,7 @@ declare global {
   type SelectOptionType = SelectType.Option;
   type OrderType = "DESC" | "ASC";
 
-  var _env_: {
+  var react_env: {
     REACT_APP_ENVIRONMENT: string;
     REACT_APP_VERSION: string;
   };

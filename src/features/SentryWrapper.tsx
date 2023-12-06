@@ -17,7 +17,7 @@ const SentryWrapper = ({
           routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
         }),
       ],
-      environment: _env_.REACT_APP_ENVIRONMENT,
+      environment: react_env.REACT_APP_ENVIRONMENT,
       // trace all staging and locale traces and 70% of production traces
       tracesSampleRate: isStagingEnvironment() ? 1.0 : 0.7,
       // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
@@ -26,7 +26,7 @@ const SentryWrapper = ({
         /^https:\/\/dev\.tryber\.me\/api/,
         /^https:\/\/tryber\.me\/api/,
       ],
-      release: _env_.REACT_APP_VERSION,
+      release: react_env.REACT_APP_VERSION,
       // Capture Replay for 10% of all sessions,
       // plus for 100% of sessions with an error
       // do not capture for staging and locale
