@@ -11,6 +11,7 @@
     "@craco/craco": "^6.4.3",
     "@craftjs/core": "^0.2.0-beta.5",
     "@reduxjs/toolkit": "^1.8.3",
+    "@sentry/cli": "^2.23.0",
     "@sentry/react": "^7.84.0",
     "@silevis/reactgrid": "^4.0.4",
     "analytics": "^0.8.1",
@@ -73,7 +74,8 @@
     "cy:open": "cypress open --e2e --browser chrome",
     "prettier": "npx prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
     "translate": "i18next-scanner",
-    "generate-api": ". ./.env.development; API_URL=$REACT_APP_API_URL/reference/ npx @rtk-query/codegen-openapi src/services/tryberApi/config.ts"
+    "generate-api": ". ./.env.development; API_URL=$REACT_APP_API_URL/reference/ npx @rtk-query/codegen-openapi src/services/tryberApi/config.ts",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org appquality-srl --project tryber-backoffice ./build && sentry-cli sourcemaps upload --org appquality-srl --project tryber-backoffice ./build"
   },
   "browserslist": {
     "production": [

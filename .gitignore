@@ -27,3 +27,5 @@ generate-devel-token.json
 .idea/
 
 generate-devel-token-*
+# Sentry Config File
+.sentryclirc
