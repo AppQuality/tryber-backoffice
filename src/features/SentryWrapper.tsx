@@ -11,7 +11,7 @@ const SentryWrapper = ({
 }) => {
   if (process.env.NODE_ENV !== "test") {
     Sentry.init({
-      dsn: "https://84fe7a6107da4c0058197b52ce74743d@o1087982.ingest.sentry.io/4506337899511808",
+      dsn: "https://4ab6d9977b0cc2ac430e8bf49522e512@o1087982.ingest.sentry.io/4506320026664960",
       integrations: [
         new Sentry.BrowserTracing({
           routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
