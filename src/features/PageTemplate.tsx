@@ -1,10 +1,16 @@
 import React from "react";
-import SentryWrapper from "./SentryWrapper";
 import { useGetUsersMeQuery } from "src/services/tryberApi";
 import TagManager from "react-gtm-module";
+import * as Sentry from "@sentry/react";
 
 export const PageTemplate = ({ children }: { children: React.ReactNode }) => {
-  const { error, isLoading } = useGetUsersMeQuery({});
+  const {
+    data: user,
+    error,
+    isLoading,
+  } = useGetUsersMeQuery({
+    fields: "id, email, username, wp_user_id, role",
+  });
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -12,6 +18,13 @@ export const PageTemplate = ({ children }: { children: React.ReactNode }) => {
     dataLayer: {
       event: "ApiLoaded",
     },
+  });
+  Sentry.setUser({
+    id: user?.id ?? 0,
+    email: user?.email ?? "unknown",
+    username: user?.username ?? "unknown",
+    wp_user_id: user?.wp_user_id ?? 0,
+    role: user?.role ?? "unknown",
   });
   if (error) {
     if ("status" in error && error.status === 403) {
@@ -21,5 +34,5 @@ export const PageTemplate = ({ children }: { children: React.ReactNode }) => {
     }
     return null;
   }
-  return <SentryWrapper>{children}</SentryWrapper>;
+  return <>{children}</>;
 };
