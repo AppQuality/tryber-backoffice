@@ -50,6 +50,7 @@ services:
     environment:
       PORT: 80
       REACT_APP_ENVIRONMENT: $ENVIRONMENT
+      REACT_APP_VERSION: ${DOCKER_IMAGE}
     logging:
       driver: awslogs
       options:
