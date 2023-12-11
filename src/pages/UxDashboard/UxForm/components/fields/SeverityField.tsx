@@ -39,7 +39,6 @@ const SeverityField = ({
     <FormGroup>
       <Select
         data-qa="severity-select"
-        menuTargetQuery="body"
         options={severityOptions}
         placeholder="Seleziona la severity"
         label="Severity"

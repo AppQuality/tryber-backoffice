@@ -5,7 +5,9 @@ import {
   GlobalStyle,
 } from "@appquality/appquality-design-system";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Router, Switch } from "react-router-dom";
+import * as Sentry from "@sentry/react";
+import { createBrowserHistory } from "history";
 import BugsList from "src/pages/BugsList";
 import CampaignPreselection from "src/pages/campaigns/preselectionForm";
 import AdminPayments from "src/pages/Payments";
@@ -24,62 +26,79 @@ import AgreementsList from "./pages/agreements/list";
 import SingleAgreementEdit from "./pages/agreements/view-edit";
 import SingleAgreementNew from "./pages/agreements/new";
 import UxDashboard from "./pages/UxDashboard";
+import SentryWrapper from "./features/SentryWrapper";
+
+const SentryRoute = Sentry.withSentryRouting(Route);
+const history = createBrowserHistory();
 
 function App() {
   return (
-    <Provider store={setupStore()}>
-      <ThemeProvider theme={aqBootstrapTheme}>
-        <GlobalStyle />
-        <SiteWideMessages />
-        <BrowserRouter>
-          <Switch>
-            <Route
-              path={`/backoffice/campaigns/:id/bugs`}
-              component={BugsList}
-            />
-            <Route
-              path={`/backoffice/campaigns/:id/prospect`}
-              component={Prospect}
-            />
-            <Route path={`/backoffice/new`} component={Create} />
-            <Route path="/backoffice/payments" component={AdminPayments} />
-            <Route path="/backoffice/jotform" component={Jotform} />
-            <Route
-              path="/backoffice/campaigns/preselection-forms/new"
-              component={CampaignPreselection}
-            />
-            <Route
-              path="/backoffice/campaigns/preselection-forms/:id"
-              component={CampaignPreselection}
-            />
-            <Route
-              path="/backoffice/campaigns/preselection-forms"
-              component={CampaignPreselectionList}
-            />
-            <Route
-              path="/backoffice/campaigns/:id/selection"
-              component={SelectionPage}
-            />
-            <Route
-              path="/backoffice/campaigns/:id/ux-dashboard"
-              component={UxDashboard}
-            />
-            <Route path="/backoffice/campaigns" component={Campaigns} />
-            <Route
-              path="/backoffice/agreements/new"
-              component={SingleAgreementNew}
-            />
-            <Route
-              path="/backoffice/agreements/:id"
-              component={SingleAgreementEdit}
-            />
-            <Route path="/backoffice/agreements" component={AgreementsList} />
-            <Route path={`/backoffice/:id`} component={Update} />
-            <Route path={`/backoffice`} component={List} />
-          </Switch>
-        </BrowserRouter>
-      </ThemeProvider>
-    </Provider>
+    <SentryWrapper history={history}>
+      <Provider store={setupStore()}>
+        <ThemeProvider theme={aqBootstrapTheme}>
+          <GlobalStyle />
+          <SiteWideMessages />
+          <BrowserRouter>
+            <Router history={history}>
+              <Switch>
+                <SentryRoute
+                  path={`/backoffice/campaigns/:id/bugs`}
+                  component={BugsList}
+                />
+                <SentryRoute
+                  path={`/backoffice/campaigns/:id/prospect`}
+                  component={Prospect}
+                />
+                <SentryRoute path={`/backoffice/new`} component={Create} />
+                <SentryRoute
+                  path="/backoffice/payments"
+                  component={AdminPayments}
+                />
+                <SentryRoute path="/backoffice/jotform" component={Jotform} />
+                <SentryRoute
+                  path="/backoffice/campaigns/preselection-forms/new"
+                  component={CampaignPreselection}
+                />
+                <SentryRoute
+                  path="/backoffice/campaigns/preselection-forms/:id"
+                  component={CampaignPreselection}
+                />
+                <SentryRoute
+                  path="/backoffice/campaigns/preselection-forms"
+                  component={CampaignPreselectionList}
+                />
+                <SentryRoute
+                  path="/backoffice/campaigns/:id/selection"
+                  component={SelectionPage}
+                />
+                <SentryRoute
+                  path="/backoffice/campaigns/:id/ux-dashboard"
+                  component={UxDashboard}
+                />
+                <SentryRoute
+                  path="/backoffice/campaigns"
+                  component={Campaigns}
+                />
+                <SentryRoute
+                  path="/backoffice/agreements/new"
+                  component={SingleAgreementNew}
+                />
+                <SentryRoute
+                  path="/backoffice/agreements/:id"
+                  component={SingleAgreementEdit}
+                />
+                <SentryRoute
+                  path="/backoffice/agreements"
+                  component={AgreementsList}
+                />
+                <SentryRoute path={`/backoffice/:id`} component={Update} />
+                <SentryRoute path={`/backoffice`} component={List} />
+              </Switch>
+            </Router>
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    </SentryWrapper>
   );
 }
 

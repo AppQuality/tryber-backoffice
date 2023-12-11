@@ -44,9 +44,14 @@ const CardHeader = styled.div`
 `;
 
 const CardFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 75% auto;
+  grid-column-gap: ${({ theme }) => theme.grid.sizes[3]};
+
+  @media (max-width: ${({ theme }) => theme.grid.breakpoints.md}) {
+    grid-template-columns: 1fr;
+    grid-row-gap: ${({ theme }) => theme.grid.sizes[3]};
+  }
 `;
 
 export const InsightCard = ({
@@ -128,7 +133,7 @@ export const InsightCard = ({
               </Pill>
             )}
           </InsightPillsWrapper>
-          <div>
+          <div style={{ textAlign: "right" }}>
             <Film size={16} style={{ marginBottom: "-2px" }} />{" "}
             {insight.videoParts.length} video
           </div>

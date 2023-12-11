@@ -16,6 +16,7 @@ import { Trash } from "react-bootstrap-icons";
 import { ListItemCard } from "./ListItemCard";
 import { videoCitMaxChar } from "../FormProvider";
 import Handler from "../components/Handler";
+import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 
 const Actions = styled.div`
   display: flex;
@@ -48,12 +49,13 @@ const VideoPart = ({
   videoPartIndex: number;
   fieldName: string;
   remove: (index: number) => void;
-  handleDragProps: any;
+  handleDragProps?: DraggableProvidedDragHandleProps | null;
   title?: string;
 }) => {
   const {
     context: { player },
   } = useVideoContext();
+
   return (
     <ListItemCard data-qa={`insight-videopart-${videoPartIndex}`}>
       <Handler handleDragProps={handleDragProps} />
@@ -90,12 +92,17 @@ const VideoPart = ({
                     form.validateField(field.name);
                   },
                 }}
-                value={moment.utc(field.value * 1000).format("HH:mm:ss")}
+                value={
+                  !field.value
+                    ? "00:00:00"
+                    : moment.utc(field.value * 1000).format("HH:mm:ss")
+                }
                 onChange={(value) => {
                   form.setFieldValue(
                     field.name,
                     moment.duration(value).asSeconds()
                   );
+                  form.setFieldTouched(field.name);
                 }}
               />
               <ErrorMessage name={field.name} />

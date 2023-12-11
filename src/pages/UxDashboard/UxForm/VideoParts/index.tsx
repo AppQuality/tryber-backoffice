@@ -44,7 +44,8 @@ const VideoParts = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetCampaignsByCampaignObservationsQuery({ campaign: id });
   const { insightIndex } = useAppSelector((state) => state.uxDashboard);
-  const { values } = useFormikContext<FormValuesInterface>();
+  const formikContext = useFormikContext<FormValuesInterface>();
+  const { values } = formikContext;
   const fieldName = `insights[${insightIndex}].videoParts`;
   const videoParts = values.insights[insightIndex].videoParts;
 
@@ -72,6 +73,7 @@ const VideoParts = () => {
               return;
             }
             move(result.source.index, result.destination.index);
+            formikContext.setFieldTouched(fieldName, false);
           };
           return (
             <>
@@ -111,7 +113,6 @@ const VideoParts = () => {
                       Aggiungi una nuova evidenza
                     </Title>
                     <Select
-                      menuTargetQuery="body"
                       options={observationsOptions}
                       label="Seleziona lo spezzone video"
                       name={"observation"}

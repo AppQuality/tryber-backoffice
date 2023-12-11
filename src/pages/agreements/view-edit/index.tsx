@@ -12,6 +12,7 @@ import {
 import { useHistory, useParams } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import { formatDateforAPI } from "../utils";
+import { PageTemplate } from "src/features/PageTemplate";
 
 const EditAgreementPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -60,17 +61,19 @@ const EditAgreementPage = () => {
   };
 
   return (
-    <OpsUserContainer>
-      <PageTitle
-        // todo: use env vars for this (maybe to use in router and tests too)
-        back={{ text: "back to list", navigation: "/backoffice/agreements" }}
-      >
-        Edit Agreement: {currentData?.title}
-      </PageTitle>
-      <Card className="aq-pb-4">
-        <AgreementForm agreement={currentData} onSubmit={onSubmit} />
-      </Card>
-    </OpsUserContainer>
+    <PageTemplate>
+      <OpsUserContainer>
+        <PageTitle
+          // todo: use env vars for this (maybe to use in router and tests too)
+          back={{ text: "back to list", navigation: "/backoffice/agreements" }}
+        >
+          Edit Agreement: {currentData?.title}
+        </PageTitle>
+        <Card className="aq-pb-4">
+          <AgreementForm agreement={currentData} onSubmit={onSubmit} />
+        </Card>
+      </OpsUserContainer>
+    </PageTemplate>
   );
 };
 

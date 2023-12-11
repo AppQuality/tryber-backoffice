@@ -5,15 +5,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Analytics from "analytics";
 import googleTagManager from "@analytics/google-tag-manager";
+import TagManager from "react-gtm-module";
 
 if (process.env.REACT_APP_GTM_ID) {
-  Analytics({
-    app: "tryber-backoffice",
-    plugins: [
-      googleTagManager({
-        containerId: process.env.REACT_APP_GTM_ID,
-      }),
-    ],
+  TagManager.initialize({
+    gtmId: process.env.REACT_APP_GTM_ID,
+  });
+  TagManager.dataLayer({
+    dataLayer: {
+      apmProject: "tryber-backoffice",
+    },
   });
 }
 

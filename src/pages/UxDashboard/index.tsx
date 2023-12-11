@@ -18,6 +18,7 @@ import FormProvider from "./UxForm/FormProvider";
 import ResultsPage from "./ResultsPage";
 import { useAppSelector } from "src/store";
 import styled from "styled-components";
+import { PageTemplate } from "src/features/PageTemplate";
 
 const StyledSteps = styled(Steps)`
   .step-status-icon {
@@ -58,46 +59,48 @@ const UxDashboard = () => {
   if (permissions?.appq_campaign === true) {
     // todo: discuss about appq_video_dashboard permission (change tests)
     return (
-      <FormProvider>
-        <Container>
-          <PageTitle
-            heading="UX Campaign Overview Dashboard"
-            subtitle={`Campagna ${id} - ${campaign?.title}`}
-            back={{
-              text: "Vai alla dashboard video",
-              navigation: `${window.location.origin}/campaigns/video/${id}/`,
-              target: "_blank",
-            }}
-          >
-            Tool di compilazione
-          </PageTitle>
-          <BSGrid>
-            <ResponsiveCol size="col-lg-3" lgOrder={1}>
-              <Sidebar />
-            </ResponsiveCol>
-            <ResponsiveCol size="col-lg-9" lgOrder={0}>
-              <StyledSteps
-                current={currentStep}
-                className="aq-my-4"
-                direction="horizontal"
-              >
-                <StyledSteps.Step isCompleted={true} title={"Form"} />
-                <StyledSteps.Step
-                  isCompleted={currentStep > 0}
-                  title={"Preview"}
-                />
-                <StyledSteps.Step
-                  isCompleted={currentStep > 1}
-                  title={"Publish"}
-                />
-              </StyledSteps>
-              {currentStep === 0 && <UxDashboardForm />}
-              {currentStep === 1 && <Preview />}
-              {currentStep === 2 && <ResultsPage />}
-            </ResponsiveCol>
-          </BSGrid>
-        </Container>
-      </FormProvider>
+      <PageTemplate>
+        <FormProvider>
+          <Container>
+            <PageTitle
+              heading="UX Campaign Overview Dashboard"
+              subtitle={`Campagna ${id} - ${campaign?.title}`}
+              back={{
+                text: "Vai alla dashboard video",
+                navigation: `${window.location.origin}/campaigns/video/${id}/`,
+                target: "_blank",
+              }}
+            >
+              Tool di compilazione
+            </PageTitle>
+            <BSGrid>
+              <ResponsiveCol size="col-lg-3" lgOrder={1}>
+                <Sidebar />
+              </ResponsiveCol>
+              <ResponsiveCol size="col-lg-9" lgOrder={0}>
+                <StyledSteps
+                  current={currentStep}
+                  className="aq-my-4"
+                  direction="horizontal"
+                >
+                  <StyledSteps.Step isCompleted={true} title={"Form"} />
+                  <StyledSteps.Step
+                    isCompleted={currentStep > 0}
+                    title={"Preview"}
+                  />
+                  <StyledSteps.Step
+                    isCompleted={currentStep > 1}
+                    title={"Publish"}
+                  />
+                </StyledSteps>
+                {currentStep === 0 && <UxDashboardForm />}
+                {currentStep === 1 && <Preview />}
+                {currentStep === 2 && <ResultsPage />}
+              </ResponsiveCol>
+            </BSGrid>
+          </Container>
+        </FormProvider>
+      </PageTemplate>
     );
   }
 
