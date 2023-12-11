@@ -9,7 +9,7 @@ export const PageTemplate = ({ children }: { children: React.ReactNode }) => {
     error,
     isLoading,
   } = useGetUsersMeQuery({
-    fields: "id, email, username, wp_user_id, role",
+    fields: "id,email,username,wp_user_id,role",
   });
   if (isLoading) {
     return <div>Loading...</div>;
