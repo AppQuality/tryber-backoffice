@@ -53,7 +53,10 @@ jobs:
           IMAGE_TAG: ${{ steps.extract_tag.outputs.tag }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          DOCKER_BUILDKIT=1 docker build  --build-arg NPM_TOKEN=$NPM_TOKEN -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          DOCKER_BUILDKIT=1 docker build  \
+            --build-arg NPM_TOKEN=$NPM_TOKEN \
+            --build-arg SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   release-to-preprod:
