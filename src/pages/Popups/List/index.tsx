@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import getAllPopups from "src/api/getAllPopups";
+import { PageTemplate } from "src/features/PageTemplate";
 
 const usePopupsList = () => {
   const [data, setData] = useState([]);
@@ -54,29 +55,31 @@ const usePopupsList = () => {
     },
   ];
   return (
-    <div className="popupContainer">
-      <div className="aq-mt-3">
-        <BSGrid>
-          <BSCol size="col-12">
-            <Link to="/backoffice/new">
-              <Button type="primary" flat={true} size="block">
-                New
-              </Button>
-            </Link>
-          </BSCol>
-          <BSCol>
-            <Card>
-              <Table
-                dataSource={data}
-                columns={columns}
-                isLoading={loading}
-                isStriped
-              />
-            </Card>
-          </BSCol>
-        </BSGrid>
+    <PageTemplate>
+      <div className="popupContainer">
+        <div className="aq-mt-3">
+          <BSGrid>
+            <BSCol size="col-12">
+              <Link to="/backoffice/new">
+                <Button type="primary" flat={true} size="block">
+                  New
+                </Button>
+              </Link>
+            </BSCol>
+            <BSCol>
+              <Card>
+                <Table
+                  dataSource={data}
+                  columns={columns}
+                  isLoading={loading}
+                  isStriped
+                />
+              </Card>
+            </BSCol>
+          </BSGrid>
+        </div>
       </div>
-    </div>
+    </PageTemplate>
   );
 };
 

@@ -15,6 +15,7 @@ import { MakePaymentModal } from "src/pages/Payments/MakePaymentModal";
 import { PendingReqFilters } from "src/pages/Payments/pending/PendingReqFilters";
 import { RetryPaymentModal } from "./RetryPaymentModal";
 import { DeletePaymentModal } from "./DeletePaymentModal";
+import { PageTemplate } from "src/features/PageTemplate";
 
 const StyledTabs = styled.div`
   .cell {
@@ -31,44 +32,46 @@ export default function AdminPayments() {
   );
 
   return (
-    <Container>
-      <MakePaymentModal />
-      <RetryPaymentModal />
-      <DeletePaymentModal />
-      <BSGrid>
-        <BSCol size="col-lg-9 ">
-          <Card className="aq-mb-3" bodyClass="">
-            <StyledTabs>
-              <Tabs
-                active={activeTab}
-                setActive={setActiveTab}
-                className="aq-text-primaryVariant"
-              >
-                <Tab
-                  id="pending"
-                  title={<span className="aq-mx-3-lg">Pending</span>}
+    <PageTemplate>
+      <Container>
+        <MakePaymentModal />
+        <RetryPaymentModal />
+        <DeletePaymentModal />
+        <BSGrid>
+          <BSCol size="col-lg-9 ">
+            <Card className="aq-mb-3" bodyClass="">
+              <StyledTabs>
+                <Tabs
+                  active={activeTab}
+                  setActive={setActiveTab}
+                  className="aq-text-primaryVariant"
                 >
-                  <TabPendingPayments />
-                </Tab>
-                <Tab
-                  id="failed"
-                  title={
-                    <span className="aq-mx-3-lg">
-                      Failed
-                      {total > 0 ? ` (${total})` : null}
-                    </span>
-                  }
-                >
-                  <TabFailedPayments />
-                </Tab>
-              </Tabs>
-            </StyledTabs>
-          </Card>
-        </BSCol>
-        <BSCol size="col-lg-3">
-          {activeTab === "pending" && <PendingReqFilters />}
-        </BSCol>
-      </BSGrid>
-    </Container>
+                  <Tab
+                    id="pending"
+                    title={<span className="aq-mx-3-lg">Pending</span>}
+                  >
+                    <TabPendingPayments />
+                  </Tab>
+                  <Tab
+                    id="failed"
+                    title={
+                      <span className="aq-mx-3-lg">
+                        Failed
+                        {total > 0 ? ` (${total})` : null}
+                      </span>
+                    }
+                  >
+                    <TabFailedPayments />
+                  </Tab>
+                </Tabs>
+              </StyledTabs>
+            </Card>
+          </BSCol>
+          <BSCol size="col-lg-3">
+            {activeTab === "pending" && <PendingReqFilters />}
+          </BSCol>
+        </BSGrid>
+      </Container>
+    </PageTemplate>
   );
 }

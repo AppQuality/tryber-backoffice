@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import getOnePopup from "src/api/getOnePopup";
 import updatePopup from "src/api/updatePopup";
 import Editor from "src/features/Editor";
+import { PageTemplate } from "src/features/PageTemplate";
 
 const usePopupsUpdate = () => {
   let { id } = useParams<{ id: string }>();
@@ -40,30 +41,32 @@ const usePopupsUpdate = () => {
     return <p>Loading</p>;
   }
   return (
-    <div className="popupContainer">
-      <Editor
-        onSave={(data: any) => {
-          if (!data.title) {
-            alert("Please specify a title for the popup");
-            return;
-          }
-          updatePopup(data, id)
-            .then((data) => {
-              alert("Saved!");
-            })
-            .catch((e) => {
-              alert("Error!");
-              console.error(e.message);
-            });
-        }}
-        data={{
-          title,
-          targets,
-          once,
-        }}
-        json={json}
-      />
-    </div>
+    <PageTemplate>
+      <div className="popupContainer">
+        <Editor
+          onSave={(data: any) => {
+            if (!data.title) {
+              alert("Please specify a title for the popup");
+              return;
+            }
+            updatePopup(data, id)
+              .then((data) => {
+                alert("Saved!");
+              })
+              .catch((e) => {
+                alert("Error!");
+                console.error(e.message);
+              });
+          }}
+          data={{
+            title,
+            targets,
+            once,
+          }}
+          json={json}
+        />
+      </div>
+    </PageTemplate>
   );
 };
 
