@@ -19,6 +19,7 @@ import ResultsPage from "./ResultsPage";
 import { useAppSelector } from "src/store";
 import styled from "styled-components";
 import { PageTemplate } from "src/features/PageTemplate";
+import useCanSee from "./useCanSee";
 
 const StyledSteps = styled(Steps)`
   .step-status-icon {
@@ -35,11 +36,8 @@ const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
 const UxDashboard = () => {
   const { id } = useParams<{ id: string }>();
   const { currentStep } = useAppSelector((state) => state.uxDashboard);
-  const {
-    data: permissions,
-    isError,
-    isLoading,
-  } = useGetUsersMePermissionsQuery();
+
+  const { isError, isLoading, hasPermission } = useCanSee(id);
 
   const { data: campaign } = useGetCampaignsByCampaignQuery({ campaign: id });
 
@@ -56,7 +54,7 @@ const UxDashboard = () => {
     }
   }
 
-  if (permissions?.appq_campaign === true) {
+  if (hasPermission) {
     // todo: discuss about appq_video_dashboard permission (change tests)
     return (
       <PageTemplate>
