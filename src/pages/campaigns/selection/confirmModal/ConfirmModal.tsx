@@ -63,14 +63,14 @@ const ConfirmModal: FC<{ id: string }> = ({ id }) => {
     return (
       <BSGrid>
         <BSCol>
-          <Button onClick={close} type="primary" flat size="block">
+          <Button onClick={close} kind="primary" flat size="block">
             Cancella
           </Button>
         </BSCol>
         <BSCol>
           <Button
             onClick={confirm}
-            type="primary"
+            kind="primary"
             flat
             size="block"
             disabled={false}

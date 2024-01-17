@@ -23,7 +23,7 @@ const usePopupsList = () => {
             title: "Open",
             content: (
               <Link to={`/backoffice/${r.id}`}>
-                <Button type="primary" flat={true}>
+                <Button kind="primary" flat={true}>
                   Open
                 </Button>
               </Link>
@@ -61,7 +61,7 @@ const usePopupsList = () => {
           <BSGrid>
             <BSCol size="col-12">
               <Link to="/backoffice/new">
-                <Button type="primary" flat={true} size="block">
+                <Button kind="primary" flat={true} size="block">
                   New
                 </Button>
               </Link>

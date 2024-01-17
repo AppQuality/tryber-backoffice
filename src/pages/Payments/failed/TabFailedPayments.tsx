@@ -138,13 +138,13 @@ export const TabFailedPayments = () => {
             content: (
               <StyledActions>
                 <Button
-                  type="link"
+                  kind="link"
                   onClick={() => dispatch(toggleDeleteModal(true, req.id))}
                 >
                   Delete
                 </Button>
                 <Button
-                  type="link"
+                  kind="link"
                   onClick={() => dispatch(toggleRetryModal(true, req.id))}
                 >
                   Retry

@@ -145,7 +145,7 @@ const useCampaigns = (options?: {
                   openInWordpress(e, "open-edit", { id: campaign.id })
                 }
                 size="sm"
-                type="link-hover"
+                kind="link-hover"
               >
                 Edit
               </TableButton>
@@ -155,7 +155,7 @@ const useCampaigns = (options?: {
                   openInWordpress(e, "open-show", { id: campaign.id })
                 }
                 size="sm"
-                type="link-hover"
+                kind="link-hover"
               >
                 View
               </TableButton>
@@ -165,7 +165,7 @@ const useCampaigns = (options?: {
                   openInWordpress(e, "open-bugs", { id: campaign.id })
                 }
                 size="sm"
-                type="link-hover"
+                kind="link-hover"
               >
                 Bugs
               </TableButton>

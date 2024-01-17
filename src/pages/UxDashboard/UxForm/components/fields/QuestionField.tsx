@@ -48,7 +48,7 @@ const QuestionField = ({
             }}
           />
           <Button
-            type="danger"
+            kind="danger"
             flat
             onClick={() => remove(index)}
             data-qa={`delete-question-${index}`}

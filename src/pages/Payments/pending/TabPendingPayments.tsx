@@ -128,7 +128,7 @@ export const TabPendingPayments = () => {
         />
         <Button
           onClick={paySelectedRequests}
-          type="primary"
+          kind="primary"
           className="pay-btn"
           disabled={selected.length === 0}
         >

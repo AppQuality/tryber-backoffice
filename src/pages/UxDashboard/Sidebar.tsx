@@ -46,10 +46,10 @@ const Sidebar = () => {
           <>
             <Button
               className="aq-mb-4"
-              type="primary"
+              kind="primary"
               flat
               size="block"
-              htmlType="submit"
+              type="submit"
               data-qa="submit-draft"
               disabled={isSubmitting}
               onClick={handleSaveDraft}
@@ -60,9 +60,9 @@ const Sidebar = () => {
               Per pubblicare passa prima dalla preview
             </Text>
             <Button
-              htmlType="button"
+              type="button"
               size="block"
-              type="secondary"
+              kind="secondary"
               data-qa="open-dashboard-preview"
               onClick={() => dispatch(setCurrentStep(1))}
               disabled={typeof values.status === "undefined" || isSubmitting}
@@ -75,7 +75,7 @@ const Sidebar = () => {
           <>
             <Button
               className="aq-mb-4"
-              type="primary"
+              kind="primary"
               flat
               size="block"
               data-qa="close-dashboard-preview"
@@ -87,9 +87,9 @@ const Sidebar = () => {
               Pubblica per rendere disponibile la dashboard anche al cliente
             </Text>
             <Button
-              htmlType="button"
+              type="button"
               size="block"
-              type="secondary"
+              kind="secondary"
               data-qa="publish-dashboard"
               disabled={publishStatus === "publishing"}
               onClick={() => {

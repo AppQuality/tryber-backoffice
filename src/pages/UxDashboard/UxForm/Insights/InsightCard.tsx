@@ -70,9 +70,9 @@ export const InsightCard = ({
   const Actions = () => (
     <div style={{ display: "flex", gap: "5px" }}>
       <Button
-        htmlType="button"
+        type="button"
         flat
-        type="danger"
+        kind="danger"
         size="sm"
         onClick={() => {
           if (window.confirm("Are you sure you wish to delete this item?")) {
@@ -85,10 +85,10 @@ export const InsightCard = ({
         Delete
       </Button>
       <Button
-        htmlType="button"
+        type="button"
         flat
         size="sm"
-        type="primary"
+        kind="primary"
         onClick={() => {
           editInsight(insight);
           dispatch(setInsightIndex(index));
