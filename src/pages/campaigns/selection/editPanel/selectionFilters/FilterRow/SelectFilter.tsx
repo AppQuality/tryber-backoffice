@@ -23,14 +23,12 @@ interface SelectFilterProps {
   name: string;
   options: Option[];
   placeholder?: string;
-  index?: number;
 }
 
 export const SelectFilter = ({
   name,
   options,
   placeholder,
-  index,
 }: SelectFilterProps) => {
   const dispatch = useAppDispatch();
 
@@ -64,7 +62,7 @@ export const SelectFilter = ({
                 label=""
                 key={name}
                 name={name}
-                placeholder={placeholder}
+                placeholder={"Select"}
                 value={field.value}
                 // options={newOptions}
                 options={options}

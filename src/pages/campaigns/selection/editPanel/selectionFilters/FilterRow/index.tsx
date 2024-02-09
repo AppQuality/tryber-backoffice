@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as Trash } from "./assets/trash.svg";
 import { InputFilter } from "./InputFilter";
 import { SelectFilter } from "./SelectFilter";
-import { FieldArray } from "formik";
+import { FieldArray, useFormikContext } from "formik";
 import { useAppDispatch } from "src/store";
 import { setDisableApplyFilters } from "../../../selectionSlice";
 
@@ -28,14 +28,19 @@ const FilterRow = ({
   queryTypeOptions,
 }: FilterRowProps) => {
   const dispatch = useAppDispatch();
+  const { values } = useFormikContext<SelectionFiltersValues>();
 
+  let placeholder;
+  if (values.filters.rows) {
+    placeholder = filterByOptions.find(
+      (f) => f.value === values.filters.rows?.[index]?.filterBy.value
+    )?.placeholder;
+  }
   return (
     <StyledFilterRow>
       <SelectFilter
         name={`filters.rows.${index}.filterBy`}
         options={filterByOptions}
-        placeholder={"Filter by"}
-        index={index}
       />
       <SelectFilter
         name={`filters.rows.${index}.queryType`}
@@ -43,7 +48,7 @@ const FilterRow = ({
       />
       <InputFilter
         name={`filters.rows.${index}.search`}
-        placeholder={"Search"}
+        placeholder={placeholder || "search"}
       />
       <FieldArray
         name="filters.rows"
