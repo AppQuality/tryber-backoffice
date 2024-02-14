@@ -16,7 +16,9 @@ export const AuthorizedOnlyContainer: React.FC<{
         <ErrorUnauthorized />
       </Container>
     );
-  return <Container>{children}</Container>;
+  return (
+    <div style={{ paddingLeft: "20px", paddingRight: "20px" }}>{children}</div>
+  );
 };
 
 export const OpsUserContainer: React.FC<{ children: React.ReactNode }> = ({
