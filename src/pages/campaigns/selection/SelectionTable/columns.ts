@@ -9,12 +9,12 @@ export const columns: TableType.Column[] = [
   {
     dataIndex: "level",
     key: "level",
-    title: "Level",
+    title: "UX Level",
   },
   {
     dataIndex: "exp",
     key: "exp",
-    title: "Tot EXP",
+    title: "BH Level",
   },
   {
     dataIndex: "devices",

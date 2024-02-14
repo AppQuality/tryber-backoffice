@@ -22,6 +22,7 @@ const useTableRows = (id: string) => {
   const { currentPage, devicesPerPage, questionsId, filters } = useAppSelector(
     (state) => state.selection
   );
+  const _questionsId = ["question_524", "question_525"];
   const [rows, setRows] = useState<RowType[]>([]);
   const { filterByInclude, filterByExclude } = filters;
   const { data, isFetching, isLoading, error, refetch } =
@@ -29,7 +30,7 @@ const useTableRows = (id: string) => {
       campaign: id,
       start: devicesPerPage * (currentPage - 1),
       limit: devicesPerPage,
-      ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
+      ...(_questionsId.length ? { fields: _questionsId.join(",") } : {}),
       filterByInclude,
       filterByExclude,
     });
@@ -82,7 +83,16 @@ const useTableRows = (id: string) => {
             row = {
               ...row,
               nameId: `T${user.id} ${user.name} ${user.surname}`,
-              exp: user.experience.toString(),
+              exp:
+                user.experience < 1000
+                  ? "Rookie"
+                  : user.experience < 3000
+                  ? "Advanced"
+                  : user.experience < 5000
+                  ? "Expert"
+                  : user.experience < 20000
+                  ? "Champion"
+                  : "Veteran",
               level: user.level,
               ...fields,
             };
