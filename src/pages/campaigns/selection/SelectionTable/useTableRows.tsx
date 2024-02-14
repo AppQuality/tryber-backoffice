@@ -55,6 +55,7 @@ const useTableRows = (id: string) => {
     if (data && data.results) {
       data.results.forEach((user, userIndex) =>
         user.devices.forEach((device, deviceIndex) => {
+          console.log(user);
           let row: RowType = {
             key: `${user.id.toString()}_${deviceIndex}`,
             highlighted: userIndex % 2 === 0,
@@ -82,9 +83,12 @@ const useTableRows = (id: string) => {
             });
             row = {
               ...row,
-              nameId: `T${user.id} ${user.name} ${user.surname}`,
+              testerId: `T${user.id}`,
+              name: `Giorgia Mandaroni`,
               exp:
-                user.experience < 1000
+                user.experience < 500
+                  ? "Newbie"
+                  : user.experience < 1000
                   ? "Rookie"
                   : user.experience < 3000
                   ? "Advanced"
@@ -93,7 +97,9 @@ const useTableRows = (id: string) => {
                   : user.experience < 20000
                   ? "Champion"
                   : "Veteran",
-              level: user.level,
+              level: user.level
+                .replace("Basic", "Newbie")
+                .replace("Bronze", "Rookie"),
               ...fields,
             };
           }

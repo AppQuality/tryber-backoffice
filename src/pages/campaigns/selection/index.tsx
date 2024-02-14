@@ -14,6 +14,8 @@ import ConfirmButton from "src/pages/campaigns/selection/confirmButton/ConfirmBu
 import ConfirmModal from "src/pages/campaigns/selection/confirmModal/ConfirmModal";
 import styled from "styled-components";
 import { PageTemplate } from "src/features/PageTemplate";
+import NewSelectionFilters from "./editPanel/newSelectionFilters";
+import { useState } from "react";
 
 const StickyToBottomContainer = styled.div`
   position: sticky;
@@ -22,6 +24,7 @@ const StickyToBottomContainer = styled.div`
 
 const SelectionPage = () => {
   const { id } = useParams<{ id: string }>();
+  const [mail, setMail] = useState<string[]>([]);
   return (
     <PageTemplate>
       <div className="selection-page">
@@ -30,11 +33,13 @@ const SelectionPage = () => {
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid className="aq-my-4">
             <BSCol size="col-lg-3">
-              <SelectionFilters id={id} />
+              <Card className="aq-mb-3">
+                <NewSelectionFilters mail={mail} setMail={setMail} />
+              </Card>
             </BSCol>
             <BSCol size="col-lg-9">
               <Card className="aq-mb-3">
-                <SelectionTable id={id} />
+                <SelectionTable id={id} mail={mail} />
               </Card>
               <Card>
                 <Counter />

@@ -2,9 +2,14 @@ import { TableType } from "@appquality/appquality-design-system";
 
 export const columns: TableType.Column[] = [
   {
-    dataIndex: "nameId",
-    key: "nameId",
-    title: "Name ID",
+    dataIndex: "testerId",
+    key: "testerId",
+    title: "Tester ID",
+  },
+  {
+    dataIndex: "name",
+    key: "name",
+    title: "Name",
   },
   {
     dataIndex: "level",
