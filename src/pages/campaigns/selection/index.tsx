@@ -25,6 +25,7 @@ const StickyToBottomContainer = styled.div`
 const SelectionPage = () => {
   const { id } = useParams<{ id: string }>();
   const [mail, setMail] = useState<string[]>([]);
+  const [provider, setProvider] = useState<string[]>([]);
   return (
     <PageTemplate>
       <div className="selection-page">
@@ -34,12 +35,17 @@ const SelectionPage = () => {
           <BSGrid className="aq-my-4">
             <BSCol size="col-lg-3">
               <Card className="aq-mb-3">
-                <NewSelectionFilters mail={mail} setMail={setMail} />
+                <NewSelectionFilters
+                  mail={mail}
+                  setMail={setMail}
+                  provider={provider}
+                  setProvider={setProvider}
+                />
               </Card>
             </BSCol>
             <BSCol size="col-lg-9">
               <Card className="aq-mb-3">
-                <SelectionTable id={id} mail={mail} />
+                <SelectionTable id={id} mail={mail} provider={provider} />
               </Card>
               <Card>
                 <Counter />
