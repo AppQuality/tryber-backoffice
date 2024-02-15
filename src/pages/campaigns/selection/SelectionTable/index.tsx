@@ -1,5 +1,5 @@
 import { Table } from "@appquality/appquality-design-system";
-import { FC, useEffect, useMemo } from "react";
+import { Dispatch, FC, useEffect, useMemo } from "react";
 import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableRows";
 import { Pagination } from "@appquality/appquality-design-system";
 import { useAppSelector, useAppDispatch } from "src/store";
@@ -11,8 +11,11 @@ const SelectionTable: FC<{
   mail: string[];
   provider: string[];
   os: string[];
-}> = ({ id, mail, provider, os }) => {
-  const dispatch = useAppDispatch();
+  bhLevel: string[];
+  uxLevel: string[];
+  age: { min: number; max: number };
+}> = ({ id, mail, provider, os, bhLevel, uxLevel, age }) => {
+  const dispatch: Dispatch<any> = useAppDispatch();
   const { rows, totalRows, isFetching } = useTableRows(id);
   const { devicesPerPage, currentPage, tableColumns } = useAppSelector(
     (state) => state.selection
@@ -47,8 +50,28 @@ const SelectionTable: FC<{
         : { ...row };
     });
 
+    newRows = newRows.filter((row) => {
+      return bhLevel.length > 0 && typeof row.exp === "string"
+        ? bhLevel.includes(row.exp)
+          ? { ...row }
+          : null
+        : { ...row };
+    });
+
+    newRows = newRows.filter((row) => {
+      return uxLevel.length > 0 && typeof row.level === "string"
+        ? uxLevel.includes(row.level)
+          ? { ...row }
+          : null
+        : { ...row };
+    });
+
+    newRows = newRows.filter((row) => {
+      return row.age >= age.min && row.age <= age.max ? { ...row } : null;
+    });
+
     return newRows;
-  }, [rows, mail, provider, os]);
+  }, [rows, mail, provider, os, bhLevel, uxLevel, age]);
   return (
     <StyledSelectionTable columns={tableColumns.length}>
       <Table

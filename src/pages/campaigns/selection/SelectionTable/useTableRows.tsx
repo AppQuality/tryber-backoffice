@@ -55,7 +55,6 @@ const useTableRows = (id: string) => {
     if (data && data.results) {
       data.results.forEach((user, userIndex) =>
         user.devices.forEach((device, deviceIndex) => {
-          console.log(device.os);
           let row: RowType = {
             key: `${user.id.toString()}_${deviceIndex}`,
             highlighted: userIndex % 2 === 0,

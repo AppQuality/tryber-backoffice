@@ -27,6 +27,9 @@ const SelectionPage = () => {
   const [mail, setMail] = useState<string[]>([]);
   const [provider, setProvider] = useState<string[]>([]);
   const [os, setOs] = useState<string[]>([]);
+  const [age, setAge] = useState({ min: 18, max: 56 });
+  const [bhLevel, setBhLevel] = useState<string[]>([]);
+  const [uxLevel, setUxLevel] = useState<string[]>([]);
   return (
     <PageTemplate>
       <div className="selection-page">
@@ -46,6 +49,12 @@ const SelectionPage = () => {
                   setProvider={setProvider}
                   os={os}
                   setOs={setOs}
+                  bhLevel={bhLevel}
+                  setBhLevel={setBhLevel}
+                  uxLevel={uxLevel}
+                  setUxLevel={setUxLevel}
+                  age={age}
+                  setAge={setAge}
                 />
               </Card>
             </BSCol>
@@ -56,6 +65,9 @@ const SelectionPage = () => {
                   mail={mail}
                   provider={provider}
                   os={os}
+                  bhLevel={bhLevel}
+                  uxLevel={uxLevel}
+                  age={age}
                 />
               </Card>
               <Card>

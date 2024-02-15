@@ -1,5 +1,5 @@
 import { Button, Checkbox } from "@appquality/appquality-design-system";
-import { Dispatch, SetStateAction, SyntheticEvent } from "react";
+import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
 
 const NewSelectionFilters = ({
   mail,
@@ -8,6 +8,12 @@ const NewSelectionFilters = ({
   setProvider,
   os,
   setOs,
+  bhLevel,
+  setBhLevel,
+  uxLevel,
+  setUxLevel,
+  age,
+  setAge,
 }: {
   mail: string[];
   setMail: Dispatch<SetStateAction<string[]>>;
@@ -15,6 +21,12 @@ const NewSelectionFilters = ({
   setProvider: Dispatch<SetStateAction<string[]>>;
   os: string[];
   setOs: Dispatch<SetStateAction<string[]>>;
+  bhLevel: string[];
+  setBhLevel: Dispatch<SetStateAction<string[]>>;
+  uxLevel: string[];
+  setUxLevel: Dispatch<SetStateAction<string[]>>;
+  age: { min: number; max: number };
+  setAge: Dispatch<SetStateAction<{ min: number; max: number }>>;
 }) => {
   const handleCheckboxChange = (e: any) => {
     console.log(e);
@@ -43,6 +55,22 @@ const NewSelectionFilters = ({
       setOs(os.filter((o) => o !== target.value));
     }
   };
+  const handleBhLevelChange = (e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (!bhLevel.includes(target.value)) {
+      setBhLevel([...bhLevel, target.value]);
+    } else {
+      setBhLevel(bhLevel.filter((b) => b !== target.value));
+    }
+  };
+  const handleUxLevelChange = (e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (!uxLevel.includes(target.value)) {
+      setUxLevel([...uxLevel, target.value]);
+    } else {
+      setUxLevel(uxLevel.filter((b) => b !== target.value));
+    }
+  };
   return (
     //<div style={{maxHeight: "500px", overflow: "scroll"}}>
     <div>
@@ -53,16 +81,22 @@ const NewSelectionFilters = ({
           <input
             style={{ width: "50px", marginLeft: "10px" }}
             id="minAge"
-            value="18"
+            value={age.min}
             type="number"
+            onChange={(e) =>
+              setAge({ ...age, min: parseInt(e.target.value.toString()) })
+            }
           />
         </div>
         <div style={{ display: "flex" }}>
           <label>Max</label>
           <input
             style={{ width: "50px", marginLeft: "10px" }}
-            value="56"
+            value={age.max}
             type="number"
+            onChange={(e) =>
+              setAge({ ...age, max: parseInt(e.target.value.toString()) })
+            }
           />
         </div>
       </div>
@@ -76,12 +110,12 @@ const NewSelectionFilters = ({
         <Checkbox
           label="Newbie"
           value="Newbie"
-          onChange={handleCheckboxChange}
+          onChange={handleUxLevelChange}
         />
         <Checkbox
           label="Rookie"
           value="Rookie"
-          onChange={handleCheckboxChange}
+          onChange={handleUxLevelChange}
         />
       </div>
       <div className="aq-mb-3">
@@ -89,32 +123,32 @@ const NewSelectionFilters = ({
         <Checkbox
           label="Newbie"
           value="Newbie"
-          onChange={handleCheckboxChange}
+          onChange={handleBhLevelChange}
         />
         <Checkbox
           label="Rookie"
           value="Rookie"
-          onChange={handleCheckboxChange}
+          onChange={handleBhLevelChange}
         />
         <Checkbox
           label="Advanced"
           value="Advanced"
-          onChange={handleCheckboxChange}
+          onChange={handleBhLevelChange}
         />
         <Checkbox
           label="Expert"
           value="Expert"
-          onChange={handleCheckboxChange}
+          onChange={handleBhLevelChange}
         />
         <Checkbox
           label="Champion"
           value="Champion"
-          onChange={handleCheckboxChange}
+          onChange={handleBhLevelChange}
         />
         <Checkbox
           label="Veteran"
           value="Veteran"
-          onChange={handleCheckboxChange}
+          onChange={handleBhLevelChange}
         />
       </div>
       <div className="aq-mb-3">
