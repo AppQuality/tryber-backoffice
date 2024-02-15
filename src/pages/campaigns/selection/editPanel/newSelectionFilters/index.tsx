@@ -1,4 +1,4 @@
-import { Checkbox } from "@appquality/appquality-design-system";
+import { Button, Checkbox } from "@appquality/appquality-design-system";
 import { Dispatch, SetStateAction, SyntheticEvent } from "react";
 
 const NewSelectionFilters = ({
@@ -150,6 +150,9 @@ const NewSelectionFilters = ({
         <Checkbox label="Yahoo" value="Yahoo" onChange={handleProviderChange} />
         <Checkbox label="Altro" value="Altro" onChange={handleProviderChange} />
       </div>
+      <Button flat size="block" type="primary">
+        Apply
+      </Button>
     </div>
   );
 };
