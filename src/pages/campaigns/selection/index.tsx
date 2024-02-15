@@ -71,8 +71,17 @@ const SelectionPage = () => {
                 />
               </Card>
               <Card>
-                <Counter />
-                <ConfirmButton />
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    gap: "10px",
+                  }}
+                >
+                  <Counter />
+                  <ConfirmButton />
+                </div>
               </Card>
             </BSCol>
           </BSGrid>
