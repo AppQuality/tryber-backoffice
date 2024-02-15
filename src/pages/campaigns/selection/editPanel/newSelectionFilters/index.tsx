@@ -121,8 +121,6 @@ const NewSelectionFilters = ({
         <strong>Device</strong>
         <Checkbox label="Android" value="Android" onChange={handleOsChange} />
         <Checkbox label="iOS" value="iOS" onChange={handleOsChange} />
-        <Checkbox label="Windows" value="sticazz" disabled />
-        <Checkbox label="MacOS" value="sticazz" disabled />
       </div>
       <div className="aq-mb-3">
         <strong>

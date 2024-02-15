@@ -35,6 +35,9 @@ const SelectionPage = () => {
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid className="aq-my-4">
             <BSCol size="col-lg-3">
+              <Card className="aq-mb-3" title="Columns">
+                <ColumnsConfigurator id={id} />
+              </Card>
               <Card className="aq-mb-3" title="Filters">
                 <NewSelectionFilters
                   mail={mail}

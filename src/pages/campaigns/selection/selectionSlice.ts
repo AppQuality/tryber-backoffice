@@ -63,6 +63,16 @@ const selectionSlice = createSlice({
     deselectDevice(state, action: PayloadAction<{ userId: string }>) {
       delete state.selectedDevices[action.payload.userId];
     },
+    selectAll(state) {
+      alert(
+        "seleziono il primo device di ciascun tryber in questa pagina (se la tabella è paginata)"
+      );
+    },
+    deselectAll(state) {
+      alert(
+        "rimuovo dalla selezione tutti i device di questa pagina (se la tabella è paginata)"
+      );
+    },
     clearSelectedDevice(state) {
       state.selectedDevices = {};
     },
@@ -85,6 +95,8 @@ export const {
   checkUserDevice,
   changeTablePage,
   deselectDevice,
+  selectAll,
+  deselectAll,
   clearSelectedDevice,
   openConfirmModal,
   closeConfirmModal,

@@ -1,4 +1,26 @@
-import { TableType } from "@appquality/appquality-design-system";
+import { Checkbox, TableType } from "@appquality/appquality-design-system";
+import { useState } from "react";
+import { useAppDispatch } from "src/store";
+import {
+  selectAll,
+  deselectAll,
+} from "src/pages/campaigns/selection/selectionSlice";
+
+const SelectAllCheckbox = () => {
+  const dispatch = useAppDispatch();
+  const [isChecked, setIsChecked] = useState(false);
+  const onChange = () => {
+    if (isChecked) {
+      setIsChecked(false);
+      dispatch(deselectAll());
+    } else {
+      setIsChecked(true);
+      dispatch(selectAll());
+    }
+  };
+
+  return <Checkbox label="All" checked={isChecked} onChange={onChange} />;
+};
 
 export const columns: TableType.Column[] = [
   {
@@ -49,6 +71,7 @@ export const columns: TableType.Column[] = [
   {
     dataIndex: "actions",
     key: "actions",
-    title: "",
+    title: <SelectAllCheckbox />,
+    maxWidth: "50px",
   },
 ];
