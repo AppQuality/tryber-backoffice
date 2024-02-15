@@ -5,11 +5,25 @@ export const columns: TableType.Column[] = [
     dataIndex: "testerId",
     key: "testerId",
     title: "Tester ID",
+    maxWidth: "100px",
   },
   {
     dataIndex: "name",
     key: "name",
     title: "Name",
+    maxWidth: "180px",
+  },
+  {
+    dataIndex: "age",
+    key: "age",
+    title: "Age",
+    maxWidth: "100px",
+  },
+  {
+    dataIndex: "gender",
+    key: "gender",
+    title: "Gender",
+    maxWidth: "100px",
   },
   {
     dataIndex: "level",
@@ -30,6 +44,7 @@ export const columns: TableType.Column[] = [
     dataIndex: "os",
     key: "os",
     title: "OS",
+    maxWidth: "180px",
   },
   {
     dataIndex: "actions",

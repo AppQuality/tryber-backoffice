@@ -10,13 +10,15 @@ const SelectionTable: FC<{
   id: string;
   mail: string[];
   provider: string[];
-}> = ({ id, mail, provider }) => {
+  os: string[];
+}> = ({ id, mail, provider, os }) => {
   const dispatch = useAppDispatch();
   const { rows, totalRows, isFetching } = useTableRows(id);
   const { devicesPerPage, currentPage, tableColumns } = useAppSelector(
     (state) => state.selection
   );
   const _rows = useMemo(() => {
+    //let newRows = [...rows];
     let newRows = [...rows.filter((row) => row.key.includes("_0"))];
 
     newRows = newRows.filter((row) => {
@@ -37,8 +39,16 @@ const SelectionTable: FC<{
         : { ...row };
     });
 
+    newRows = newRows.filter((row) => {
+      return os.length > 0
+        ? os.includes(row.deviceOs)
+          ? { ...row }
+          : null
+        : { ...row };
+    });
+
     return newRows;
-  }, [rows, mail, provider]);
+  }, [rows, mail, provider, os]);
   return (
     <StyledSelectionTable columns={tableColumns.length}>
       <Table

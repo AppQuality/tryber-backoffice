@@ -23,6 +23,7 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
 
   .table-scrollable {
     overflow: auto;
+    // max-height: 450px;
     .thead {
       min-width: 250px;
       position: sticky;

@@ -6,11 +6,15 @@ const NewSelectionFilters = ({
   setMail,
   provider,
   setProvider,
+  os,
+  setOs,
 }: {
   mail: string[];
   setMail: Dispatch<SetStateAction<string[]>>;
   provider: string[];
   setProvider: Dispatch<SetStateAction<string[]>>;
+  os: string[];
+  setOs: Dispatch<SetStateAction<string[]>>;
 }) => {
   const handleCheckboxChange = (e: any) => {
     console.log(e);
@@ -31,8 +35,42 @@ const NewSelectionFilters = ({
       setProvider(provider.filter((p) => p !== target.value));
     }
   };
+  const handleOsChange = (e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (!os.includes(target.value)) {
+      setOs([...os, target.value]);
+    } else {
+      setOs(os.filter((o) => o !== target.value));
+    }
+  };
   return (
-    <>
+    //<div style={{maxHeight: "500px", overflow: "scroll"}}>
+    <div>
+      <div className="aq-mb-3">
+        <strong>Age</strong>
+        <div style={{ display: "flex", marginBottom: "5px" }}>
+          <label htmlFor="minAge">Min</label>
+          <input
+            style={{ width: "50px", marginLeft: "10px" }}
+            id="minAge"
+            value="18"
+            type="number"
+          />
+        </div>
+        <div style={{ display: "flex" }}>
+          <label>Max</label>
+          <input
+            style={{ width: "50px", marginLeft: "10px" }}
+            value="56"
+            type="number"
+          />
+        </div>
+      </div>
+      <div className="aq-mb-3">
+        <strong>Gender</strong>
+        <Checkbox label="M" value="M" onChange={handleCheckboxChange} />
+        <Checkbox label="F" value="F" onChange={handleCheckboxChange} />
+      </div>
       <div className="aq-mb-3">
         <strong>UX Level</strong>
         <Checkbox
@@ -80,6 +118,13 @@ const NewSelectionFilters = ({
         />
       </div>
       <div className="aq-mb-3">
+        <strong>Device</strong>
+        <Checkbox label="Android" value="Android" onChange={handleOsChange} />
+        <Checkbox label="iOS" value="iOS" onChange={handleOsChange} />
+        <Checkbox label="Windows" value="sticazz" disabled />
+        <Checkbox label="MacOS" value="sticazz" disabled />
+      </div>
+      <div className="aq-mb-3">
         <strong>
           Hai una Mail Virgilio? Verranno selezionati sia tryber con mail
           virgilio che con altri servizi di posta
@@ -107,7 +152,7 @@ const NewSelectionFilters = ({
         <Checkbox label="Yahoo" value="Yahoo" onChange={handleProviderChange} />
         <Checkbox label="Altro" value="Altro" onChange={handleProviderChange} />
       </div>
-    </>
+    </div>
   );
 };
 

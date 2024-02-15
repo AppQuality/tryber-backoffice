@@ -55,9 +55,11 @@ const useTableRows = (id: string) => {
     if (data && data.results) {
       data.results.forEach((user, userIndex) =>
         user.devices.forEach((device, deviceIndex) => {
+          console.log(device.os);
           let row: RowType = {
             key: `${user.id.toString()}_${deviceIndex}`,
             highlighted: userIndex % 2 === 0,
+            deviceOs: device.os,
             os: `${device.os} ${device.osVersion}`
               .replace("Windows Windows", "Windows")
               .replace("iOS iOS", "iOS")
@@ -65,6 +67,8 @@ const useTableRows = (id: string) => {
             devices: device.manufacturer
               ? `${device.manufacturer} ${device.model}`
               : "-",
+            age: Math.floor(18 + Math.random() * 25),
+            gender: Math.floor(Math.random() * 2) ? "M" : "F",
             actions: {
               title: "select",
               content: (
@@ -75,7 +79,7 @@ const useTableRows = (id: string) => {
               ),
             },
           };
-          if (deviceIndex === 0) {
+          if (true) {
             let fields: { [key: string]: any } = {};
             user.questions?.forEach((q, i) => {
               fields = { ...fields, ...{ [`${q.id}-${i}`]: q.value || "-" } };

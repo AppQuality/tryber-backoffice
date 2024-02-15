@@ -26,6 +26,7 @@ const SelectionPage = () => {
   const { id } = useParams<{ id: string }>();
   const [mail, setMail] = useState<string[]>([]);
   const [provider, setProvider] = useState<string[]>([]);
+  const [os, setOs] = useState<string[]>([]);
   return (
     <PageTemplate>
       <div className="selection-page">
@@ -34,18 +35,25 @@ const SelectionPage = () => {
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid className="aq-my-4">
             <BSCol size="col-lg-3">
-              <Card className="aq-mb-3">
+              <Card className="aq-mb-3" title="Filters">
                 <NewSelectionFilters
                   mail={mail}
                   setMail={setMail}
                   provider={provider}
                   setProvider={setProvider}
+                  os={os}
+                  setOs={setOs}
                 />
               </Card>
             </BSCol>
             <BSCol size="col-lg-9">
               <Card className="aq-mb-3">
-                <SelectionTable id={id} mail={mail} provider={provider} />
+                <SelectionTable
+                  id={id}
+                  mail={mail}
+                  provider={provider}
+                  os={os}
+                />
               </Card>
               <Card>
                 <Counter />
