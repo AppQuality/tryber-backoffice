@@ -101,6 +101,21 @@ const NewSelectionFilters = ({
         </div>
       </div>
       <div className="aq-mb-3">
+        <strong>Tester ID</strong>
+        <div style={{ display: "flex", marginBottom: "5px" }}>
+          <label htmlFor="minAge">Includi solo questi ID</label>
+          <input
+            style={{ width: "100px", marginLeft: "10px" }}
+            id="includeIds"
+            type="text"
+          />
+        </div>
+        <div style={{ display: "flex" }}>
+          <label>Escludi questi ID</label>
+          <input style={{ width: "100px", marginLeft: "10px" }} type="text" />
+        </div>
+      </div>
+      <div className="aq-mb-3">
         <strong>Gender</strong>
         <Checkbox label="M" value="M" onChange={handleCheckboxChange} />
         <Checkbox label="F" value="F" onChange={handleCheckboxChange} />
