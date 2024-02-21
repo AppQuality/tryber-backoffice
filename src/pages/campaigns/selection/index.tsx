@@ -30,7 +30,7 @@ const SelectionPage = () => {
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid className="aq-my-4">
             <BSCol size="col-lg-3">
-              <Card title="Add columns" shadow>
+              <Card title="Add columns" className="aq-mb-3">
                 <ColumnsConfigurator id={id} />
               </Card>
               <SelectionFilters id={id} />
