@@ -29,15 +29,13 @@ const SelectionPage = () => {
           <ConfirmModal id={id} />
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid className="aq-my-4">
-            <BSCol size="col-lg-6">
+            <BSCol size="col-lg-3">
               <Card title="Add columns" shadow>
                 <ColumnsConfigurator id={id} />
               </Card>
-            </BSCol>
-            <BSCol size="col-lg-6">
               <SelectionFilters id={id} />
             </BSCol>
-            <BSCol size="col-lg-12" className="aq-mt-3">
+            <BSCol size="col-lg-9">
               <Card className="aq-mb-3">
                 <Counter />
                 <SelectionTable id={id} />
