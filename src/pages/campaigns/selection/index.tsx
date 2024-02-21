@@ -35,6 +35,7 @@ const SelectionPage = () => {
           <BSGrid>
             <BSCol size="col-lg-3">
               <Card title="Add columns" className="aq-mb-3">
+                <button>import jotform</button>
                 <ColumnsConfigurator id={id} />
               </Card>
               <SelectionFilters id={id} />
