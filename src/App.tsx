@@ -27,6 +27,7 @@ import SingleAgreementEdit from "./pages/agreements/view-edit";
 import SingleAgreementNew from "./pages/agreements/new";
 import UxDashboard from "./pages/UxDashboard";
 import SentryWrapper from "./features/SentryWrapper";
+import CareersPage from "./pages/gamification/careers";
 
 const SentryRoute = Sentry.withSentryRouting(Route);
 const history = createBrowserHistory();
@@ -44,6 +45,10 @@ function App() {
                 <SentryRoute
                   path={`/backoffice/campaigns/:id/bugs`}
                   component={BugsList}
+                />
+                <SentryRoute
+                  path={`/backoffice/gamification/careers`}
+                  component={CareersPage}
                 />
                 <SentryRoute
                   path={`/backoffice/campaigns/:id/prospect`}
