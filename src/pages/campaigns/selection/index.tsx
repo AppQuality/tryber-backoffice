@@ -15,9 +15,13 @@ import ConfirmModal from "src/pages/campaigns/selection/confirmModal/ConfirmModa
 import styled from "styled-components";
 import { PageTemplate } from "src/features/PageTemplate";
 
-const StickyToBottomContainer = styled.div`
-  position: sticky;
-  bottom: 0;
+const BottomCard = styled(Card)`
+  .aq-card-body {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: ${(props) => props.theme.grid.sizes[3]};
+  }
 `;
 
 const SelectionPage = () => {
@@ -28,7 +32,7 @@ const SelectionPage = () => {
         <OpsUserContainer>
           <ConfirmModal id={id} />
           <PageTitle size="regular">Tester selection panel</PageTitle>
-          <BSGrid className="aq-my-4">
+          <BSGrid>
             <BSCol size="col-lg-3">
               <Card title="Add columns" className="aq-mb-3">
                 <ColumnsConfigurator id={id} />
@@ -37,14 +41,12 @@ const SelectionPage = () => {
             </BSCol>
             <BSCol size="col-lg-9">
               <Card className="aq-mb-3">
-                <Counter />
                 <SelectionTable id={id} />
               </Card>
-              <StickyToBottomContainer>
-                <Card>
-                  <ConfirmButton />
-                </Card>
-              </StickyToBottomContainer>
+              <BottomCard className="aq-mb-3">
+                <Counter />
+                <ConfirmButton />
+              </BottomCard>
             </BSCol>
           </BSGrid>
         </OpsUserContainer>
