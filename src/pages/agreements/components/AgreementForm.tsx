@@ -261,7 +261,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
               placeholder="Notes"
               className="aq-mb-3"
             />
-            <Button htmlType="submit">Submit</Button>
+            <Button type="submit">Submit</Button>
           </Form>
         )}
       </Formik>

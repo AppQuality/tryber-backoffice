@@ -37,7 +37,7 @@ export const JotformSuccessCard = ({ url }: { url: string }) => {
       </div>
       <CSSGrid min="180px">
         <Button
-          type="info"
+          kind="info"
           target="_blank"
           forwardedAs="a"
           href={getFormBuilderUrl()}
@@ -46,7 +46,7 @@ export const JotformSuccessCard = ({ url }: { url: string }) => {
           Edit Form on Jotform
         </Button>
         <Button
-          type="info"
+          kind="info"
           target="_blank"
           forwardedAs="a"
           href={url}
@@ -54,7 +54,7 @@ export const JotformSuccessCard = ({ url }: { url: string }) => {
         >
           Preview
         </Button>
-        <Button type="primary" size="block" onClick={onCreateNewForm}>
+        <Button kind="primary" size="block" onClick={onCreateNewForm}>
           Create new Form
         </Button>
       </CSSGrid>

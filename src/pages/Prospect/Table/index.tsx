@@ -137,7 +137,7 @@ const Table = ({
       <ActionBar>
         <Button
           size="sm"
-          type="info"
+          kind="info"
           flat
           onClick={() => {
             setIsDrawerOpen(true);

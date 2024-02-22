@@ -81,7 +81,7 @@ const SearchBar = ({
         }}
       />
       <div style={{ flexShrink: 0 }}>
-        <Button type="info" flat onClick={() => onClick(value, mode)}>
+        <Button kind="info" flat onClick={() => onClick(value, mode)}>
           Search
         </Button>
       </div>

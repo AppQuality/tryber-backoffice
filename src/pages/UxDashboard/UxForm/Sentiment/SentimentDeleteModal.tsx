@@ -30,7 +30,7 @@ const ModalFooter = ({ close }: { close: () => void }) => {
           submitForm();
           close();
         }}
-        type="danger"
+        kind="danger"
       >
         Confirm
       </Button>

@@ -115,14 +115,14 @@ const ModalFooter = ({ remove }: InsightModalProps) => {
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
       <Button
         data-qa="discard-insight-changes"
-        type="danger"
+        kind="danger"
         flat
         onClick={handleDismiss}
         className="aq-mr-3"
       >
         Dismiss
       </Button>
-      <Button htmlType="button" data-qa="save-insight" onClick={handleAdd}>
+      <Button type="button" data-qa="save-insight" onClick={handleAdd}>
         Save
       </Button>
     </div>

@@ -48,7 +48,7 @@ export const MakePaymentModal = () => {
         <BSCol>
           <Button
             onClick={onClose}
-            type="primary"
+            kind="primary"
             flat
             size="block"
             disabled={isRequestsSending}
@@ -57,7 +57,7 @@ export const MakePaymentModal = () => {
           </Button>
         </BSCol>
         <BSCol>
-          <Button onClick={onPayClick} type="primary" flat size="block">
+          <Button onClick={onPayClick} kind="primary" flat size="block">
             Pay
           </Button>
         </BSCol>
@@ -69,13 +69,13 @@ export const MakePaymentModal = () => {
     return (
       <>
         {processing.status === "finished" ? (
-          <Button onClick={onClose} type="primary" flat size="block">
+          <Button onClick={onClose} kind="primary" flat size="block">
             Close
           </Button>
         ) : (
           <Button
             onClick={cancelPayments}
-            type="danger"
+            kind="danger"
             flat
             size="block"
             disabled={processing.abort}

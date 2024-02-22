@@ -31,7 +31,7 @@ const PayTesterButton = ({
   return (
     <Button
       size="sm"
-      type="primary"
+      kind="primary"
       onClick={() => {
         if (
           window.confirm(

@@ -27,8 +27,7 @@ const CustomTable = styled(Table)`
     padding: 0;
   }
   .tbody.cell > div {
-    padding: ${({ theme }) => theme.grid.sizes[2]}
-      ${({ theme }) => theme.grid.sizes[2]};
+    padding: ${({ theme }) => theme.grid.sizes[2]};
     display: flex;
     align-items: center;
     height: 100%;
@@ -55,7 +54,7 @@ const CampaignsTable = () => {
           <div>
             <Button
               size="sm"
-              type="secondary"
+              kind="secondary"
               flat
               onClick={(e) => openInWordpress(e, "open-new-campaign")}
             >

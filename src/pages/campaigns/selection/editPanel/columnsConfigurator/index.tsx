@@ -37,7 +37,7 @@ const ColumnsConfigurator = ({ id }: ColumnsConfiguratorProps) => {
       <Button
         className="aq-mt-3 aq-mb-2"
         size="block"
-        type="primary"
+        kind="primary"
         data-testid="columnsConfigurator_apply"
         disabled={disableApply}
         onClick={() => {

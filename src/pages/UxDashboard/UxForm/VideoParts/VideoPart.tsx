@@ -124,9 +124,9 @@ const VideoPart = ({
       </div>
       <Actions>
         <DeleteButton
-          htmlType="button"
+          type="button"
           data-qa="delete-videopart"
-          type="danger"
+          kind="danger"
           flat
           onClick={() => {
             window.confirm("Are you sure you wish to delete this item?") &&
