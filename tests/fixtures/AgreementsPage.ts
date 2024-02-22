@@ -17,6 +17,8 @@ export class AgreementsPage extends BackofficePage {
   elements() {
     return {
       agreementsTable: () => this.page.getByTestId("agreements-table"),
+      customerSelect: () => this.page.locator("#customers-select"),
+      newAgreementAction: () => this.page.locator("#add-new-agreement-btn"),
     };
   }
 
@@ -45,6 +47,18 @@ export class AgreementsPage extends BackofficePage {
         await route.fulfill({
           status: 200,
           path: "tests/api/agreements/_get/response-items-limit1.json",
+        });
+      }
+    );
+  }
+
+  async getFilteredAgreements() {
+    await this.page.route(
+      "*/**/api/agreements?filterBy[customer]=1&start=0&limit=10",
+      async (route) => {
+        await route.fulfill({
+          status: 200,
+          path: "tests/api/agreements/_get/200_agreement-filterBy-customer1.json",
         });
       }
     );
