@@ -1,0 +1,6 @@
+{
+  "appq_bug": [1, 2],
+  "appq_campaign": [1, 2],
+  "appq_prospect": false,
+  "appq_tester_selection": true
+}

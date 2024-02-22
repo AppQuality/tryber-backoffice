@@ -1,0 +1,24 @@
+{
+  "id": 1,
+  "campaign_type": 1,
+  "name": "UX test for a selfdrive service",
+  "customer_title": "Tesla Model 3 selfdrive UX",
+  "internal_id": "TSL3",
+  "dates": {
+    "start": "17/02/2021",
+    "end": "17/08/2021",
+    "close": "17/09/2021"
+  },
+  "devices": [
+    {
+      "id": "2"
+    }
+  ],
+  "projectManager": {
+    "username": "Elon Musk"
+  },
+  "project": {
+    "name": "Tesla",
+    "id": 42
+  }
+}

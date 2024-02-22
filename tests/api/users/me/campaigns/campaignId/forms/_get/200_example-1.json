@@ -1,0 +1,71 @@
+[
+  {
+    "id": 1,
+    "question": "Come si chiama il tuo cane?",
+    "type": "text"
+  },
+  {
+    "id": 2,
+    "question": "Il tuo cane si chiama pippo?",
+    "type": "radio",
+    "options": ["Sì", "No"]
+  },
+  {
+    "id": 3,
+    "question": "Di che razza è il tuo cane?",
+    "type": "select",
+    "options": [
+      "ALANO TIGRATO",
+      "ALASKAN MALAMUTE",
+      "ALPENLAENDISCHE DACHSBRACKE",
+      "AMSTAFF"
+    ]
+  },
+  {
+    "id": 4,
+    "question": "Che vaccinazioni ha fatto il tuo cane?",
+    "type": "multiselect",
+    "options": ["Cimurro", "Parvovirus", "Adenovirus"]
+  },
+  {
+    "id": 5,
+    "question": "Con quali banche hai un conto?",
+    "type": "cuf_22",
+    "options": [1, 2, 3, 4],
+    "value": [3, 4]
+  },
+  {
+    "id": 6,
+    "question": "Scrivi il tuo username telegram",
+    "type": "cuf_15",
+    "value": "@pippo",
+    "validation": {
+      "regex": "^@[a-zA-Z]*$",
+      "error": "Inserire l'utente telegram in questo formato: @pippo"
+    }
+  },
+  {
+    "id": 7,
+    "question": "Con che genere ti identifichi?",
+    "type": "gender",
+    "value": "male"
+  },
+  {
+    "id": 8,
+    "question": "Qual è il tuo numero di telefono",
+    "type": "phone_number",
+    "value": "+33123456789",
+    "validation": {
+      "regex": "^\\+?[0-9]{12,14}$"
+    }
+  },
+  {
+    "id": 9,
+    "question": "Dove abiti?",
+    "type": "address",
+    "value": {
+      "city": "Pesaro",
+      "country": "Italy"
+    }
+  }
+]

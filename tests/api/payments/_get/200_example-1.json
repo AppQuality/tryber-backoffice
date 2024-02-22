@@ -1,0 +1,56 @@
+{
+  "limit": 3,
+  "size": 3,
+  "start": 2,
+  "total": 100,
+  "items": [
+    {
+      "created": "1645096692",
+      "updated": "1645096692",
+      "id": 123,
+      "amount": {
+        "value": 100,
+        "currency": "EUR"
+      },
+      "type": "paypal",
+      "tryber": {
+        "id": 1,
+        "name": "John",
+        "surname": "Doe"
+      },
+      "error": "INSUFFICIENT_FUNDS"
+    },
+    {
+      "created": "1645096692",
+      "updated": "1645096692",
+      "id": 1,
+      "amount": {
+        "value": 100,
+        "currency": "EUR"
+      },
+      "type": "paypal",
+      "tryber": {
+        "id": 1,
+        "name": "John",
+        "surname": "Doe"
+      },
+      "error": "GENERIC_ERROR"
+    },
+    {
+      "created": "1645096692",
+      "updated": "1645096692",
+      "id": 12,
+      "amount": {
+        "value": 100,
+        "currency": "EUR"
+      },
+      "type": "transferwise",
+      "tryber": {
+        "id": 5,
+        "name": "Pippo",
+        "surname": "Franco"
+      },
+      "error": "RECEIVER_UNREGISTERED"
+    }
+  ]
+}

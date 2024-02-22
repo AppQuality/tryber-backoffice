@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "id": 69,
+      "title": "Rocco Token",
+      "tokens": 169,
+      "unitPrice": 6.9,
+      "startDate": "2023-10-20",
+      "expirationDate": "2023-01-01",
+      "customer": {
+        "id": 1,
+        "company": "Rocco & Friends"
+      },
+      "note": "Test con dati veri",
+      "isTokenBased": false
+    }
+  ],
+  "start": 0,
+  "total": 3,
+  "limit": 3,
+  "size": 1
+}

@@ -1,0 +1,93 @@
+{
+  "status": "draft",
+  "goal": "The Research Goal",
+  "usersNumber": 10,
+  "questions": [
+    {
+      "id": 1,
+      "name": "Why the world exists?"
+    },
+    {
+      "id": 1,
+      "name": "How the world exists?"
+    }
+  ],
+  "methodology": {
+    "name": "Usability Test",
+    "description": "Methodology Description",
+    "type": "qualitative"
+  },
+  "insights": [
+    {
+      "id": 1,
+      "title": "My insight",
+      "description": "This is an insight",
+      "severity": {
+        "id": 1,
+        "name": "Minor"
+      },
+      "clusters": "all",
+      "videoParts": [
+        {
+          "id": 1,
+          "start": 10,
+          "end": 20,
+          "mediaId": 1,
+          "url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+          "streamUrl": "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8",
+          "description": "This is a video part"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "My second insight",
+      "description": "This is another insight",
+      "severity": {
+        "id": 2,
+        "name": "Positive"
+      },
+      "clusters": [
+        {
+          "id": 1,
+          "name": "UC1: Cart"
+        },
+        {
+          "id": 2,
+          "name": "UC2: Login"
+        }
+      ],
+      "videoParts": [
+        {
+          "id": 2,
+          "start": 15,
+          "end": 25,
+          "mediaId": 2,
+          "url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+          "streamUrl": "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8",
+          "description": "This is a video part"
+        }
+      ]
+    }
+  ],
+  "sentiments": [
+    {
+      "id": 1,
+      "value": 5,
+      "comment": "Top rating",
+      "cluster": {
+        "id": 1,
+        "name": "Cluster1"
+      }
+    },
+    {
+      "id": 2,
+      "value": 1,
+      "comment": "Bad rating",
+      "cluster": {
+        "id": 1,
+        "name": "Cluster1"
+      }
+    }
+  ]
+}

@@ -75,6 +75,7 @@
     "prettier": "npx prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
     "translate": "i18next-scanner",
     "generate-api": ". ./.env.development; API_URL=$REACT_APP_API_URL/reference/ npx @rtk-query/codegen-openapi src/services/tryberApi/config.ts",
+    "generate-fixtures": ". ./.env.development; API_URL=$REACT_APP_API_URL/reference/; npx @appquality/fixture-generator -u $API_URL && npx prettier --write 'tests/api/**/*.json'",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org appquality-srl --project tryber-backoffice ./build && sentry-cli sourcemaps upload --org appquality-srl --project tryber-backoffice ./build"
   },
   "browserslist": {

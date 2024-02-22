@@ -1,0 +1,38 @@
+{
+  "items": [
+    {
+      "tester": {
+        "id": 0,
+        "name": "string",
+        "surname": "string",
+        "group": 0
+      },
+      "usecases": {
+        "completed": 0,
+        "required": 0
+      },
+      "bugs": {
+        "critical": 0,
+        "high": 0,
+        "medium": 0,
+        "low": 0
+      },
+      "payout": {
+        "completion": 0,
+        "bug": 0,
+        "refund": 0,
+        "extra": 0
+      },
+      "experience": {
+        "completion": 0,
+        "extra": 0
+      },
+      "note": "string",
+      "status": "pending",
+      "weightedBugs": 0,
+      "isCompleted": true,
+      "isTopTester": true
+    }
+  ],
+  "status": "draft"
+}

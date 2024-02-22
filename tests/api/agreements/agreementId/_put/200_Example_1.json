@@ -1,0 +1,14 @@
+{
+  "id": 0,
+  "title": "string",
+  "tokens": 0,
+  "unitPrice": 0,
+  "startDate": "2023-07-03",
+  "expirationDate": "2023-07-03",
+  "note": "string",
+  "isTokenBased": false,
+  "customer": {
+    "id": 0,
+    "company": "string"
+  }
+}

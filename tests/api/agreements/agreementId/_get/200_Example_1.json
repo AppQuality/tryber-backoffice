@@ -1,0 +1,14 @@
+{
+  "customer": {
+    "id": 1,
+    "company": "string"
+  },
+  "id": 1,
+  "title": "string",
+  "tokens": 1,
+  "unitPrice": 165,
+  "startDate": "2023-07-03",
+  "expirationDate": "2023-07-03",
+  "note": "string",
+  "isTokenBased": false
+}

@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "campaign": {
+        "id": 123,
+        "name": "My campaign"
+      },
+      "type": "Test",
+      "date": "2019-08-24",
+      "activity": "Tryber Testing",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      }
+    }
+  ],
+  "limit": 10,
+  "size": 1,
+  "total": 1,
+  "start": 0
+}

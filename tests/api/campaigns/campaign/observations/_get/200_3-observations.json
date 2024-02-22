@@ -1,0 +1,58 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Observation Name1",
+      "time": 59,
+      "tester": {
+        "id": 11111,
+        "name": "Jhon Doe"
+      },
+      "cluster": {
+        "id": 1,
+        "name": "Cluster Name1"
+      },
+      "media": {
+        "id": 1,
+        "url": "www.example.com",
+        "streamUrl": "www.example.com"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Observation Name2",
+      "time": 39,
+      "tester": {
+        "id": 12345,
+        "name": "Mary Blue"
+      },
+      "cluster": {
+        "id": 1,
+        "name": "Cluster Name1"
+      },
+      "media": {
+        "id": 1,
+        "url": "www.example.com",
+        "streamUrl": "www.example.com"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Observation Name3",
+      "time": 19,
+      "tester": {
+        "id": 11111,
+        "name": "Jhon Doe"
+      },
+      "cluster": {
+        "id": 2,
+        "name": "Cluster Name2"
+      },
+      "media": {
+        "id": 1,
+        "url": "www.example.com",
+        "streamUrl": "www.example.com"
+      }
+    }
+  ]
+}

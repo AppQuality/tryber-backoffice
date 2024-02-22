@@ -1,0 +1,14 @@
+{
+  "address": {
+    "country": "string",
+    "province": "string",
+    "city": "string",
+    "street": "string",
+    "cityCode": "string"
+  },
+  "type": "withholding",
+  "birthCity": "string",
+  "fiscalId": "string",
+  "fiscalStatus": "Verified",
+  "gender": "male"
+}
