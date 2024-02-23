@@ -13,8 +13,6 @@ const bugHuntingData = [
     area: "BH",
     completedCp: 1,
     uploadedBugs: 0,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 0,
     uploadedBugsCritical: 0,
     courses: [],
@@ -25,8 +23,6 @@ const bugHuntingData = [
     area: "BH",
     completedCp: 1,
     uploadedBugs: 2,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 0,
     uploadedBugsCritical: 0,
     courses: [{ id: 5, name: "Basic course of Bug Finding" }],
@@ -37,11 +33,9 @@ const bugHuntingData = [
     area: "BH",
     completedCp: 5,
     uploadedBugs: 10,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 5,
     uploadedBugsCritical: 0,
-    courses: [],
+    courses: [{ id: 5, name: "Basic course of Bug Finding" }],
   },
   {
     id: 4,
@@ -49,11 +43,10 @@ const bugHuntingData = [
     area: "BH",
     completedCp: 10,
     uploadedBugs: 0,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 10,
     uploadedBugsCritical: 0,
     courses: [
+      { id: 5, name: "Basic course of Bug Finding" },
       { id: 9, name: "Basic course on useful Tools for the Campaigns" },
     ],
   }, //corso strumenti
@@ -63,11 +56,12 @@ const bugHuntingData = [
     area: "BH",
     completedCp: 30,
     uploadedBugs: 0,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 20,
     uploadedBugsCritical: 5,
-    courses: [],
+    courses: [
+      { id: 5, name: "Basic course of Bug Finding" },
+      { id: 9, name: "Basic course on useful Tools for the Campaigns" },
+    ],
   },
   {
     id: 6,
@@ -75,11 +69,12 @@ const bugHuntingData = [
     area: "BH",
     completedCp: 50,
     uploadedBugs: 0,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 50,
     uploadedBugsCritical: 10,
-    courses: [],
+    courses: [
+      { id: 5, name: "Basic course of Bug Finding" },
+      { id: 9, name: "Basic course on useful Tools for the Campaigns" },
+    ],
   },
 ];
 const uxData = [
@@ -89,8 +84,6 @@ const uxData = [
     area: "UX",
     completedCp: 1,
     uploadedBugs: 0,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 0,
     uploadedBugsCritical: 0,
     courses: [],
@@ -101,8 +94,6 @@ const uxData = [
     area: "UX",
     completedCp: 1,
     uploadedBugs: 2,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 0,
     uploadedBugsCritical: 0,
     courses: [{ id: 5, name: "Basic course of Bug Finding" }],
@@ -113,8 +104,6 @@ const uxData = [
     area: "UX",
     completedCp: 5,
     uploadedBugs: 10,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 5,
     uploadedBugsCritical: 0,
     courses: [],
@@ -125,8 +114,6 @@ const uxData = [
     area: "UX",
     completedCp: 10,
     uploadedBugs: 0,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 10,
     uploadedBugsCritical: 0,
     courses: [
@@ -139,8 +126,6 @@ const uxData = [
     area: "UX",
     completedCp: 30,
     uploadedBugs: 0,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 20,
     uploadedBugsCritical: 5,
     courses: [],
@@ -151,8 +136,6 @@ const uxData = [
     area: "UX",
     completedCp: 50,
     uploadedBugs: 0,
-    uploadedBugsLow: 0,
-    uploadedBugsMedium: 0,
     uploadedBugsHigh: 50,
     uploadedBugsCritical: 10,
     courses: [],
@@ -177,14 +160,24 @@ const CareersPage = () => {
         <HeaderButton as="a" href={`/wp-admin/admin.php`} className="aq-mr-2">
           return to backoffice
         </HeaderButton>
-        <Title size="mt" className="aq-mb-3" style={{ display: "flex" }}>
-          Bug Hunter
-        </Title>
-        <CareersTable data={bugHuntingData} />
-        <Title size="mt" className="aq-mb-3" style={{ display: "flex" }}>
-          User experience expert
-        </Title>
-        <CareersTable data={uxData} />
+        <div>
+          <Title size="mt" className="aq-mb-3" style={{ display: "flex" }}>
+            Bug Hunter
+          </Title>
+          <CareersTable data={bugHuntingData} />
+          <Button style={{ marginTop: "10px", marginLeft: "40%" }}>
+            Add BH rank +
+          </Button>
+        </div>
+        <div style={{ marginBottom: "30px" }}>
+          <Title size="mt" className="aq-mb-3" style={{ display: "flex" }}>
+            User Experience expert
+          </Title>
+          <CareersTable data={uxData} />
+          <Button style={{ marginTop: "10px", marginLeft: "40%" }}>
+            Add UX rank +
+          </Button>
+        </div>
       </FluidContainer>
     </PageTemplate>
   );

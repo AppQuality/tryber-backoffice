@@ -2,10 +2,6 @@ import { Button, Table } from "@appquality/appquality-design-system";
 import { ReactComponent as EditIcon } from "src/assets/edit.svg";
 import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
 import siteWideMessageStore from "src/redux/siteWideMessages";
-import {
-  useDeleteAgreementsByAgreementIdMutation,
-  useGetAgreementsQuery,
-} from "src/services/tryberApi";
 import styled from "styled-components";
 
 const TableContainer = styled.div`
@@ -22,16 +18,14 @@ const CareersTable = ({
     area: string;
     completedCp: number;
     uploadedBugs: number;
-    uploadedBugsLow: number;
-    uploadedBugsMedium: number;
     uploadedBugsHigh: number;
     uploadedBugsCritical: number;
     courses: { id: number; name: string }[];
   }[];
 }) => {
-  //const [deleteAgreement] = useDeleteAgreementsByAgreementIdMutation();
+  //const [deleteCareers] = useDeleteCareersByAgreementIdMutation();
   const { add } = siteWideMessageStore();
-  //const { data, refetch } = useGetAgreementsQuery({});
+  //const { data, refetch } = useGetCareersQuery({});
 
   const columns = [
     {
@@ -55,19 +49,9 @@ const CareersTable = ({
       key: "completedCp",
     },
     {
-      title: "Uploaded Bugs",
+      title: "Tot. Uploaded Bugs",
       dataIndex: "uploadedBugs",
       key: "uploadedBugs",
-    },
-    {
-      title: "Uploaded Bugs LOW",
-      dataIndex: "uploadedBugsLow",
-      key: "uploadedBugsLow",
-    },
-    {
-      title: "Uploaded Bugs MEDIUM",
-      dataIndex: "uploadedBugsMedium",
-      key: "uploadedBugsMedium",
     },
     {
       title: "Uploaded Bugs HIGH",
@@ -124,13 +108,11 @@ const CareersTable = ({
                 id: a.id,
                 rank: a.rank,
                 area: a.area,
-                completedCp: a.completedCp,
-                uploadedBugs: a.uploadedBugs,
-                uploadedBugsLow: a.uploadedBugsLow,
-                uploadedBugsMedium: a.uploadedBugsMedium,
-                uploadedBugsHigh: a.uploadedBugsHigh,
-                uploadedBugsCritical: a.uploadedBugsCritical,
-                courses: a.courses.map((c) => c.name).join(", "),
+                completedCp: ">= " + a.completedCp,
+                uploadedBugs: ">= " + a.uploadedBugs,
+                uploadedBugsHigh: ">= " + a.uploadedBugsHigh,
+                uploadedBugsCritical: ">= " + a.uploadedBugsCritical,
+                courses: a.courses.map((c) => c.name).join(" + "),
                 actions: (
                   <div title="Actions">
                     <Button
@@ -141,14 +123,14 @@ const CareersTable = ({
                     >
                       <EditIcon />
                     </Button>
-                    {/* <Button
-                                        data-qa={`delete-career-button-${a.id}`}
-                                        onClick={() => onDelete(a.id.toString(), a.title)}
-                                        size="sm"
-                                        type="link"
-                                    >
-                                        <DeleteIcon />
-                                    </Button> */}
+                    <Button
+                      data-qa={`delete-career-button-${a.id}`}
+                      onClick={() => onDelete(a.id.toString(), a.rank)}
+                      size="sm"
+                      type="link"
+                    >
+                      <DeleteIcon />
+                    </Button>
                   </div>
                 ),
               }))
