@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Modale di importazione Jotform: ", () => {
+  test("i permessi richiesti sono manage_preselection_forms", async ({
+    page,
+  }) => {});
   test("nella pagina /selection c'è un bottone import jotform (sempre abilitato)", async ({
     page,
   }) => {});
@@ -36,10 +39,10 @@ test.describe("Modale di importazione Jotform: ", () => {
   test("se la chiamata ha successo l'elenco dei filtri si aggiorna con una sezione per ciascuna domanda", async ({
     page,
   }) => {});
-  test("I filtri per le domande hanno titolo della domanda e se la domanda è di tipo, select, radio o multiselect mostrano una checkbox per ciascun tipo di risposta", async ({
+  test("I filtri per le domande hanno titolo della domanda e se la domanda ha le options mostrano una checkbox per ciascun tipo di risposta", async ({
     page,
   }) => {});
-  test("I filtri per le domande hanno titolo della domanda e se la domanda è di tipo text mostrano un input per la ricerca testuale (con un bottone apply per confermare)", async ({
+  test("I filtri per le domande hanno titolo della domanda e se la domanda non ha le options mostrano un input per la ricerca testuale (con un bottone apply per confermare)", async ({
     page,
   }) => {});
   test("Quando l'utente clicca su una checkbox oppure su un apply per i filtri testuali parte una get con i relativi filterBy", async ({
