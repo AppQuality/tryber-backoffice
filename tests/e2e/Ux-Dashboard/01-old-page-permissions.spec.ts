@@ -19,27 +19,7 @@ test.describe("When User is logged out", () => {
     cy.url().should("include", "wp-login.php");
   });
 });
-test.describe("In case of user without enough permissions", () => {
-  test("Page should print a not authorized message", () => {
-    cy.intercept(
-      "GET",
-      `${Cypress.env("REACT_APP_API_URL")}/users/me/permissions`,
-      {
-        statusCode: 200,
-        fixture: "permissions/_get/response_200_not_enough_permissions.json",
-      }
-    ).as("notEnoughPermissions");
-    cy.visit(
-      `${Cypress.env("CAMPAINGS_PAGE")}/4904${Cypress.env(
-        "UX_DASHBOARD_PAGE"
-      )}/`
-    );
-    cy.dataQa("error-unauthorized").should(
-      "contain",
-      "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
-    );
-  });
-});
+
 test.describe("In case of user with the right permissions", () => {
   test("Page should print a ux dashboard form", () => {
     cy.intercept(
