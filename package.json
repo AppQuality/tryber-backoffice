@@ -69,8 +69,6 @@
     "test:e2e:ui": "npx playwright test --ui",
     "test:e2e": "npx playwright test",
     "test:unit": "react-scripts test",
-    "cy:run": "cypress run --e2e --browser chrome",
-    "cy:open": "cypress open --e2e --browser chrome",
     "prettier": "npx prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
     "translate": "i18next-scanner",
     "generate-api": ". ./.env.development; API_URL=$REACT_APP_API_URL/reference/ npx @rtk-query/codegen-openapi src/services/tryberApi/config.ts",
