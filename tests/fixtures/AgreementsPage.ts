@@ -11,7 +11,7 @@ export class AgreementsPage extends BackofficePage {
   }
 
   async visit() {
-    await this.page.goto(this.url);
+    await this.page.goto(this.url, { timeout: 0 });
   }
 
   elements() {
@@ -35,7 +35,7 @@ export class AgreementsPage extends BackofficePage {
     await this.page.route("*/**/api/agreements?", async (route) => {
       await route.fulfill({
         status: 200,
-        path: "tests/api/agreements/_get/response-items-no-filtered.json",
+        path: "tests/api/agreements/_get/200_items-no-filtered.json",
       });
     });
   }
@@ -46,7 +46,7 @@ export class AgreementsPage extends BackofficePage {
       async (route) => {
         await route.fulfill({
           status: 200,
-          path: "tests/api/agreements/_get/response-items-limit1.json",
+          path: "tests/api/agreements/_get/200_items-no-filtered-limit=1.json",
         });
       }
     );
@@ -54,7 +54,7 @@ export class AgreementsPage extends BackofficePage {
 
   async getFilteredAgreements() {
     await this.page.route(
-      "*/**/api/agreements?filterBy[customer]=1&start=0&limit=10",
+      "*/**/api/agreements?filterBy[customer]=2&start=0&limit=10",
       async (route) => {
         await route.fulfill({
           status: 200,

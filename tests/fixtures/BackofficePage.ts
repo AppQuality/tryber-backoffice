@@ -9,14 +9,6 @@ export class BackofficePage {
 
   async loggedIn() {
     await this.page.route(
-      "*/**/api/users/me?fields=name%2Csurname%2Cimage%2Conboarding_completed%2Cemail%2Cwp_user_id",
-      async (route) => {
-        await route.fulfill({
-          path: "tests/api/users/me/_get/200_Example_1.json",
-        });
-      }
-    );
-    await this.page.route(
       "*/**/api/users/me?fields=id%2Cemail%2Cusername%2Cwp_user_id%2Crole",
       async (route) => {
         await route.fulfill({
@@ -24,24 +16,26 @@ export class BackofficePage {
         });
       }
     );
-    await this.page.route("*/**/api/users/me?", async (route) => {
+  }
+
+  async loggedInAsAdmin() {
+    await this.page.route(
+      "*/**/api/users/me?fields=id%2Cemail%2Cusername%2Cwp_user_id%2Crole",
+      async (route) => {
+        await route.fulfill({
+          path: "tests/api/users/me/_get/200_role_admin.json",
+        });
+      }
+    );
+    await this.page.route("*/**/api/users/me?fields=role", async (route) => {
       await route.fulfill({
-        path: "tests/api/users/me/_get/200_Example_1.json",
+        path: "tests/api/users/me/_get/200_role_admin.json",
       });
     });
   }
 
   async loggedOut() {
     await this.page.route(
-      "*/**/api/users/me?fields=name%2Csurname%2Cimage%2Conboarding_completed%2Cemail%2Cwp_user_id",
-      async (route) => {
-        await route.fulfill({
-          status: 403,
-          json: { err: "unauthorized" },
-        });
-      }
-    );
-    await this.page.route(
       "*/**/api/users/me?fields=id%2Cemail%2Cusername%2Cwp_user_id%2Crole",
       async (route) => {
         await route.fulfill({
@@ -50,11 +44,5 @@ export class BackofficePage {
         });
       }
     );
-    await this.page.route("*/**/api/users/me?", async (route) => {
-      await route.fulfill({
-        status: 403,
-        json: { err: "unauthorized" },
-      });
-    });
   }
 }

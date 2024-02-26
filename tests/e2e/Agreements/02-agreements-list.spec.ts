@@ -7,11 +7,11 @@ test.describe("Agreements Page:", () => {
   let agreementsPage: AgreementsPage;
   test.beforeEach(async ({ page }) => {
     agreementsPage = new AgreementsPage(page);
-    agreementsPage.loggedIn();
-    agreementsPage.getAgreements();
-    agreementsPage.getCustomers();
-    agreementsPage.getAgreementslimit();
-    agreementsPage.visit();
+    await agreementsPage.loggedIn();
+    await agreementsPage.getAgreements();
+    await agreementsPage.getCustomers();
+    await agreementsPage.getAgreementslimit();
+    await agreementsPage.visit();
   });
   test("Should print a customer agreements table", async () => {
     await expect(agreementsPage.elements().agreementsTable()).toBeVisible();
@@ -30,11 +30,11 @@ test.describe("Customer multiselect: ", () => {
   let agreementsPage: AgreementsPage;
   test.beforeEach(async ({ page }) => {
     agreementsPage = new AgreementsPage(page);
-    agreementsPage.loggedIn();
-    agreementsPage.getAgreements();
-    agreementsPage.getAgreementslimit();
-    agreementsPage.getCustomers();
-    agreementsPage.visit();
+    await agreementsPage.loggedInAsAdmin();
+    await agreementsPage.getAgreements();
+    await agreementsPage.getAgreementslimit();
+    await agreementsPage.getCustomers();
+    await agreementsPage.visit();
   });
   test("Should print a list of customer to select from", async () => {
     await agreementsPage.elements().customerSelect().click();
@@ -45,6 +45,7 @@ test.describe("Customer multiselect: ", () => {
   test("Should allow to select multiple customers", async () => {
     await agreementsPage.elements().customerSelect().click();
     await agreementsPage.page.locator("#react-select-3-option-1").click();
+    await agreementsPage.elements().customerSelect().click();
     await agreementsPage.page.locator("#react-select-3-option-2").click();
     await expect(agreementsPage.elements().customerSelect()).toContainText(
       "AppDefinitions"
@@ -56,7 +57,7 @@ test.describe("Customer multiselect: ", () => {
   test("Should filter the table by customers", async () => {
     await agreementsPage.getFilteredAgreements();
     await agreementsPage.elements().customerSelect().click();
-    await agreementsPage.page.locator("#react-select-3-option-0").click();
+    await agreementsPage.page.locator("#react-select-3-option-1").click();
     await agreementsPage
       .elements()
       .agreementsTable()
