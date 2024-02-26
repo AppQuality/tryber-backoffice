@@ -127,10 +127,10 @@
     draft-js "^0.11.7"
     react-contenteditable "^3.3.5"
 
-"@appquality/fixture-generator@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@appquality/fixture-generator/-/fixture-generator-1.0.2.tgz#c4434a14ccba72658f65d7a7b6c7641fcb5a125e"
-  integrity sha512-gCQP7MbK5YdLTmV9uMaq2NZxo+K7J6CKMngIJ1pxROjNOlsO8yZZEmYk5xBFsdl4lJwhgYSZ3NjHbzyw+1Xn8A==
+"@appquality/fixture-generator@^1.0.3":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@appquality/fixture-generator/-/fixture-generator-1.6.0.tgz#d96d1a250b4b8ba0c2912e2b83568ed16b46ca7d"
+  integrity sha512-UXJbsC9aVrDyCLV8QcOKmBs0Zrc+W9dtfTqRX+Vdg+MgM+k8JrlXazhuqxnAqxmzcpI7+gavn7prd32K9xUruA==
   dependencies:
     "@readme/openapi-parser" "^2.5.0"
     yargs "^17.7.2"
