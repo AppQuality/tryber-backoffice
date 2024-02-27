@@ -33,4 +33,13 @@ export class SelectionPage extends BackofficePage {
       });
     });
   }
+
+  elements() {
+    return {
+      importJotformCta: () =>
+        this.page.getByRole("button", { name: "Import Jotform" }),
+      //customerSelect: () => this.page.locator("#customers-select"),
+      //newAgreementAction: () => this.page.locator("#add-new-agreement-btn"),
+    };
+  }
 }

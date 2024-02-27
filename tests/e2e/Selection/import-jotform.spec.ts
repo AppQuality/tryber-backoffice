@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { SelectionPage } from "../../fixtures/SelectionPage";
 
 test.describe("Modale di importazione Jotform: ", () => {
@@ -12,9 +12,12 @@ test.describe("Modale di importazione Jotform: ", () => {
 
     //await expect(page.getByText("Sembrerebbe che tu non abbia i permessi per accedere a questa pagina")).toBeVisible();
   });
-  test("nella pagina /selection c'è un bottone import jotform (sempre abilitato)", async ({
-    page,
-  }) => {});
+  test("there is a import jotform button alwais enabled", async ({ page }) => {
+    selectionPage = new SelectionPage(page);
+    await selectionPage.visit();
+    await expect(selectionPage.elements().importJotformCta()).toBeVisible();
+    await expect(selectionPage.elements().importJotformCta()).toBeEnabled();
+  });
 
   test("se è presente già un form collegato cliccando sul bottone di import si apre un messaggio che avvisa che c'è già un form collegato e chiede conferma della sovrascrittura", async ({
     page,
