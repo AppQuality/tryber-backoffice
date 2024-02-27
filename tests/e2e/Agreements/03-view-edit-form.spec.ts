@@ -4,6 +4,7 @@ import { SingleAgreementPage } from "../../fixtures/AgreementsPage/Single";
 test.describe("View/Edit Single Agreement Page:", () => {
   let singleAgreementPage: SingleAgreementPage;
   test.beforeEach(async ({ page }) => {
+    singleAgreementPage = new SingleAgreementPage(page);
     await singleAgreementPage.loggedInAsAdmin();
     await singleAgreementPage.getSingleAgreement();
     await singleAgreementPage.getCustomers();
