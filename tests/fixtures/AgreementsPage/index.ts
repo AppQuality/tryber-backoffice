@@ -1,5 +1,5 @@
 import { type Page } from "@playwright/test";
-import { BackofficePage } from "./BackofficePage";
+import { BackofficePage } from "../BackofficePage";
 
 export class AgreementsPage extends BackofficePage {
   readonly page: Page;
@@ -12,6 +12,10 @@ export class AgreementsPage extends BackofficePage {
 
   async visit() {
     await this.page.goto(this.url);
+  }
+
+  async visitSingleAgreement() {
+    await this.page.goto(`${this.url}/69`);
   }
 
   elements() {
@@ -36,6 +40,14 @@ export class AgreementsPage extends BackofficePage {
       await route.fulfill({
         status: 200,
         path: "tests/api/agreements/_get/200_items-no-filtered.json",
+      });
+    });
+  }
+  async getSingleAgreement() {
+    await this.page.route("*/**/api/agreements/69", async (route) => {
+      await route.fulfill({
+        status: 200,
+        path: "tests/api/agreements/agreementId/_get/200_success-found.json",
       });
     });
   }
