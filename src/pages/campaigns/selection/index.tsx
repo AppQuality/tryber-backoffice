@@ -4,7 +4,7 @@ import {
   Card,
   PageTitle,
 } from "@appquality/appquality-design-system";
-import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
+import { AuthorizedOnlyContainer } from "src/features/AuthorizedOnlyContainer";
 import Counter from "./counter";
 import ColumnsConfigurator from "./editPanel/columnsConfigurator";
 import SelectionFilters from "./editPanel/selectionFilters";
@@ -14,6 +14,7 @@ import ConfirmButton from "src/pages/campaigns/selection/confirmButton/ConfirmBu
 import ConfirmModal from "src/pages/campaigns/selection/confirmModal/ConfirmModal";
 import styled from "styled-components";
 import { PageTemplate } from "src/features/PageTemplate";
+import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
 
 const BottomCard = styled(Card)`
   .aq-card-body {
@@ -26,10 +27,16 @@ const BottomCard = styled(Card)`
 
 const SelectionPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { data } = useGetUsersMePermissionsQuery();
   return (
     <PageTemplate>
       <div className="selection-page">
-        <OpsUserContainer>
+        <AuthorizedOnlyContainer
+          excludeRule={
+            false
+            /* role based auth */
+          }
+        >
           <ConfirmModal id={id} />
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid>
@@ -50,7 +57,7 @@ const SelectionPage = () => {
               </BottomCard>
             </BSCol>
           </BSGrid>
-        </OpsUserContainer>
+        </AuthorizedOnlyContainer>
       </div>
     </PageTemplate>
   );
