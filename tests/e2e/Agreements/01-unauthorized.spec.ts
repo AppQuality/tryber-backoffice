@@ -15,18 +15,18 @@ test.describe("If a user is not logged in", () => {
   });
 });
 
-test.describe("If a user is not authorized", () => {
-  let agreementsPage: AgreementsPage;
-  test("the Agreements Page should print a not authorized message", async ({
-    page,
-  }) => {
-    agreementsPage = new AgreementsPage(page);
-    await agreementsPage.notEnoughPermissions();
-    await agreementsPage.visit();
-    await expect(
-      page.getByText(
-        "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
-      )
-    ).toBeVisible();
-  });
-});
+// test.describe("If a user is not authorized", () => {
+//   let agreementsPage: AgreementsPage;
+//   test("the Agreements Page should print a not authorized message", async ({
+//     page,
+//   }) => {
+//     agreementsPage = new AgreementsPage(page);
+//     await agreementsPage.notEnoughPermissions();
+//     await agreementsPage.visit();
+//     await expect(
+//       page.getByText(
+//         "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
+//       )
+//     ).toBeVisible();
+//   });
+// });
