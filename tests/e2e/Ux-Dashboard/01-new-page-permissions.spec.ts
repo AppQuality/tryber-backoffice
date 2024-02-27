@@ -1,4 +1,4 @@
-import { APIResponse, expect, test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { UxDashboardPage } from "../../fixtures/UxDashboardPage";
 
 test.describe("Ux Dashboard Page:", () => {
