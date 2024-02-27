@@ -34,7 +34,6 @@ test.describe("Customer multiselect: ", () => {
     await agreementsPage.getAgreements();
     await agreementsPage.getAgreementslimit();
     await agreementsPage.getCustomers();
-    await agreementsPage.getFilteredAgreements();
     await agreementsPage.visit();
   });
   test("Should print a list of customer to select from", async () => {
@@ -56,6 +55,7 @@ test.describe("Customer multiselect: ", () => {
     );
   });
   // test("Should filter the table by customers", async () => {
+  //   await agreementsPage.getFilteredAgreements();
   //   await agreementsPage.elements().customerSelect().click();
   //   await agreementsPage.page.locator("#react-select-3-option-0").click();
   //   await expect(agreementsPage
