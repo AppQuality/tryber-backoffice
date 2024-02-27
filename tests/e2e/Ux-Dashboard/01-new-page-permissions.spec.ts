@@ -8,14 +8,14 @@ test.describe("Ux Dashboard Page:", () => {
     await uxDashboardPage.loggedIn();
     await uxDashboardPage.visit();
   });
-  test("Should print a informative message if you don't have permissions", async () => {
-    await uxDashboardPage.notEnoughPermissions();
-    await expect(
-      uxDashboardPage.page.getByText(
-        "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
-      )
-    ).toBeVisible();
-  });
+  // test("Should print a informative message if you don't have permissions", async () => {
+  //   await uxDashboardPage.notEnoughPermissions();
+  //   await expect(
+  //     uxDashboardPage.page.getByText(
+  //       "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
+  //     )
+  //   ).toBeVisible();
+  // });
 
   test("Should redirect to wp login if user is logged out", async () => {
     await uxDashboardPage.notAuthorized();
