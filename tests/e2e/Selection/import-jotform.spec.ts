@@ -1,9 +1,17 @@
-import { expect, test } from "@playwright/test";
+import { test } from "@playwright/test";
+import { SelectionPage } from "../../fixtures/SelectionPage";
 
 test.describe("Modale di importazione Jotform: ", () => {
+  let selectionPage: SelectionPage;
   test("i permessi richiesti sono manage_preselection_forms", async ({
     page,
-  }) => {});
+  }) => {
+    selectionPage = new SelectionPage(page);
+    selectionPage.visit();
+    // permissions
+
+    //await expect(page.getByText("Sembrerebbe che tu non abbia i permessi per accedere a questa pagina")).toBeVisible();
+  });
   test("nella pagina /selection c'è un bottone import jotform (sempre abilitato)", async ({
     page,
   }) => {});
