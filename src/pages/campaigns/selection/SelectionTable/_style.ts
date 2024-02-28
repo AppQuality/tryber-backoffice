@@ -39,13 +39,14 @@ export const StyledSelectionTable = styled.div<{ columns: number }>`
     .table-scrollable {
       .thead {
         &:nth-child(1) {
-          min-width: 310px;
+          min-width: 200px;
         }
+        &:nth-child(${(p) => p.columns - 5}) {
+          min-width: 50px;
+        }
+        &:nth-child(${(p) => p.columns - 3}),
         &:nth-child(${(p) => p.columns - 4}) {
-          min-width: 148px;
-        }
-        &:nth-child(${(p) => p.columns - 3}) {
-          min-width: 155px;
+          min-width: 100px;
         }
         &:nth-child(${(p) => p.columns - 2}) {
           min-width: 180px;

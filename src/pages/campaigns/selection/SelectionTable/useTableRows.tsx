@@ -82,6 +82,9 @@ const useTableRows = (id: string) => {
             row = {
               ...row,
               nameId: `T${user.id} ${user.name} ${user.surname}`,
+              age: user.age,
+              gender: user.gender,
+              bhlevel: user.levels.bugHunting,
               ...fields,
             };
           }
