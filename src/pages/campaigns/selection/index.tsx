@@ -31,12 +31,7 @@ const SelectionPage = () => {
   return (
     <PageTemplate>
       <div className="selection-page">
-        <AuthorizedOnlyContainer
-          excludeRule={
-            false
-            /* role based auth */
-          }
-        >
+        <AuthorizedOnlyContainer excludeRule={!data?.appq_tester_selection}>
           <ConfirmModal id={id} />
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid>

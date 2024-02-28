@@ -3,15 +3,17 @@ import { SelectionPage } from "../../fixtures/SelectionPage";
 
 test.describe("Modale di importazione Jotform: ", () => {
   let selectionPage: SelectionPage;
-  test("i permessi richiesti sono manage_preselection_forms", async ({
-    page,
-  }) => {
+  test("i permessi richiesti sono appq_tester_selection", async ({ page }) => {
     selectionPage = new SelectionPage(page);
-    selectionPage.visit();
-    // permissions
-
-    //await expect(page.getByText("Sembrerebbe che tu non abbia i permessi per accedere a questa pagina")).toBeVisible();
+    await selectionPage.loggedInWithoutPermissions();
+    await selectionPage.visit();
+    await expect(
+      page.getByText(
+        "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
+      )
+    ).toBeVisible();
   });
+
   test("there is a import jotform button alwais enabled", async ({ page }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.visit();
