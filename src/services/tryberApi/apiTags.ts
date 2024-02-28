@@ -18,10 +18,10 @@ tryberApi.enhanceEndpoints({
       invalidatesTags: ["Campaigns"],
     },
     postCampaignsByCampaignCandidates: {
-      invalidatesTags: ["Campaigns"],
+      invalidatesTags: ["Selection"],
     },
     getCampaignsByCampaignCandidates: {
-      providesTags: ["Campaigns"],
+      providesTags: ["Selection"],
     },
     getCampaignsByCampaignTasks: {
       providesTags: ["Campaigns"],

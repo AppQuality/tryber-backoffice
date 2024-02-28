@@ -4,60 +4,57 @@ import {
   Button,
   Modal,
 } from "@appquality/appquality-design-system";
-import { useAppDispatch, useAppSelector } from "src/store";
+import { FC } from "react";
 import {
   clearSelectedDevice,
   closeConfirmModal,
 } from "src/pages/campaigns/selection/selectionSlice";
-import { usePostCampaignsByCampaignCandidatesMutation } from "src/services/tryberApi";
-import { FC } from "react";
 import siteWideMessageStore from "src/redux/siteWideMessages";
-import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableRows";
+import { usePostCampaignsByCampaignCandidatesMutation } from "src/services/tryberApi";
+import { useAppDispatch, useAppSelector } from "src/store";
 
 const ConfirmModal: FC<{ id: string }> = ({ id }) => {
   const { add } = siteWideMessageStore();
   const { isConfirmModalOpen, selectedDevices } = useAppSelector(
     (state) => state.selection
   );
-  const { refetch } = useTableRows(id);
   const dispatch = useAppDispatch();
   const close = () => {
     dispatch(closeConfirmModal());
   };
   const [selectDevices] = usePostCampaignsByCampaignCandidatesMutation();
   const confirm = async () => {
-    const response = await selectDevices({
-      campaign: id,
-      body: Object.keys(selectedDevices).map((testerId) => ({
-        tester_id: parseInt(testerId),
-        device: parseInt(selectedDevices[testerId]),
-      })),
-    });
-    if ("error" in response) {
-      console.error(response.error);
-      let message = "La richiesta non è andata a buon fine";
-      if ("data" in response.error) {
-        // @ts-ignore
-        message += `: ${response.error.data?.message}`;
-      }
-      add({ type: "danger", message });
-    }
-    if ("data" in response) {
-      if ("invalidTesters" in response.data) {
+    try {
+      const response = await selectDevices({
+        campaign: id,
+        body: Object.keys(selectedDevices).map((testerId) => ({
+          tester_id: parseInt(testerId),
+          device: parseInt(selectedDevices[testerId]),
+        })),
+      }).unwrap();
+      if ("invalidTesters" in response) {
         add({
           type: "warning",
-          message: `${response.data.invalidTesters?.length} tryber non sono stati aggiunti per un errore`,
+          message: `${response.invalidTesters?.length} tryber non sono stati aggiunti per un errore`,
         });
-        console.warn(response.data.invalidTesters);
+        console.warn(response.invalidTesters);
       }
       add({
         type: "success",
-        message: `${response.data.results.length} tryber selezionati con successo`,
+        message: `${response.results.length} tryber selezionati con successo`,
       });
       dispatch(clearSelectedDevice());
+    } catch (e) {
+      const error = e as any;
+      let message = "La richiesta non è andata a buon fine";
+      if ("data" in error) {
+        // @ts-ignore
+        message += `: ${error.data?.message}`;
+      }
+      add({ type: "danger", message });
+    } finally {
+      close();
     }
-    refetch();
-    close();
   };
   const Footer = () => {
     return (

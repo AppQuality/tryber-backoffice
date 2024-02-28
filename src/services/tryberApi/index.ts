@@ -150,6 +150,7 @@ const injectedRtkApi = api.injectEndpoints({
           fields: queryArg.fields,
           filterByInclude: queryArg.filterByInclude,
           filterByExclude: queryArg.filterByExclude,
+          filterByAge: queryArg.filterByAge,
         },
       }),
     }),
@@ -477,6 +478,15 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/users`,
         method: "POST",
         body: queryArg.body,
+      }),
+    }),
+    headUsersByEmailByEmail: build.mutation<
+      HeadUsersByEmailByEmailApiResponse,
+      HeadUsersByEmailByEmailApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/by-email/${queryArg.email}`,
+        method: "HEAD",
       }),
     }),
     getUsersMe: build.query<GetUsersMeApiResponse, GetUsersMeApiArg>({
@@ -875,7 +885,7 @@ export type PutAgreementsByAgreementIdApiArg = {
     customerId: number;
   };
 };
-export type DeleteAgreementsByAgreementIdApiResponse = unknown;
+export type DeleteAgreementsByAgreementIdApiResponse = /** status 200 OK */ {};
 export type DeleteAgreementsByAgreementIdApiArg = {
   agreementId: string;
 };
@@ -897,6 +907,8 @@ export type PostAuthenticateApiResponse =
     lastName?: string;
     token?: string;
     username?: string;
+    iat?: number;
+    exp?: number;
   };
 export type PostAuthenticateApiArg = {
   /** A JSON containing username and password */
@@ -1080,8 +1092,11 @@ export type GetCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */ {
     id: number;
     name: string;
     surname: string;
-    experience: number;
-    level: string;
+    gender: Gender;
+    age: number;
+    levels: {
+      bugHunting: string;
+    };
     devices: {
       manufacturer?: string;
       model?: string;
@@ -1109,6 +1124,8 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   filterByInclude?: any;
   /** Key-value Array for item filtering */
   filterByExclude?: any;
+  /** Array with min and max */
+  filterByAge?: any;
 };
 export type GetCampaignsByCampaignPayoutsApiResponse = /** status 200 OK */ {
   maxBonusBug: number;
@@ -1173,11 +1190,11 @@ export type GetCampaignsByCampaignUxApiResponse =
     insights?: {
       id: number;
       title: string;
-      description: string;
       severity: {
         id: number;
         name: string;
       };
+      description: string;
       clusters:
         | "all"
         | {
@@ -1192,6 +1209,7 @@ export type GetCampaignsByCampaignUxApiResponse =
         url: string;
         streamUrl: string;
         description: string;
+        poster?: string;
       }[];
     }[];
     sentiments: {
@@ -1675,7 +1693,9 @@ export type PatchPopupsByPopupApiArg = {
 };
 export type GetUsersApiResponse = /** status 200 OK */ User[];
 export type GetUsersApiArg = void;
-export type PostUsersApiResponse = /** status 200 OK */ User;
+export type PostUsersApiResponse = /** status 201 Created */ {
+  id: number;
+};
 export type PostUsersApiArg = {
   body: {
     name: string;
@@ -1686,6 +1706,10 @@ export type PostUsersApiArg = {
     birthDate: string;
     referral?: string;
   };
+};
+export type HeadUsersByEmailByEmailApiResponse = unknown;
+export type HeadUsersByEmailByEmailApiArg = {
+  email: string;
 };
 export type GetUsersMeApiResponse = /** status 200 OK */ {
   username?: string;
@@ -1699,8 +1723,14 @@ export type GetUsersMeApiResponse = /** status 200 OK */ {
   is_verified?: boolean;
   rank?: string;
   total_exp_pts?: number;
-  booty?: number;
-  pending_booty?: number;
+  booty?: {
+    net?: Currency;
+    gross: Currency;
+  };
+  pending_booty?: {
+    net?: Currency;
+    gross: Currency;
+  };
   languages?: {
     id?: number;
     name?: string;
@@ -1754,8 +1784,14 @@ export type PatchUsersMeApiResponse = /** status 200 OK */ {
   is_verified?: boolean;
   rank?: string;
   total_exp_pts?: number;
-  booty?: number;
-  pending_booty?: number;
+  booty?: {
+    gross: Currency;
+    net?: Currency;
+  };
+  pending_booty?: {
+    gross: Currency;
+    net?: Currency;
+  };
   languages?: {
     id?: number;
     name?: string;
@@ -2090,7 +2126,7 @@ export type GetUsersMeFiscalApiResponse = /** status 200 OK */ {
     streetNumber?: string;
     cityCode: string;
   };
-  type: FiscalType;
+  type: FiscalType | "internal";
   birthPlace: {
     city?: string;
     province?: string;
@@ -2198,8 +2234,8 @@ export type GetUsersMePaymentsApiResponse = /** status 200 OK */ {
   } & {
     status: "paid" | "processing";
     amount: {
-      value?: number;
-      currency?: string;
+      net: Currency;
+      gross: Currency;
     };
     paidDate: any | "-";
     method: {
@@ -2247,8 +2283,8 @@ export type GetUsersMePaymentsByPaymentApiResponse = /** status 200 OK */ {
   } & {
     type: string;
     amount: {
-      value: number;
-      currency: string;
+      net?: Currency;
+      gross: Currency;
     };
     date: string;
     activity: string;
@@ -2267,7 +2303,7 @@ export type GetUsersMePaymentsByPaymentApiArg = {
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
   /** The value to order by */
-  orderBy?: "amount" | "type" | "date" | "activity";
+  orderBy?: "type" | "date" | "activity" | "net" | "gross";
 };
 export type GetUsersMePendingBootyApiResponse = /** status 200 OK */ {
   results?: ({
@@ -2275,10 +2311,11 @@ export type GetUsersMePendingBootyApiResponse = /** status 200 OK */ {
   } & {
     name: string;
     amount: {
-      value?: number;
-      currency?: string;
+      net?: Currency;
+      gross: Currency;
     };
     attributionDate: string;
+    activity: string;
   })[];
   limit?: number;
   size: number;
@@ -2291,7 +2328,13 @@ export type GetUsersMePendingBootyApiArg = {
   /** Max items to retrieve */
   limit?: number;
   /** The field for item order */
-  orderBy?: "id" | "attributionDate" | "amount" | "activityName";
+  orderBy?:
+    | "id"
+    | "attributionDate"
+    | "activityName"
+    | "net"
+    | "gross"
+    | "activity";
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
 };
@@ -2477,6 +2520,7 @@ export type BugTag = {
   id: number;
   name: string;
 };
+export type Gender = "male" | "female" | "not-specified" | "other";
 export type TaskOptional = {
   name?: string;
   content?: string;
@@ -2544,6 +2588,10 @@ export type Popup = {
   content?: string;
   title?: string;
 };
+export type Currency = {
+  value: number;
+  currency: string;
+};
 export type AdditionalField = {
   field_id: number;
   name: string;
@@ -2551,7 +2599,6 @@ export type AdditionalField = {
   text?: string;
   is_candidate?: boolean;
 };
-export type Gender = "male" | "female" | "not-specified" | "other";
 export type Certification = {
   id?: number;
   name: string;
@@ -2689,6 +2736,7 @@ export const {
   usePatchPopupsByPopupMutation,
   useGetUsersQuery,
   usePostUsersMutation,
+  useHeadUsersByEmailByEmailMutation,
   useGetUsersMeQuery,
   usePutUsersMeMutation,
   usePatchUsersMeMutation,

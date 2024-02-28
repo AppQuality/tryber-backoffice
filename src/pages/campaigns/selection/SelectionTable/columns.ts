@@ -7,16 +7,6 @@ export const columns: TableType.Column[] = [
     title: "Name ID",
   },
   {
-    dataIndex: "level",
-    key: "level",
-    title: "Level",
-  },
-  {
-    dataIndex: "exp",
-    key: "exp",
-    title: "Tot EXP",
-  },
-  {
     dataIndex: "devices",
     key: "devices",
     title: "Devices",

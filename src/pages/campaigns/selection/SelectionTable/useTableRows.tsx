@@ -1,10 +1,10 @@
-import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
 import { TableType } from "@appquality/appquality-design-system";
+import { useEffect, useState } from "react";
 import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
+import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { setTableColumns } from "../selectionSlice";
 import { columns } from "./columns";
-import { useEffect, useState } from "react";
 
 interface RowType extends TableType.Row {
   key: string;
@@ -24,7 +24,7 @@ const useTableRows = (id: string) => {
   );
   const [rows, setRows] = useState<RowType[]>([]);
   const { filterByInclude, filterByExclude } = filters;
-  const { data, isFetching, isLoading, error, refetch } =
+  const { data, isFetching, isLoading, error } =
     useGetCampaignsByCampaignCandidatesQuery({
       campaign: id,
       start: devicesPerPage * (currentPage - 1),
@@ -82,8 +82,6 @@ const useTableRows = (id: string) => {
             row = {
               ...row,
               nameId: `T${user.id} ${user.name} ${user.surname}`,
-              exp: user.experience.toString(),
-              level: user.level,
               ...fields,
             };
           }
@@ -98,7 +96,6 @@ const useTableRows = (id: string) => {
     rows,
     totalRows: data?.total || 0,
     isFetching,
-    refetch,
     isLoading,
     error,
   };
