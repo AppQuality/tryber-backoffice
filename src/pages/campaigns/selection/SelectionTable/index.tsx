@@ -14,9 +14,6 @@ const SelectionTable: FC<{ id: string }> = ({ id }) => {
   );
   return (
     <StyledSelectionTable columns={tableColumns.length}>
-      <div className="selection-title aq-text-primary">
-        <b>Tester Selection</b>
-      </div>
       <Table
         data-testid="selection-table"
         dataSource={rows}
