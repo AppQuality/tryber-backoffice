@@ -1,22 +1,28 @@
 import { test, expect } from "@playwright/test";
 import { SelectionPage } from "../../fixtures/SelectionPage";
 
+test("If user hasn't enough permissions (appq_tester_selection) sees an error message", async ({
+  page,
+}) => {
+  let selectionPage = new SelectionPage(page);
+  await selectionPage.loggedInWithoutPermissions();
+  await selectionPage.visit();
+  await expect(
+    page.getByText(
+      "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
+    )
+  ).toBeVisible();
+});
+
 test.describe("Modale di importazione Jotform: ", () => {
   let selectionPage: SelectionPage;
-  test("i permessi richiesti sono appq_tester_selection", async ({ page }) => {
+  test.beforeAll(async ({ page }) => {
     selectionPage = new SelectionPage(page);
-    await selectionPage.loggedInWithoutPermissions();
+    await selectionPage.loggedInWithEnoughPermissions();
     await selectionPage.visit();
-    await expect(
-      page.getByText(
-        "Sembrerebbe che tu non abbia i permessi per accedere a questa pagina"
-      )
-    ).toBeVisible();
   });
 
   test("there is a import jotform button alwais enabled", async ({ page }) => {
-    selectionPage = new SelectionPage(page);
-    await selectionPage.visit();
     await expect(selectionPage.elements().importJotformCta()).toBeVisible();
     await expect(selectionPage.elements().importJotformCta()).toBeEnabled();
   });
