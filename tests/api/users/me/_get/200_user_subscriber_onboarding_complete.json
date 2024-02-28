@@ -1,0 +1,10 @@
+{
+  "id": 11110,
+  "name": "Name",
+  "surname": "Surname",
+  "email": "name.surname@mail.com",
+  "wp_user_id": 11111,
+  "onboarding_completed": true,
+  "image": "https://secure.gravatar.com/avatar/087ada6e86cf8ec31a49217dd05b7151?s=132&d=https%3A%2F%2Feu.ui-avatars.com%2Fapi%2Fi%2Bl%2F132&r=x",
+  "role": "subscriber"
+}

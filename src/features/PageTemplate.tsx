@@ -28,7 +28,11 @@ export const PageTemplate = ({ children }: { children: React.ReactNode }) => {
   });
   if (error) {
     if ("status" in error && error.status === 403) {
-      return <div>You are not logged in. Please log in to continue.</div>;
+      return (
+        <div data-qa="error-not-authorized">
+          You are not logged in. Please log in to continue.
+        </div>
+      );
     } else {
       if ("message" in error) alert(error.message);
     }

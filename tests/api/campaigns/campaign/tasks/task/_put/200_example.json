@@ -1,0 +1,7 @@
+{
+  "name": "Ask news to Model-3",
+  "content": "<b>During</b> the trip ask the car for the weather",
+  "campaign_id": 42,
+  "group": 4,
+  "allow_media": true
+}

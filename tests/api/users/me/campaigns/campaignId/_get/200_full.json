@@ -1,0 +1,80 @@
+{
+  "id": 123,
+  "title": "My campaign",
+  "language": {
+    "code": "IT",
+    "message": "In questa campagna vanno caricati i bug in italiano"
+  },
+  "titleRule": true,
+  "minimumMedia": 3,
+  "useCases": [
+    {
+      "id": 0,
+      "name": "Not a specific Use Case"
+    },
+    {
+      "id": 4123,
+      "name": "Use case 1 - Signup"
+    }
+  ],
+  "additionalFields": [
+    {
+      "name": "Browser Used",
+      "slug": "browser-used",
+      "type": "select",
+      "options": ["Chrome", "Safari"],
+      "error": "You have to select a browser"
+    },
+    {
+      "name": "Codice Cliente",
+      "slug": "codice-cliente",
+      "type": "text",
+      "regex": "[A-Z]{3}[0-9]{4}",
+      "error": "Il codice cliente è obbligatorio nel formato AAA1234"
+    }
+  ],
+  "bugTypes": {
+    "valid": ["CRASH", "TYPO"],
+    "invalid": ["PERFORMANCE"]
+  },
+  "bugSeverity": {
+    "valid": ["LOW", "MEDIUM"],
+    "invalid": ["HIGH", "CRITICAL"]
+  },
+  "bugReplicability": {
+    "valid": ["ALWAYS", "SOMETIMES"],
+    "invalid": ["ONCE"]
+  },
+  "hasBugForm": true,
+  "devices": [
+    {
+      "id": 1,
+      "type": "Smartphone",
+      "device": {
+        "manufacturer": "Apple",
+        "model": "iPhone X",
+        "id": 123
+      },
+      "operating_system": {
+        "id": 234,
+        "platform": "Apple",
+        "version": "iOs 12"
+      }
+    },
+    {
+      "id": 2,
+      "type": "Smartphone",
+      "device": {
+        "manufacturer": "Apple",
+        "model": "iPhone 6",
+        "id": 123
+      },
+      "operating_system": {
+        "id": 234,
+        "platform": "Apple",
+        "version": "iOs 10"
+      }
+    }
+  ],
+  "validFileExtensions": ["jpg", "png", "mov", "mp4"]
+}

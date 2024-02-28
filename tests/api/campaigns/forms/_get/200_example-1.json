@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "name": "Form Name",
+      "campaign": 1
+    },
+    {
+      "id": 2,
+      "name": "Form without Campaign"
+    }
+  ],
+  "limit": 10,
+  "start": 0,
+  "size": 2,
+  "total": 2
+}

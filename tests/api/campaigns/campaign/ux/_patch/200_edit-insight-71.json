@@ -1,0 +1,94 @@
+{
+  "value": {
+    "goal": "this is goal",
+    "questions": [
+      {
+        "id": 1,
+        "name": "question 1"
+      },
+      {
+        "id": 2,
+        "name": "question 2"
+      }
+    ],
+    "methodology": {
+      "name": "UX Challenge",
+      "description": "UX Challenge",
+      "type": "qualitative"
+    },
+    "usersNumber": 10,
+    "insights": [
+      {
+        "id": 70,
+        "title": "Malfunzionamento form",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus lorem, maximus sit amet fermentum ac, venenatis eu sapien. In hac habitasse platea dictumst.",
+        "order": 0,
+        "severityId": 1,
+        "clusterIds": [1],
+        "videoParts": [
+          {
+            "id": 250,
+            "order": 0,
+            "start": 0,
+            "end": 97,
+            "mediaId": 73579,
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus lorem, maximus sit amet fermentum ac, venenatis eu sapien"
+          },
+          {
+            "id": 251,
+            "order": 1,
+            "start": 22,
+            "end": 101,
+            "mediaId": 73577,
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+          },
+          {
+            "id": 252,
+            "order": 2,
+            "start": 0,
+            "end": 152,
+            "mediaId": 73578,
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+          }
+        ]
+      },
+      {
+        "id": 71,
+        "title": "Difficoltà di navigazione edited",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. edited",
+        "order": 1,
+        "severityId": 1,
+        "clusterIds": [2],
+        "videoParts": [
+          {
+            "id": 253,
+            "order": 0,
+            "start": 0,
+            "end": 60,
+            "mediaId": 73580,
+            "description": "Lorem ipsum dolor sit amet"
+          }
+        ]
+      },
+      {
+        "id": 72,
+        "title": "Criticità Pagina Prodotto",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus lorem, maximus sit amet fermentum ac, venenatis eu sapien. In hac habitasse platea dictumst. Etiam sodales nibh turpis, at condimentum arcu vehicula eget. Donec sollicitudin dapibus ",
+        "order": 2,
+        "severityId": 2,
+        "clusterIds": [1],
+        "videoParts": [
+          {
+            "id": 254,
+            "order": 0,
+            "start": 0,
+            "end": 106,
+            "mediaId": 73589,
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus lorem, maximus sit amet fermentum ac, venenatis eu sapien. In hac habitasse platea dictumst. Etiam sodales nibh turpis,"
+          }
+        ]
+      }
+    ],
+    "sentiments": []
+  }
+}

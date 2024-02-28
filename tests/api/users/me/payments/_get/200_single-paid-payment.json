@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "paypal",
+        "note": "me@example.com"
+      },
+      "receipt": "http://example.com"
+    }
+  ],
+  "limit": 10,
+  "size": 1,
+  "start": 0,
+  "total": 1
+}

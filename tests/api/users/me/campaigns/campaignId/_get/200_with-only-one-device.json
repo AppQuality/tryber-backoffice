@@ -1,0 +1,46 @@
+{
+  "id": 123,
+  "title": "My campaign",
+  "titleRule": true,
+  "minimumMedia": 3,
+  "useCases": [
+    {
+      "id": 0,
+      "name": "Not a specific Use Case"
+    },
+    {
+      "id": 4123,
+      "name": "Use case 1 - Signup"
+    }
+  ],
+  "bugTypes": {
+    "valid": ["CRASH", "TYPO", "PERFORMANCE"],
+    "invalid": []
+  },
+  "bugSeverity": {
+    "valid": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+    "invalid": []
+  },
+  "bugReplicability": {
+    "valid": ["ALWAYS", "SOMETIMES", "ONCE"],
+    "invalid": []
+  },
+  "hasBugForm": true,
+  "devices": [
+    {
+      "id": 1,
+      "type": "Smartphone",
+      "device": {
+        "manufacturer": "Apple",
+        "model": "iPhone X",
+        "id": 123
+      },
+      "operating_system": {
+        "id": 234,
+        "platform": "Apple",
+        "version": "iOs 12"
+      }
+    }
+  ],
+  "validFileExtensions": ["jpg", "png", "mov", "mp4"]
+}

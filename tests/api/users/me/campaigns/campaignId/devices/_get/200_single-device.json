@@ -1,0 +1,14 @@
+[
+  {
+    "type": "PC",
+    "id": 1,
+    "device": {
+      "pc_type": "Desktop"
+    },
+    "operating_system": {
+      "id": 781,
+      "platform": "MacOS",
+      "version": "Mac OS X 10.15 (Catalina) (10.15.5)"
+    }
+  }
+]

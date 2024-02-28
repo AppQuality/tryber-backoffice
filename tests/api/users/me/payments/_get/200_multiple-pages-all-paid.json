@@ -1,0 +1,188 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "iban",
+        "note": "Iban ********************8020"
+      },
+      "receipt": "http://example.com"
+    },
+    {
+      "id": 3,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "iban",
+        "note": "Iban ********************8020"
+      },
+      "receipt": "http://example.com"
+    },
+    {
+      "id": 4,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "paypal",
+        "note": "me@example.com"
+      },
+      "receipt": "http://example.com"
+    },
+    {
+      "id": 5,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "paypal",
+        "note": "me@example.com"
+      },
+      "receipt": "http://example.com"
+    },
+    {
+      "id": 6,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "paypal",
+        "note": "me@example.com"
+      },
+      "receipt": "http://example.com"
+    },
+    {
+      "id": 7,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "paypal",
+        "note": "me@example.com"
+      },
+      "receipt": "http://example.com"
+    },
+    {
+      "id": 8,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "paypal",
+        "note": "me@example.com"
+      },
+      "receipt": "http://example.com"
+    },
+    {
+      "id": 9,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "paypal",
+        "note": "me@example.com"
+      },
+      "receipt": "http://example.com"
+    },
+    {
+      "id": 10,
+      "status": "paid",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "paidDate": "2019-08-24",
+      "method": {
+        "type": "iban",
+        "note": "Iban ********************8020"
+      },
+      "receipt": "http://example.com"
+    }
+  ],
+  "limit": 10,
+  "size": 10,
+  "start": 0,
+  "total": 20
+}

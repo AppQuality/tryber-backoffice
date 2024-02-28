@@ -1,0 +1,19 @@
+{
+  "level": {
+    "id": 40,
+    "name": "Gold"
+  },
+  "previousLevel": {
+    "id": 10,
+    "name": "Basic"
+  },
+  "rank": 50,
+  "points": 100,
+  "prospect": {
+    "level": {
+      "id": 30,
+      "name": "Silver"
+    },
+    "manteinance": 10
+  }
+}

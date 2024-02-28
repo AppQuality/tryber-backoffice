@@ -1,0 +1,65 @@
+{
+  "results": [
+    {
+      "id": 1344163,
+      "name": "Sandro",
+      "surname": "Gentilini",
+      "experience": 21541,
+      "level": "Diamond",
+      "devices": [
+        {
+          "id": 0,
+          "os": "Windows",
+          "osVersion": "Windows 10 May 2021 Update (19043)"
+        },
+        {
+          "manufacturer": "Samsung",
+          "model": "Galaxy M31",
+          "id": 1,
+          "os": "Android",
+          "osVersion": "12 (12)"
+        },
+        {
+          "manufacturer": "Apple",
+          "model": "iPad",
+          "id": 2,
+          "os": "iOS",
+          "osVersion": "iOS 15.6 (15.6)"
+        },
+        {
+          "manufacturer": "Apple",
+          "model": "iPhone SE (2020)",
+          "id": 3,
+          "os": "iOS",
+          "osVersion": "iOS 15.6 (15.6)"
+        },
+        {
+          "id": 4,
+          "os": "Windows",
+          "osVersion": "Windows 11"
+        },
+        {
+          "manufacturer": "Google",
+          "model": "Pixel 6",
+          "id": 5,
+          "os": "Android",
+          "osVersion": "13(beta) (13(beta))"
+        }
+      ],
+      "questions": [
+        {
+          "id": 1,
+          "title": "Cane",
+          "value": "Sì"
+        },
+        {
+          "id": 2,
+          "title": "Pagamento",
+          "value": "No"
+        }
+      ]
+    }
+  ],
+  "start": 0,
+  "size": 1
+}
