@@ -2,6 +2,10 @@ import { TableType } from "@appquality/appquality-design-system";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { columns } from "./SelectionTable/columns";
 
+type Filter =
+  | Record<"testerIds", string>
+  | Record<"os" | "gender" | "bughunting", string[]>;
+
 interface SelectionState {
   selectedDevices: {
     [userId: string]: string;
@@ -13,8 +17,8 @@ interface SelectionState {
   tableColumns: TableType.Column[];
   disableApplyFilters: boolean;
   filters: {
-    filterByInclude?: { [key: string]: string[] };
-    filterByExclude?: { [key: string]: string[] };
+    filterByInclude?: Filter;
+    filterByExclude?: Record<"testerIds", string>;
   };
 }
 
@@ -45,8 +49,8 @@ const selectionSlice = createSlice({
     setFilters(
       state,
       action: PayloadAction<{
-        filterByInclude?: { [key: string]: string[] };
-        filterByExclude?: { [key: string]: string[] };
+        filterByInclude?: Filter;
+        filterByExclude?: Record<"testerIds", string>;
       }>
     ) {
       state.filters = action.payload;

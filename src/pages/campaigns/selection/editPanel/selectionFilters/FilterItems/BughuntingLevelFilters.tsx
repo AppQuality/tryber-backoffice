@@ -20,6 +20,11 @@ const BughuntingLevelFilters = ({ id }: { id: string }) => {
     new Set(data.results?.map((r) => r?.levels?.bugHunting) || [])
   );
 
+  const bhData =
+    filterByInclude && "bughunting" in filterByInclude
+      ? filterByInclude.bughunting
+      : [];
+
   return (
     <CheckboxFilter
       title="BH Level"
@@ -30,8 +35,8 @@ const BughuntingLevelFilters = ({ id }: { id: string }) => {
           filterByInclude: {
             ...filterByInclude,
             bughunting: checked
-              ? [...(filterByInclude?.bughunting || []), option]
-              : filterByInclude?.bughunting?.filter((o) => o !== option) || [],
+              ? [...bhData, option]
+              : bhData.filter((o) => o !== option) || [],
           },
         })
       }

@@ -20,6 +20,11 @@ const GenderFilters = ({ id }: { id: string }) => {
     new Set(data.results?.map((r) => r?.gender) || [])
   );
 
+  const genderData =
+    filterByInclude && "gender" in filterByInclude
+      ? filterByInclude.gender
+      : [];
+
   return (
     <CheckboxFilter
       title="Genders"
@@ -28,10 +33,10 @@ const GenderFilters = ({ id }: { id: string }) => {
       onSelect={(checked, option) =>
         setFilters({
           filterByInclude: {
-            ...filterByInclude,
+            ...(filterByInclude || {}), // Add an empty object as fallback
             gender: checked
-              ? [...(filterByInclude?.gender || []), option]
-              : filterByInclude?.gender?.filter((o) => o !== option) || [],
+              ? [...genderData, option]
+              : genderData.filter((o) => o !== option),
           },
         })
       }

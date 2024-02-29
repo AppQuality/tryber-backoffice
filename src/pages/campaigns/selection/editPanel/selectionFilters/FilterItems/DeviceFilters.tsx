@@ -20,6 +20,9 @@ const DeviceFilters = ({ id }: { id: string }) => {
     new Set(data.results?.flatMap((r) => r?.devices).map((d) => d.os) || [])
   );
 
+  const deviceData =
+    filterByInclude && "os" in filterByInclude ? filterByInclude.os : [];
+
   return (
     <CheckboxFilter
       title="Devices"
@@ -30,8 +33,8 @@ const DeviceFilters = ({ id }: { id: string }) => {
           filterByInclude: {
             ...filterByInclude,
             os: checked
-              ? [...(filterByInclude?.os || []), option]
-              : filterByInclude?.os?.filter((o) => o !== option) || [],
+              ? [...deviceData, option]
+              : deviceData.filter((o) => o !== option) || [],
           },
         })
       }
