@@ -14,28 +14,48 @@ test("If user hasn't enough permissions (appq_tester_selection) sees an error me
   ).toBeVisible();
 });
 
-test.describe("Modale di importazione Jotform: ", () => {
+test.describe("if there is a form already connected", () => {
   let selectionPage: SelectionPage;
-  test.beforeEach(async ({ page }) => {
+  test("clicking on the import button opens a message that warns that there is already a form connected and asks for confirmation of overwriting", async ({
+    page,
+  }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
     await selectionPage.formAlreadyPresent();
     await selectionPage.visit();
-  });
-
-  test("there is a import jotform button alwais enabled", async () => {
-    await expect(selectionPage.elements().importJotformCta()).toBeVisible();
-    await expect(selectionPage.elements().importJotformCta()).toBeEnabled();
-  });
-  test("if there is a form already connected clicking on the import button opens a message that warns that there is already a form connected and asks for confirmation of overwriting", async ({}) => {
     await selectionPage.elements().importJotformCta().click();
     await expect(
       selectionPage.elements().messageFormAlreadyPresent()
     ).toBeVisible();
   });
+});
+
+test.describe("Se non è gia presente un form collegato", () => {
+  let selectionPage: SelectionPage;
   test("se l'utente clicca su conferma si apre la modale di import", async ({
     page,
-  }) => {});
+  }) => {
+    selectionPage = new SelectionPage(page);
+    await selectionPage.loggedInWithEnoughPermissions();
+    await selectionPage.visit();
+    await selectionPage.elements().importJotformCta().click();
+    await expect(selectionPage.elements().importSurveyModal()).toBeVisible();
+  });
+});
+
+test.describe("Import jotform Modal: ", () => {
+  let selectionPage: SelectionPage;
+  test.beforeEach(async ({ page }) => {
+    selectionPage = new SelectionPage(page);
+    await selectionPage.loggedInWithEnoughPermissions();
+    await selectionPage.visit();
+    await selectionPage.elements().importJotformCta().click();
+  });
+  test("there is a import jotform button alwais enabled", async () => {
+    await expect(selectionPage.elements().importJotformCta()).toBeVisible();
+    await expect(selectionPage.elements().importJotformCta()).toBeEnabled();
+  });
+
   test("se non è presente già un form collegato cliccando sul bottone di import si apre la modale di import", async ({
     page,
   }) => {});

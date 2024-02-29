@@ -61,6 +61,7 @@ export class SelectionPage extends BackofficePage {
         this.page.getByRole("button", { name: "Import Jotform" }),
       messageFormAlreadyPresent: () =>
         this.page.getByText("A questa Selection è già collegato il form"),
+      importSurveyModal: () => this.page.locator("#import-survey-modal"),
       //customerSelect: () => this.page.locator("#customers-select"),
       //newAgreementAction: () => this.page.locator("#add-new-agreement-btn"),
     };

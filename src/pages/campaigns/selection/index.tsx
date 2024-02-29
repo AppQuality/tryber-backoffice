@@ -19,8 +19,9 @@ import {
   useGetCampaignsByCampaignQuery,
   useGetUsersMePermissionsQuery,
 } from "src/services/tryberApi";
-import { openFormModal } from "./selectionSlice";
+import { openFormModal, openSurveyModal } from "./selectionSlice";
 import { useAppDispatch } from "src/store";
+import ImportSurveyModal from "./ImportSurveyModal";
 
 const BottomCard = styled(Card)`
   .aq-card-body {
@@ -42,11 +43,10 @@ const SelectionPage = () => {
   const formAlreadyPresent = () => {
     return !!campaignData?.preselectionFormId;
   };
-  const openImportModal = () => {
-    // open modal
-  };
   const handleImportSurvey = () =>
-    formAlreadyPresent() ? dispatch(openFormModal()) : openImportModal();
+    formAlreadyPresent()
+      ? dispatch(openFormModal())
+      : dispatch(openSurveyModal());
   return (
     <PageTemplate>
       <div className="selection-page">
@@ -55,6 +55,7 @@ const SelectionPage = () => {
           <ConfirmFormModal
             preselectionFormId={campaignData?.preselectionFormId}
           />
+          <ImportSurveyModal />
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid>
             <BSCol size="col-lg-3">
