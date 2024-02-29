@@ -23,6 +23,10 @@ interface SelectionState {
   filters: {
     filterByInclude?: Filter;
     filterByExclude?: Record<"testerIds", string>;
+    filterByAge?: {
+      min?: number;
+      max?: number;
+    };
   };
 }
 
@@ -55,6 +59,10 @@ const selectionSlice = createSlice({
       action: PayloadAction<{
         filterByInclude?: Filter;
         filterByExclude?: Record<"testerIds", string>;
+        filterByAge?: {
+          min?: number;
+          max?: number;
+        };
       }>
     ) {
       state.filters = action.payload;

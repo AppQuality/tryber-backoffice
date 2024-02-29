@@ -23,7 +23,7 @@ const useTableRows = (id: string) => {
     (state) => state.selection
   );
   const [rows, setRows] = useState<RowType[]>([]);
-  const { filterByInclude, filterByExclude } = filters;
+  const { filterByInclude, filterByExclude, filterByAge } = filters;
   const { data, isFetching, isLoading, error } =
     useGetCampaignsByCampaignCandidatesQuery({
       campaign: id,
@@ -32,6 +32,7 @@ const useTableRows = (id: string) => {
       ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
       filterByInclude,
       filterByExclude,
+      filterByAge,
     });
 
   useEffect(() => {
