@@ -8,7 +8,10 @@ type PartialRecord<K extends keyof any, T> = {
 
 type Filter =
   | PartialRecord<"testerIds", string>
-  | PartialRecord<"os" | "gender" | "bughunting", string[]>;
+  | PartialRecord<
+      "os" | "gender" | "bughunting" | `question_${number}`,
+      string[]
+    >;
 
 interface SelectionState {
   selectedDevices: {
