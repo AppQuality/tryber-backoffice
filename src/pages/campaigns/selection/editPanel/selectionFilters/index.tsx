@@ -1,6 +1,7 @@
 import { Card } from "@appquality/appquality-design-system";
 import styled from "styled-components";
 import FilterCardHeader from "./FilterCardHeader";
+import { BughuntingLevelFilters } from "./FilterItems/BughuntingLevelFilters";
 import { DeviceFilters } from "./FilterItems/DeviceFilters";
 import { GenderFilters } from "./FilterItems/GenderFilters";
 
@@ -17,6 +18,7 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
       <StyledSelectionFilters>
         <DeviceFilters id={id} />
         <GenderFilters id={id} />
+        <BughuntingLevelFilters id={id} />
       </StyledSelectionFilters>
     </Card>
   );
