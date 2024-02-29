@@ -16,20 +16,23 @@ test("If user hasn't enough permissions (appq_tester_selection) sees an error me
 
 test.describe("Modale di importazione Jotform: ", () => {
   let selectionPage: SelectionPage;
-  test.beforeAll(async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
     await selectionPage.visit();
   });
 
-  test("there is a import jotform button alwais enabled", async ({ page }) => {
+  test("there is a import jotform button alwais enabled", async () => {
     await expect(selectionPage.elements().importJotformCta()).toBeVisible();
     await expect(selectionPage.elements().importJotformCta()).toBeEnabled();
   });
-
-  test("se è presente già un form collegato cliccando sul bottone di import si apre un messaggio che avvisa che c'è già un form collegato e chiede conferma della sovrascrittura", async ({
-    page,
-  }) => {});
+  test("if there is a form already connected clicking on the import button opens a message that warns that there is already a form connected and asks for confirmation of overwriting", async ({}) => {
+    await selectionPage.formAlreadyPresent();
+    await selectionPage.elements().importJotformCta().click();
+    await expect(
+      selectionPage.elements().messageFormAlreadyPresent()
+    ).toBeVisible();
+  });
   test("se l'utente clicca su conferma si apre la modale di import", async ({
     page,
   }) => {});

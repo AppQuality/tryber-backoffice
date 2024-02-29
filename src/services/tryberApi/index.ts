@@ -839,6 +839,30 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    postJotformsByCampaign: build.mutation<
+      PostJotformsByCampaignApiResponse,
+      PostJotformsByCampaignApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/jotforms/${queryArg.campaign}`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    getJotformsForms: build.query<
+      GetJotformsFormsApiResponse,
+      GetJotformsFormsApiArg
+    >({
+      query: () => ({ url: `/jotforms/forms` }),
+    }),
+    getJotformsFormsByFormIdQuestions: build.query<
+      GetJotformsFormsByFormIdQuestionsApiResponse,
+      GetJotformsFormsByFormIdQuestionsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/jotforms/forms/${queryArg.formId}/questions`,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -987,6 +1011,7 @@ export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   title: string;
   type: string;
   typeDescription: string;
+  preselectionFormId?: number;
 };
 export type GetCampaignsByCampaignApiArg = {
   /** A campaign id */
@@ -1331,6 +1356,7 @@ export type PostCampaignsFormsApiArg = {
     name: string;
     fields: PreselectionFormQuestion[];
     campaign?: number;
+    creationDate: string;
   };
 };
 export type GetCampaignsFormsApiResponse = /** status 200 OK */ {
@@ -2424,6 +2450,29 @@ export type PostUsersMeCampaignsByCampaignIdFormsApiArg = {
     device?: number[];
   };
 };
+export type PostJotformsByCampaignApiResponse = /** status 200 OK */ {};
+export type PostJotformsByCampaignApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    formId: string;
+    testerIdColumn: string;
+  };
+};
+export type GetJotformsFormsApiResponse = /** status 200 OK */ {
+  id: string;
+  name: string;
+  createdAt: string;
+}[];
+export type GetJotformsFormsApiArg = void;
+export type GetJotformsFormsByFormIdQuestionsApiResponse =
+  /** status 200 OK */ {
+    id: string;
+    name: string;
+  }[];
+export type GetJotformsFormsByFormIdQuestionsApiArg = {
+  formId: string;
+};
 export type Agreement = {
   title: string;
   tokens: number;
@@ -2774,4 +2823,7 @@ export const {
   useGetUsersMeRankListQuery,
   useGetUsersMeCampaignsByCampaignIdFormsQuery,
   usePostUsersMeCampaignsByCampaignIdFormsMutation,
+  usePostJotformsByCampaignMutation,
+  useGetJotformsFormsQuery,
+  useGetJotformsFormsByFormIdQuestionsQuery,
 } = injectedRtkApi;

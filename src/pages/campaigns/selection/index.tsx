@@ -14,7 +14,10 @@ import ConfirmButton from "src/pages/campaigns/selection/confirmButton/ConfirmBu
 import ConfirmModal from "src/pages/campaigns/selection/confirmModal/ConfirmModal";
 import styled from "styled-components";
 import { PageTemplate } from "src/features/PageTemplate";
-import { useGetUsersMePermissionsQuery } from "src/services/tryberApi";
+import {
+  useGetCampaignsByCampaignQuery,
+  useGetUsersMePermissionsQuery,
+} from "src/services/tryberApi";
 
 const BottomCard = styled(Card)`
   .aq-card-body {
@@ -28,6 +31,26 @@ const BottomCard = styled(Card)`
 const SelectionPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetUsersMePermissionsQuery();
+  const { data: campaignData } = useGetCampaignsByCampaignQuery({
+    campaign: "id",
+  });
+  const formAlreadyPresent = () => {
+    return !!campaignData?.preselectionFormId;
+  };
+  const openFormExistModal = () => {
+    if (
+      window.confirm(
+        `A questa Selection è già collegato il form con id: ${campaignData?.preselectionFormId}. Vuoi sovrascriverlo e collegare un nuovo form?`
+      )
+    ) {
+      openImportModal();
+    }
+  };
+  const openImportModal = () => {
+    // open modal
+  };
+  const handleImportSurvey = () =>
+    formAlreadyPresent() ? openFormExistModal() : openImportModal();
   return (
     <PageTemplate>
       <div className="selection-page">
@@ -37,7 +60,7 @@ const SelectionPage = () => {
           <BSGrid>
             <BSCol size="col-lg-3">
               <Card title="Add columns" className="aq-mb-3">
-                <button>import jotform</button>
+                <button onClick={handleImportSurvey}>import jotform</button>
                 <ColumnsConfigurator id={id} />
               </Card>
               <SelectionFilters id={id} />

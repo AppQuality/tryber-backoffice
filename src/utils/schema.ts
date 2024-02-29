@@ -318,6 +318,14 @@ export interface paths {
     /** Create a new user */
     post: operations["post-users"];
   };
+  "/users/by-email/{email}": {
+    head: operations["head-users-by-email-email"];
+    parameters: {
+      path: {
+        email: string;
+      };
+    };
+  };
   "/users/me": {
     /** Get your user data */
     get: operations["get-users-me"];
@@ -458,11 +466,13 @@ export interface paths {
     };
   };
   "/users/me/payments": {
+    /** Return all payment requests */
     get: operations["get-users-me-payments"];
     post: operations["post-users-me-payments"];
     parameters: {};
   };
   "/users/me/payments/{payment}": {
+    /** Return all attributions of a specific request */
     get: operations["get-users-me-payments-payment"];
     parameters: {
       path: {
@@ -506,6 +516,27 @@ export interface paths {
     parameters: {
       path: {
         campaignId: string;
+      };
+    };
+  };
+  "/jotforms/{campaign}": {
+    post: operations["post-jotforms-campaignId"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+  };
+  "/jotforms/forms": {
+    get: operations["get-jotforms"];
+    parameters: {};
+  };
+  "/jotforms/forms/{formId}/questions": {
+    get: operations["get-jotforms-forms-formId-questions"];
+    parameters: {
+      path: {
+        formId: string;
       };
     };
   };
@@ -659,6 +690,11 @@ export interface components {
      * @enum {string}
      */
     CustomUserFieldsType: "text" | "select" | "multiselect";
+    /** Currency */
+    Currency: {
+      value: number;
+      currency: string;
+    };
     /** FiscalBirthCity */
     FiscalBirthCity:
       | {
@@ -832,6 +868,8 @@ export interface components {
           lastName?: string;
           token?: string;
           username?: string;
+          iat?: number;
+          exp?: number;
         };
       };
     };
@@ -992,8 +1030,7 @@ export interface operations {
             };
         };
       };
-      /** Forbidden */
-      403: unknown;
+      403: components["responses"]["Authentication"];
       /** Internal Server Error */
       500: unknown;
     };
@@ -1040,9 +1077,12 @@ export interface operations {
     };
     responses: {
       /** OK */
-      200: unknown;
-      /** Forbidden */
-      403: unknown;
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+      403: components["responses"]["NotFound"];
       /** Internal Server Error */
       500: unknown;
     };
@@ -1055,7 +1095,9 @@ export interface operations {
       /** Unauthorized */
       401: {
         content: {
-          "application/json": string;
+          "application/json": {
+            message?: string;
+          };
         };
       };
     };
@@ -1183,6 +1225,7 @@ export interface operations {
             title: string;
             type: string;
             typeDescription: string;
+            preselectionFormId?: number;
           };
         };
       };
@@ -1538,11 +1581,11 @@ export interface operations {
             insights?: {
               id: number;
               title: string;
-              description: string;
               severity: {
                 id: number;
                 name: string;
               };
+              description: string;
               clusters:
                 | "all"
                 | {
@@ -1557,6 +1600,7 @@ export interface operations {
                 url: string;
                 streamUrl: string;
                 description: string;
+                poster?: string;
               }[];
             }[];
             sentiments: {
@@ -1774,6 +1818,7 @@ export interface operations {
           name: string;
           fields: components["schemas"]["PreselectionFormQuestion"][];
           campaign?: number;
+          creationDate: string;
         };
       };
     };
@@ -2126,7 +2171,7 @@ export interface operations {
           }[];
         };
       };
-      403: components["responses"]["NotAuthorized"];
+      403: components["responses"]["NotFound"];
     };
   };
   "get-customUserFields": {
@@ -2547,10 +2592,20 @@ export interface operations {
   /** Create a new user */
   "post-users": {
     responses: {
-      /** OK */
-      200: {
+      /** Created */
+      201: {
         content: {
-          "application/json": components["schemas"]["User"];
+          "application/json": {
+            id: number;
+          };
+        };
+      };
+      /** Precondition Failed */
+      412: {
+        content: {
+          "application/json": {
+            message?: string;
+          };
         };
       };
     };
@@ -2572,6 +2627,21 @@ export interface operations {
           referral?: string;
         };
       };
+    };
+  };
+  "head-users-by-email-email": {
+    parameters: {
+      path: {
+        email: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: unknown;
+      /** Bad Request */
+      400: unknown;
+      /** Not Found */
+      404: unknown;
     };
   };
   /** Get your user data */
@@ -2599,8 +2669,14 @@ export interface operations {
             is_verified?: boolean;
             rank?: string;
             total_exp_pts?: number;
-            booty?: number;
-            pending_booty?: number;
+            booty?: {
+              net?: components["schemas"]["Currency"];
+              gross: components["schemas"]["Currency"];
+            };
+            pending_booty?: {
+              net?: components["schemas"]["Currency"];
+              gross: components["schemas"]["Currency"];
+            };
             languages?: {
               id?: number;
               name?: string;
@@ -2687,8 +2763,14 @@ export interface operations {
             is_verified?: boolean;
             rank?: string;
             total_exp_pts?: number;
-            booty?: number;
-            pending_booty?: number;
+            booty?: {
+              gross: components["schemas"]["Currency"];
+              net?: components["schemas"]["Currency"];
+            };
+            pending_booty?: {
+              gross: components["schemas"]["Currency"];
+              net?: components["schemas"]["Currency"];
+            };
             languages?: {
               id?: number;
               name?: string;
@@ -3298,7 +3380,7 @@ export interface operations {
               streetNumber?: string;
               cityCode: string;
             };
-            type: components["schemas"]["FiscalType"];
+            type: components["schemas"]["FiscalType"] | "internal";
             birthPlace: {
               city?: string;
               province?: string;
@@ -3478,6 +3560,7 @@ export interface operations {
       404: components["responses"]["NotFound"];
     };
   };
+  /** Return all payment requests */
   "get-users-me-payments": {
     parameters: {
       query: {
@@ -3502,8 +3585,8 @@ export interface operations {
               /** @enum {string} */
               status: "paid" | "processing";
               amount: {
-                value?: number;
-                currency?: string;
+                net: components["schemas"]["Currency"];
+                gross: components["schemas"]["Currency"];
               };
               paidDate: string;
               method: {
@@ -3537,8 +3620,7 @@ export interface operations {
           };
         };
       };
-      /** Forbidden */
-      403: unknown;
+      403: components["responses"]["NotAuthorized"];
     };
     requestBody: {
       content: {
@@ -3559,6 +3641,7 @@ export interface operations {
       };
     };
   };
+  /** Return all attributions of a specific request */
   "get-users-me-payments-payment": {
     parameters: {
       path: {
@@ -3572,7 +3655,7 @@ export interface operations {
         /** How to order values (ASC, DESC) */
         order?: components["parameters"]["order"];
         /** The value to order by */
-        orderBy?: "amount" | "type" | "date" | "activity";
+        orderBy?: "type" | "date" | "activity" | "net" | "gross";
       };
     };
     responses: {
@@ -3585,8 +3668,8 @@ export interface operations {
             } & {
               type: string;
               amount: {
-                value: number;
-                currency: string;
+                net?: components["schemas"]["Currency"];
+                gross: components["schemas"]["Currency"];
               };
               /** Format: date */
               date: string;
@@ -3612,7 +3695,13 @@ export interface operations {
         /** Max items to retrieve */
         limit?: components["parameters"]["limit"];
         /** The field for item order */
-        orderBy?: "id" | "attributionDate" | "amount" | "activityName";
+        orderBy?:
+          | "id"
+          | "attributionDate"
+          | "activityName"
+          | "net"
+          | "gross"
+          | "activity";
         /** How to order values (ASC, DESC) */
         order?: components["parameters"]["order"];
       };
@@ -3627,11 +3716,12 @@ export interface operations {
             } & {
               name: string;
               amount: {
-                value?: number;
-                currency?: string;
+                net?: components["schemas"]["Currency"];
+                gross: components["schemas"]["Currency"];
               };
               /** Format: date */
               attributionDate: string;
+              activity: string;
             })[];
             limit?: number;
             size: number;
@@ -3660,6 +3750,7 @@ export interface operations {
           };
         };
       };
+      403: components["responses"]["NotAuthorized"];
       /** Internal Server Error */
       500: unknown;
     };
@@ -3686,6 +3777,7 @@ export interface operations {
           }[];
         };
       };
+      404: components["responses"]["NotFound"];
     };
   };
   /** Get a single popup. Will set the retrieved popup as expired */
@@ -3808,6 +3900,69 @@ export interface operations {
           device?: number[];
         };
       };
+    };
+  };
+  "post-jotforms-campaignId": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+      /** Forbidden */
+      403: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          formId: string;
+          testerIdColumn: string;
+        };
+      };
+    };
+  };
+  "get-jotforms": {
+    parameters: {};
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: string;
+            name: string;
+            createdAt: string;
+          }[];
+        };
+      };
+      /** Forbidden */
+      403: unknown;
+    };
+  };
+  "get-jotforms-forms-formId-questions": {
+    parameters: {
+      path: {
+        formId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: string;
+            name: string;
+          }[];
+        };
+      };
+      /** Forbidden */
+      403: unknown;
     };
   };
 }
