@@ -1356,7 +1356,7 @@ export type PostCampaignsFormsApiArg = {
     name: string;
     fields: PreselectionFormQuestion[];
     campaign?: number;
-    creationDate: string;
+    creationDate?: string;
   };
 };
 export type GetCampaignsFormsApiResponse = /** status 200 OK */ {
