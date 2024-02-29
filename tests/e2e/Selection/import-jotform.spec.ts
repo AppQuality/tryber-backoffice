@@ -67,6 +67,9 @@ test.describe("Import jotform Modal: ", () => {
     ).toBeVisible();
     await expect(selectionPage.elements().surveySelect()).toBeVisible();
     await expect(selectionPage.elements().testerIdSelect()).toBeVisible();
+    await expect(
+      selectionPage.elements().testerIdSelect().locator("input")
+    ).toBeDisabled();
     await expect(selectionPage.elements().importJotformCta()).toBeVisible();
   });
   test("la select è popolata con una lista dei form disponibili e con label tiolo del form e value id del form (verificare se è possibile cercare)", async ({

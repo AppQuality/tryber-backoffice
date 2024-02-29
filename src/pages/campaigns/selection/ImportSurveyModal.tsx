@@ -27,6 +27,7 @@ const ImportSurveyModal = () => {
         <Select
           options={[emptyOption]}
           data-qa="testerId-select"
+          isDisabled={true}
           name="testerId-select"
           label="select testerId question"
           value={emptyOption}
