@@ -9,6 +9,7 @@ interface SelectionState {
   currentPage: number;
   devicesPerPage: number;
   isConfirmModalOpen: boolean;
+  isFormModalOpen: boolean;
   questionsId: string[];
   tableColumns: TableType.Column[];
   disableApplyFilters: boolean;
@@ -23,6 +24,7 @@ export const initialState: SelectionState = {
   currentPage: 1,
   devicesPerPage: 50,
   isConfirmModalOpen: false,
+  isFormModalOpen: false,
   questionsId: [],
   tableColumns: columns,
   disableApplyFilters: true,
@@ -76,6 +78,12 @@ const selectionSlice = createSlice({
     closeConfirmModal(state) {
       state.isConfirmModalOpen = false;
     },
+    openFormModal(state) {
+      state.isFormModalOpen = true;
+    },
+    closeFormModal(state) {
+      state.isFormModalOpen = false;
+    },
   },
 });
 
@@ -88,6 +96,8 @@ export const {
   clearSelectedDevice,
   openConfirmModal,
   closeConfirmModal,
+  openFormModal,
+  closeFormModal,
   setQuestionsId,
   setTableColumns,
   setDisableApplyFilters,

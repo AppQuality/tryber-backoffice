@@ -19,6 +19,7 @@ test.describe("Modale di importazione Jotform: ", () => {
   test.beforeEach(async ({ page }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
+    await selectionPage.formAlreadyPresent();
     await selectionPage.visit();
   });
 
@@ -27,7 +28,6 @@ test.describe("Modale di importazione Jotform: ", () => {
     await expect(selectionPage.elements().importJotformCta()).toBeEnabled();
   });
   test("if there is a form already connected clicking on the import button opens a message that warns that there is already a form connected and asks for confirmation of overwriting", async ({}) => {
-    await selectionPage.formAlreadyPresent();
     await selectionPage.elements().importJotformCta().click();
     await expect(
       selectionPage.elements().messageFormAlreadyPresent()

@@ -26,7 +26,7 @@ export class SelectionPage extends BackofficePage {
 
   async loggedInWithEnoughPermissions() {
     await this.loggedIn();
-    await this.page.route("**/api/users/me/permissions", async (route) => {
+    await this.page.route("*/**/api/users/me/permissions", async (route) => {
       await route.fulfill({
         status: 200,
         json: { appq_tester_selection: true },
@@ -36,7 +36,7 @@ export class SelectionPage extends BackofficePage {
 
   async loggedInWithoutPermissions() {
     await this.loggedIn();
-    await this.page.route("**/api/users/me/permissions", async (route) => {
+    await this.page.route("*/**/api/users/me/permissions", async (route) => {
       await route.fulfill({
         status: 200,
         json: {},
@@ -46,10 +46,9 @@ export class SelectionPage extends BackofficePage {
 
   async formAlreadyPresent() {
     await this.page.route(
-      `**/api/campaigns/${this.campaignId}`,
+      `*/**/api/campaigns/${this.campaignId}`,
       async (route) => {
         await route.fulfill({
-          status: 200,
           path: `tests/api/campaigns/campaign/_get/200_Example_2.json`,
         });
       }
