@@ -104,7 +104,7 @@
     "jest-canvas-mock": "^2.4.0",
     "msw": "^0.47.4",
     "openapi-typescript": "^5.2.0",
-    "playwright": "^1.42.0",
+    "playwright": "^1.41.0",
     "react-error-overlay": "6.0.9",
     "react-scripts": "^4.0.3",
     "ts-node": "^10.9.1",
