@@ -4,6 +4,8 @@ import FilterCardHeader from "./FilterCardHeader";
 import { BughuntingLevelFilters } from "./FilterItems/BughuntingLevelFilters";
 import { DeviceFilters } from "./FilterItems/DeviceFilters";
 import { GenderFilters } from "./FilterItems/GenderFilters";
+import { TesterIdExclude } from "./FilterItems/TesterIdExclude";
+import { TesterIdInclude } from "./FilterItems/TesterIdInclude";
 
 const StyledSelectionFilters = styled.div``;
 
@@ -16,6 +18,8 @@ const SelectionFilters = ({ id }: SelectionFiltersProps) => {
     <Card data-qa="selectionFilters">
       <FilterCardHeader />
       <StyledSelectionFilters>
+        <TesterIdInclude />
+        <TesterIdExclude />
         <DeviceFilters id={id} />
         <GenderFilters id={id} />
         <BughuntingLevelFilters id={id} />
