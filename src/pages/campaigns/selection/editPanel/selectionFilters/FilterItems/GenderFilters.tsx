@@ -21,7 +21,7 @@ const GenderFilters = ({ id }: { id: string }) => {
   );
 
   const genderData =
-    filterByInclude && "gender" in filterByInclude
+    filterByInclude && "gender" in filterByInclude && filterByInclude.gender
       ? filterByInclude.gender
       : [];
 

@@ -2,9 +2,13 @@ import { TableType } from "@appquality/appquality-design-system";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { columns } from "./SelectionTable/columns";
 
+type PartialRecord<K extends keyof any, T> = {
+  [P in K]?: T;
+};
+
 type Filter =
-  | Record<"testerIds", string>
-  | Record<"os" | "gender" | "bughunting", string[]>;
+  | PartialRecord<"testerIds", string>
+  | PartialRecord<"os" | "gender" | "bughunting", string[]>;
 
 interface SelectionState {
   selectedDevices: {

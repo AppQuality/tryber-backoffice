@@ -21,7 +21,9 @@ const BughuntingLevelFilters = ({ id }: { id: string }) => {
   );
 
   const bhData =
-    filterByInclude && "bughunting" in filterByInclude
+    filterByInclude &&
+    "bughunting" in filterByInclude &&
+    filterByInclude.bughunting
       ? filterByInclude.bughunting
       : [];
 

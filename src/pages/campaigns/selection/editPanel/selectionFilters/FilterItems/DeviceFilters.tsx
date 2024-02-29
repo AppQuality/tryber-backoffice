@@ -21,7 +21,9 @@ const DeviceFilters = ({ id }: { id: string }) => {
   );
 
   const deviceData =
-    filterByInclude && "os" in filterByInclude ? filterByInclude.os : [];
+    filterByInclude && "os" in filterByInclude && filterByInclude.os
+      ? filterByInclude.os
+      : [];
 
   return (
     <CheckboxFilter
