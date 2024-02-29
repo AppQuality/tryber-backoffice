@@ -56,13 +56,19 @@ test.describe("Import jotform Modal: ", () => {
     await expect(selectionPage.elements().importJotformCta()).toBeEnabled();
   });
 
-  test("se non è presente già un form collegato cliccando sul bottone di import si apre la modale di import", async ({
-    page,
-  }) => {});
-
   test("nella modale c'è un titolo, un bottone close, una select per selezionare il form e una seconda per sezionare il tester id disabilitata e un bottone apply", async ({
     page,
-  }) => {});
+  }) => {
+    await expect(
+      selectionPage.elements().importSurveyModalTitle()
+    ).toBeVisible();
+    await expect(
+      selectionPage.elements().importSurveyModalCloseBtn()
+    ).toBeVisible();
+    await expect(selectionPage.elements().surveySelect()).toBeVisible();
+    await expect(selectionPage.elements().testerIdSelect()).toBeVisible();
+    await expect(selectionPage.elements().importJotformCta()).toBeVisible();
+  });
   test("la select è popolata con una lista dei form disponibili e con label tiolo del form e value id del form (verificare se è possibile cercare)", async ({
     page,
   }) => {});

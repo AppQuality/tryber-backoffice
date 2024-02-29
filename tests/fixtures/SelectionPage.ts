@@ -62,6 +62,17 @@ export class SelectionPage extends BackofficePage {
       messageFormAlreadyPresent: () =>
         this.page.getByText("A questa Selection è già collegato il form"),
       importSurveyModal: () => this.page.locator("#import-survey-modal"),
+      importSurveyModalTitle: () =>
+        this.page.getByText("Import Jotform Dialog"),
+      importSurveyModalCloseBtn: () => this.page.locator(".modal-close"),
+      surveySelect: () =>
+        this.elements().importSurveyModal().getByTestId("survey-select"),
+      testerIdSelect: () =>
+        this.elements().importSurveyModal().getByTestId("testerId-select"),
+      applyCta: () =>
+        this.elements()
+          .importSurveyModal()
+          .getByRole("button", { name: "Apply" }),
       //customerSelect: () => this.page.locator("#customers-select"),
       //newAgreementAction: () => this.page.locator("#add-new-agreement-btn"),
     };
