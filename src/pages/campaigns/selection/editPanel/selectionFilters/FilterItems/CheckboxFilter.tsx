@@ -1,6 +1,7 @@
 import { Checkbox, Title } from "@appquality/appquality-design-system";
 import { useAppDispatch } from "src/store";
 import { changeTablePage, setFilters } from "../../../selectionSlice";
+import { FilterContainer } from "./components/FilterContainer";
 
 const CheckboxFilter = ({
   title,
@@ -15,7 +16,7 @@ const CheckboxFilter = ({
 }) => {
   const dispatch = useAppDispatch();
   return (
-    <>
+    <FilterContainer>
       <Title size="s">{title}</Title>
       {options.map((d) => (
         <div key={d}>
@@ -29,7 +30,7 @@ const CheckboxFilter = ({
           />
         </div>
       ))}
-    </>
+    </FilterContainer>
   );
 };
 
