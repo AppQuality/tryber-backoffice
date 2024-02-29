@@ -26,7 +26,7 @@ export class SelectionPage extends BackofficePage {
 
   async loggedInWithEnoughPermissions() {
     await this.loggedIn();
-    await this.page.route("**/api/users/me/permissions", async (route) => {
+    await this.page.route("*/**/api/users/me/permissions", async (route) => {
       await route.fulfill({
         status: 200,
         json: { appq_tester_selection: true },
@@ -36,7 +36,7 @@ export class SelectionPage extends BackofficePage {
 
   async loggedInWithoutPermissions() {
     await this.loggedIn();
-    await this.page.route("**/api/users/me/permissions", async (route) => {
+    await this.page.route("*/**/api/users/me/permissions", async (route) => {
       await route.fulfill({
         status: 200,
         json: {},
@@ -46,10 +46,9 @@ export class SelectionPage extends BackofficePage {
 
   async formAlreadyPresent() {
     await this.page.route(
-      `**/api/campaigns/${this.campaignId}`,
+      `*/**/api/campaigns/${this.campaignId}`,
       async (route) => {
         await route.fulfill({
-          status: 200,
           path: `tests/api/campaigns/campaign/_get/200_Example_2.json`,
         });
       }
@@ -75,6 +74,18 @@ export class SelectionPage extends BackofficePage {
       messageFormAlreadyPresent: () =>
         this.page.getByText("A questa Selection è già collegato il form"),
       filterCard: () => this.page.getByTestId("selectionFilters"),
+      importSurveyModal: () => this.page.locator("#import-survey-modal"),
+      importSurveyModalTitle: () =>
+        this.page.getByText("Import Jotform Dialog"),
+      importSurveyModalCloseBtn: () => this.page.locator(".modal-close"),
+      surveySelect: () =>
+        this.elements().importSurveyModal().getByTestId("survey-select"),
+      testerIdSelect: () =>
+        this.elements().importSurveyModal().getByTestId("testerId-select"),
+      applyCta: () =>
+        this.elements()
+          .importSurveyModal()
+          .getByRole("button", { name: "Apply" }),
       //customerSelect: () => this.page.locator("#customers-select"),
       //newAgreementAction: () => this.page.locator("#add-new-agreement-btn"),
     };
