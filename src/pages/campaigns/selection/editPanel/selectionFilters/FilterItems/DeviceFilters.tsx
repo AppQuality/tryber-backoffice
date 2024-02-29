@@ -1,14 +1,13 @@
-import { Checkbox, Title } from "@appquality/appquality-design-system";
 import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
-import { useAppDispatch, useAppSelector } from "src/store";
-import { changeTablePage, setFilters } from "../../../selectionSlice";
+import { useAppSelector } from "src/store";
+import { setFilters } from "../../../selectionSlice";
+import { CheckboxFilter } from "./CheckboxFilter";
 
 const DeviceFilters = ({ id }: { id: string }) => {
   const { data, isLoading } = useGetCampaignsByCampaignCandidatesQuery({
     campaign: id,
     limit: Number.MAX_SAFE_INTEGER,
   });
-  const dispatch = useAppDispatch();
   const { filterByInclude } = useAppSelector(
     (state) => state.selection.filters
   );
@@ -22,30 +21,21 @@ const DeviceFilters = ({ id }: { id: string }) => {
   );
 
   return (
-    <>
-      <Title size="s">Devices</Title>
-      {devices.map((d) => (
-        <div key={d}>
-          <Checkbox
-            name={`filters.os.${d}`}
-            label={d}
-            onChange={(e) => {
-              dispatch(changeTablePage({ newPage: 1 }));
-              dispatch(
-                setFilters({
-                  filterByInclude: {
-                    ...filterByInclude,
-                    os: e.target.checked
-                      ? [...(filterByInclude?.os || []), d]
-                      : filterByInclude?.os?.filter((o) => o !== d) || [],
-                  },
-                })
-              );
-            }}
-          />
-        </div>
-      ))}
-    </>
+    <CheckboxFilter
+      title="Devices"
+      key="os"
+      options={devices}
+      onSelect={(checked, option) =>
+        setFilters({
+          filterByInclude: {
+            ...filterByInclude,
+            os: checked
+              ? [...(filterByInclude?.os || []), option]
+              : filterByInclude?.os?.filter((o) => o !== option) || [],
+          },
+        })
+      }
+    />
   );
 };
 

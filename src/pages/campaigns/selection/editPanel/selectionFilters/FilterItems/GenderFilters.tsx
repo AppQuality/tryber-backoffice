@@ -1,14 +1,13 @@
-import { Checkbox, Title } from "@appquality/appquality-design-system";
 import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
-import { useAppDispatch, useAppSelector } from "src/store";
-import { changeTablePage, setFilters } from "../../../selectionSlice";
+import { useAppSelector } from "src/store";
+import { setFilters } from "../../../selectionSlice";
+import { CheckboxFilter } from "./CheckboxFilter";
 
 const GenderFilters = ({ id }: { id: string }) => {
   const { data, isLoading } = useGetCampaignsByCampaignCandidatesQuery({
     campaign: id,
     limit: Number.MAX_SAFE_INTEGER,
   });
-  const dispatch = useAppDispatch();
   const { filterByInclude } = useAppSelector(
     (state) => state.selection.filters
   );
@@ -22,30 +21,21 @@ const GenderFilters = ({ id }: { id: string }) => {
   );
 
   return (
-    <>
-      <Title size="s">Genders</Title>
-      {genders.map((d) => (
-        <div key={d}>
-          <Checkbox
-            name={`filters.genders.${d}`}
-            label={d}
-            onChange={(e) => {
-              dispatch(changeTablePage({ newPage: 1 }));
-              dispatch(
-                setFilters({
-                  filterByInclude: {
-                    ...filterByInclude,
-                    gender: e.target.checked
-                      ? [...(filterByInclude?.gender || []), d]
-                      : filterByInclude?.gender?.filter((o) => o !== d) || [],
-                  },
-                })
-              );
-            }}
-          />
-        </div>
-      ))}
-    </>
+    <CheckboxFilter
+      title="Genders"
+      key="gender"
+      options={genders}
+      onSelect={(checked, option) =>
+        setFilters({
+          filterByInclude: {
+            ...filterByInclude,
+            gender: checked
+              ? [...(filterByInclude?.gender || []), option]
+              : filterByInclude?.gender?.filter((o) => o !== option) || [],
+          },
+        })
+      }
+    />
   );
 };
 
