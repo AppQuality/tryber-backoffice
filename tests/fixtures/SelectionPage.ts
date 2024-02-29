@@ -56,12 +56,25 @@ export class SelectionPage extends BackofficePage {
     );
   }
 
+  async candidatesWithoutQuestions() {
+    await this.page.route(
+      `**/api/campaigns/${this.campaignId}/candidates**`,
+      async (route) => {
+        await route.fulfill({
+          status: 200,
+          path: `tests/api/campaigns/campaign/candidates/_get/200_example-2.json`,
+        });
+      }
+    );
+  }
+
   elements() {
     return {
       importJotformCta: () =>
         this.page.getByRole("button", { name: "Import Jotform" }),
       messageFormAlreadyPresent: () =>
         this.page.getByText("A questa Selection è già collegato il form"),
+      filterCard: () => this.page.getByTestId("selectionFilters"),
       //customerSelect: () => this.page.locator("#customers-select"),
       //newAgreementAction: () => this.page.locator("#add-new-agreement-btn"),
     };

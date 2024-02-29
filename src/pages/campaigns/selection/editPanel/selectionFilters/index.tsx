@@ -1,14 +1,7 @@
-import { Card, Form, Formik } from "@appquality/appquality-design-system";
-import { FormikProps } from "formik";
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
-import { useState } from "react";
+import { Card } from "@appquality/appquality-design-system";
 import styled from "styled-components";
-import FilterRow from "./FilterRow";
-import * as yup from "yup";
 import FilterCardHeader from "./FilterCardHeader";
-import { useFiltersValues } from "./useFiltersValues";
-import useSelectionQueryTypeOptions from "./useSelectionQueryTypeOptions";
-import useSelectionBaseFilters from "./useSelectionBaseFilters";
+import { DeviceFilters } from "./FilterItems/DeviceFilters";
 
 const StyledSelectionFilters = styled.div`
   height: 122px;
@@ -25,50 +18,13 @@ interface SelectionFiltersProps {
 }
 
 const SelectionFilters = ({ id }: SelectionFiltersProps) => {
-  const queryTypeOptions = useSelectionQueryTypeOptions();
-  const baseFilters = useSelectionBaseFilters();
-  const [filterByList] = useState<Option[]>(baseFilters);
-
-  const initialFiltersValues: SelectionFiltersValues = {
-    filters: {},
-  };
-
-  const validationSchema = {
-    filters: yup.object(),
-  };
-
-  const { applyFilters } = useFiltersValues();
-
   return (
-    <Formik
-      initialValues={initialFiltersValues}
-      enableReinitialize
-      validationSchema={yup.object(validationSchema)}
-      onSubmit={applyFilters}
-    >
-      {(formikProps: FormikProps<SelectionFiltersValues>) => {
-        return (
-          <Form id="selectionFilters">
-            <Card>
-              <FilterCardHeader queryTypeOptions={queryTypeOptions} />
-              <StyledSelectionFilters>
-                {formikProps.values.filters.rows?.map(
-                  (r: SelectionFilterRow, i: number) => (
-                    <FilterRow
-                      key={r.id}
-                      index={i}
-                      filterByOptions={filterByList}
-                      queryTypeOptions={queryTypeOptions}
-                    />
-                  )
-                )}
-              </StyledSelectionFilters>
-            </Card>
-          </Form>
-        );
-      }}
-    </Formik>
+    <Card data-qa="selectionFilters">
+      <FilterCardHeader />
+      <StyledSelectionFilters>
+        <DeviceFilters id={id} />
+      </StyledSelectionFilters>
+    </Card>
   );
 };
-
 export default SelectionFilters;
