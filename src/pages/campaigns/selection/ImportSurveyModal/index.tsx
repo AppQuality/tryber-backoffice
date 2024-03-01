@@ -9,11 +9,9 @@ import {
 } from "@appquality/appquality-design-system";
 import { useAppSelector, useAppDispatch } from "src/store";
 import { closeSurveyModal } from "../selectionSlice";
-import {
-  useGetJotformsFormsByFormIdQuestionsQuery,
-  useGetJotformsFormsQuery,
-} from "src/services/tryberApi";
+import { useGetJotformsFormsQuery } from "src/services/tryberApi";
 import FormProvider from "./FormProvider";
+import { QuestionsSelect } from "./QuestionsSelect";
 
 const ImportSurveyModal = () => {
   const { isSurveyModalOpen } = useAppSelector((state) => state.selection);
@@ -22,9 +20,6 @@ const ImportSurveyModal = () => {
     dispatch(closeSurveyModal());
   };
   const { data: jotforms } = useGetJotformsFormsQuery();
-  const { data: questions } = useGetJotformsFormsByFormIdQuestionsQuery({
-    formId: "formId",
-  });
   const emptyOption = { label: "empty", value: "empty" };
   const jotformsOptions = jotforms?.map((jotform) => ({
     label: jotform.name,
@@ -39,13 +34,23 @@ const ImportSurveyModal = () => {
     >
       <FormProvider>
         <FormikField name="survey">
-          {({ field }: FieldProps) => (
+          {({ field, form }: FieldProps) => (
             <FormGroup>
               <Select
                 options={jotformsOptions || [emptyOption]}
                 data-qa="survey-select"
                 name={field.name}
                 label="select jotform"
+                onChange={(option) => {
+                  if (option?.value) {
+                    form.setFieldValue(field.name, option.value);
+                  } else {
+                    form.setFieldValue(field.name, "");
+                  }
+                }}
+                onBlur={() => {
+                  form.setFieldTouched(field.name, true);
+                }}
                 value={
                   jotformsOptions?.find(
                     (option) => option.value === field.value
@@ -56,21 +61,7 @@ const ImportSurveyModal = () => {
             </FormGroup>
           )}
         </FormikField>
-        <FormikField name="testerIdQuestion">
-          {({ field }: FieldProps) => (
-            <FormGroup>
-              <Select
-                options={[emptyOption]}
-                data-qa="testerId-select"
-                isDisabled={true}
-                name={field.name}
-                label="select testerId question"
-                value={emptyOption}
-              />
-              <ErrorMessage name={field.name} />
-            </FormGroup>
-          )}
-        </FormikField>
+        <QuestionsSelect />
         <Button type="submit" data-qa="import-survey-apply-cta">
           Apply
         </Button>

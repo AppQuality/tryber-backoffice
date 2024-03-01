@@ -63,6 +63,25 @@ export class SelectionPage extends BackofficePage {
     });
   }
 
+  async getJoformFormQuestions() {
+    await this.page.route(
+      `*/**/api/jotforms/forms/3/questions`,
+      async (route) => {
+        await route.fulfill({
+          path: `tests/api/jotforms/forms/formId/questions/_get/200_3_questions.json`,
+        });
+      }
+    );
+  }
+
+  async selectFormOption() {
+    await this.elements().surveySelect().click();
+    await this.elements()
+      .surveySelect()
+      .locator("#react-select-5-option-0")
+      .click();
+  }
+
   elements() {
     return {
       importJotformCta: () =>

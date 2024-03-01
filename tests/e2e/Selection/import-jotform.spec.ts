@@ -49,6 +49,7 @@ test.describe("Import jotform Modal: ", () => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
     await selectionPage.getJoformForms();
+    await selectionPage.getJoformFormQuestions();
     await selectionPage.visit();
     await selectionPage.elements().importJotformCta().click();
   });
@@ -104,7 +105,18 @@ test.describe("Import jotform Modal: ", () => {
   });
   test("una volta selezionato il form dalla prima select si popola la seconda con le domande e si abilita", async ({
     page,
-  }) => {});
+  }) => {
+    await selectionPage.selectFormOption();
+    await expect(
+      selectionPage.elements().testerIdSelect().locator("#react-select-7-input")
+    ).not.toBeDisabled();
+    await expect(
+      selectionPage
+        .elements()
+        .testerIdSelect()
+        .locator("[id^=react-select-7-option]")
+    ).toHaveCount(3);
+  });
   test("se l'utente clicca su apply e manca una selezione delle due spunta un errore", async ({
     page,
   }) => {});

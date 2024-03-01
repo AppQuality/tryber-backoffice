@@ -22,6 +22,8 @@ export const api = createApi({
     "Customers",
     "CustomUserFields",
     "ExperiencePoints",
+    "Forms",
+    "Questions",
     "Users",
     "Media",
     "Payments",

@@ -5,8 +5,13 @@ interface FormProviderInterface {
   children: React.ReactNode;
 }
 
+export interface ImportSurveyValues {
+  survey: string;
+  testerIdQuestion: string;
+}
+
 const FormProvider = ({ children }: FormProviderInterface) => {
-  const initialValues = {
+  const initialValues: ImportSurveyValues = {
     survey: "",
     testerIdQuestion: "",
   };

@@ -218,6 +218,9 @@ tryberApi.enhanceEndpoints({
     patchCampaignsByCampaignUx: {
       invalidatesTags: ["UX"],
     },
+    getJotformsForms: {
+      providesTags: ["Forms"],
+    },
   },
 });
 
