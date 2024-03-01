@@ -13,6 +13,7 @@ export class SelectionPage extends BackofficePage {
 
   async visit() {
     await this.page.goto(this.url);
+    await this.closeCookieBanner();
   }
 
   async loggedIn() {
@@ -79,6 +80,14 @@ export class SelectionPage extends BackofficePage {
     await this.elements()
       .surveySelect()
       .locator("#react-select-5-option-0")
+      .click();
+  }
+
+  async selectFormQuestion() {
+    await this.selectFormOption();
+    await this.elements()
+      .testerIdSelect()
+      .locator("#react-select-7-option-0")
       .click();
   }
 

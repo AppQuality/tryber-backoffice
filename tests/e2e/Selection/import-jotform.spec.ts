@@ -110,6 +110,7 @@ test.describe("Import jotform Modal: ", () => {
     await expect(
       selectionPage.elements().testerIdSelect().locator("#react-select-7-input")
     ).not.toBeDisabled();
+    await selectionPage.elements().testerIdSelect().click();
     await expect(
       selectionPage
         .elements()
@@ -117,9 +118,15 @@ test.describe("Import jotform Modal: ", () => {
         .locator("[id^=react-select-7-option]")
     ).toHaveCount(3);
   });
-  test("se l'utente clicca su apply e manca una selezione delle due spunta un errore", async ({
+  test("se l'utente clicca su apply e manca la selezione delle question spunta un errore", async ({
     page,
-  }) => {});
+  }) => {
+    await selectionPage.selectFormOption();
+    await selectionPage.elements().applyCta().click();
+    await expect(
+      selectionPage.elements().importSurveyModal().getByText("required field")
+    ).toBeVisible();
+  });
   test("se l'utente clicca su apply e le select sono complete si chiude la modale viene mandata la POST con id del form, id della domanda testerID e id della campagna", async ({
     page,
   }) => {});
