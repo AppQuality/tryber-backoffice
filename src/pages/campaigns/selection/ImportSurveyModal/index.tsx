@@ -1,10 +1,16 @@
-import { Button, Modal, Select } from "@appquality/appquality-design-system";
+import {
+  Button,
+  Form,
+  Modal,
+  Select,
+} from "@appquality/appquality-design-system";
 import { useAppSelector, useAppDispatch } from "src/store";
-import { closeSurveyModal } from "./selectionSlice";
+import { closeSurveyModal } from "../selectionSlice";
 import {
   useGetJotformsFormsByFormIdQuestionsQuery,
   useGetJotformsFormsQuery,
 } from "src/services/tryberApi";
+import FormProvider from "./FormProvider";
 
 const ImportSurveyModal = () => {
   const { isSurveyModalOpen } = useAppSelector((state) => state.selection);
@@ -28,7 +34,7 @@ const ImportSurveyModal = () => {
       isOpen={isSurveyModalOpen}
       onClose={close}
     >
-      <div id="import-survey-modal">
+      <FormProvider>
         <Select
           options={jotformsOptions || [emptyOption]}
           data-qa="survey-select"
@@ -45,7 +51,7 @@ const ImportSurveyModal = () => {
           value={emptyOption}
         />
         <Button data-qa="import-survey-apply-cta">Apply</Button>
-      </div>
+      </FormProvider>
     </Modal>
   );
 };
