@@ -17,6 +17,10 @@ const ImportSurveyModal = () => {
     formId: "formId",
   });
   const emptyOption = { label: "empty", value: "empty" };
+  const jotformsOptions = jotforms?.map((jotform) => ({
+    label: jotform.name,
+    value: jotform.id,
+  }));
   return (
     <Modal
       title="Import Jotform Dialog"
@@ -26,11 +30,11 @@ const ImportSurveyModal = () => {
     >
       <div id="import-survey-modal">
         <Select
-          options={[emptyOption]}
+          options={jotformsOptions || [emptyOption]}
           data-qa="survey-select"
           name="survey-select"
           label="select jotform"
-          value={emptyOption}
+          value={jotformsOptions || [emptyOption]}
         />
         <Select
           options={[emptyOption]}

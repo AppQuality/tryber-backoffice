@@ -55,6 +55,14 @@ export class SelectionPage extends BackofficePage {
     );
   }
 
+  async getJoformForms() {
+    await this.page.route(`*/**/api/jotforms/forms`, async (route) => {
+      await route.fulfill({
+        path: `tests/api/jotforms/forms/_get/200_3_forms.json`,
+      });
+    });
+  }
+
   elements() {
     return {
       importJotformCta: () =>

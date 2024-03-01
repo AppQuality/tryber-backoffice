@@ -48,6 +48,7 @@ test.describe("Import jotform Modal: ", () => {
   test.beforeEach(async ({ page }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
+    await selectionPage.getJoformForms();
     await selectionPage.visit();
     await selectionPage.elements().importJotformCta().click();
   });
@@ -74,7 +75,33 @@ test.describe("Import jotform Modal: ", () => {
   });
   test("la select è popolata con una lista dei form disponibili e con label tiolo del form e value id del form (verificare se è possibile cercare)", async ({
     page,
-  }) => {});
+  }) => {
+    await selectionPage.elements().surveySelect().click();
+    await expect(
+      selectionPage
+        .elements()
+        .surveySelect()
+        .locator("[id^=react-select-5-option]")
+    ).toHaveCount(3);
+    await expect(
+      selectionPage
+        .elements()
+        .surveySelect()
+        .locator("#react-select-5-option-0")
+    ).toContainText("Form new");
+    await expect(
+      selectionPage
+        .elements()
+        .surveySelect()
+        .locator("#react-select-5-option-1")
+    ).toContainText("Form old");
+    await expect(
+      selectionPage
+        .elements()
+        .surveySelect()
+        .locator("#react-select-5-option-2")
+    ).toContainText("Form oldest");
+  });
   test("una volta selezionato il form dalla prima select si popola la seconda con le domande e si abilita", async ({
     page,
   }) => {});
