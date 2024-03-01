@@ -1,6 +1,9 @@
 import {
   Button,
-  Form,
+  ErrorMessage,
+  FieldProps,
+  FormGroup,
+  FormikField,
   Modal,
   Select,
 } from "@appquality/appquality-design-system";
@@ -35,22 +38,42 @@ const ImportSurveyModal = () => {
       onClose={close}
     >
       <FormProvider>
-        <Select
-          options={jotformsOptions || [emptyOption]}
-          data-qa="survey-select"
-          name="survey-select"
-          label="select jotform"
-          value={jotformsOptions || [emptyOption]}
-        />
-        <Select
-          options={[emptyOption]}
-          data-qa="testerId-select"
-          isDisabled={true}
-          name="testerId-select"
-          label="select testerId question"
-          value={emptyOption}
-        />
-        <Button data-qa="import-survey-apply-cta">Apply</Button>
+        <FormikField name="survey">
+          {({ field }: FieldProps) => (
+            <FormGroup>
+              <Select
+                options={jotformsOptions || [emptyOption]}
+                data-qa="survey-select"
+                name={field.name}
+                label="select jotform"
+                value={
+                  jotformsOptions?.find(
+                    (option) => option.value === field.value
+                  ) || emptyOption
+                }
+              />
+              <ErrorMessage name={field.name} />
+            </FormGroup>
+          )}
+        </FormikField>
+        <FormikField name="testerIdQuestion">
+          {({ field }: FieldProps) => (
+            <FormGroup>
+              <Select
+                options={[emptyOption]}
+                data-qa="testerId-select"
+                isDisabled={true}
+                name={field.name}
+                label="select testerId question"
+                value={emptyOption}
+              />
+              <ErrorMessage name={field.name} />
+            </FormGroup>
+          )}
+        </FormikField>
+        <Button type="submit" data-qa="import-survey-apply-cta">
+          Apply
+        </Button>
       </FormProvider>
     </Modal>
   );
