@@ -1,9 +1,9 @@
 import { TableType } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
-import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
-import { useAppDispatch, useAppSelector } from "src/store";
+import { useAppDispatch } from "src/store";
 import { setTableColumns } from "../selectionSlice";
+import useItems from "../useItems";
 import { columns } from "./columns";
 
 interface RowType extends TableType.Row {
@@ -19,22 +19,9 @@ interface RowType extends TableType.Row {
 
 const useTableRows = (id: string) => {
   const dispatch = useAppDispatch();
-  const { currentPage, devicesPerPage, questionsId, filters } = useAppSelector(
-    (state) => state.selection
-  );
   const [rows, setRows] = useState<RowType[]>([]);
-  const { filterByInclude, filterByExclude, filterByAge } = filters;
-  const { data, isFetching, isLoading, error } =
-    useGetCampaignsByCampaignCandidatesQuery({
-      campaign: id,
-      start: devicesPerPage * (currentPage - 1),
-      limit: devicesPerPage,
-      ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
-      filterByInclude,
-      filterByExclude,
-      filterByAge,
-    });
 
+  const { data, isFetching, isLoading, error, totalRows } = useItems(id);
   useEffect(() => {
     if (data?.results) {
       const newColumns = [...columns];
@@ -69,6 +56,7 @@ const useTableRows = (id: string) => {
               title: "select",
               content: (
                 <DeviceCheckbox
+                  campaignId={id}
                   userId={user.id.toString()}
                   deviceId={device.id.toString()}
                 />
@@ -98,7 +86,7 @@ const useTableRows = (id: string) => {
 
   return {
     rows,
-    totalRows: data?.total || 0,
+    totalRows,
     isFetching,
     isLoading,
     error,

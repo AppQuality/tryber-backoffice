@@ -1,10 +1,10 @@
 import { Button } from "@appquality/appquality-design-system";
-import { FC } from "react";
-import { useAppDispatch, useAppSelector } from "src/store";
 import { openConfirmModal } from "src/pages/campaigns/selection/selectionSlice";
+import { useAppDispatch } from "src/store";
+import useSelection from "../useSelection";
 
-const ConfirmButton: FC = () => {
-  const { selectedDevices } = useAppSelector((state) => state.selection);
+const ConfirmButton = ({ id }: { id: string }) => {
+  const { selectedDevices } = useSelection(id);
   const dispatch = useAppDispatch();
 
   const confirmSelection = () => {

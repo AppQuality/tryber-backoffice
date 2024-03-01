@@ -34,7 +34,6 @@ const QuestionFiltersItems = ({ id }: { id: string }) => {
     return null;
   }
 
-  console.log(data);
   return (
     <>
       {data.fields.map((value) => {
