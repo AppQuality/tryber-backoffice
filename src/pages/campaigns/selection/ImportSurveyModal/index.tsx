@@ -51,7 +51,7 @@ const ImportSurveyModal = ({ id }: { id: string }) => {
                   }}
                   data-qa="survey-select"
                   name={field.name}
-                  label="select jotform"
+                  label="Select a jotform"
                   onChange={(option) => {
                     if (option?.value) {
                       form.setFieldValue(field.name, option.value);
@@ -72,7 +72,7 @@ const ImportSurveyModal = ({ id }: { id: string }) => {
         </FormikField>
         <QuestionsSelect />
         <Button type="submit" data-qa="import-survey-apply-cta">
-          Apply
+          Import
         </Button>
       </FormProvider>
     </Modal>

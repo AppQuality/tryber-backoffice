@@ -1,6 +1,7 @@
 import {
   BSCol,
   BSGrid,
+  Button,
   Card,
   PageTitle,
 } from "@appquality/appquality-design-system";
@@ -60,7 +61,13 @@ const SelectionPage = () => {
           <BSGrid>
             <BSCol size="col-lg-3">
               <Card title="Add columns" className="aq-mb-3">
-                <button onClick={handleImportSurvey}>import jotform</button>
+                <Button
+                  size="block"
+                  className="aq-mb-2"
+                  onClick={handleImportSurvey}
+                >
+                  Import jotform
+                </Button>
                 <ColumnsConfigurator id={id} />
               </Card>
               <SelectionFilters id={id} />

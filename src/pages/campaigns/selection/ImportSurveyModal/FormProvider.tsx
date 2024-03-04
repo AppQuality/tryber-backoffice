@@ -1,4 +1,5 @@
 import { Form, Formik } from "@appquality/appquality-design-system";
+import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import { usePostJotformsByCampaignMutation } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
@@ -39,7 +40,17 @@ const FormProvider = ({ id, children }: FormProviderInterface) => {
             },
           }).unwrap();
           dispatch(closeSurveyModal());
-        } catch (e) {}
+
+          dispatch(addMessage("Jotform correctly imported.", "success"));
+        } catch (e) {
+          dispatch(
+            addMessage(
+              "An error has occurred. Please try again.",
+              "danger",
+              false
+            )
+          );
+        }
       }}
     >
       <Form id="import-survey-modal">{children}</Form>
