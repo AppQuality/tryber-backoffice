@@ -4,7 +4,6 @@ import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/compone
 import { useAppDispatch } from "src/store";
 import { setTableColumns } from "../selectionSlice";
 import useItems from "../useItems";
-import { columns } from "./columns";
 
 interface RowType extends TableType.Row {
   key: string;
@@ -24,7 +23,7 @@ const useTableRows = (id: string) => {
   const { data, isFetching, isLoading, error, totalRows } = useItems(id);
   useEffect(() => {
     if (data?.results) {
-      const newColumns = [...columns];
+      const newColumns: TableType.Column[] = [];
       data.results[0]?.questions?.forEach((q, i) => {
         if (q.title && q.id)
           newColumns.splice(1 + i, 0, {
