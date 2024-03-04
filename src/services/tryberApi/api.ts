@@ -34,6 +34,7 @@ export const api = createApi({
     "Prospect",
     "UX",
     "Selection",
+    "CampaignForms",
   ],
   endpoints: () => ({}), // auto generated npm run generate-api
 });

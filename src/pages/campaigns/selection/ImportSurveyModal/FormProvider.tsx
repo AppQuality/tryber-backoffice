@@ -1,7 +1,11 @@
 import { Form, Formik } from "@appquality/appquality-design-system";
+import { usePostJotformsByCampaignMutation } from "src/services/tryberApi";
+import { useAppDispatch } from "src/store";
 import * as yup from "yup";
+import { closeSurveyModal } from "../selectionSlice";
 
 interface FormProviderInterface {
+  id: string;
   children: React.ReactNode;
 }
 
@@ -10,7 +14,9 @@ export interface ImportSurveyValues {
   testerIdQuestion: string;
 }
 
-const FormProvider = ({ children }: FormProviderInterface) => {
+const FormProvider = ({ id, children }: FormProviderInterface) => {
+  const dispatch = useAppDispatch();
+  const [importJotform] = usePostJotformsByCampaignMutation();
   const initialValues: ImportSurveyValues = {
     survey: "",
     testerIdQuestion: "",
@@ -23,8 +29,17 @@ const FormProvider = ({ children }: FormProviderInterface) => {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        console.log(values);
+      onSubmit={async (values) => {
+        try {
+          await importJotform({
+            campaign: id,
+            body: {
+              formId: values.survey,
+              testerIdColumn: values.testerIdQuestion,
+            },
+          }).unwrap();
+          dispatch(closeSurveyModal());
+        } catch (e) {}
       }}
     >
       <Form id="import-survey-modal">{children}</Form>

@@ -4,24 +4,24 @@ import {
   Card,
   PageTitle,
 } from "@appquality/appquality-design-system";
-import { AuthorizedOnlyContainer } from "src/features/AuthorizedOnlyContainer";
-import Counter from "./counter";
-import ColumnsConfigurator from "./editPanel/columnsConfigurator";
-import SelectionFilters from "./editPanel/selectionFilters";
-import SelectionTable from "./SelectionTable";
 import { useParams } from "react-router-dom";
-import ConfirmButton from "src/pages/campaigns/selection/confirmButton/ConfirmButton";
-import ConfirmModal from "src/pages/campaigns/selection/confirmModals/ConfirmSelectionModal";
-import ConfirmFormModal from "src/pages/campaigns/selection/confirmModals/ConfirmFormModal";
-import styled from "styled-components";
+import { AuthorizedOnlyContainer } from "src/features/AuthorizedOnlyContainer";
 import { PageTemplate } from "src/features/PageTemplate";
+import ConfirmButton from "src/pages/campaigns/selection/confirmButton/ConfirmButton";
+import ConfirmFormModal from "src/pages/campaigns/selection/confirmModals/ConfirmFormModal";
+import ConfirmModal from "src/pages/campaigns/selection/confirmModals/ConfirmSelectionModal";
 import {
   useGetCampaignsByCampaignQuery,
   useGetUsersMePermissionsQuery,
 } from "src/services/tryberApi";
-import { openFormModal, openSurveyModal } from "./selectionSlice";
 import { useAppDispatch } from "src/store";
+import styled from "styled-components";
 import ImportSurveyModal from "./ImportSurveyModal";
+import SelectionTable from "./SelectionTable";
+import Counter from "./counter";
+import ColumnsConfigurator from "./editPanel/columnsConfigurator";
+import SelectionFilters from "./editPanel/selectionFilters";
+import { openFormModal, openSurveyModal } from "./selectionSlice";
 
 const BottomCard = styled(Card)`
   .aq-card-body {
@@ -55,7 +55,7 @@ const SelectionPage = () => {
           <ConfirmFormModal
             preselectionFormId={campaignData?.preselectionFormId}
           />
-          <ImportSurveyModal />
+          <ImportSurveyModal id={id} />
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid>
             <BSCol size="col-lg-3">

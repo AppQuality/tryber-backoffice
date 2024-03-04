@@ -48,7 +48,7 @@ tryberApi.enhanceEndpoints({
       invalidatesTags: ["Campaigns"],
     },
     getCampaignsByCampaignForms: {
-      providesTags: ["Campaigns"],
+      providesTags: ["Campaigns", "CampaignForms"],
     },
     getCustomers: {
       providesTags: ["Customers"],
@@ -220,6 +220,9 @@ tryberApi.enhanceEndpoints({
     },
     getJotformsForms: {
       providesTags: ["Forms"],
+    },
+    postJotformsByCampaign: {
+      invalidatesTags: ["Selection", "CampaignForms"],
     },
   },
 });
