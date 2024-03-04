@@ -7,9 +7,9 @@ import {
   Modal,
   Select,
 } from "@appquality/appquality-design-system";
-import { useAppSelector, useAppDispatch } from "src/store";
-import { closeSurveyModal } from "../selectionSlice";
 import { useGetJotformsFormsQuery } from "src/services/tryberApi";
+import { useAppDispatch, useAppSelector } from "src/store";
+import { closeSurveyModal } from "../selectionSlice";
 import FormProvider from "./FormProvider";
 import { QuestionsSelect } from "./QuestionsSelect";
 
@@ -25,6 +25,9 @@ const ImportSurveyModal = () => {
     label: jotform.name,
     value: jotform.id,
   }));
+
+  const { data, isLoading, hasValue } = useSelectOptions();
+
   return (
     <Modal
       title="Import Jotform Dialog"
@@ -34,32 +37,45 @@ const ImportSurveyModal = () => {
     >
       <FormProvider>
         <FormikField name="survey">
-          {({ field, form }: FieldProps) => (
-            <FormGroup>
-              <Select
-                options={jotformsOptions || [emptyOption]}
-                data-qa="survey-select"
-                name={field.name}
-                label="select jotform"
-                onChange={(option) => {
-                  if (option?.value) {
-                    form.setFieldValue(field.name, option.value);
-                  } else {
-                    form.setFieldValue(field.name, "");
+          {({ field, form }: FieldProps) => {
+            const selectedValueIsPresent =
+              field.value.value !== "" ? hasValue(field.value) : true;
+            return (
+              <FormGroup>
+                <Select
+                  isDisabled={isLoading || !selectedValueIsPresent}
+                  options={async (offset, search) => {
+                    const options = await data(offset, field.value, search);
+                    return {
+                      ...options,
+                      results: selectedValueIsPresent
+                        ? options.results
+                        : [...options.results, field.value],
+                    };
+                  }}
+                  data-qa="survey-select"
+                  name={field.name}
+                  label="select jotform"
+                  onChange={(option) => {
+                    if (option?.value) {
+                      form.setFieldValue(field.name, option.value);
+                    } else {
+                      form.setFieldValue(field.name, "");
+                    }
+                  }}
+                  onBlur={() => {
+                    form.setFieldTouched(field.name, true);
+                  }}
+                  value={
+                    jotformsOptions?.find(
+                      (option) => option.value === field.value
+                    ) || emptyOption
                   }
-                }}
-                onBlur={() => {
-                  form.setFieldTouched(field.name, true);
-                }}
-                value={
-                  jotformsOptions?.find(
-                    (option) => option.value === field.value
-                  ) || emptyOption
-                }
-              />
-              <ErrorMessage name={field.name} />
-            </FormGroup>
-          )}
+                />
+                <ErrorMessage name={field.name} />
+              </FormGroup>
+            );
+          }}
         </FormikField>
         <QuestionsSelect />
         <Button type="submit" data-qa="import-survey-apply-cta">
@@ -68,6 +84,59 @@ const ImportSurveyModal = () => {
       </FormProvider>
     </Modal>
   );
+};
+
+const useSelectOptions = () => {
+  const { data, isLoading } = useGetJotformsFormsQuery();
+
+  if (isLoading) {
+    return {
+      data: (offset: number, search?: string) =>
+        Promise.resolve({ results: [], more: false }),
+      isLoading,
+      hasValue: (value: SelectOptionType) => false,
+    };
+  }
+  const jotforms = data || [];
+  const options = jotforms.map((jf) => ({
+    label: jf.name,
+    value: jf.id.toString(),
+  }));
+
+  return {
+    data: async (
+      pageNumber: number,
+      value: SelectOptionType,
+      search?: string
+    ) => {
+      const filteredOptions = options.filter(
+        (o) =>
+          o.label.toLowerCase().includes((search || "").toLowerCase()) &&
+          o.value !== value.value
+      );
+      const results = filteredOptions.slice(
+        pageNumber * 10,
+        (pageNumber + 1) * 10
+      );
+      let more = results.length === 10;
+      if (pageNumber === 0) {
+        const selectedOption = options.find((o) => o.value === value.value);
+        if (selectedOption) {
+          results.unshift(selectedOption);
+          more = results.length === 11;
+        }
+      }
+      return {
+        results,
+        more,
+      };
+    },
+    isLoading,
+    hasValue: (value: string) => {
+      if (value === "") return true;
+      return options.some((o) => o.value === value);
+    },
+  };
 };
 
 export default ImportSurveyModal;

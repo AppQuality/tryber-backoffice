@@ -4,8 +4,8 @@ import {
   Button,
   Modal,
 } from "@appquality/appquality-design-system";
-import { useAppSelector, useAppDispatch } from "src/store";
-import { closeFormModal } from "../selectionSlice";
+import { useAppDispatch, useAppSelector } from "src/store";
+import { closeFormModal, openSurveyModal } from "../selectionSlice";
 
 const ConfirmFormModal = ({
   preselectionFormId,
@@ -27,7 +27,10 @@ const ConfirmFormModal = ({
         </BSCol>
         <BSCol>
           <Button
-            onClick={() => alert("confirm")}
+            onClick={() => {
+              dispatch(closeFormModal());
+              dispatch(openSurveyModal());
+            }}
             kind="primary"
             flat
             size="block"

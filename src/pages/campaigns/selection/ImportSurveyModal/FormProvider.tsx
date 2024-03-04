@@ -23,7 +23,9 @@ const FormProvider = ({ children }: FormProviderInterface) => {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={() => alert("submit")}
+      onSubmit={(values) => {
+        console.log(values);
+      }}
     >
       <Form id="import-survey-modal">{children}</Form>
     </Formik>

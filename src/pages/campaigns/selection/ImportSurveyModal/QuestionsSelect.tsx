@@ -5,9 +5,9 @@ import {
   FormikField,
   Select,
 } from "@appquality/appquality-design-system";
-import { useGetJotformsFormsByFormIdQuestionsQuery } from "src/services/tryberApi";
 import { useFormikContext } from "formik";
 import { useMemo } from "react";
+import { useGetJotformsFormsByFormIdQuestionsQuery } from "src/services/tryberApi";
 import { ImportSurveyValues } from "./FormProvider";
 
 export const QuestionsSelect = () => {
@@ -20,8 +20,8 @@ export const QuestionsSelect = () => {
   const options = useMemo(() => {
     return (
       questions?.map((question) => ({
-        label: question.name,
-        value: question.id,
+        label: question.title,
+        value: question.name,
       })) || []
     );
   }, [questions]);
