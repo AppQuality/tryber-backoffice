@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { SelectionPage } from "../../fixtures/SelectionPage";
 
 test("If user hasn't enough permissions (appq_tester_selection) sees an error message", async ({
@@ -74,13 +74,57 @@ test.describe("Import jotform Modal: ", () => {
   });
   test("la select è popolata con una lista dei form disponibili e con label tiolo del form e value id del form (verificare se è possibile cercare)", async ({
     page,
-  }) => {});
+  }) => {
+    await selectionPage.elements().surveySelect().click();
+    await expect(
+      selectionPage
+        .elements()
+        .surveySelect()
+        .locator("[id^=react-select-5-option]")
+    ).toHaveCount(3);
+    await expect(
+      selectionPage
+        .elements()
+        .surveySelect()
+        .locator("#react-select-5-option-0")
+    ).toContainText("Form new");
+    await expect(
+      selectionPage
+        .elements()
+        .surveySelect()
+        .locator("#react-select-5-option-1")
+    ).toContainText("Form old");
+    await expect(
+      selectionPage
+        .elements()
+        .surveySelect()
+        .locator("#react-select-5-option-2")
+    ).toContainText("Form oldest");
+  });
   test("una volta selezionato il form dalla prima select si popola la seconda con le domande e si abilita", async ({
     page,
-  }) => {});
-  test("se l'utente clicca su apply e manca una selezione delle due spunta un errore", async ({
+  }) => {
+    await selectionPage.selectFormOption();
+    await expect(
+      selectionPage.elements().testerIdSelect().locator("#react-select-7-input")
+    ).not.toBeDisabled();
+    await selectionPage.elements().testerIdSelect().click();
+    await expect(
+      selectionPage
+        .elements()
+        .testerIdSelect()
+        .locator("[id^=react-select-7-option]")
+    ).toHaveCount(3);
+  });
+  test("se l'utente clicca su apply e manca la selezione delle question spunta un errore", async ({
     page,
-  }) => {});
+  }) => {
+    await selectionPage.selectFormOption();
+    await selectionPage.elements().applyCta().click();
+    await expect(
+      selectionPage.elements().importSurveyModal().getByText("required field")
+    ).toBeVisible();
+  });
   test("se l'utente clicca su apply e le select sono complete si chiude la modale viene mandata la POST con id del form, id della domanda testerID e id della campagna", async ({
     page,
   }) => {});

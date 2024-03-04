@@ -6,7 +6,7 @@
   "image": "string",
   "id": 0,
   "wp_user_id": 0,
-  "role": "administrator",
+  "role": "string",
   "is_verified": true,
   "rank": "string",
   "total_exp_pts": 0,
