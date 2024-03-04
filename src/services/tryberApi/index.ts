@@ -2469,6 +2469,9 @@ export type GetJotformsFormsByFormIdQuestionsApiResponse =
   /** status 200 OK */ {
     id: string;
     name: string;
+    title: string;
+    description: string;
+    type: string;
   }[];
 export type GetJotformsFormsByFormIdQuestionsApiArg = {
   formId: string;

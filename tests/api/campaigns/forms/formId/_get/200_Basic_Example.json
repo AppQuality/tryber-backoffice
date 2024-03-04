@@ -14,6 +14,12 @@
       "options": ["Option1", "Option2"]
     },
     {
+      "id": 12234,
+      "question": "What's your [radio question]?",
+      "type": "radio",
+      "options": ["Yes", "No"]
+    },
+    {
       "id": 9,
       "question": "What's your [custom selectable question]?",
       "type": "select",

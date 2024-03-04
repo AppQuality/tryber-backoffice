@@ -13,6 +13,7 @@ export class SelectionPage extends BackofficePage {
 
   async visit() {
     await this.page.goto(this.url);
+    await this.closeCookieBanner();
   }
 
   async loggedIn() {
@@ -65,6 +66,41 @@ export class SelectionPage extends BackofficePage {
         });
       }
     );
+  }
+
+  async getJoformForms() {
+    await this.page.route(`*/**/api/jotforms/forms`, async (route) => {
+      await route.fulfill({
+        path: `tests/api/jotforms/forms/_get/200_3_forms.json`,
+      });
+    });
+  }
+
+  async getJoformFormQuestions() {
+    await this.page.route(
+      `*/**/api/jotforms/forms/3/questions`,
+      async (route) => {
+        await route.fulfill({
+          path: `tests/api/jotforms/forms/formId/questions/_get/200_3_questions.json`,
+        });
+      }
+    );
+  }
+
+  async selectFormOption() {
+    await this.elements().surveySelect().click();
+    await this.elements()
+      .surveySelect()
+      .locator("#react-select-5-option-0")
+      .click();
+  }
+
+  async selectFormQuestion() {
+    await this.selectFormOption();
+    await this.elements()
+      .testerIdSelect()
+      .locator("#react-select-7-option-0")
+      .click();
   }
 
   elements() {
