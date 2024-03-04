@@ -22,6 +22,8 @@ export const api = createApi({
     "Customers",
     "CustomUserFields",
     "ExperiencePoints",
+    "Forms",
+    "Questions",
     "Users",
     "Media",
     "Payments",
@@ -32,6 +34,7 @@ export const api = createApi({
     "Prospect",
     "UX",
     "Selection",
+    "CampaignForms",
   ],
   endpoints: () => ({}), // auto generated npm run generate-api
 });
