@@ -4,6 +4,7 @@ import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableR
 import { changeTablePage } from "src/pages/campaigns/selection/selectionSlice";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { StyledSelectionTable } from "./_style";
+import SelectAllFirstDevicesCheckbox from "./components/SelectAllFirstDevicesCheckbox";
 
 const SelectionTable: FC<{ id: string }> = ({ id }) => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,13 @@ const SelectionTable: FC<{ id: string }> = ({ id }) => {
   );
   return (
     <StyledSelectionTable columns={tableColumns.length} isFetching={isFetching}>
+      <div className="aq-mb-3">
+        Select all first-user-device
+        <SelectAllFirstDevicesCheckbox
+          data-testid="selectAllFirstDevices"
+          campaignId={id}
+        />
+      </div>
       <Table
         data-testid="selection-table"
         dataSource={rows}
