@@ -12,12 +12,12 @@ import {
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import { usePostCampaignsByCampaignCandidatesMutation } from "src/services/tryberApi";
 import { useAppDispatch, useAppSelector } from "src/store";
+import useSelection from "../useSelection";
 
 const ConfirmModal: FC<{ id: string }> = ({ id }) => {
   const { add } = siteWideMessageStore();
-  const { isConfirmModalOpen, selectedDevices } = useAppSelector(
-    (state) => state.selection
-  );
+  const { isConfirmModalOpen } = useAppSelector((state) => state.selection);
+  const { selectedDevices } = useSelection(id);
   const dispatch = useAppDispatch();
   const close = () => {
     dispatch(closeConfirmModal());

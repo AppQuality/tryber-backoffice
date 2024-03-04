@@ -2,6 +2,17 @@ import { TableType } from "@appquality/appquality-design-system";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { columns } from "./SelectionTable/columns";
 
+type PartialRecord<K extends keyof any, T> = {
+  [P in K]?: T;
+};
+
+type Filter =
+  | PartialRecord<"testerIds", string>
+  | PartialRecord<
+      "os" | "gender" | "bughunting" | `question_${number}`,
+      string[]
+    >;
+
 interface SelectionState {
   selectedDevices: {
     [userId: string]: string;
@@ -15,8 +26,12 @@ interface SelectionState {
   tableColumns: TableType.Column[];
   disableApplyFilters: boolean;
   filters: {
-    filterByInclude?: { [key: string]: string[] };
-    filterByExclude?: { [key: string]: string[] };
+    filterByInclude?: Filter;
+    filterByExclude?: Record<"testerIds", string>;
+    filterByAge?: {
+      min?: number;
+      max?: number;
+    };
   };
 }
 
@@ -49,8 +64,12 @@ const selectionSlice = createSlice({
     setFilters(
       state,
       action: PayloadAction<{
-        filterByInclude?: { [key: string]: string[] };
-        filterByExclude?: { [key: string]: string[] };
+        filterByInclude?: Filter;
+        filterByExclude?: Record<"testerIds", string>;
+        filterByAge?: {
+          min?: number;
+          max?: number;
+        };
       }>
     ) {
       state.filters = action.payload;

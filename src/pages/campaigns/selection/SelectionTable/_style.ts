@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const StyledSelectionTable = styled.div<{ columns: number }>`
+export const StyledSelectionTable = styled.div<{
+  columns: number;
+  isFetching: boolean;
+}>`
+  ${(p) => p.isFetching && "opacity: 0.5; pointer-events: none;"}
   .selection-title {
     padding: 16px 16px 8px;
     border-bottom: 1px solid ${(p) => p.theme.colors.gray300};

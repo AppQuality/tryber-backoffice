@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { SelectionPage } from "../../fixtures/SelectionPage";
 
 test("If user hasn't enough permissions (appq_tester_selection) sees an error message", async ({
@@ -48,8 +48,6 @@ test.describe("Import jotform Modal: ", () => {
   test.beforeEach(async ({ page }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
-    await selectionPage.getJoformForms();
-    await selectionPage.getJoformFormQuestions();
     await selectionPage.visit();
     await selectionPage.elements().importJotformCta().click();
   });

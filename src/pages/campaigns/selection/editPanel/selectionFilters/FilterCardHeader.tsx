@@ -1,10 +1,5 @@
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
-import { Button, Title } from "@appquality/appquality-design-system";
-import { FieldArray } from "formik";
+import { Title } from "@appquality/appquality-design-system";
 import styled from "styled-components";
-import { useAppSelector, useAppDispatch } from "src/store";
-import { setDisableApplyFilters } from "../../selectionSlice";
-import { v4 as uuidv4 } from "uuid";
 
 const StyledCardHeader = styled.div`
   display: flex;
@@ -17,49 +12,10 @@ const StyledCardHeader = styled.div`
   }
 `;
 
-interface FilterCardHeaderProps {
-  queryTypeOptions: Option[];
-}
-
-const FilterCardHeader = ({ queryTypeOptions }: FilterCardHeaderProps) => {
-  const dispatch = useAppDispatch();
-  const { disableApplyFilters } = useAppSelector((state) => state.selection);
-
+const FilterCardHeader = () => {
   return (
     <StyledCardHeader>
-      <Title size="ms">Add filters</Title>
-      <div>
-        <FieldArray
-          name="filters.rows"
-          render={(arrayHelpers) => (
-            <Button
-              className="header-btn"
-              kind="link-hover"
-              data-testid="selectionFilters_add"
-              onClick={() => {
-                arrayHelpers.push({
-                  id: uuidv4(),
-                  filterBy: { label: "", value: "os" },
-                  queryType: queryTypeOptions[0],
-                  search: "",
-                });
-                dispatch(setDisableApplyFilters(false));
-              }}
-            >
-              + Add new
-            </Button>
-          )}
-        />
-        <Button
-          className="header-btn aq-ml-2"
-          type="submit"
-          disabled={disableApplyFilters}
-          data-testid="selectionFilters_apply"
-          flat
-        >
-          Apply
-        </Button>
-      </div>
+      <Title size="ms">Filters</Title>
     </StyledCardHeader>
   );
 };

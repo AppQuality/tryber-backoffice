@@ -77,8 +77,8 @@ const SelectionPage = () => {
                 <SelectionTable id={id} />
               </Card>
               <BottomCard className="aq-mb-3">
-                <Counter />
-                <ConfirmButton />
+                <Counter id={id} />
+                <ConfirmButton id={id} />
               </BottomCard>
             </BSCol>
           </BSGrid>

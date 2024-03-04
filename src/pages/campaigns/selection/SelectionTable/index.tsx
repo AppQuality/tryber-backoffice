@@ -1,24 +1,23 @@
-import { Table } from "@appquality/appquality-design-system";
+import { Pagination, Table } from "@appquality/appquality-design-system";
 import { FC } from "react";
 import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableRows";
-import { Pagination } from "@appquality/appquality-design-system";
-import { useAppSelector, useAppDispatch } from "src/store";
 import { changeTablePage } from "src/pages/campaigns/selection/selectionSlice";
+import { useAppDispatch, useAppSelector } from "src/store";
 import { StyledSelectionTable } from "./_style";
 
 const SelectionTable: FC<{ id: string }> = ({ id }) => {
   const dispatch = useAppDispatch();
-  const { rows, totalRows, isFetching } = useTableRows(id);
+  const { rows, totalRows, isFetching, isLoading } = useTableRows(id);
   const { devicesPerPage, currentPage, tableColumns } = useAppSelector(
     (state) => state.selection
   );
   return (
-    <StyledSelectionTable columns={tableColumns.length}>
+    <StyledSelectionTable columns={tableColumns.length} isFetching={isFetching}>
       <Table
         data-testid="selection-table"
         dataSource={rows}
         columns={tableColumns}
-        isLoading={isFetching}
+        isLoading={isLoading}
         className="aq-mb-3 table-scrollable"
       />
       <Pagination

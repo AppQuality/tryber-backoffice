@@ -56,6 +56,18 @@ export class SelectionPage extends BackofficePage {
     );
   }
 
+  async candidatesWithoutQuestions() {
+    await this.page.route(
+      `**/api/campaigns/${this.campaignId}/candidates**`,
+      async (route) => {
+        await route.fulfill({
+          status: 200,
+          path: `tests/api/campaigns/campaign/candidates/_get/200_example-2.json`,
+        });
+      }
+    );
+  }
+
   async getJoformForms() {
     await this.page.route(`*/**/api/jotforms/forms`, async (route) => {
       await route.fulfill({
@@ -97,6 +109,7 @@ export class SelectionPage extends BackofficePage {
         this.page.getByRole("button", { name: "Import Jotform" }),
       messageFormAlreadyPresent: () =>
         this.page.getByText("A questa Selection è già collegato il form"),
+      filterCard: () => this.page.getByTestId("selectionFilters"),
       importSurveyModal: () => this.page.locator("#import-survey-modal"),
       importSurveyModalTitle: () =>
         this.page.getByText("Import Jotform Dialog"),
