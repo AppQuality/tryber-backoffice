@@ -14,7 +14,7 @@ const useItems = (id: string, options?: { withLimit: boolean }) => {
             start: devicesPerPage * (currentPage - 1),
             limit: devicesPerPage,
           }
-        : {}),
+        : { start: 0, limit: Number.MAX_SAFE_INTEGER }),
       ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
       filterByInclude,
       filterByExclude,

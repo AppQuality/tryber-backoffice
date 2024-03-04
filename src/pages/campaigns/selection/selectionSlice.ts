@@ -1,6 +1,5 @@
 import { TableType } from "@appquality/appquality-design-system";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { columns } from "./SelectionTable/columns";
 
 type PartialRecord<K extends keyof any, T> = {
   [P in K]?: T;
@@ -43,7 +42,7 @@ export const initialState: SelectionState = {
   isFormModalOpen: false,
   isSurveyModalOpen: false,
   questionsId: [],
-  tableColumns: columns,
+  tableColumns: [],
   disableApplyFilters: true,
   filters: {},
 };
