@@ -10,7 +10,7 @@ const InputContainer = styled.div`
 `;
 
 const TesterIdExclude = () => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string | undefined>("");
 
   const { filterByExclude } = useAppSelector(
     (state) => state.selection.filters
@@ -34,7 +34,9 @@ const TesterIdExclude = () => {
       <InputContainer>
         <Input
           value={value}
-          onChange={setValue}
+          onChange={(val) => {
+            setValue(val.trim() === "" ? undefined : val);
+          }}
           data-qa="testerIdExclude"
           id="tidexclude"
           type="text"

@@ -10,7 +10,7 @@ const InputContainer = styled.div`
 `;
 
 const TesterIdInclude = () => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string | undefined>("");
 
   const { filterByInclude } = useAppSelector(
     (state) => state.selection.filters
@@ -34,7 +34,9 @@ const TesterIdInclude = () => {
       <InputContainer>
         <Input
           value={value}
-          onChange={setValue}
+          onChange={(val) => {
+            setValue(val.trim() === "" ? undefined : val);
+          }}
           data-qa="testerIdInclude"
           id="tidinclude"
           type="text"
