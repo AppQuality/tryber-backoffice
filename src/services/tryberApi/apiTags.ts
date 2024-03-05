@@ -222,7 +222,7 @@ tryberApi.enhanceEndpoints({
       providesTags: ["Forms"],
     },
     postJotformsByCampaign: {
-      invalidatesTags: ["Selection", "CampaignForms"],
+      invalidatesTags: ["Selection", "Campaigns", "CampaignForms"],
     },
   },
 });
