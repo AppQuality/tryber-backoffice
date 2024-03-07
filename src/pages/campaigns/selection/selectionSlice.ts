@@ -8,7 +8,7 @@ type PartialRecord<K extends keyof any, T> = {
 type Filter =
   | PartialRecord<"testerIds", string>
   | PartialRecord<
-      "os" | "gender" | "bughunting" | `question_${number}`,
+      "os" | "gender" | "bughunting" | "metal" | `question_${number}`,
       string[]
     >;
 
