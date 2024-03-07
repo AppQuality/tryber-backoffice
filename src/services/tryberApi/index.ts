@@ -1119,8 +1119,10 @@ export type GetCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */ {
     surname: string;
     gender: Gender;
     age: number;
+    experience: number;
     levels: {
       bugHunting: string;
+      metal: string;
     };
     devices: {
       manufacturer?: string;
@@ -2470,7 +2472,7 @@ export type GetJotformsFormsByFormIdQuestionsApiResponse =
     id: string;
     name: string;
     title: string;
-    description: string;
+    description?: string;
     type: string;
   }[];
 export type GetJotformsFormsByFormIdQuestionsApiArg = {
