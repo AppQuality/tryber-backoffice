@@ -22,6 +22,16 @@ export const useColumns: () => TableType.Column[] = () => {
       title: "Gender",
     },
     {
+      dataIndex: "metallevel",
+      key: "metallevel",
+      title: "Metal Level",
+    },
+    {
+      dataIndex: "exppoints",
+      key: "exppoints",
+      title: "Experience Points",
+    },
+    {
       dataIndex: "bhlevel",
       key: "bhlevel",
       title: "BH Level",
