@@ -73,6 +73,8 @@ const useTableRows = (id: string) => {
               age: user.age,
               gender: user.gender,
               bhlevel: user.levels.bugHunting,
+              exppoints: user.experience,
+              metallevel: user.levels.metal,
               ...fields,
             };
           }
