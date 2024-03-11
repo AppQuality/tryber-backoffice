@@ -20,6 +20,7 @@ import styled from "styled-components";
 import ImportSurveyModal from "./ImportSurveyModal";
 import SelectionTable from "./SelectionTable";
 import Counter from "./counter";
+import ColumnsConfigurator from "./editPanel/columnsConfigurator";
 import SelectionFilters from "./editPanel/selectionFilters";
 import { openFormModal, openSurveyModal } from "./selectionSlice";
 
@@ -70,6 +71,9 @@ const SelectionPage = () => {
               >
                 Import jotform
               </Button>
+              <Card title="Add columns" className="aq-mb-3">
+                <ColumnsConfigurator id={id} />
+              </Card>
               <SelectionFilters id={id} />
             </BSCol>
             <BSCol size="col-lg-9">
