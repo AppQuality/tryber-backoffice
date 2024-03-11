@@ -34,6 +34,7 @@ const TesterIdExclude = () => {
       <InputContainer>
         <Input
           placeholder="T38229, T283472"
+          className="aq-mr-2"
           value={value}
           onChange={(val) => {
             setValue(val.trim() === "" ? undefined : val);

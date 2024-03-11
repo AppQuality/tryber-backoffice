@@ -38,6 +38,7 @@ const AgeFilters = () => {
           onChange={(val) => setMin(parseInt(val))}
           id="minAge"
           type="number"
+          className="aq-mr-2"
         />
         <Input
           placeholder="Max"
@@ -45,6 +46,7 @@ const AgeFilters = () => {
           onChange={(val) => setMax(parseInt(val))}
           id="maxAge"
           type="number"
+          className="aq-mr-2"
         />
         <Button onClick={() => onApply()}>Apply</Button>
       </InputContainer>
