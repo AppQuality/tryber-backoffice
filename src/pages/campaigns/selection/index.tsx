@@ -51,7 +51,10 @@ const SelectionPage = () => {
   return (
     <PageTemplate>
       <div className="selection-page">
-        <AuthorizedOnlyContainer excludeRule={!data?.appq_tester_selection}>
+        <AuthorizedOnlyContainer
+          excludeRule={!data?.appq_tester_selection}
+          isFluid
+        >
           <ConfirmModal id={id} />
           <ConfirmFormModal
             preselectionFormId={campaignData?.preselectionFormId}

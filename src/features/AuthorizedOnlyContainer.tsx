@@ -1,7 +1,7 @@
-import useUserData from "src/pages/Jotform/useUserData";
 import { Container } from "@appquality/appquality-design-system";
-import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import React from "react";
+import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
+import useUserData from "src/pages/Jotform/useUserData";
 
 export const AuthorizedOnlyContainer: React.FC<{
   excludeRule: boolean;
@@ -13,12 +13,11 @@ export const AuthorizedOnlyContainer: React.FC<{
   if (isError) return <Container>there was an error</Container>;
   if (excludeRule)
     return (
-      // <Container isFluid={isFluid}>
-      <Container>
+      <Container isFluid={isFluid}>
         <ErrorUnauthorized />
       </Container>
     );
-  return <Container>{children}</Container>;
+  return <Container isFluid={isFluid}>{children}</Container>;
 };
 
 export const OpsUserContainer: React.FC<{ children: React.ReactNode }> = ({
