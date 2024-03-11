@@ -15,7 +15,7 @@ const StyledCardHeader = styled.div`
 const FilterCardHeader = () => {
   return (
     <StyledCardHeader>
-      <Title size="ms">Filters</Title>
+      <Title size="s">Filters</Title>
     </StyledCardHeader>
   );
 };

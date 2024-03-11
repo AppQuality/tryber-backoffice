@@ -30,9 +30,10 @@ const TesterIdInclude = () => {
 
   return (
     <FilterContainer>
-      <Title size="s">Show only these testers</Title>
+      <Title size="xs">Show only these testers</Title>
       <InputContainer>
         <Input
+          placeholder="T38229, T283472"
           value={value}
           onChange={(val) => {
             setValue(val.trim() === "" ? undefined : val);

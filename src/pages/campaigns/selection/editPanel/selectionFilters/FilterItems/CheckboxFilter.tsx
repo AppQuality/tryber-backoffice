@@ -17,7 +17,7 @@ const CheckboxFilter = ({
   const dispatch = useAppDispatch();
   return (
     <FilterContainer>
-      <Title size="s">{title}</Title>
+      <Title size="xs">{title}</Title>
       {options.map((d) => (
         <div key={d}>
           <Checkbox

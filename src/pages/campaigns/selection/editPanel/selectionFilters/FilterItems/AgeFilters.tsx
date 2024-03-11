@@ -30,7 +30,7 @@ const AgeFilters = () => {
 
   return (
     <FilterContainer>
-      <Title size="s">Filter By Age</Title>
+      <Title size="xs">Filter By Age</Title>
       <InputContainer>
         <Input
           placeholder="Min"
