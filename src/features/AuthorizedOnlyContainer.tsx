@@ -6,12 +6,14 @@ import React from "react";
 export const AuthorizedOnlyContainer: React.FC<{
   excludeRule: boolean;
   children: React.ReactNode;
-}> = ({ children, excludeRule }) => {
+  isFluid?: boolean;
+}> = ({ children, excludeRule, isFluid }) => {
   const { isFetching, isError, isLoading } = useUserData();
   if (isLoading || isFetching) return <Container>loading...</Container>;
   if (isError) return <Container>there was an error</Container>;
   if (excludeRule)
     return (
+      // <Container isFluid={isFluid}>
       <Container>
         <ErrorUnauthorized />
       </Container>
