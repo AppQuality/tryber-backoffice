@@ -10,36 +10,43 @@ export const useColumns: () => TableType.Column[] = () => {
       dataIndex: "id",
       key: "id",
       title: "ID",
+      maxWidth: "80px",
     },
     {
       dataIndex: "name",
       key: "name",
       title: "Name",
+      maxWidth: "200px",
     },
     {
       dataIndex: "age",
       key: "age",
       title: "Age",
+      maxWidth: "80px",
     },
     {
       dataIndex: "gender",
       key: "gender",
       title: "Gender",
+      maxWidth: "120px",
     },
     {
       dataIndex: "metallevel",
       key: "metallevel",
       title: "Metal Level",
+      maxWidth: "120px",
     },
     {
       dataIndex: "exppoints",
       key: "exppoints",
       title: "Exp Points",
+      maxWidth: "120px",
     },
     {
       dataIndex: "bhlevel",
       key: "bhlevel",
       title: "BH Level",
+      maxWidth: "120px",
     },
     {
       dataIndex: "totalCpBusiness",
@@ -49,6 +56,7 @@ export const useColumns: () => TableType.Column[] = () => {
           Total CP
         </span>
       ),
+      maxWidth: "80px",
     },
     {
       dataIndex: "lastCpBusiness",
@@ -58,16 +66,19 @@ export const useColumns: () => TableType.Column[] = () => {
           Last CP
         </span>
       ),
+      maxWidth: "80px",
     },
     {
       dataIndex: "devices",
       key: "devices",
       title: "Devices",
+      maxWidth: "200px",
     },
     {
       dataIndex: "os",
       key: "os",
       title: "OS",
+      maxWidth: "200px",
     },
     {
       dataIndex: "actions",
