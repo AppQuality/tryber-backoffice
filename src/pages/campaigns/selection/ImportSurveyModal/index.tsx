@@ -33,7 +33,7 @@ const ImportSurveyModal = ({ id }: { id: string }) => {
 
   return (
     <Modal
-      title="Import Jotform Dialog"
+      title="Import Jotform"
       size="large"
       isOpen={isSurveyModalOpen}
       onClose={close}
@@ -51,7 +51,7 @@ const ImportSurveyModal = ({ id }: { id: string }) => {
                   }}
                   data-qa="survey-select"
                   name={field.name}
-                  label="Select a jotform"
+                  label="Choose the Jotform to import into the tester selection"
                   onChange={(option) => {
                     if (option?.value) {
                       form.setFieldValue(field.name, option.value);
@@ -71,9 +71,11 @@ const ImportSurveyModal = ({ id }: { id: string }) => {
           }}
         </FormikField>
         <QuestionsSelect />
-        <Button type="submit" data-qa="import-survey-apply-cta">
-          Import
-        </Button>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button type="submit" data-qa="import-survey-apply-cta">
+            Confirm importation
+          </Button>
+        </div>
       </FormProvider>
     </Modal>
   );
