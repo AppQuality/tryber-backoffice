@@ -1,8 +1,6 @@
 import { TableType } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
-import { useAppDispatch } from "src/store";
-import { setTableColumns } from "../selectionSlice";
 import useItems from "../useItems";
 
 interface RowType extends TableType.Row {
@@ -17,24 +15,9 @@ interface RowType extends TableType.Row {
 }
 
 const useTableRows = (id: string) => {
-  const dispatch = useAppDispatch();
   const [rows, setRows] = useState<RowType[]>([]);
 
   const { data, isFetching, isLoading, error, totalRows } = useItems(id);
-  useEffect(() => {
-    if (data?.results) {
-      const newColumns: TableType.Column[] = [];
-      data.results[0]?.questions?.forEach((q, i) => {
-        if (q.title && q.id)
-          newColumns.splice(1 + i, 0, {
-            dataIndex: `${q.id}-${i}`,
-            key: `${q.id}-${i}`,
-            title: q.title,
-          });
-      });
-      dispatch(setTableColumns(newColumns));
-    }
-  }, [data, dispatch]);
 
   useEffect(() => {
     const newRows: RowType[] = [];
@@ -65,7 +48,10 @@ const useTableRows = (id: string) => {
           if (deviceIndex === 0) {
             let fields: { [key: string]: any } = {};
             user.questions?.forEach((q, i) => {
-              fields = { ...fields, ...{ [`${q.id}-${i}`]: q.value || "-" } };
+              fields = {
+                ...fields,
+                ...{ [`question_${q.id}`]: q.value || "-" },
+              };
             });
             row = {
               ...row,

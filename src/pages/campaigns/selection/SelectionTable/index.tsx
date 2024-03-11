@@ -10,23 +10,15 @@ const SelectionTable: FC<{ id: string }> = ({ id }) => {
   const dispatch = useAppDispatch();
   const { rows, totalRows, isFetching, isLoading } = useTableRows(id);
   const columns = useColumns();
-  const {
-    devicesPerPage,
-    currentPage,
-    tableColumns: additionalColumns,
-  } = useAppSelector((state) => state.selection);
-  const tableColumns = [
-    columns[0],
-    ...additionalColumns,
-    ...columns.slice(1, columns.length - 1),
-    columns[columns.length - 1],
-  ];
+  const { devicesPerPage, currentPage } = useAppSelector(
+    (state) => state.selection
+  );
   return (
-    <StyledSelectionTable columns={tableColumns.length} isFetching={isFetching}>
+    <StyledSelectionTable columns={columns.length} isFetching={isFetching}>
       <Table
         data-testid="selection-table"
         dataSource={rows}
-        columns={tableColumns}
+        columns={columns}
         isLoading={isLoading}
         className="aq-mb-3 table-scrollable"
       />

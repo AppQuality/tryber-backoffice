@@ -1,11 +1,20 @@
-import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
+import {
+  useGetCampaignsByCampaignCandidatesQuery,
+  useGetCampaignsByCampaignFormsQuery,
+} from "src/services/tryberApi";
 import { useAppSelector } from "src/store";
 
 const useItems = (id: string, options?: { withLimit: boolean }) => {
-  const { currentPage, devicesPerPage, questionsId, filters } = useAppSelector(
+  const { currentPage, devicesPerPage, filters } = useAppSelector(
     (state) => state.selection
   );
   const { filterByInclude, filterByExclude, filterByAge } = filters;
+
+  const { data: questions } = useGetCampaignsByCampaignFormsQuery(
+    { campaign: id },
+    { skip: !id }
+  );
+
   const { data, isFetching, isLoading, error } =
     useGetCampaignsByCampaignCandidatesQuery({
       campaign: id,
@@ -15,7 +24,9 @@ const useItems = (id: string, options?: { withLimit: boolean }) => {
             limit: devicesPerPage,
           }
         : { start: 0, limit: Number.MAX_SAFE_INTEGER }),
-      ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
+      ...(questions && questions.length
+        ? { fields: questions.map((q) => `question_${q.id}`).join(",") }
+        : {}),
       filterByInclude,
       filterByExclude,
       filterByAge,
