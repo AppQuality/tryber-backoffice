@@ -122,6 +122,28 @@ export class SelectionPage extends BackofficePage {
         this.elements()
           .importSurveyModal()
           .getByRole("button", { name: "Apply" }),
+      tableColumns: () => ({
+        tid: () => this.page.locator(".thead.cell").filter({ hasText: /^ID$/ }),
+        name: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Name$/ }),
+        age: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Age$/ }),
+        gender: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Gender$/ }),
+        metalLevel: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Metal Level$/ }),
+        expPoints: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Exp Points$/ }),
+        bhLevel: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^BH Level$/ }),
+        totalCp: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Total CP$/ }),
+        lastCp: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Last CP$/ }),
+        devices: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Devices$/ }),
+        os: () => this.page.locator(".thead.cell").filter({ hasText: /^OS$/ }),
+      }),
       //customerSelect: () => this.page.locator("#customers-select"),
       //newAgreementAction: () => this.page.locator("#add-new-agreement-btn"),
     };

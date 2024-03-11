@@ -7,9 +7,14 @@ export const useColumns: () => TableType.Column[] = () => {
 
   return [
     {
-      dataIndex: "nameId",
-      key: "nameId",
-      title: "Name ID",
+      dataIndex: "id",
+      key: "id",
+      title: "ID",
+    },
+    {
+      dataIndex: "name",
+      key: "name",
+      title: "Name",
     },
     {
       dataIndex: "age",
@@ -29,12 +34,30 @@ export const useColumns: () => TableType.Column[] = () => {
     {
       dataIndex: "exppoints",
       key: "exppoints",
-      title: "Experience Points",
+      title: "Exp Points",
     },
     {
       dataIndex: "bhlevel",
       key: "bhlevel",
       title: "BH Level",
+    },
+    {
+      dataIndex: "totalCpBusiness",
+      key: "totalCpBusiness",
+      title: (
+        <span title="Total number of business campaigns in which the user has submitted at list a bug">
+          Total CP
+        </span>
+      ),
+    },
+    {
+      dataIndex: "lastCpBusiness",
+      key: "lastCpBusiness",
+      title: (
+        <span title="Business campaigns in which the user has been selected in the last month">
+          Last CP
+        </span>
+      ),
     },
     {
       dataIndex: "devices",
