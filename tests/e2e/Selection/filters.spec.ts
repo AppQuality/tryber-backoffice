@@ -9,6 +9,10 @@ test.describe("Filtri ", () => {
     await selectionPage.candidatesWithoutQuestions();
     await selectionPage.visit();
   });
+  test.afterEach(async ({ page }) => {
+    //reload the page to reset the filters
+    await page.reload();
+  });
 
   test("there is a filter card", async () => {
     await expect(selectionPage.elements().filterCard()).toBeVisible();
