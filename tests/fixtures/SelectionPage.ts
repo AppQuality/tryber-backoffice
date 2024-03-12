@@ -114,7 +114,7 @@ export class SelectionPage extends BackofficePage {
       filterCard: () => this.page.getByTestId("selectionFilters"),
       importSurveyModal: () => this.page.locator("#import-survey-modal"),
       importSurveyModalTitle: () =>
-        this.page.getByText("Import Jotform Dialog"),
+        this.page.locator(".modal").getByText("Import Jotform"),
       importSurveyModalCloseBtn: () => this.page.locator(".modal-close"),
       surveySelect: () =>
         this.elements().importSurveyModal().getByTestId("survey-select"),
@@ -123,7 +123,7 @@ export class SelectionPage extends BackofficePage {
       applyCta: () =>
         this.elements()
           .importSurveyModal()
-          .getByRole("button", { name: "Apply" }),
+          .getByRole("button", { name: "Confirm importation" }),
       tableColumns: () => ({
         tid: () => this.page.locator(".thead.cell").filter({ hasText: /^ID$/ }),
         name: () =>
