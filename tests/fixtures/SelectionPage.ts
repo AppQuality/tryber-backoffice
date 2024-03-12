@@ -108,7 +108,9 @@ export class SelectionPage extends BackofficePage {
       importJotformCta: () =>
         this.page.getByRole("button", { name: "Import Jotform" }),
       messageFormAlreadyPresent: () =>
-        this.page.getByText("A questa Selection è già collegato il form"),
+        this.page.getByText(
+          "This tester selection already has a form associated with it"
+        ),
       filterCard: () => this.page.getByTestId("selectionFilters"),
       importSurveyModal: () => this.page.locator("#import-survey-modal"),
       importSurveyModalTitle: () =>
