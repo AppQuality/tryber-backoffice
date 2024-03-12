@@ -137,9 +137,11 @@ export class SelectionPage extends BackofficePage {
         bhLevel: () =>
           this.page.locator(".thead.cell").filter({ hasText: /^BH Level$/ }),
         totalCp: () =>
-          this.page.locator(".thead.cell").filter({ hasText: /^Total CP$/ }),
+          this.page.locator(".thead.cell").filter({ hasText: /^Total CPs$/ }),
         lastCp: () =>
-          this.page.locator(".thead.cell").filter({ hasText: /^Last CP$/ }),
+          this.page
+            .locator(".thead.cell")
+            .filter({ hasText: /^Last 30d CPs$/ }),
         devices: () =>
           this.page.locator(".thead.cell").filter({ hasText: /^Devices$/ }),
         os: () => this.page.locator(".thead.cell").filter({ hasText: /^OS$/ }),

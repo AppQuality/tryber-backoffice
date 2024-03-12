@@ -53,7 +53,7 @@ export const useColumns: () => TableType.Column[] = () => {
       key: "totalCpBusiness",
       title: (
         <span title="Total number of business campaigns in which the user has submitted at list a bug">
-          Total CP
+          Total CPs
         </span>
       ),
       maxWidth: "80px",
@@ -63,10 +63,10 @@ export const useColumns: () => TableType.Column[] = () => {
       key: "lastCpBusiness",
       title: (
         <span title="Business campaigns in which the user has been selected in the last month">
-          Last CP
+          Last 30d CPs
         </span>
       ),
-      maxWidth: "80px",
+      maxWidth: "110px",
     },
     {
       dataIndex: "devices",
