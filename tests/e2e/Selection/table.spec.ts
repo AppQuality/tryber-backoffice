@@ -1,17 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { SelectionPage } from "../../fixtures/SelectionPage";
 
-/*
-Tester ID separato da nome e cognome
-Età
-Genere
-Device (già c'è)
-Sistema Operativo (già c'è)
-CP business totali
-CP Business ultimo mese
-RIMUOVERE: Experience Points (DA RIMETTERE)
-RIMUOVERE: Metallivelli (DA RIMETTERE)
-*/
 test.describe("The selection Table", () => {
   let selectionPage: SelectionPage;
   test("should have columns for TID, name, age, gender, Device, OS, CP business, Cp last month, Exp. points, Metal Level", async ({
