@@ -13,7 +13,6 @@ export class SelectionPage extends BackofficePage {
 
   async visit() {
     await this.page.goto(this.url);
-    await this.closeCookieBanner();
   }
 
   async loggedIn() {

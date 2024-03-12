@@ -45,7 +45,4 @@ export class BackofficePage {
       }
     );
   }
-  async closeCookieBanner() {
-    await this.page.locator(".iubenda-cs-close-btn").click();
-  }
 }
