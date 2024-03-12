@@ -37,6 +37,8 @@ test.describe("Se non è gia presente un form collegato", () => {
   }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
+    await selectionPage.getJoformForms();
+    await selectionPage.getJoformFormQuestions();
     await selectionPage.visit();
     await selectionPage.elements().importJotformCta().click();
     await expect(selectionPage.elements().importSurveyModal()).toBeVisible();
