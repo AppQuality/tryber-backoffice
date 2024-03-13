@@ -22,7 +22,7 @@ const TesterIdInclude = () => {
       setFilters({
         filterByInclude: {
           ...filterByInclude,
-          testerIds: value,
+          testerIds: value ? value : undefined,
         },
       })
     );
@@ -37,7 +37,7 @@ const TesterIdInclude = () => {
           placeholder="T38229, T283472"
           value={value}
           onChange={(val) => {
-            setValue(val.trim() === "" ? undefined : val);
+            setValue(val.trim());
           }}
           data-qa="testerIdInclude"
           id="tidinclude"
@@ -51,9 +51,9 @@ const TesterIdInclude = () => {
             },
             onPaste: (event: React.ClipboardEvent<HTMLInputElement>) => {
               event.preventDefault();
-              const paste = `${value},${event.clipboardData.getData(
-                "text"
-              )},`.replace(/,+/g, ",");
+              const paste = `${
+                value && value + ","
+              }${event.clipboardData.getData("text")},`.replace(/,+/g, ",");
               setValue(paste.replace(/(\r\n|\n|\r)/gm, ","));
             },
           }}
