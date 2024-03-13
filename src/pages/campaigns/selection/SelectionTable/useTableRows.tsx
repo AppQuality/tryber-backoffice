@@ -69,12 +69,15 @@ const useTableRows = (id: string) => {
             });
             row = {
               ...row,
-              nameId: `T${user.id} ${user.name} ${user.surname}`,
+              id: `T${user.id}`,
+              name: `${user.name} ${user.surname}`,
               age: user.age,
               gender: user.gender,
               bhlevel: user.levels.bugHunting,
               exppoints: user.experience,
               metallevel: user.levels.metal,
+              totalCpBusiness: user.businessCps,
+              lastCpBusiness: user.businessCpsLastMonth,
               ...fields,
             };
           }

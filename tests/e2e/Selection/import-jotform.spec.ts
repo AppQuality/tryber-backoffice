@@ -37,6 +37,8 @@ test.describe("Se non è gia presente un form collegato", () => {
   }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
+    await selectionPage.getJoformForms();
+    await selectionPage.getJoformFormQuestions();
     await selectionPage.visit();
     await selectionPage.elements().importJotformCta().click();
     await expect(selectionPage.elements().importSurveyModal()).toBeVisible();
@@ -48,6 +50,8 @@ test.describe("Import jotform Modal: ", () => {
   test.beforeEach(async ({ page }) => {
     selectionPage = new SelectionPage(page);
     await selectionPage.loggedInWithEnoughPermissions();
+    await selectionPage.getJoformForms();
+    await selectionPage.getJoformFormQuestions();
     await selectionPage.visit();
     await selectionPage.elements().importJotformCta().click();
   });
@@ -122,7 +126,10 @@ test.describe("Import jotform Modal: ", () => {
     await selectionPage.selectFormOption();
     await selectionPage.elements().applyCta().click();
     await expect(
-      selectionPage.elements().importSurveyModal().getByText("required field")
+      selectionPage
+        .elements()
+        .importSurveyModal()
+        .getByText("is a required field")
     ).toBeVisible();
   });
   test("se l'utente clicca su apply e le select sono complete si chiude la modale viene mandata la POST con id del form, id della domanda testerID e id della campagna", async ({

@@ -33,6 +33,7 @@ const TesterIdInclude = () => {
       <Title size="xs">Show only these testers</Title>
       <InputContainer>
         <Input
+          className="aq-mr-2"
           placeholder="T38229, T283472"
           value={value}
           onChange={(val) => {
