@@ -31,21 +31,15 @@ export const useColumns: () => TableType.Column[] = () => {
       maxWidth: "120px",
     },
     {
-      dataIndex: "metallevel",
-      key: "metallevel",
-      title: "Metal Level",
-      maxWidth: "120px",
-    },
-    {
       dataIndex: "bhlevel",
       key: "bhlevel",
       title: "BH Level",
       maxWidth: "120px",
     },
     {
-      dataIndex: "exppoints",
-      key: "exppoints",
-      title: "Exp Points",
+      dataIndex: "metallevel",
+      key: "metallevel",
+      title: "Metal Level",
       maxWidth: "120px",
     },
     {
@@ -67,6 +61,12 @@ export const useColumns: () => TableType.Column[] = () => {
         </span>
       ),
       maxWidth: "110px",
+    },
+    {
+      dataIndex: "exppoints",
+      key: "exppoints",
+      title: "Exp Points",
+      maxWidth: "120px",
     },
     {
       dataIndex: "devices",
