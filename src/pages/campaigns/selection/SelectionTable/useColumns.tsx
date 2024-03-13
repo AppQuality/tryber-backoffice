@@ -37,15 +37,15 @@ export const useColumns: () => TableType.Column[] = () => {
       maxWidth: "120px",
     },
     {
-      dataIndex: "exppoints",
-      key: "exppoints",
-      title: "Exp Points",
-      maxWidth: "120px",
-    },
-    {
       dataIndex: "bhlevel",
       key: "bhlevel",
       title: "BH Level",
+      maxWidth: "120px",
+    },
+    {
+      dataIndex: "exppoints",
+      key: "exppoints",
+      title: "Exp Points",
       maxWidth: "120px",
     },
     {
