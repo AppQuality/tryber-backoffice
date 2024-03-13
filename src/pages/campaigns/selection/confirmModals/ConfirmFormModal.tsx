@@ -3,6 +3,7 @@ import {
   BSGrid,
   Button,
   Modal,
+  Text,
 } from "@appquality/appquality-design-system";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { closeFormModal, openSurveyModal } from "../selectionSlice";
@@ -22,7 +23,7 @@ const ConfirmFormModal = ({
       <BSGrid>
         <BSCol>
           <Button onClick={close} kind="primary" flat size="block">
-            Cancella
+            No, cancel
           </Button>
         </BSCol>
         <BSCol>
@@ -32,11 +33,10 @@ const ConfirmFormModal = ({
               dispatch(openSurveyModal());
             }}
             kind="primary"
-            flat
             size="block"
             disabled={false}
           >
-            Ok
+            Yes, proceed with the new import
           </Button>
         </BSCol>
       </BSGrid>
@@ -45,11 +45,18 @@ const ConfirmFormModal = ({
   return (
     <Modal
       footer={<Footer />}
-      size="small"
+      size="large"
       isOpen={isFormModalOpen}
       onClose={close}
     >
-      {`A questa Selection è già collegato il form con id: ${preselectionFormId}. Vuoi sovrascriverlo e collegare un nuovo form?`}
+      <Text>
+        <strong>Are you sure you want to continue?</strong>
+        <div>
+          This tester selection already has a form associated with it (id:{" "}
+          {preselectionFormId}). Proceeding with the import of a new survey will
+          replace the existing form, overwriting it.
+        </div>
+      </Text>
     </Modal>
   );
 };

@@ -1,6 +1,6 @@
 import { Button, Select } from "@appquality/appquality-design-system";
 import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetCampaignsByCampaignFormsQuery } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import { setQuestionsId } from "../../selectionSlice";
@@ -12,12 +12,18 @@ interface ColumnsConfiguratorProps {
 
 const ColumnsConfigurator = ({ id }: ColumnsConfiguratorProps) => {
   const dispatch = useAppDispatch();
-  const [value, setValue] = useState<Option[]>([]);
   const [disableApply, setDisableApply] = useState(true);
   const { data } = useGetCampaignsByCampaignFormsQuery(
     { campaign: id },
     { skip: !id }
   );
+  const [value, setValue] = useState<Option[]>([]);
+
+  useEffect(() => {
+    const allColumns = data ? mapCampaingFormData(data) : [];
+    setValue(allColumns);
+    dispatch(setQuestionsId(mapSelectedQuestions(allColumns)));
+  }, [data]);
 
   return (
     <div>

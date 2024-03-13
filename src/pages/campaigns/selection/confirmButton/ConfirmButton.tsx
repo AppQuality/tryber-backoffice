@@ -18,7 +18,7 @@ const ConfirmButton = ({ id }: { id: string }) => {
         onClick={confirmSelection}
         disabled={Object.keys(selectedDevices).length < 1}
       >
-        Conferma selezioni
+        Confirm selected
       </Button>
     </div>
   );

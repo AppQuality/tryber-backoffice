@@ -1,4 +1,4 @@
-import { Form, Formik } from "@appquality/appquality-design-system";
+import { Form, Formik, Text } from "@appquality/appquality-design-system";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import { usePostJotformsByCampaignMutation } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
@@ -41,7 +41,18 @@ const FormProvider = ({ id, children }: FormProviderInterface) => {
           }).unwrap();
           dispatch(closeSurveyModal());
 
-          dispatch(addMessage("Jotform correctly imported.", "success"));
+          dispatch(
+            addMessage(
+              <Text className="aq-text-primary">
+                <strong>Import successful</strong>
+                <div>
+                  The Jotform you selected has been imported. Now you can
+                  proceed with the testers’ selection.
+                </div>
+              </Text>,
+              "success"
+            )
+          );
         } catch (e) {
           dispatch(
             addMessage(

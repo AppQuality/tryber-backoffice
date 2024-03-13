@@ -1,4 +1,4 @@
-import { Checkbox, Title } from "@appquality/appquality-design-system";
+import { Checkbox, FormLabel } from "@appquality/appquality-design-system";
 import { useAppDispatch } from "src/store";
 import { changeTablePage, setFilters } from "../../../selectionSlice";
 import { FilterContainer } from "./components/FilterContainer";
@@ -17,7 +17,7 @@ const CheckboxFilter = ({
   const dispatch = useAppDispatch();
   return (
     <FilterContainer>
-      <Title size="s">{title}</Title>
+      <FormLabel htmlFor={`filters.${key}`} label={title} />
       {options.map((d) => (
         <div key={d}>
           <Checkbox

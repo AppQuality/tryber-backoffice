@@ -42,7 +42,7 @@ export const QuestionsSelect = () => {
                 form.setFieldValue(field.name, "");
               }
             }}
-            label="Select the question with the tester id"
+            label="Identify the question related to the Tester ID"
             value={
               options?.find((question) => question.value === field.value) ||
               emptyOption

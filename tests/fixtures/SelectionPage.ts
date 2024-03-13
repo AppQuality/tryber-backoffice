@@ -13,7 +13,6 @@ export class SelectionPage extends BackofficePage {
 
   async visit() {
     await this.page.goto(this.url);
-    await this.closeCookieBanner();
   }
 
   async loggedIn() {
@@ -108,11 +107,13 @@ export class SelectionPage extends BackofficePage {
       importJotformCta: () =>
         this.page.getByRole("button", { name: "Import Jotform" }),
       messageFormAlreadyPresent: () =>
-        this.page.getByText("A questa Selection è già collegato il form"),
+        this.page.getByText(
+          "This tester selection already has a form associated with it"
+        ),
       filterCard: () => this.page.getByTestId("selectionFilters"),
       importSurveyModal: () => this.page.locator("#import-survey-modal"),
       importSurveyModalTitle: () =>
-        this.page.getByText("Import Jotform Dialog"),
+        this.page.locator(".modal").getByText("Import Jotform"),
       importSurveyModalCloseBtn: () => this.page.locator(".modal-close"),
       surveySelect: () =>
         this.elements().importSurveyModal().getByTestId("survey-select"),
@@ -121,7 +122,31 @@ export class SelectionPage extends BackofficePage {
       applyCta: () =>
         this.elements()
           .importSurveyModal()
-          .getByRole("button", { name: "Apply" }),
+          .getByRole("button", { name: "Confirm importation" }),
+      tableColumns: () => ({
+        tid: () => this.page.locator(".thead.cell").filter({ hasText: /^ID$/ }),
+        name: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Name$/ }),
+        age: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Age$/ }),
+        gender: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Gender$/ }),
+        metalLevel: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Metal Level$/ }),
+        expPoints: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Exp Points$/ }),
+        bhLevel: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^BH Level$/ }),
+        totalCp: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Total CPs$/ }),
+        lastCp: () =>
+          this.page
+            .locator(".thead.cell")
+            .filter({ hasText: /^Last 30d CPs$/ }),
+        devices: () =>
+          this.page.locator(".thead.cell").filter({ hasText: /^Devices$/ }),
+        os: () => this.page.locator(".thead.cell").filter({ hasText: /^OS$/ }),
+      }),
       //customerSelect: () => this.page.locator("#customers-select"),
       //newAgreementAction: () => this.page.locator("#add-new-agreement-btn"),
     };

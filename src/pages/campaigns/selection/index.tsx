@@ -51,7 +51,10 @@ const SelectionPage = () => {
   return (
     <PageTemplate>
       <div className="selection-page">
-        <AuthorizedOnlyContainer excludeRule={!data?.appq_tester_selection}>
+        <AuthorizedOnlyContainer
+          excludeRule={!data?.appq_tester_selection}
+          isFluid
+        >
           <ConfirmModal id={id} />
           <ConfirmFormModal
             preselectionFormId={campaignData?.preselectionFormId}
@@ -60,14 +63,15 @@ const SelectionPage = () => {
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid>
             <BSCol size="col-lg-3">
+              <Button
+                size="block"
+                kind="secondary"
+                className="aq-mb-2"
+                onClick={handleImportSurvey}
+              >
+                Import jotform
+              </Button>
               <Card title="Add columns" className="aq-mb-3">
-                <Button
-                  size="block"
-                  className="aq-mb-2"
-                  onClick={handleImportSurvey}
-                >
-                  Import jotform
-                </Button>
                 <ColumnsConfigurator id={id} />
               </Card>
               <SelectionFilters id={id} />

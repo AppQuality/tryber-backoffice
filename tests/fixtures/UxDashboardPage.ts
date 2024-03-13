@@ -50,7 +50,7 @@ export class UxDashboardPage extends BackofficePage {
     await this.page.route("*/**/api/users/me/permissions", async (route) => {
       await route.fulfill({
         status: 403,
-        path: "tests/api/users/me/_get/403_not_logged_in.json",
+        path: "tests/api/users/me/permissions/_get/403_unauthorized.json",
       });
     });
   }

@@ -35,18 +35,18 @@ const ConfirmModal: FC<{ id: string }> = ({ id }) => {
       if ("invalidTesters" in response) {
         add({
           type: "warning",
-          message: `${response.invalidTesters?.length} tryber non sono stati aggiunti per un errore`,
+          message: `${response.invalidTesters?.length} tryber were not added due to an error`,
         });
         console.warn(response.invalidTesters);
       }
       add({
         type: "success",
-        message: `${response.results.length} tryber selezionati con successo`,
+        message: `${response.results.length} tryber successfully selected`,
       });
       dispatch(clearSelectedDevice());
     } catch (e) {
       const error = e as any;
-      let message = "La richiesta non è andata a buon fine";
+      let message = "The request was not successful";
       if ("data" in error) {
         // @ts-ignore
         message += `: ${error.data?.message}`;
@@ -61,7 +61,7 @@ const ConfirmModal: FC<{ id: string }> = ({ id }) => {
       <BSGrid>
         <BSCol>
           <Button onClick={close} kind="primary" flat size="block">
-            Cancella
+            No, cancel
           </Button>
         </BSCol>
         <BSCol>
@@ -72,7 +72,7 @@ const ConfirmModal: FC<{ id: string }> = ({ id }) => {
             size="block"
             disabled={false}
           >
-            Ok
+            Yes, confirm
           </Button>
         </BSCol>
       </BSGrid>
@@ -85,8 +85,8 @@ const ConfirmModal: FC<{ id: string }> = ({ id }) => {
       isOpen={isConfirmModalOpen}
       onClose={close}
     >
-      Sono stati selezionati {Object.keys(selectedDevices).length} tester, vuoi
-      procedere con la selezione?
+      {Object.keys(selectedDevices).length} testers have been selected for the
+      campaign. Do you want to confirm this selection?
     </Modal>
   );
 };

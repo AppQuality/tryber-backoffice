@@ -30,9 +30,11 @@ const TesterIdExclude = () => {
 
   return (
     <FilterContainer>
-      <Title size="s">Exclude these testers</Title>
+      <Title size="xs">Exclude these testers</Title>
       <InputContainer>
         <Input
+          placeholder="T38229, T283472"
+          className="aq-mr-2"
           value={value}
           onChange={(val) => {
             setValue(val.trim() === "" ? undefined : val);
