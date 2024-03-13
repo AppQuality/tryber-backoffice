@@ -71,7 +71,7 @@ const selectionSlice = createSlice({
         };
       }>
     ) {
-      state.filters = action.payload;
+      state.filters = { ...state.filters, ...action.payload };
     },
     reset() {
       return initialState;
