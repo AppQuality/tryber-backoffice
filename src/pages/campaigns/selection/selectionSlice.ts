@@ -72,6 +72,7 @@ const selectionSlice = createSlice({
       }>
     ) {
       state.filters = { ...state.filters, ...action.payload };
+      state.currentPage = 1;
     },
     reset() {
       return initialState;
