@@ -48,7 +48,7 @@ const AgeFilters = () => {
           type="number"
           className="aq-mr-2"
         />
-        <Button onClick={() => onApply()}>Apply</Button>
+        <Button onClick={onApply}>Apply</Button>
       </InputContainer>
     </FilterContainer>
   );
