@@ -31,7 +31,7 @@ export const Topbar = ({
     <BSGrid>
       <BSCol size="col-5">
         <AppqButton
-          type="secondary"
+          kind="secondary"
           className="aq-mr-2"
           flat={true}
           disabled={!canUndo}
@@ -40,7 +40,7 @@ export const Topbar = ({
           Undo
         </AppqButton>
         <AppqButton
-          type="secondary"
+          kind="secondary"
           className="aq-mr-2"
           flat={true}
           disabled={!canRedo}
@@ -55,7 +55,7 @@ export const Topbar = ({
             size="block"
             disabled={!onSave}
             flat
-            type="secondary"
+            kind="secondary"
             className="aq-mr-2"
             onClick={() => onPreview()}
           >
@@ -64,7 +64,7 @@ export const Topbar = ({
           <AppqButton
             size="block"
             disabled={!onSave}
-            type="secondary"
+            kind="secondary"
             onClick={() => {
               const json = query.serialize();
               const base64 = lz.encodeBase64(lz.compress(json));

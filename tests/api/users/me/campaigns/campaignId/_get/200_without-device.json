@@ -1,0 +1,30 @@
+{
+  "id": 123,
+  "title": "My campaign",
+  "titleRule": true,
+  "minimumMedia": 3,
+  "useCases": [
+    {
+      "id": 0,
+      "name": "Not a specific Use Case"
+    },
+    {
+      "id": 4123,
+      "name": "Use case 1 - Signup"
+    }
+  ],
+  "bugTypes": {
+    "valid": ["CRASH", "TYPO", "PERFORMANCE"],
+    "invalid": []
+  },
+  "bugSeverity": {
+    "valid": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+    "invalid": []
+  },
+  "bugReplicability": {
+    "valid": ["ALWAYS", "SOMETIMES", "ONCE"],
+    "invalid": []
+  },
+  "hasBugForm": true,
+  "validFileExtensions": ["jpg", "png", "mov", "mp4"]
+}

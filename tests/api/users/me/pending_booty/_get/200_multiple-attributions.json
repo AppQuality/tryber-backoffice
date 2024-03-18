@@ -1,0 +1,164 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "name": "[CP-1] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 2,
+      "name": "[CP-2] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 3,
+      "name": "[CP-3] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 4,
+      "name": "[CP-4] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 5,
+      "name": "[CP-5] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 6,
+      "name": "[CP-6] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 7,
+      "name": "[CP-7] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 8,
+      "name": "[CP-8] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 9,
+      "name": "[CP-9] Campagna test bug form",
+      "amount": {
+        "net": {
+          "value": 10,
+          "currency": "EUR"
+        },
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    },
+    {
+      "id": 10,
+      "name": "[CP-10] Campagna test bug form",
+      "amount": {
+        "gross": {
+          "value": 13.5,
+          "currency": "EUR"
+        }
+      },
+      "attributionDate": "2019-08-24",
+      "activity": "Refund Tryber Test"
+    }
+  ],
+  "limit": 10,
+  "size": 10,
+  "start": 0,
+  "total": 20
+}

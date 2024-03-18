@@ -1,0 +1,20 @@
+{
+  "id": 10951,
+  "total_exp_pts": 4165,
+  "pending_booty": {
+    "gross": {
+      "value": 157.5,
+      "currency": "EUR"
+    }
+  },
+  "booty": {
+    "gross": {
+      "value": 3.4,
+      "currency": "EUR"
+    }
+  },
+  "rank": "0",
+  "approved_bugs": 38,
+  "attended_cp": 6,
+  "role": "administrator"
+}

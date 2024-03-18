@@ -55,7 +55,7 @@ const SentimentSection = () => {
                 <Button
                   flat
                   size="sm"
-                  type="danger"
+                  kind="danger"
                   data-qa="delete-sentiment-chart-button"
                   onClick={() => dispatch(setSentimentDeleteModalOpen(true))}
                 >

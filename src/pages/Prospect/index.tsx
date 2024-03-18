@@ -30,7 +30,7 @@ const Prospect = () => {
         <HeaderButton
           as="a"
           href={`/wp-admin/admin.php?page=cp-prospect&id=${id}`}
-          type="secondary"
+          kind="secondary"
           className="aq-mr-2"
         >
           {"<"} Go to old Prospect

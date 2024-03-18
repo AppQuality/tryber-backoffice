@@ -44,8 +44,8 @@ export const CufConfigurator = () => {
             <CufConfiguratorCard />
             <Button
               className="aq-mt-1 aq-mb-4"
-              type="primary"
-              htmlType="submit"
+              kind="primary"
+              type="submit"
               size="block"
               flat
               disabled={!list.length || formikProps.isSubmitting}

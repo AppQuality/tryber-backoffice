@@ -1,0 +1,86 @@
+{
+  "username": "string",
+  "name": "string",
+  "surname": "string",
+  "email": "user@example.com",
+  "image": "string",
+  "id": 0,
+  "wp_user_id": 0,
+  "role": "string",
+  "is_verified": true,
+  "rank": "string",
+  "total_exp_pts": 0,
+  "booty": {
+    "net": {
+      "value": 10,
+      "currency": "EUR"
+    },
+    "gross": {
+      "value": 13.5,
+      "currency": "EUR"
+    }
+  },
+  "pending_booty": {
+    "net": {
+      "value": 10,
+      "currency": "EUR"
+    },
+    "gross": {
+      "value": 13.5,
+      "currency": "EUR"
+    }
+  },
+  "languages": [
+    {
+      "id": 46,
+      "name": "English"
+    },
+    {
+      "id": 61,
+      "name": "Spanish"
+    },
+    {
+      "id": 120,
+      "name": "Italiano (Italia)"
+    }
+  ],
+  "onboarding_completed": true,
+  "additional": [
+    {
+      "field_id": 0,
+      "name": "string",
+      "value": "string",
+      "text": "string",
+      "is_candidate": true
+    }
+  ],
+  "gender": "male",
+  "birthDate": "2019-08-24",
+  "phone": "11000000000",
+  "education": {
+    "id": 0,
+    "name": "string"
+  },
+  "profession": {
+    "id": 0,
+    "name": "string"
+  },
+  "certifications": [
+    {
+      "id": 0,
+      "name": "string",
+      "area": "string",
+      "institute": "string",
+      "achievement_date": "2019-08-24"
+    }
+  ],
+  "completionPercent": 0,
+  "country": "Italy",
+  "city": "Cremona",
+  "attended_cp": 0,
+  "approved_bugs": 0,
+  "booty_threshold": {
+    "value": 0,
+    "isOver": true
+  }
+}

@@ -40,7 +40,7 @@ const BugsList = () => {
         <HeaderButton
           as="a"
           href={`/wp-admin/admin.php?page=mvc_campaigns`}
-          type="secondary"
+          kind="secondary"
           className="aq-mr-2"
         >
           {"<"} To Campaign List

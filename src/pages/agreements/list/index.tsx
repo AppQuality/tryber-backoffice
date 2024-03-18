@@ -27,7 +27,7 @@ const FlexContainer = styled.div`
 `;
 
 const HeaderButton = (props: Parameters<typeof Button>[0]) => {
-  return <Button {...props} size="md" type="secondary" />;
+  return <Button {...props} size="md" kind="secondary" />;
 };
 
 const AgreementsListPageContent = ({ children }: { children: ReactNode }) => {

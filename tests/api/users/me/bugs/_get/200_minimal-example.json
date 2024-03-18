@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "severity": {
+        "id": 1,
+        "name": "LOW"
+      },
+      "status": {
+        "id": 1,
+        "name": "Refused"
+      },
+      "campaign": {
+        "name": "UX test for a selfdrive service",
+        "id": 1
+      },
+      "title": "Self drive system crashing"
+    }
+  ],
+  "limit": 5,
+  "size": 1,
+  "start": 10,
+  "total": 100
+}

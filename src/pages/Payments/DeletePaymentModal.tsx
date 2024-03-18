@@ -45,7 +45,7 @@ export const DeletePaymentModal = () => {
         <BSCol>
           <Button
             onClick={onClose}
-            type="primary"
+            kind="primary"
             flat
             size="block"
             disabled={isRequestsSending && !actionOutcome}
@@ -57,7 +57,7 @@ export const DeletePaymentModal = () => {
           <BSCol>
             <Button
               onClick={onDeleteClick}
-              type="primary"
+              kind="primary"
               flat
               size="block"
               disabled={isRequestsSending}

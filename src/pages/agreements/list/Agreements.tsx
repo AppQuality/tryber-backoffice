@@ -139,7 +139,7 @@ export const Agreements = () => {
                         (window.location.href = `/backoffice/agreements/${a.id}`)
                       }
                       size="sm"
-                      type="link"
+                      kind="link"
                     >
                       <EditIcon />
                     </Button>
@@ -147,7 +147,7 @@ export const Agreements = () => {
                       data-qa={`delete-agreement-button-${a.id}`}
                       onClick={() => onDelete(a.id.toString(), a.title)}
                       size="sm"
-                      type="link"
+                      kind="link"
                     >
                       <DeleteIcon />
                     </Button>

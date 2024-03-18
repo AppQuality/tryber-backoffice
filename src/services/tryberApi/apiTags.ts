@@ -18,10 +18,10 @@ tryberApi.enhanceEndpoints({
       invalidatesTags: ["Campaigns"],
     },
     postCampaignsByCampaignCandidates: {
-      invalidatesTags: ["Campaigns"],
+      invalidatesTags: ["Selection"],
     },
     getCampaignsByCampaignCandidates: {
-      providesTags: ["Campaigns"],
+      providesTags: ["Selection"],
     },
     getCampaignsByCampaignTasks: {
       providesTags: ["Campaigns"],
@@ -48,7 +48,7 @@ tryberApi.enhanceEndpoints({
       invalidatesTags: ["Campaigns"],
     },
     getCampaignsByCampaignForms: {
-      providesTags: ["Campaigns"],
+      providesTags: ["Campaigns", "CampaignForms"],
     },
     getCustomers: {
       providesTags: ["Customers"],
@@ -217,6 +217,12 @@ tryberApi.enhanceEndpoints({
     },
     patchCampaignsByCampaignUx: {
       invalidatesTags: ["UX"],
+    },
+    getJotformsForms: {
+      providesTags: ["Forms"],
+    },
+    postJotformsByCampaign: {
+      invalidatesTags: ["Selection", "Campaigns", "CampaignForms"],
     },
   },
 });

@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "id": 70,
+      "title": "Rocco Iteration 2",
+      "tokens": 39,
+      "unitPrice": 6.9,
+      "startDate": "2023-11-20",
+      "expirationDate": "2023-03-01",
+      "customer": {
+        "id": 1,
+        "company": "Rocco & Friends"
+      },
+      "note": "Test con dati veri",
+      "isTokenBased": false
+    },
+    {
+      "id": 69,
+      "title": "Rocco Token",
+      "tokens": 169,
+      "unitPrice": 6.9,
+      "startDate": "2023-10-20",
+      "expirationDate": "2023-01-01",
+      "customer": {
+        "id": 1,
+        "company": "Rocco & Friends"
+      },
+      "note": "Test con dati veri",
+      "isTokenBased": false
+    }
+  ],
+  "start": 0,
+  "size": 2
+}

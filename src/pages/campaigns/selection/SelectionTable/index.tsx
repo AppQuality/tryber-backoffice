@@ -1,27 +1,33 @@
-import { Table } from "@appquality/appquality-design-system";
+import { Pagination, Table } from "@appquality/appquality-design-system";
 import { FC } from "react";
 import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableRows";
-import { Pagination } from "@appquality/appquality-design-system";
-import { useAppSelector, useAppDispatch } from "src/store";
 import { changeTablePage } from "src/pages/campaigns/selection/selectionSlice";
+import { useAppDispatch, useAppSelector } from "src/store";
 import { StyledSelectionTable } from "./_style";
+import { useColumns } from "./useColumns";
 
 const SelectionTable: FC<{ id: string }> = ({ id }) => {
   const dispatch = useAppDispatch();
-  const { rows, totalRows, isFetching } = useTableRows(id);
-  const { devicesPerPage, currentPage, tableColumns } = useAppSelector(
-    (state) => state.selection
-  );
+  const { rows, totalRows, isFetching, isLoading } = useTableRows(id);
+  const columns = useColumns();
+  const {
+    devicesPerPage,
+    currentPage,
+    tableColumns: additionalColumns,
+  } = useAppSelector((state) => state.selection);
+  const tableColumns = [
+    columns[0],
+    ...additionalColumns,
+    ...columns.slice(1, columns.length - 1),
+    columns[columns.length - 1],
+  ];
   return (
-    <StyledSelectionTable columns={tableColumns.length}>
-      <div className="selection-title aq-text-primary">
-        <b>Tester Selection</b>
-      </div>
+    <StyledSelectionTable columns={tableColumns.length} isFetching={isFetching}>
       <Table
         data-testid="selection-table"
         dataSource={rows}
         columns={tableColumns}
-        isLoading={isFetching}
+        isLoading={isLoading}
         className="aq-mb-3 table-scrollable"
       />
       <Pagination

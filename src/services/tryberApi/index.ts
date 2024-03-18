@@ -84,12 +84,6 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getCampaignsOwners: build.query<
-      GetCampaignsOwnersApiResponse,
-      GetCampaignsOwnersApiArg
-    >({
-      query: () => ({ url: `/campaigns/owners` }),
-    }),
     getCampaignsByCampaign: build.query<
       GetCampaignsByCampaignApiResponse,
       GetCampaignsByCampaignApiArg
@@ -122,12 +116,6 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getCampaignsByCampaignGroups: build.query<
-      GetCampaignsByCampaignGroupsApiResponse,
-      GetCampaignsByCampaignGroupsApiArg
-    >({
-      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/groups` }),
-    }),
     postCampaignsByCampaignCandidates: build.mutation<
       PostCampaignsByCampaignCandidatesApiResponse,
       PostCampaignsByCampaignCandidatesApiArg
@@ -150,7 +138,37 @@ const injectedRtkApi = api.injectEndpoints({
           fields: queryArg.fields,
           filterByInclude: queryArg.filterByInclude,
           filterByExclude: queryArg.filterByExclude,
+          filterByAge: queryArg.filterByAge,
         },
+      }),
+    }),
+    getCampaignsByCampaignClusters: build.query<
+      GetCampaignsByCampaignClustersApiResponse,
+      GetCampaignsByCampaignClustersApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/clusters`,
+      }),
+    }),
+    getCampaignsByCampaignForms: build.query<
+      GetCampaignsByCampaignFormsApiResponse,
+      GetCampaignsByCampaignFormsApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/forms` }),
+    }),
+    getCampaignsByCampaignGroups: build.query<
+      GetCampaignsByCampaignGroupsApiResponse,
+      GetCampaignsByCampaignGroupsApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/groups` }),
+    }),
+    getCampaignsByCampaignObservations: build.query<
+      GetCampaignsByCampaignObservationsApiResponse,
+      GetCampaignsByCampaignObservationsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/observations`,
+        params: { filterBy: queryArg.filterBy },
       }),
     }),
     getCampaignsByCampaignPayouts: build.query<
@@ -158,6 +176,54 @@ const injectedRtkApi = api.injectEndpoints({
       GetCampaignsByCampaignPayoutsApiArg
     >({
       query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/payouts` }),
+    }),
+    getCampaignsByCampaignProspect: build.query<
+      GetCampaignsByCampaignProspectApiResponse,
+      GetCampaignsByCampaignProspectApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/prospect`,
+        params: {
+          filterByInclude: queryArg.filterByInclude,
+          filterByExclude: queryArg.filterByExclude,
+        },
+      }),
+    }),
+    putCampaignsByCampaignProspect: build.mutation<
+      PutCampaignsByCampaignProspectApiResponse,
+      PutCampaignsByCampaignProspectApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/prospect`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
+    patchCampaignsByCampaignProspect: build.mutation<
+      PatchCampaignsByCampaignProspectApiResponse,
+      PatchCampaignsByCampaignProspectApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/prospect`,
+        method: "PATCH",
+        body: queryArg.body,
+      }),
+    }),
+    putCampaignsByCampaignProspectAndTesterId: build.mutation<
+      PutCampaignsByCampaignProspectAndTesterIdApiResponse,
+      PutCampaignsByCampaignProspectAndTesterIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/prospect/${queryArg.testerId}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
+    getCampaignsByCampaignStats: build.query<
+      GetCampaignsByCampaignStatsApiResponse,
+      GetCampaignsByCampaignStatsApiArg
+    >({
+      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/stats` }),
     }),
     getCampaignsByCampaignTasks: build.query<
       GetCampaignsByCampaignTasksApiResponse,
@@ -209,23 +275,6 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
-    getCampaignsByCampaignClusters: build.query<
-      GetCampaignsByCampaignClustersApiResponse,
-      GetCampaignsByCampaignClustersApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/campaigns/${queryArg.campaign}/clusters`,
-      }),
-    }),
-    getCampaignsByCampaignObservations: build.query<
-      GetCampaignsByCampaignObservationsApiResponse,
-      GetCampaignsByCampaignObservationsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/campaigns/${queryArg.campaign}/observations`,
-        params: { filterBy: queryArg.filterBy },
-      }),
-    }),
     postCampaignsForms: build.mutation<
       PostCampaignsFormsApiResponse,
       PostCampaignsFormsApiArg
@@ -266,59 +315,11 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
-    getCampaignsByCampaignForms: build.query<
-      GetCampaignsByCampaignFormsApiResponse,
-      GetCampaignsByCampaignFormsApiArg
+    getCampaignsOwners: build.query<
+      GetCampaignsOwnersApiResponse,
+      GetCampaignsOwnersApiArg
     >({
-      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/forms` }),
-    }),
-    putCampaignsByCampaignProspectAndTesterId: build.mutation<
-      PutCampaignsByCampaignProspectAndTesterIdApiResponse,
-      PutCampaignsByCampaignProspectAndTesterIdApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/campaigns/${queryArg.campaign}/prospect/${queryArg.testerId}`,
-        method: "PUT",
-        body: queryArg.body,
-      }),
-    }),
-    getCampaignsByCampaignProspect: build.query<
-      GetCampaignsByCampaignProspectApiResponse,
-      GetCampaignsByCampaignProspectApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/campaigns/${queryArg.campaign}/prospect`,
-        params: {
-          filterByInclude: queryArg.filterByInclude,
-          filterByExclude: queryArg.filterByExclude,
-        },
-      }),
-    }),
-    putCampaignsByCampaignProspect: build.mutation<
-      PutCampaignsByCampaignProspectApiResponse,
-      PutCampaignsByCampaignProspectApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/campaigns/${queryArg.campaign}/prospect`,
-        method: "PUT",
-        body: queryArg.body,
-      }),
-    }),
-    patchCampaignsByCampaignProspect: build.mutation<
-      PatchCampaignsByCampaignProspectApiResponse,
-      PatchCampaignsByCampaignProspectApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/campaigns/${queryArg.campaign}/prospect`,
-        method: "PATCH",
-        body: queryArg.body,
-      }),
-    }),
-    getCampaignsByCampaignStats: build.query<
-      GetCampaignsByCampaignStatsApiResponse,
-      GetCampaignsByCampaignStatsApiArg
-    >({
-      query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/stats` }),
+      query: () => ({ url: `/campaigns/owners` }),
     }),
     getCampaignTypes: build.query<
       GetCampaignTypesApiResponse,
@@ -388,6 +389,30 @@ const injectedRtkApi = api.injectEndpoints({
       GetEmploymentsApiArg
     >({
       query: () => ({ url: `/employments` }),
+    }),
+    postJotformsByCampaign: build.mutation<
+      PostJotformsByCampaignApiResponse,
+      PostJotformsByCampaignApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/jotforms/${queryArg.campaign}`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    getJotformsForms: build.query<
+      GetJotformsFormsApiResponse,
+      GetJotformsFormsApiArg
+    >({
+      query: () => ({ url: `/jotforms/forms` }),
+    }),
+    getJotformsFormsByFormIdQuestions: build.query<
+      GetJotformsFormsByFormIdQuestionsApiResponse,
+      GetJotformsFormsByFormIdQuestionsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/jotforms/forms/${queryArg.formId}/questions`,
+      }),
     }),
     getLanguages: build.query<GetLanguagesApiResponse, GetLanguagesApiArg>({
       query: () => ({ url: `/languages` }),
@@ -477,6 +502,15 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/users`,
         method: "POST",
         body: queryArg.body,
+      }),
+    }),
+    headUsersByEmailByEmail: build.mutation<
+      HeadUsersByEmailByEmailApiResponse,
+      HeadUsersByEmailByEmailApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/by-email/${queryArg.email}`,
+        method: "HEAD",
       }),
     }),
     getUsersMe: build.query<GetUsersMeApiResponse, GetUsersMeApiArg>({
@@ -582,6 +616,24 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/users/me/campaigns/${queryArg.campaignId}/devices`,
+      }),
+    }),
+    getUsersMeCampaignsByCampaignIdForms: build.query<
+      GetUsersMeCampaignsByCampaignIdFormsApiResponse,
+      GetUsersMeCampaignsByCampaignIdFormsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/forms`,
+      }),
+    }),
+    postUsersMeCampaignsByCampaignIdForms: build.mutation<
+      PostUsersMeCampaignsByCampaignIdFormsApiResponse,
+      PostUsersMeCampaignsByCampaignIdFormsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/forms`,
+        method: "POST",
+        body: queryArg.body,
       }),
     }),
     postUsersMeCampaignsByCampaignIdMedia: build.mutation<
@@ -811,24 +863,6 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: () => ({ url: `/users/me/rank/list` }),
     }),
-    getUsersMeCampaignsByCampaignIdForms: build.query<
-      GetUsersMeCampaignsByCampaignIdFormsApiResponse,
-      GetUsersMeCampaignsByCampaignIdFormsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/campaigns/${queryArg.campaignId}/forms`,
-      }),
-    }),
-    postUsersMeCampaignsByCampaignIdForms: build.mutation<
-      PostUsersMeCampaignsByCampaignIdFormsApiResponse,
-      PostUsersMeCampaignsByCampaignIdFormsApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/users/me/campaigns/${queryArg.campaignId}/forms`,
-        method: "POST",
-        body: queryArg.body,
-      }),
-    }),
   }),
   overrideExisting: false,
 });
@@ -875,7 +909,7 @@ export type PutAgreementsByAgreementIdApiArg = {
     customerId: number;
   };
 };
-export type DeleteAgreementsByAgreementIdApiResponse = unknown;
+export type DeleteAgreementsByAgreementIdApiResponse = /** status 200 OK */ {};
 export type DeleteAgreementsByAgreementIdApiArg = {
   agreementId: string;
 };
@@ -897,6 +931,8 @@ export type PostAuthenticateApiResponse =
     lastName?: string;
     token?: string;
     username?: string;
+    iat?: number;
+    exp?: number;
   };
 export type PostAuthenticateApiArg = {
   /** A JSON containing username and password */
@@ -964,17 +1000,12 @@ export type GetCampaignsApiArg = {
   orderBy?: "id" | "startDate" | "endDate";
   filterBy?: any;
 };
-export type GetCampaignsOwnersApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-  surname: string;
-}[];
-export type GetCampaignsOwnersApiArg = void;
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
   title: string;
   type: string;
   typeDescription: string;
+  preselectionFormId?: number;
 };
 export type GetCampaignsByCampaignApiArg = {
   /** A campaign id */
@@ -1037,14 +1068,6 @@ export type GetCampaignsByCampaignBugsApiArg = {
   /** Key-value Array for item filtering */
   filterBy?: object;
 };
-export type GetCampaignsByCampaignGroupsApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-}[];
-export type GetCampaignsByCampaignGroupsApiArg = {
-  /** A campaign id */
-  campaign: string;
-};
 export type PostCampaignsByCampaignCandidatesApiResponse =
   /** status 200 OK */
   | {
@@ -1080,8 +1103,15 @@ export type GetCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */ {
     id: number;
     name: string;
     surname: string;
+    gender: Gender;
+    age: number;
     experience: number;
-    level: string;
+    businessCps: number;
+    businessCpsLastMonth: number;
+    levels: {
+      bugHunting: string;
+      metal: string;
+    };
     devices: {
       manufacturer?: string;
       model?: string;
@@ -1109,156 +1139,8 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   filterByInclude?: any;
   /** Key-value Array for item filtering */
   filterByExclude?: any;
-};
-export type GetCampaignsByCampaignPayoutsApiResponse = /** status 200 OK */ {
-  maxBonusBug: number;
-  completionRule: {
-    bugs?: number;
-    usecases?: number;
-  };
-  testSuccess: {
-    payout: number;
-    points: number;
-    message: string;
-  };
-  testFailure: {
-    payout: number;
-    points: number;
-    message: string;
-  };
-};
-export type GetCampaignsByCampaignPayoutsApiArg = {
-  /** A campaign id */
-  campaign: string;
-};
-export type GetCampaignsByCampaignTasksApiResponse =
-  /** status 200 A list of UseCase linked with the Campaign */ (Task & {
-    id?: number;
-  })[];
-export type GetCampaignsByCampaignTasksApiArg = {
-  /** A campaign id */
-  campaign: string;
-};
-export type PostCampaignsByCampaignTasksApiResponse =
-  /** status 201 Created */ undefined;
-export type PostCampaignsByCampaignTasksApiArg = {
-  /** A campaign id */
-  campaign: string;
-  /** The data of the new UseCase to link to the Campaign */
-  taskOptional: TaskOptional;
-};
-export type GetCampaignsByCampaignTasksAndTaskApiResponse =
-  /** status 200 A UseCase linked with the Campaign */ Task;
-export type GetCampaignsByCampaignTasksAndTaskApiArg = {
-  /** A campaign id */
-  campaign: string;
-  /** A task id */
-  task: string;
-};
-export type PutCampaignsByCampaignTasksAndTaskApiResponse =
-  /** status 200 OK */ Task;
-export type PutCampaignsByCampaignTasksAndTaskApiArg = {
-  /** A campaign id */
-  campaign: string;
-  /** A task id */
-  task: string;
-  /** The data to edit in the UseCase linked to the Campaign */
-  taskOptional: TaskOptional;
-};
-export type GetCampaignsByCampaignUxApiResponse =
-  /** status 200 A UseCase linked with the Campaign */ {
-    status: "draft" | "published" | "draft-modified";
-    goal: string;
-    usersNumber: number;
-    insights?: {
-      id: number;
-      title: string;
-      description: string;
-      severity: {
-        id: number;
-        name: string;
-      };
-      clusters:
-        | "all"
-        | {
-            id: number;
-            name: string;
-          }[];
-      videoParts: {
-        id: number;
-        start: number;
-        end: number;
-        mediaId: number;
-        url: string;
-        streamUrl: string;
-        description: string;
-      }[];
-    }[];
-    sentiments: {
-      id: number;
-      value: number;
-      comment: string;
-      cluster: {
-        id: number;
-        name: string;
-      };
-    }[];
-    methodology: {
-      name: string;
-      type: "qualitative" | "quantitative" | "quali-quantitative";
-      description: string;
-    };
-    questions: {
-      id: number;
-      name: string;
-    }[];
-  };
-export type GetCampaignsByCampaignUxApiArg = {
-  /** A campaign id */
-  campaign: string;
-};
-export type PatchCampaignsByCampaignUxApiResponse = /** status 200 OK */ {};
-export type PatchCampaignsByCampaignUxApiArg = {
-  /** A campaign id */
-  campaign: string;
-  body:
-    | {
-        goal: string;
-        usersNumber: number;
-        insights: {
-          id?: number;
-          title: string;
-          description: string;
-          severityId: number;
-          order: number;
-          clusterIds: number[] | "all";
-          videoParts: {
-            id?: number;
-            start: number;
-            end: number;
-            mediaId: number;
-            description: string;
-            order: number;
-          }[];
-        }[];
-        sentiments: {
-          id?: number;
-          clusterId: number;
-          value: number;
-          comment: string;
-        }[];
-        methodology: {
-          type: "qualitative" | "quantitative" | "quali-quantitative";
-          description: string;
-        };
-        questions: {
-          id?: number;
-          name: string;
-        }[];
-      }
-    | {
-        status: "publish";
-      };
+  /** Array with min and max */
+  filterByAge?: any;
 };
 export type GetCampaignsByCampaignClustersApiResponse =
   /** status 200 A UseCase linked with the Campaign */ {
@@ -1268,6 +1150,22 @@ export type GetCampaignsByCampaignClustersApiResponse =
     }[];
   };
 export type GetCampaignsByCampaignClustersApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
+export type GetCampaignsByCampaignFormsApiResponse = /** status 200 OK */ {
+  id: number;
+  question: string;
+  shortName?: string;
+}[];
+export type GetCampaignsByCampaignFormsApiArg = {
+  campaign: string;
+};
+export type GetCampaignsByCampaignGroupsApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+}[];
+export type GetCampaignsByCampaignGroupsApiArg = {
   /** A campaign id */
   campaign: string;
 };
@@ -1297,121 +1195,26 @@ export type GetCampaignsByCampaignObservationsApiArg = {
   campaign: string;
   filterBy?: any;
 };
-export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
-  id: number;
-  name: string;
-  campaign?: {
-    id: number;
-    name: string;
+export type GetCampaignsByCampaignPayoutsApiResponse = /** status 200 OK */ {
+  maxBonusBug: number;
+  completionRule: {
+    bugs?: number;
+    usecases?: number;
   };
-  fields?: ({
-    id: number;
-  } & PreselectionFormQuestion)[];
-};
-export type PostCampaignsFormsApiArg = {
-  body: {
-    name: string;
-    fields: PreselectionFormQuestion[];
-    campaign?: number;
+  testSuccess: {
+    payout: number;
+    points: number;
+    message: string;
   };
-};
-export type GetCampaignsFormsApiResponse = /** status 200 OK */ {
-  results: {
-    id: number;
-    name: string;
-    campaign?: number;
-  }[];
-  limit?: number;
-  start: number;
-  size: number;
-  total?: number;
-};
-export type GetCampaignsFormsApiArg = {
-  /** A comma separated list of fields which will be searched */
-  searchBy?: string;
-  /** The value to search for */
-  search?: string;
-  /** Max items to retrieve */
-  limit?: number;
-  /** Items to skip for pagination */
-  start?: number;
-};
-export type GetCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-  campaign?: {
-    id: number;
-    name: string;
-  };
-  fields: ({
-    id: number;
-  } & PreselectionFormQuestion)[];
-};
-export type GetCampaignsFormsByFormIdApiArg = {
-  formId: string;
-};
-export type PutCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
-  id: number;
-  name: string;
-  fields: ({
-    id: number;
-  } & PreselectionFormQuestion)[];
-  campaign?: {
-    id: number;
-    name: string;
+  testFailure: {
+    payout: number;
+    points: number;
+    message: string;
   };
 };
-export type PutCampaignsFormsByFormIdApiArg = {
-  formId: string;
-  body: {
-    name: string;
-    campaign?: number;
-    fields: ({
-      id?: number;
-    } & PreselectionFormQuestion)[];
-  };
-};
-export type GetCampaignsByCampaignFormsApiResponse = /** status 200 OK */ {
-  id: number;
-  question: string;
-  shortName?: string;
-}[];
-export type GetCampaignsByCampaignFormsApiArg = {
-  campaign: string;
-};
-export type PutCampaignsByCampaignProspectAndTesterIdApiResponse =
-  /** status 200 OK */ {
-    payout: {
-      completion: number;
-      bugs: number;
-      refund: number;
-      extra: number;
-    };
-    experience: {
-      completion: number;
-      extra: number;
-    };
-    note: string;
-    completed: boolean;
-  };
-export type PutCampaignsByCampaignProspectAndTesterIdApiArg = {
+export type GetCampaignsByCampaignPayoutsApiArg = {
   /** A campaign id */
   campaign: string;
-  testerId: string;
-  body: {
-    payout: {
-      completion: number;
-      bugs: number;
-      refund: number;
-      extra: number;
-    };
-    experience: {
-      completion: number;
-      extra: number;
-    };
-    note: string;
-    completed: boolean;
-  };
 };
 export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
   items: {
@@ -1487,12 +1290,257 @@ export type PatchCampaignsByCampaignProspectApiArg = {
     status?: ProspectStatus;
   };
 };
+export type PutCampaignsByCampaignProspectAndTesterIdApiResponse =
+  /** status 200 OK */ {
+    payout: {
+      completion: number;
+      bugs: number;
+      refund: number;
+      extra: number;
+    };
+    experience: {
+      completion: number;
+      extra: number;
+    };
+    note: string;
+    completed: boolean;
+  };
+export type PutCampaignsByCampaignProspectAndTesterIdApiArg = {
+  /** A campaign id */
+  campaign: string;
+  testerId: string;
+  body: {
+    payout: {
+      completion: number;
+      bugs: number;
+      refund: number;
+      extra: number;
+    };
+    experience: {
+      completion: number;
+      extra: number;
+    };
+    note: string;
+    completed: boolean;
+  };
+};
 export type GetCampaignsByCampaignStatsApiResponse = /** status 200 OK */ {
   selected: number;
 };
 export type GetCampaignsByCampaignStatsApiArg = {
   campaign: string;
 };
+export type GetCampaignsByCampaignTasksApiResponse =
+  /** status 200 A list of UseCase linked with the Campaign */ (Task & {
+    id?: number;
+  })[];
+export type GetCampaignsByCampaignTasksApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
+export type PostCampaignsByCampaignTasksApiResponse =
+  /** status 201 Created */ undefined;
+export type PostCampaignsByCampaignTasksApiArg = {
+  /** A campaign id */
+  campaign: string;
+  /** The data of the new UseCase to link to the Campaign */
+  taskOptional: TaskOptional;
+};
+export type GetCampaignsByCampaignTasksAndTaskApiResponse =
+  /** status 200 A UseCase linked with the Campaign */ Task;
+export type GetCampaignsByCampaignTasksAndTaskApiArg = {
+  /** A campaign id */
+  campaign: string;
+  /** A task id */
+  task: string;
+};
+export type PutCampaignsByCampaignTasksAndTaskApiResponse =
+  /** status 200 OK */ Task;
+export type PutCampaignsByCampaignTasksAndTaskApiArg = {
+  /** A campaign id */
+  campaign: string;
+  /** A task id */
+  task: string;
+  /** The data to edit in the UseCase linked to the Campaign */
+  taskOptional: TaskOptional;
+};
+export type GetCampaignsByCampaignUxApiResponse =
+  /** status 200 A UseCase linked with the Campaign */ {
+    status: "draft" | "published" | "draft-modified";
+    goal: string;
+    usersNumber: number;
+    insights?: {
+      id: number;
+      title: string;
+      severity: {
+        id: number;
+        name: string;
+      };
+      description: string;
+      clusters:
+        | "all"
+        | {
+            id: number;
+            name: string;
+          }[];
+      videoParts: {
+        id: number;
+        start: number;
+        end: number;
+        mediaId: number;
+        url: string;
+        streamUrl: string;
+        description: string;
+        poster?: string;
+      }[];
+    }[];
+    sentiments: {
+      id: number;
+      value: number;
+      comment: string;
+      cluster: {
+        id: number;
+        name: string;
+      };
+    }[];
+    methodology: {
+      name: string;
+      type: "qualitative" | "quantitative" | "quali-quantitative";
+      description: string;
+    };
+    questions: {
+      id: number;
+      name: string;
+    }[];
+  };
+export type GetCampaignsByCampaignUxApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
+export type PatchCampaignsByCampaignUxApiResponse = /** status 200 OK */ {};
+export type PatchCampaignsByCampaignUxApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body:
+    | {
+        goal: string;
+        usersNumber: number;
+        insights: {
+          id?: number;
+          title: string;
+          description: string;
+          severityId: number;
+          order: number;
+          clusterIds: number[] | "all";
+          videoParts: {
+            id?: number;
+            start: number;
+            end: number;
+            mediaId: number;
+            description: string;
+            order: number;
+          }[];
+        }[];
+        sentiments: {
+          id?: number;
+          clusterId: number;
+          value: number;
+          comment: string;
+        }[];
+        methodology: {
+          type: "qualitative" | "quantitative" | "quali-quantitative";
+          description: string;
+        };
+        questions: {
+          id?: number;
+          name: string;
+        }[];
+      }
+    | {
+        status: "publish";
+      };
+};
+export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
+  id: number;
+  name: string;
+  campaign?: {
+    id: number;
+    name: string;
+  };
+  fields?: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+};
+export type PostCampaignsFormsApiArg = {
+  body: {
+    name: string;
+    fields: PreselectionFormQuestion[];
+    campaign?: number;
+    creationDate?: string;
+  };
+};
+export type GetCampaignsFormsApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+    campaign?: number;
+  }[];
+  limit?: number;
+  start: number;
+  size: number;
+  total?: number;
+};
+export type GetCampaignsFormsApiArg = {
+  /** A comma separated list of fields which will be searched */
+  searchBy?: string;
+  /** The value to search for */
+  search?: string;
+  /** Max items to retrieve */
+  limit?: number;
+  /** Items to skip for pagination */
+  start?: number;
+};
+export type GetCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  campaign?: {
+    id: number;
+    name: string;
+  };
+  fields: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+};
+export type GetCampaignsFormsByFormIdApiArg = {
+  formId: string;
+};
+export type PutCampaignsFormsByFormIdApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  fields: ({
+    id: number;
+  } & PreselectionFormQuestion)[];
+  campaign?: {
+    id: number;
+    name: string;
+  };
+};
+export type PutCampaignsFormsByFormIdApiArg = {
+  formId: string;
+  body: {
+    name: string;
+    campaign?: number;
+    fields: ({
+      id?: number;
+    } & PreselectionFormQuestion)[];
+  };
+};
+export type GetCampaignsOwnersApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+  surname: string;
+}[];
+export type GetCampaignsOwnersApiArg = void;
 export type GetCampaignTypesApiResponse = /** status 200  */ {
   id: number;
   name: string;
@@ -1572,6 +1620,32 @@ export type GetEmploymentsApiResponse = /** status 200 OK */ {
   name: string;
 }[];
 export type GetEmploymentsApiArg = void;
+export type PostJotformsByCampaignApiResponse = /** status 200 OK */ {};
+export type PostJotformsByCampaignApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    formId: string;
+    testerIdColumn: string;
+  };
+};
+export type GetJotformsFormsApiResponse = /** status 200 OK */ {
+  id: string;
+  name: string;
+  createdAt: string;
+}[];
+export type GetJotformsFormsApiArg = void;
+export type GetJotformsFormsByFormIdQuestionsApiResponse =
+  /** status 200 OK */ {
+    id: string;
+    name: string;
+    title: string;
+    description?: string;
+    type: string;
+  }[];
+export type GetJotformsFormsByFormIdQuestionsApiArg = {
+  formId: string;
+};
 export type GetLanguagesApiResponse = /** status 200 OK */ {
   id: number;
   name: string;
@@ -1675,7 +1749,9 @@ export type PatchPopupsByPopupApiArg = {
 };
 export type GetUsersApiResponse = /** status 200 OK */ User[];
 export type GetUsersApiArg = void;
-export type PostUsersApiResponse = /** status 200 OK */ User;
+export type PostUsersApiResponse = /** status 201 Created */ {
+  id: number;
+};
 export type PostUsersApiArg = {
   body: {
     name: string;
@@ -1686,6 +1762,10 @@ export type PostUsersApiArg = {
     birthDate: string;
     referral?: string;
   };
+};
+export type HeadUsersByEmailByEmailApiResponse = unknown;
+export type HeadUsersByEmailByEmailApiArg = {
+  email: string;
 };
 export type GetUsersMeApiResponse = /** status 200 OK */ {
   username?: string;
@@ -1699,8 +1779,14 @@ export type GetUsersMeApiResponse = /** status 200 OK */ {
   is_verified?: boolean;
   rank?: string;
   total_exp_pts?: number;
-  booty?: number;
-  pending_booty?: number;
+  booty?: {
+    net?: Currency;
+    gross: Currency;
+  };
+  pending_booty?: {
+    net?: Currency;
+    gross: Currency;
+  };
   languages?: {
     id?: number;
     name?: string;
@@ -1754,8 +1840,14 @@ export type PatchUsersMeApiResponse = /** status 200 OK */ {
   is_verified?: boolean;
   rank?: string;
   total_exp_pts?: number;
-  booty?: number;
-  pending_booty?: number;
+  booty?: {
+    gross: Currency;
+    net?: Currency;
+  };
+  pending_booty?: {
+    gross: Currency;
+    net?: Currency;
+  };
   languages?: {
     id?: number;
     name?: string;
@@ -1969,6 +2061,46 @@ export type GetUsersMeCampaignsByCampaignIdDevicesApiResponse =
 export type GetUsersMeCampaignsByCampaignIdDevicesApiArg = {
   campaignId: string;
 };
+export type GetUsersMeCampaignsByCampaignIdFormsApiResponse =
+  /** status 200 OK */ (PreselectionFormQuestion & {
+    value?:
+      | number
+      | {
+          city?: string;
+          country?: string;
+        }
+      | number[]
+      | string;
+    validation?: {
+      regex: string;
+      error?: string;
+    };
+    id: number;
+  })[];
+export type GetUsersMeCampaignsByCampaignIdFormsApiArg = {
+  campaignId: string;
+};
+export type PostUsersMeCampaignsByCampaignIdFormsApiResponse =
+  /** status 200 OK */ undefined;
+export type PostUsersMeCampaignsByCampaignIdFormsApiArg = {
+  campaignId: string;
+  body: {
+    form?: {
+      value: {
+        id?: number | number[];
+        serialized?:
+          | string
+          | string[]
+          | {
+              city: string;
+              country: string;
+            };
+      };
+      question: number;
+    }[];
+    device?: number[];
+  };
+};
 export type PostUsersMeCampaignsByCampaignIdMediaApiResponse =
   /** status 200 OK */ {
     files?: {
@@ -2090,7 +2222,7 @@ export type GetUsersMeFiscalApiResponse = /** status 200 OK */ {
     streetNumber?: string;
     cityCode: string;
   };
-  type: FiscalType;
+  type: FiscalType | "internal";
   birthPlace: {
     city?: string;
     province?: string;
@@ -2198,8 +2330,8 @@ export type GetUsersMePaymentsApiResponse = /** status 200 OK */ {
   } & {
     status: "paid" | "processing";
     amount: {
-      value?: number;
-      currency?: string;
+      net: Currency;
+      gross: Currency;
     };
     paidDate: any | "-";
     method: {
@@ -2247,8 +2379,8 @@ export type GetUsersMePaymentsByPaymentApiResponse = /** status 200 OK */ {
   } & {
     type: string;
     amount: {
-      value: number;
-      currency: string;
+      net?: Currency;
+      gross: Currency;
     };
     date: string;
     activity: string;
@@ -2267,7 +2399,7 @@ export type GetUsersMePaymentsByPaymentApiArg = {
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
   /** The value to order by */
-  orderBy?: "amount" | "type" | "date" | "activity";
+  orderBy?: "type" | "date" | "activity" | "net" | "gross";
 };
 export type GetUsersMePendingBootyApiResponse = /** status 200 OK */ {
   results?: ({
@@ -2275,10 +2407,11 @@ export type GetUsersMePendingBootyApiResponse = /** status 200 OK */ {
   } & {
     name: string;
     amount: {
-      value?: number;
-      currency?: string;
+      net?: Currency;
+      gross: Currency;
     };
     attributionDate: string;
+    activity: string;
   })[];
   limit?: number;
   size: number;
@@ -2291,7 +2424,13 @@ export type GetUsersMePendingBootyApiArg = {
   /** Max items to retrieve */
   limit?: number;
   /** The field for item order */
-  orderBy?: "id" | "attributionDate" | "amount" | "activityName";
+  orderBy?:
+    | "id"
+    | "attributionDate"
+    | "activityName"
+    | "net"
+    | "gross"
+    | "activity";
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
 };
@@ -2341,46 +2480,6 @@ export type GetUsersMeRankListApiResponse = /** status 200 OK */ {
   peers: RankingItem[];
 };
 export type GetUsersMeRankListApiArg = void;
-export type GetUsersMeCampaignsByCampaignIdFormsApiResponse =
-  /** status 200 OK */ (PreselectionFormQuestion & {
-    value?:
-      | number
-      | {
-          city?: string;
-          country?: string;
-        }
-      | number[]
-      | string;
-    validation?: {
-      regex: string;
-      error?: string;
-    };
-    id: number;
-  })[];
-export type GetUsersMeCampaignsByCampaignIdFormsApiArg = {
-  campaignId: string;
-};
-export type PostUsersMeCampaignsByCampaignIdFormsApiResponse =
-  /** status 200 OK */ undefined;
-export type PostUsersMeCampaignsByCampaignIdFormsApiArg = {
-  campaignId: string;
-  body: {
-    form?: {
-      value: {
-        id?: number | number[];
-        serialized?:
-          | string
-          | string[]
-          | {
-              city: string;
-              country: string;
-            };
-      };
-      question: number;
-    }[];
-    device?: number[];
-  };
-};
 export type Agreement = {
   title: string;
   tokens: number;
@@ -2477,6 +2576,8 @@ export type BugTag = {
   id: number;
   name: string;
 };
+export type Gender = "male" | "female" | "not-specified" | "other";
+export type ProspectStatus = "draft" | "confirmed" | "done";
 export type TaskOptional = {
   name?: string;
   content?: string;
@@ -2509,7 +2610,6 @@ export type PreselectionFormQuestion = {
       type: "gender" | "phone_number" | "address";
     }
 );
-export type ProspectStatus = "draft" | "confirmed" | "done";
 export type CustomUserFieldsType = "text" | "select" | "multiselect";
 export type CustomUserFieldsDataOption = {
   id: number;
@@ -2544,6 +2644,10 @@ export type Popup = {
   content?: string;
   title?: string;
 };
+export type Currency = {
+  value: number;
+  currency: string;
+};
 export type AdditionalField = {
   field_id: number;
   name: string;
@@ -2551,7 +2655,6 @@ export type AdditionalField = {
   text?: string;
   is_candidate?: boolean;
 };
-export type Gender = "male" | "female" | "not-specified" | "other";
 export type Certification = {
   id?: number;
   name: string;
@@ -2640,32 +2743,32 @@ export const {
   usePostAuthenticateMutation,
   usePostCampaignsMutation,
   useGetCampaignsQuery,
-  useGetCampaignsOwnersQuery,
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
   useGetCampaignsByCampaignBugsQuery,
-  useGetCampaignsByCampaignGroupsQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignCandidatesQuery,
+  useGetCampaignsByCampaignClustersQuery,
+  useGetCampaignsByCampaignFormsQuery,
+  useGetCampaignsByCampaignGroupsQuery,
+  useGetCampaignsByCampaignObservationsQuery,
   useGetCampaignsByCampaignPayoutsQuery,
+  useGetCampaignsByCampaignProspectQuery,
+  usePutCampaignsByCampaignProspectMutation,
+  usePatchCampaignsByCampaignProspectMutation,
+  usePutCampaignsByCampaignProspectAndTesterIdMutation,
+  useGetCampaignsByCampaignStatsQuery,
   useGetCampaignsByCampaignTasksQuery,
   usePostCampaignsByCampaignTasksMutation,
   useGetCampaignsByCampaignTasksAndTaskQuery,
   usePutCampaignsByCampaignTasksAndTaskMutation,
   useGetCampaignsByCampaignUxQuery,
   usePatchCampaignsByCampaignUxMutation,
-  useGetCampaignsByCampaignClustersQuery,
-  useGetCampaignsByCampaignObservationsQuery,
   usePostCampaignsFormsMutation,
   useGetCampaignsFormsQuery,
   useGetCampaignsFormsByFormIdQuery,
   usePutCampaignsFormsByFormIdMutation,
-  useGetCampaignsByCampaignFormsQuery,
-  usePutCampaignsByCampaignProspectAndTesterIdMutation,
-  useGetCampaignsByCampaignProspectQuery,
-  usePutCampaignsByCampaignProspectMutation,
-  usePatchCampaignsByCampaignProspectMutation,
-  useGetCampaignsByCampaignStatsQuery,
+  useGetCampaignsOwnersQuery,
   useGetCampaignTypesQuery,
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
@@ -2676,6 +2779,9 @@ export const {
   useGetDevicesByDeviceTypeOsVersionsQuery,
   useGetEducationQuery,
   useGetEmploymentsQuery,
+  usePostJotformsByCampaignMutation,
+  useGetJotformsFormsQuery,
+  useGetJotformsFormsByFormIdQuestionsQuery,
   useGetLanguagesQuery,
   useGetLevelsQuery,
   usePostMediaMutation,
@@ -2689,6 +2795,7 @@ export const {
   usePatchPopupsByPopupMutation,
   useGetUsersQuery,
   usePostUsersMutation,
+  useHeadUsersByEmailByEmailMutation,
   useGetUsersMeQuery,
   usePutUsersMeMutation,
   usePatchUsersMeMutation,
@@ -2700,6 +2807,8 @@ export const {
   useGetUsersMeCampaignsByCampaignCompatibleDevicesQuery,
   usePostUsersMeCampaignsByCampaignIdBugsMutation,
   useGetUsersMeCampaignsByCampaignIdDevicesQuery,
+  useGetUsersMeCampaignsByCampaignIdFormsQuery,
+  usePostUsersMeCampaignsByCampaignIdFormsMutation,
   usePostUsersMeCampaignsByCampaignIdMediaMutation,
   usePostUsersMeCertificationsMutation,
   useDeleteUsersMeCertificationsByCertificationIdMutation,
@@ -2724,6 +2833,4 @@ export const {
   useGetUsersMePopupsByPopupQuery,
   useGetUsersMeRankQuery,
   useGetUsersMeRankListQuery,
-  useGetUsersMeCampaignsByCampaignIdFormsQuery,
-  usePostUsersMeCampaignsByCampaignIdFormsMutation,
 } = injectedRtkApi;

@@ -32,7 +32,7 @@ const TableButton = ({
       href={href}
       style={style}
       size="sm"
-      type="primary"
+      kind="primary"
       flat={true}
     >
       {children}

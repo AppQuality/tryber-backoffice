@@ -1,74 +1,34 @@
-import { Card, Form, Formik } from "@appquality/appquality-design-system";
-import { FormikProps } from "formik";
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
-import { useState } from "react";
+import { Card } from "@appquality/appquality-design-system";
 import styled from "styled-components";
-import FilterRow from "./FilterRow";
-import * as yup from "yup";
-import FilterCardHeader from "./FilterCardHeader";
-import { useFiltersValues } from "./useFiltersValues";
-import useSelectionQueryTypeOptions from "./useSelectionQueryTypeOptions";
-import useSelectionBaseFilters from "./useSelectionBaseFilters";
+import { AgeFilters } from "./FilterItems/AgeFilters";
+import { BughuntingLevelFilters } from "./FilterItems/BughuntingLevelFilters";
+import { DeviceFilters } from "./FilterItems/DeviceFilters";
+import { GenderFilters } from "./FilterItems/GenderFilters";
+import { MetalLevelFilters } from "./FilterItems/MetalLevelFilters";
+import { QuestionFilters } from "./FilterItems/QuestionFilters";
+import { TesterIdExclude } from "./FilterItems/TesterIdExclude";
+import { TesterIdInclude } from "./FilterItems/TesterIdInclude";
 
-const StyledSelectionFilters = styled.div`
-  height: 122px;
-  overflow: auto;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
+const StyledSelectionFilters = styled.div``;
 
 interface SelectionFiltersProps {
   id: string;
 }
 
 const SelectionFilters = ({ id }: SelectionFiltersProps) => {
-  const queryTypeOptions = useSelectionQueryTypeOptions();
-  const baseFilters = useSelectionBaseFilters();
-  const [filterByList] = useState<Option[]>(baseFilters);
-
-  const initialFiltersValues: SelectionFiltersValues = {
-    filters: {},
-  };
-
-  const validationSchema = {
-    filters: yup.object(),
-  };
-
-  const { applyFilters } = useFiltersValues();
-
   return (
-    <Formik
-      initialValues={initialFiltersValues}
-      enableReinitialize
-      validationSchema={yup.object(validationSchema)}
-      onSubmit={applyFilters}
-    >
-      {(formikProps: FormikProps<SelectionFiltersValues>) => {
-        return (
-          <Form id="selectionFilters">
-            <Card>
-              <FilterCardHeader queryTypeOptions={queryTypeOptions} />
-              <StyledSelectionFilters>
-                {formikProps.values.filters.rows?.map(
-                  (r: SelectionFilterRow, i: number) => (
-                    <FilterRow
-                      key={r.id}
-                      index={i}
-                      filterByOptions={filterByList}
-                      queryTypeOptions={queryTypeOptions}
-                    />
-                  )
-                )}
-              </StyledSelectionFilters>
-            </Card>
-          </Form>
-        );
-      }}
-    </Formik>
+    <Card title="Filters" data-qa="selectionFilters">
+      <StyledSelectionFilters>
+        <AgeFilters />
+        <TesterIdInclude />
+        <TesterIdExclude />
+        <DeviceFilters id={id} />
+        <GenderFilters id={id} />
+        <MetalLevelFilters id={id} />
+        <BughuntingLevelFilters id={id} />
+        <QuestionFilters id={id} />
+      </StyledSelectionFilters>
+    </Card>
   );
 };
-
 export default SelectionFilters;

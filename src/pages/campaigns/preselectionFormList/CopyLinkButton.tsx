@@ -13,7 +13,7 @@ export const CopyLinkButton: FC<{ id: string }> = ({ id }) => {
 
   return (
     <Button
-      type="link-hover"
+      kind="link-hover"
       variant
       size="sm"
       onClick={() => {

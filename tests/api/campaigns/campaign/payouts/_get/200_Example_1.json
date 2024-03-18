@@ -1,0 +1,17 @@
+{
+  "maxBonusBug": 5.99,
+  "completionRule": {
+    "bugs": 4,
+    "usecases": 53
+  },
+  "testSuccess": {
+    "payout": 15,
+    "points": 100,
+    "message": "message"
+  },
+  "testFailure": {
+    "payout": 0,
+    "points": -200,
+    "message": "message"
+  }
+}

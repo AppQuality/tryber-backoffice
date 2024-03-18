@@ -1,10 +1,9 @@
-import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi";
 import { TableType } from "@appquality/appquality-design-system";
-import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
-import { useAppDispatch, useAppSelector } from "src/store";
-import { setTableColumns } from "../selectionSlice";
-import { columns } from "./columns";
 import { useEffect, useState } from "react";
+import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
+import { useAppDispatch } from "src/store";
+import { setTableColumns } from "../selectionSlice";
+import useItems from "../useItems";
 
 interface RowType extends TableType.Row {
   key: string;
@@ -19,24 +18,12 @@ interface RowType extends TableType.Row {
 
 const useTableRows = (id: string) => {
   const dispatch = useAppDispatch();
-  const { currentPage, devicesPerPage, questionsId, filters } = useAppSelector(
-    (state) => state.selection
-  );
   const [rows, setRows] = useState<RowType[]>([]);
-  const { filterByInclude, filterByExclude } = filters;
-  const { data, isFetching, isLoading, error, refetch } =
-    useGetCampaignsByCampaignCandidatesQuery({
-      campaign: id,
-      start: devicesPerPage * (currentPage - 1),
-      limit: devicesPerPage,
-      ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
-      filterByInclude,
-      filterByExclude,
-    });
 
+  const { data, isFetching, isLoading, error, totalRows } = useItems(id);
   useEffect(() => {
     if (data?.results) {
-      const newColumns = [...columns];
+      const newColumns: TableType.Column[] = [];
       data.results[0]?.questions?.forEach((q, i) => {
         if (q.title && q.id)
           newColumns.splice(1 + i, 0, {
@@ -68,6 +55,7 @@ const useTableRows = (id: string) => {
               title: "select",
               content: (
                 <DeviceCheckbox
+                  campaignId={id}
                   userId={user.id.toString()}
                   deviceId={device.id.toString()}
                 />
@@ -81,9 +69,15 @@ const useTableRows = (id: string) => {
             });
             row = {
               ...row,
-              nameId: `T${user.id} ${user.name} ${user.surname}`,
-              exp: user.experience.toString(),
-              level: user.level,
+              id: `T${user.id}`,
+              name: `${user.name} ${user.surname}`,
+              age: user.age,
+              gender: user.gender,
+              bhlevel: user.levels.bugHunting,
+              exppoints: user.experience,
+              metallevel: user.levels.metal,
+              totalCpBusiness: user.businessCps,
+              lastCpBusiness: user.businessCpsLastMonth,
               ...fields,
             };
           }
@@ -96,9 +90,8 @@ const useTableRows = (id: string) => {
 
   return {
     rows,
-    totalRows: data?.total || 0,
+    totalRows,
     isFetching,
-    refetch,
     isLoading,
     error,
   };

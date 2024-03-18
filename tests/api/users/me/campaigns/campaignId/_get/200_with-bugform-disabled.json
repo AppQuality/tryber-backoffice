@@ -1,0 +1,22 @@
+{
+  "id": 123,
+  "title": "My campaign",
+  "titleRule": true,
+  "minimumMedia": 3,
+  "useCases": [],
+  "bugTypes": {
+    "valid": ["CRASH", "TYPO", "PERFORMANCE"],
+    "invalid": []
+  },
+  "bugSeverity": {
+    "valid": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+    "invalid": []
+  },
+  "bugReplicability": {
+    "valid": ["ALWAYS", "SOMETIMES", "ONCE"],
+    "invalid": []
+  },
+  "hasBugForm": false,
+  "devices": [],
+  "validFileExtensions": ["jpg", "png", "mov", "mp4"]
+}

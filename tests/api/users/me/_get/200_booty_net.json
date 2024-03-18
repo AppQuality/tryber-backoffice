@@ -1,0 +1,18 @@
+{
+  "id": 0,
+  "role": "string",
+  "pending_booty": {
+    "net": {
+      "value": 13.5,
+      "currency": "EUR"
+    },
+    "gross": {
+      "value": 16,
+      "currency": "EUR"
+    }
+  },
+  "booty_threshold": {
+    "value": 0,
+    "isOver": true
+  }
+}

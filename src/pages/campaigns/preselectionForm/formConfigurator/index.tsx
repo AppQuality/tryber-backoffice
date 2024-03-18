@@ -19,8 +19,8 @@ export const FormConfigurator = () => {
       <FieldsContainer />
       <Button
         className={!values.fields.length ? "aq-mt-3" : ""}
-        htmlType="submit"
-        type="primary"
+        type="submit"
+        kind="primary"
         style={{ float: "right" }}
       >
         Save

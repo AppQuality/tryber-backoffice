@@ -1,16 +1,18 @@
 import { Checkbox } from "@appquality/appquality-design-system";
 import { FC } from "react";
-import { useAppDispatch, useAppSelector } from "src/store";
 import {
   checkUserDevice,
   deselectDevice,
 } from "src/pages/campaigns/selection/selectionSlice";
+import { useAppDispatch } from "src/store";
+import useSelection from "../../useSelection";
 
-const DeviceCheckbox: FC<{ userId: string; deviceId: string }> = ({
-  userId,
-  deviceId,
-}) => {
-  const { selectedDevices } = useAppSelector((state) => state.selection);
+const DeviceCheckbox: FC<{
+  campaignId: string;
+  userId: string;
+  deviceId: string;
+}> = ({ campaignId, userId, deviceId }) => {
+  const { selectedDevices } = useSelection(campaignId);
   const dispatch = useAppDispatch();
   const onChange = () => {
     if (isChecked) {

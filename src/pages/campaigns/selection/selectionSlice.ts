@@ -1,6 +1,16 @@
 import { TableType } from "@appquality/appquality-design-system";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { columns } from "./SelectionTable/columns";
+
+type PartialRecord<K extends keyof any, T> = {
+  [P in K]?: T;
+};
+
+type Filter =
+  | PartialRecord<"testerIds", string>
+  | PartialRecord<
+      "os" | "gender" | "bughunting" | "metal" | `question_${number}`,
+      string[]
+    >;
 
 interface SelectionState {
   selectedDevices: {
@@ -9,12 +19,18 @@ interface SelectionState {
   currentPage: number;
   devicesPerPage: number;
   isConfirmModalOpen: boolean;
+  isFormModalOpen: boolean;
+  isSurveyModalOpen: boolean;
   questionsId: string[];
   tableColumns: TableType.Column[];
   disableApplyFilters: boolean;
   filters: {
-    filterByInclude?: { [key: string]: string[] };
-    filterByExclude?: { [key: string]: string[] };
+    filterByInclude?: Filter;
+    filterByExclude?: Record<"testerIds", string | undefined>;
+    filterByAge?: {
+      min?: number;
+      max?: number;
+    };
   };
 }
 
@@ -23,8 +39,10 @@ export const initialState: SelectionState = {
   currentPage: 1,
   devicesPerPage: 50,
   isConfirmModalOpen: false,
+  isFormModalOpen: false,
+  isSurveyModalOpen: false,
   questionsId: [],
-  tableColumns: columns,
+  tableColumns: [],
   disableApplyFilters: true,
   filters: {},
 };
@@ -45,11 +63,16 @@ const selectionSlice = createSlice({
     setFilters(
       state,
       action: PayloadAction<{
-        filterByInclude?: { [key: string]: string[] };
-        filterByExclude?: { [key: string]: string[] };
+        filterByInclude?: Filter;
+        filterByExclude?: Record<"testerIds", string | undefined>;
+        filterByAge?: {
+          min?: number;
+          max?: number;
+        };
       }>
     ) {
-      state.filters = action.payload;
+      state.filters = { ...state.filters, ...action.payload };
+      state.currentPage = 1;
     },
     reset() {
       return initialState;
@@ -76,6 +99,18 @@ const selectionSlice = createSlice({
     closeConfirmModal(state) {
       state.isConfirmModalOpen = false;
     },
+    openFormModal(state) {
+      state.isFormModalOpen = true;
+    },
+    closeFormModal(state) {
+      state.isFormModalOpen = false;
+    },
+    openSurveyModal(state) {
+      state.isSurveyModalOpen = true;
+    },
+    closeSurveyModal(state) {
+      state.isSurveyModalOpen = false;
+    },
   },
 });
 
@@ -88,6 +123,10 @@ export const {
   clearSelectedDevice,
   openConfirmModal,
   closeConfirmModal,
+  openFormModal,
+  closeFormModal,
+  openSurveyModal,
+  closeSurveyModal,
   setQuestionsId,
   setTableColumns,
   setDisableApplyFilters,

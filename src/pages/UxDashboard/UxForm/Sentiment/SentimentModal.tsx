@@ -60,18 +60,14 @@ const ModalFooter = () => {
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
       <Button
         data-qa="discard-sentiments"
-        type="danger"
+        kind="danger"
         flat
         onClick={handleDismiss}
         className="aq-mr-2"
       >
         Dismiss
       </Button>
-      <Button
-        htmlType="button"
-        data-qa="save-sentiment-chart"
-        onClick={handleSave}
-      >
+      <Button type="button" data-qa="save-sentiment-chart" onClick={handleSave}>
         Save
       </Button>
     </div>
