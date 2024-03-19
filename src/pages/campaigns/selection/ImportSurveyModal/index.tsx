@@ -7,6 +7,7 @@ import {
   Modal,
   Select,
 } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
 import { useGetJotformsFormsQuery } from "src/services/tryberApi";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { closeSurveyModal } from "../selectionSlice";
@@ -72,12 +73,23 @@ const ImportSurveyModal = ({ id }: { id: string }) => {
         </FormikField>
         <QuestionsSelect />
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button type="submit" data-qa="import-survey-apply-cta">
-            Confirm importation
-          </Button>
+          <ConfirmButton />
         </div>
       </FormProvider>
     </Modal>
+  );
+};
+
+const ConfirmButton = () => {
+  const { isSubmitting } = useFormikContext();
+  return (
+    <Button
+      type="submit"
+      disabled={isSubmitting}
+      data-qa="import-survey-apply-cta"
+    >
+      Confirm importation
+    </Button>
   );
 };
 
