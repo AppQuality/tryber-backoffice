@@ -6,13 +6,13 @@ import {
 } from "@appquality/appquality-design-system";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { PageTemplate } from "src/features/PageTemplate";
 import styled from "styled-components";
 import FilterContext from "./FilterContext";
 import Filters from "./Filters";
 import TagsFilter from "./Filters/TagsFilter";
 import Stats from "./Stats";
 import Table from "./Table";
-import { PageTemplate } from "src/features/PageTemplate";
 
 const FluidContainer = styled.div`
     max-width: 90%;
@@ -21,7 +21,7 @@ const FluidContainer = styled.div`
 `;
 
 const HeaderButton = (props: Parameters<typeof Button>[0]) => {
-  return <Button {...props} size="sm" type="link-hover" />;
+  return <Button {...props} size="sm" kind="link-hover" />;
 };
 
 const BugsList = () => {

@@ -1,10 +1,10 @@
 import {
-  Select,
+  BSCol,
+  BSGrid,
+  Button,
   FormLabel,
   Input,
-  Button,
-  BSGrid,
-  BSCol,
+  Select,
 } from "@appquality/appquality-design-system";
 import { useState } from "react";
 
@@ -52,7 +52,7 @@ const useTargets = ({ onChange, value }) => {
           </BSCol>
           <BSCol size="col-2">
             <Button
-              type="success"
+              kind="success"
               size="sm"
               className="aq-float-right aq-my-1 aq-mx-2"
               disabled={!isListUpdated}
