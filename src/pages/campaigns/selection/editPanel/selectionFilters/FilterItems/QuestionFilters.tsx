@@ -1,9 +1,4 @@
-import {
-  Button,
-  FormLabel,
-  Input,
-  Title,
-} from "@appquality/appquality-design-system";
+import { Button, Input, Title } from "@appquality/appquality-design-system";
 import { useState } from "react";
 import {
   useGetCampaignsByCampaignQuery,
@@ -154,7 +149,6 @@ const TextQuestionFilterItem = ({
   return (
     <FilterContainer>
       <Title size="s">{title}</Title>
-      <FormLabel htmlFor={`question_${id}`} label={`question_${id}`} />
       <InputContainer>
         <Input
           value={value}
