@@ -30,6 +30,11 @@ const GenderFilters = ({ id }: { id: string }) => {
       title="Genders"
       key="gender"
       options={genders}
+      selected={
+        filterByInclude && "gender" in filterByInclude
+          ? filterByInclude.gender
+          : undefined
+      }
       onSelect={(checked, option) =>
         setFilters({
           filterByInclude: {

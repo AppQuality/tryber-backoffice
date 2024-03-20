@@ -30,6 +30,11 @@ const DeviceFilters = ({ id }: { id: string }) => {
       title="Devices"
       key="os"
       options={devices}
+      selected={
+        filterByInclude && "os" in filterByInclude
+          ? filterByInclude.os
+          : undefined
+      }
       onSelect={(checked, option) =>
         setFilters({
           filterByInclude: {

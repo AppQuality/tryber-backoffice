@@ -1,5 +1,5 @@
 import { Button, Input, Title } from "@appquality/appquality-design-system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/store";
 import styled from "styled-components";
 import { setFilters } from "../../../selectionSlice";
@@ -28,6 +28,14 @@ const TesterIdInclude = () => {
     );
   };
 
+  useEffect(() => {
+    setValue(
+      filterByInclude && "testerIds" in filterByInclude
+        ? filterByInclude.testerIds
+        : ""
+    );
+  }, [filterByInclude]);
+
   return (
     <FilterContainer>
       <Title size="xs">Show only these testers</Title>
@@ -35,7 +43,7 @@ const TesterIdInclude = () => {
         <Input
           className="aq-mr-2"
           placeholder="T38229, T283472"
-          value={value}
+          value={value ? value : ""}
           onChange={(val) => {
             setValue(val.trim());
           }}
