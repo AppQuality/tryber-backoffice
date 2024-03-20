@@ -1,6 +1,7 @@
-import { Pill } from "@appquality/appquality-design-system";
-import { X } from "react-bootstrap-icons";
+import { Pill, icons } from "@appquality/appquality-design-system";
 import styled from "styled-components";
+
+const { X } = icons;
 
 const FilterPillComponent = ({
   className,
@@ -17,7 +18,7 @@ const FilterPillComponent = ({
     <Pill className={className} flat type="secondary">
       {label}: {children}
       <span onClick={onRemove}>
-        <X />
+        <X size={16} />
       </span>
     </Pill>
   );
@@ -28,12 +29,17 @@ const FilterPill = styled(FilterPillComponent)`
   align-items: center;
   span {
     border-radius: 50%;
-    padding: 4px;
-    margin-left: 4px;
+    margin-left: ${(props) => props.theme.grid.sizes[2]};
     display: inline-flex;
     cursor: pointer;
+    color: ${(props) => props.theme.colors.white};
+    background: ${(props) => props.theme.variants.secondary};
     &:hover {
-      background: ${(props) => props.theme.colors.gray200};
+      color: ${(props) => props.theme.palette.secondary};
+    }
+
+    svg {
+      stroke-width: 1;
     }
   }
 `;
