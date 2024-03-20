@@ -88,12 +88,13 @@ const CheckboxQuestionFilterItem = ({
   const { filterByInclude } = useAppSelector(
     (state) => state.selection.filters
   );
-  const questionData =
+  const questionData = (
     filterByInclude &&
     `question_${id}` in filterByInclude &&
     filterByInclude[`question_${id}` as keyof typeof filterByInclude]
       ? filterByInclude[`question_${id}` as keyof typeof filterByInclude]
-      : [];
+      : []
+  ) as string[];
 
   return (
     <CheckboxFilter
