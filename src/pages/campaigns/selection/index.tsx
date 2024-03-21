@@ -17,6 +17,7 @@ import {
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import styled from "styled-components";
+import { FilterRecap } from "./FilterRecap";
 import ImportSurveyModal from "./ImportSurveyModal";
 import SelectionTable from "./SelectionTable";
 import Counter from "./counter";
@@ -78,6 +79,7 @@ const SelectionPage = () => {
             </BSCol>
             <BSCol size="col-lg-9">
               <Card className="aq-mb-3">
+                <FilterRecap id={id} />
                 <SelectionTable id={id} />
               </Card>
               <BottomCard className="aq-mb-3">

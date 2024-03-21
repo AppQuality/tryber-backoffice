@@ -30,6 +30,11 @@ const MetalLevelFilters = ({ id }: { id: string }) => {
       title="Metal Level"
       key="metal"
       options={metalLevels}
+      selected={
+        filterByInclude && "metal" in filterByInclude
+          ? filterByInclude.metal
+          : undefined
+      }
       onSelect={(checked, option) =>
         setFilters({
           filterByInclude: {

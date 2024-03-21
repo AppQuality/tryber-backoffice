@@ -1,13 +1,17 @@
 import {
-  BSCol, BSGrid, Button, Card,
-  Pill, Title
-} from '@appquality/appquality-design-system';
-import { useEditor } from '@appquality/craft-blocks';
-import React from 'react';
+  BSCol,
+  BSGrid,
+  Button,
+  Card,
+  Pill,
+  Title,
+} from "@appquality/appquality-design-system";
+import { useEditor } from "@appquality/craft-blocks";
+import React from "react";
 
 export const SettingsPanel = () => {
   const { actions, selected, isEnabled } = useEditor((state, query) => {
-    const currentNodeId = query.getEvent('selected').last();
+    const currentNodeId = query.getEvent("selected").last();
     let selected;
 
     if (currentNodeId) {
@@ -32,9 +36,15 @@ export const SettingsPanel = () => {
       <BSGrid>
         <BSCol size="col-12 aq-mb-3">
           <BSGrid>
-            <BSCol size="col"><Title size="sm">Selected</Title></BSCol>
             <BSCol size="col">
-              <Pill className="aq-float-right" type="primary" data-cy="chip-selected">
+              <Title size="sm">Selected</Title>
+            </BSCol>
+            <BSCol size="col">
+              <Pill
+                className="aq-float-right"
+                type="primary"
+                data-cy="chip-selected"
+              >
                 {selected.name}
               </Pill>
             </BSCol>
@@ -45,7 +55,7 @@ export const SettingsPanel = () => {
         </div>
         {selected.isDeletable ? (
           <Button
-            type="primary"
+            kind="primary"
             flat={true}
             onClick={() => {
               actions.delete(selected.id);

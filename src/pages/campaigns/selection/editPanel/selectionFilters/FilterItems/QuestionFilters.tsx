@@ -1,10 +1,5 @@
-import {
-  Button,
-  FormLabel,
-  Input,
-  Title,
-} from "@appquality/appquality-design-system";
-import { useState } from "react";
+import { Button, Input, Title } from "@appquality/appquality-design-system";
+import { useEffect, useState } from "react";
 import {
   useGetCampaignsByCampaignQuery,
   useGetCampaignsFormsByFormIdQuery,
@@ -93,18 +88,20 @@ const CheckboxQuestionFilterItem = ({
   const { filterByInclude } = useAppSelector(
     (state) => state.selection.filters
   );
-  const questionData =
+  const questionData = (
     filterByInclude &&
     `question_${id}` in filterByInclude &&
     filterByInclude[`question_${id}` as keyof typeof filterByInclude]
       ? filterByInclude[`question_${id}` as keyof typeof filterByInclude]
-      : [];
+      : []
+  ) as string[];
 
   return (
     <CheckboxFilter
       title={title}
       key={id.toString()}
       options={options}
+      selected={questionData}
       onSelect={(checked, option) =>
         setFilters({
           filterByInclude: {
@@ -151,10 +148,16 @@ const TextQuestionFilterItem = ({
     );
   };
 
+  useEffect(() => {
+    const value = filterByInclude?.[
+      `question_${id}` as keyof typeof filterByInclude
+    ] as string[] | undefined;
+    setValue(value?.join(",") || "");
+  }, [filterByInclude]);
+
   return (
     <FilterContainer>
       <Title size="s">{title}</Title>
-      <FormLabel htmlFor={`question_${id}`} label={`question_${id}`} />
       <InputContainer>
         <Input
           value={value}

@@ -1,5 +1,5 @@
 import { Button, Input, Title } from "@appquality/appquality-design-system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/store";
 import styled from "styled-components";
 import { setFilters } from "../../../selectionSlice";
@@ -10,8 +10,8 @@ const InputContainer = styled.div`
 `;
 
 const AgeFilters = () => {
-  const [max, setMax] = useState<number>();
-  const [min, setMin] = useState<number>();
+  const [max, setMax] = useState<number | undefined>();
+  const [min, setMin] = useState<number | undefined>();
 
   const { filterByAge } = useAppSelector((state) => state.selection.filters);
   const dispatch = useAppDispatch();
@@ -28,13 +28,18 @@ const AgeFilters = () => {
     );
   };
 
+  useEffect(() => {
+    setMin(filterByAge?.min);
+    setMax(filterByAge?.max);
+  }, [filterByAge?.min, filterByAge?.max]);
+
   return (
     <FilterContainer>
       <Title size="xs">Filter By Age</Title>
       <InputContainer>
         <Input
           placeholder="Min"
-          value={min?.toString()}
+          value={min ? min.toString() : ""}
           onChange={(val) => setMin(parseInt(val))}
           id="minAge"
           type="number"
@@ -42,7 +47,7 @@ const AgeFilters = () => {
         />
         <Input
           placeholder="Max"
-          value={max?.toString()}
+          value={max ? max.toString() : ""}
           onChange={(val) => setMax(parseInt(val))}
           id="maxAge"
           type="number"
