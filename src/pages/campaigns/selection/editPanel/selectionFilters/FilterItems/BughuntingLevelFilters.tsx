@@ -32,6 +32,11 @@ const BughuntingLevelFilters = ({ id }: { id: string }) => {
       title="BH Level"
       key="bughunting"
       options={bhLevels}
+      selected={
+        filterByInclude && "bughunting" in filterByInclude
+          ? filterByInclude.bughunting
+          : undefined
+      }
       onSelect={(checked, option) =>
         setFilters({
           filterByInclude: {

@@ -5,12 +5,11 @@ type PartialRecord<K extends keyof any, T> = {
   [P in K]?: T;
 };
 
-type Filter =
-  | PartialRecord<"testerIds", string>
-  | PartialRecord<
-      "os" | "gender" | "bughunting" | "metal" | `question_${number}`,
-      string[]
-    >;
+type Filter = PartialRecord<"testerIds", string> &
+  PartialRecord<
+    "os" | "gender" | "bughunting" | "metal" | `question_${number}`,
+    string[]
+  >;
 
 interface SelectionState {
   selectedDevices: {

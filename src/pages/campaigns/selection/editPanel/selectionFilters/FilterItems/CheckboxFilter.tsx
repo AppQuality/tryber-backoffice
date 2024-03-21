@@ -7,11 +7,13 @@ const CheckboxFilter = ({
   title,
   key,
   options,
+  selected,
   onSelect,
 }: {
   title: string;
   key: string;
   options: string[];
+  selected?: string[];
   onSelect: (checked: boolean, option: string) => ReturnType<typeof setFilters>;
 }) => {
   const dispatch = useAppDispatch();
@@ -23,6 +25,7 @@ const CheckboxFilter = ({
           <Checkbox
             name={`filters.${key}.${d}`}
             label={d}
+            checked={selected ? selected.includes(d) : undefined}
             onChange={(e) => {
               dispatch(changeTablePage({ newPage: 1 }));
               dispatch(onSelect(e.target.checked, d));
