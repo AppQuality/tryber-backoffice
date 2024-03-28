@@ -14,6 +14,7 @@ import ConfirmModal from "src/pages/campaigns/selection/confirmModals/ConfirmSel
 import {
   useGetCampaignsByCampaignQuery,
   useGetUsersMePermissionsQuery,
+  useGetUsersMeQuery,
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import styled from "styled-components";
@@ -24,6 +25,7 @@ import Counter from "./counter";
 import ColumnsConfigurator from "./editPanel/columnsConfigurator";
 import SelectionFilters from "./editPanel/selectionFilters";
 import { openFormModal, openSurveyModal } from "./selectionSlice";
+import Report from "./editPanel/Report";
 
 const BottomCard = styled(Card)`
   .aq-card-body {
@@ -35,9 +37,9 @@ const BottomCard = styled(Card)`
 `;
 
 const SelectionPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const { data } = useGetUsersMePermissionsQuery();
-  const campaignId = useParams<{ id: string }>().id;
+  const { id: campaignId } = useParams<{ id: string }>();
+  const { data: permissionData } = useGetUsersMePermissionsQuery();
+  const { data: userData } = useGetUsersMeQuery({});
   const { data: campaignData } = useGetCampaignsByCampaignQuery({
     campaign: campaignId,
   });
@@ -53,14 +55,14 @@ const SelectionPage = () => {
     <PageTemplate>
       <div className="selection-page">
         <AuthorizedOnlyContainer
-          excludeRule={!data?.appq_tester_selection}
+          excludeRule={!permissionData?.appq_tester_selection}
           isFluid
         >
-          <ConfirmModal id={id} />
+          <ConfirmModal id={campaignId} />
           <ConfirmFormModal
             preselectionFormId={campaignData?.preselectionFormId}
           />
-          <ImportSurveyModal id={id} />
+          <ImportSurveyModal id={campaignId} />
           <PageTitle size="regular">Tester selection panel</PageTitle>
           <BSGrid>
             <BSCol size="col-lg-3">
@@ -73,18 +75,27 @@ const SelectionPage = () => {
                 Import jotform
               </Button>
               <Card title="Add columns" className="aq-mb-3">
-                <ColumnsConfigurator id={id} />
+                <ColumnsConfigurator id={campaignId} />
               </Card>
-              <SelectionFilters id={id} />
+              <Card
+                title="Filters"
+                data-qa="selectionFilters"
+                className="aq-mb-3"
+              >
+                <SelectionFilters id={campaignId} />
+              </Card>
+              <Card title="Report" className="aq-mb-3">
+                <Report userData={userData} campaignId={campaignId} />
+              </Card>
             </BSCol>
             <BSCol size="col-lg-9">
               <Card className="aq-mb-3">
-                <FilterRecap id={id} />
-                <SelectionTable id={id} />
+                <FilterRecap id={campaignId} />
+                <SelectionTable id={campaignId} />
               </Card>
               <BottomCard className="aq-mb-3">
-                <Counter id={id} />
-                <ConfirmButton id={id} />
+                <Counter id={campaignId} />
+                <ConfirmButton id={campaignId} />
               </BottomCard>
             </BSCol>
           </BSGrid>
