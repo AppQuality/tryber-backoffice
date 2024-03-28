@@ -33,6 +33,7 @@ const Report = ({
         "https://hooks.zapier.com/hooks/catch/5196925/3xcaqeu/",
         {
           method: "POST",
+          mode: "no-cors",
           headers: {
             "Content-Type": "application/json",
           },
@@ -43,13 +44,9 @@ const Report = ({
           }),
         }
       );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
       add({
         type: "success",
-        message: "Report sent successfully " + data,
+        message: "Report requested successfully, check your email! ",
       });
     } catch (error) {
       add({
