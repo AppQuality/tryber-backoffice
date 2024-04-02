@@ -2,7 +2,9 @@ const path = require(`path`);
 const alias = (prefix = `src`) => ({
   react: `./node_modules/react`,
   "styled-components": `./node_modules/styled-components`,
+  "@zendeskgarden/react-theming": `./node_modules/@zendeskgarden/react-theming`,
   formik: `./node_modules/formik`,
+  "styled-components": `./node_modules/styled-components`,
 });
 
 const SRC = `./src`;
@@ -18,8 +20,21 @@ const resolvedAliases = Object.fromEntries(
 module.exports = {
   webpack: {
     alias: resolvedAliases,
+    configure: (webpackConfig) => {
+      webpackConfig.module.rules.push({
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto",
+      });
+      return webpackConfig;
+    },
   },
   babel: {
-    plugins: ["@babel/plugin-proposal-numeric-separator"],
+    presets: ["@babel/preset-env"],
+    plugins: [
+      "@babel/plugin-proposal-optional-chaining",
+      "@babel/plugin-proposal-nullish-coalescing-operator",
+      "@babel/plugin-proposal-numeric-separator",
+    ],
   },
 };

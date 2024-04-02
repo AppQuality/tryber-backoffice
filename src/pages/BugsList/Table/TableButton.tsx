@@ -1,12 +1,15 @@
+import { Button } from "@appquality/appquality-design-system";
+import { ButtonProps } from "@appquality/appquality-design-system/dist/stories/button/_types";
 import React from "react";
 import styled from "styled-components";
-import { Button } from "@appquality/appquality-design-system";
 
-const StyledButton = styled(({ children, style, href, ...rest }) => (
-  <Button as="a" style={style} href={href} {...rest}>
-    {children}
-  </Button>
-))`
+const StyledButton = styled(
+  ({ children, style, href, ...rest }: ButtonProps) => (
+    <Button as="a" style={style} href={href} {...rest}>
+      {children}
+    </Button>
+  )
+)`
   border: none;
   padding: 0;
   background-color: transparent;

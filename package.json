@@ -5,15 +5,18 @@
   "homepage": "backoffice/",
   "dependencies": {
     "@analytics/google-tag-manager": "^0.5.3",
-    "@appquality/appquality-design-system": "^1.0.76",
+    "@appquality/appquality-design-system": "1.0.51-canary",
     "@appquality/craft-blocks": "^0.1.27",
     "@appquality/stream-player": "^1.0.6",
+    "@appquality/unguess-design-system": "^3.1.78",
     "@craco/craco": "^6.4.3",
     "@craftjs/core": "^0.2.0-beta.5",
     "@reduxjs/toolkit": "^1.8.3",
     "@sentry/cli": "^2.23.0",
     "@sentry/react": "^7.84.0",
     "@silevis/reactgrid": "^4.0.4",
+    "@zendeskgarden/react-dropdowns": "^8.75.0",
+    "@zendeskgarden/react-theming": "^8.75.0",
     "analytics": "^0.8.1",
     "husky": "^7.0.4",
     "lzutf8": "^0.6.0",
@@ -34,7 +37,7 @@
     "react-transition-group": "^4.4.2",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
-    "styled-components": "^5.3.0",
+    "styled-components": "^6.1.1",
     "uuid": "^9.0.0",
     "web-vitals": "^1.1.2"
   },
@@ -90,6 +93,7 @@
   "devDependencies": {
     "@appquality/fixture-generator": "^1.0.3",
     "@babel/plugin-proposal-numeric-separator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@currents/playwright": "^0.12.1",
     "@playwright/test": "^1.41.2",
     "@rtk-query/codegen-openapi": "^1.0.0-alpha.1",
@@ -99,7 +103,7 @@
     "@types/react-gtm-module": "^2.0.3",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-transition-group": "^4.4.4",
-    "@types/styled-components": "^5.1.23",
+    "@types/styled-components": "^5.1.34",
     "@types/uuid": "^8.3.4",
     "jest-canvas-mock": "^2.4.0",
     "msw": "^0.47.4",
@@ -111,6 +115,10 @@
     "typescript": "4.9.5"
   },
   "resolutions": {
-    "react-error-overlay": "6.0.9"
+    "//": "See https://github.com/facebook/create-react-app/issues/11773",
+    "react-error-overlay": "6.0.9",
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2",
+    "styled-components": "^6.1.1"
   }
 }
