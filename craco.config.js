@@ -18,6 +18,9 @@ const resolvedAliases = Object.fromEntries(
 );
 
 module.exports = {
+  eslint: {
+    enable: false,
+  },
   webpack: {
     alias: resolvedAliases,
     configure: (webpackConfig) => {

@@ -67,7 +67,7 @@
     "generate-schema": ". ./.env.development; npx openapi-typescript $REACT_APP_API_URL/reference/ --output src/utils/schema.ts ",
     "start": "craco start",
     "start:ssl": "craco --openssl-legacy-provider start",
-    "build": "react-scripts build && npm run move",
+    "build": "NODE_OPTIONS=\"--max-old-space-size=8192 --openssl-legacy-provider\" craco build && npm run move",
     "test": "test:e2e:ci",
     "test:e2e:ui": "npx playwright test --ui",
     "test:e2e": "npx playwright test",
@@ -116,9 +116,6 @@
   },
   "resolutions": {
     "//": "See https://github.com/facebook/create-react-app/issues/11773",
-    "react-error-overlay": "6.0.9",
-    "@types/react": "17.0.2",
-    "@types/react-dom": "17.0.2",
-    "styled-components": "^6.1.1"
+    "react-error-overlay": "6.0.9"
   }
 }
