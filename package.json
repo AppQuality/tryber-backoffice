@@ -5,7 +5,7 @@
   "homepage": "backoffice/",
   "dependencies": {
     "@analytics/google-tag-manager": "^0.5.3",
-    "@appquality/appquality-design-system": "1.0.51-canary",
+    "@appquality/appquality-design-system": "2.0.0",
     "@appquality/craft-blocks": "^0.1.27",
     "@appquality/stream-player": "^1.0.6",
     "@appquality/unguess-design-system": "^3.1.78",
