@@ -1,24 +1,23 @@
 import {
-  Formik,
-  Form,
-  Field,
-  FormikField,
-  FormLabel,
-  TextareaField,
   Button,
   Checkbox,
-  FormGroup,
-  FieldProps,
-  ErrorMessage,
   Datepicker,
-  DatepickerGlobalStyle,
+  ErrorMessage,
+  Field,
+  FieldProps,
+  Form,
+  FormGroup,
+  FormLabel,
+  Formik,
+  FormikField,
   Input,
+  TextareaField,
 } from "@appquality/appquality-design-system";
 import { FormikHelpers } from "formik";
-import * as yup from "yup";
-import { CustomerSelect } from "./CustomerSelect";
 import { GetAgreementsByAgreementIdApiResponse } from "src/services/tryberApi";
+import * as yup from "yup";
 import { roundNumberTwoDecimals } from "../utils";
+import { CustomerSelect } from "./CustomerSelect";
 
 type AgreementFormProps = {
   agreement?: GetAgreementsByAgreementIdApiResponse;
@@ -73,7 +72,6 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
 
   return (
     <div>
-      <DatepickerGlobalStyle />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
