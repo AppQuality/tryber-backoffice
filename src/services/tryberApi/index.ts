@@ -863,6 +863,13 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: () => ({ url: `/users/me/rank/list` }),
     }),
+    postDossiers: build.mutation<PostDossiersApiResponse, PostDossiersApiArg>({
+      query: (queryArg) => ({
+        url: `/dossiers`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -2480,6 +2487,22 @@ export type GetUsersMeRankListApiResponse = /** status 200 OK */ {
   peers: RankingItem[];
 };
 export type GetUsersMeRankListApiArg = void;
+export type PostDossiersApiResponse = /** status 201 Created */ {
+  id?: number;
+};
+export type PostDossiersApiArg = {
+  body: {
+    project: number;
+    testType: number;
+    title: {
+      customer: string;
+      tester?: string;
+    };
+    startDate: string;
+    endDate?: string;
+    deviceList: number[];
+  };
+};
 export type Agreement = {
   title: string;
   tokens: number;
@@ -2833,4 +2856,5 @@ export const {
   useGetUsersMePopupsByPopupQuery,
   useGetUsersMeRankQuery,
   useGetUsersMeRankListQuery,
+  usePostDossiersMutation,
 } = injectedRtkApi;

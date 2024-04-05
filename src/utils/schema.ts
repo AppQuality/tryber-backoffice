@@ -540,6 +540,10 @@ export interface paths {
   "/users/me/rank/list": {
     get: operations["get-users-me-rank-list"];
   };
+  "/dossiers": {
+    post: operations["post-dossiers"];
+    parameters: {};
+  };
 }
 
 export interface components {
@@ -3975,6 +3979,36 @@ export interface operations {
       };
       403: components["responses"]["NotAuthorized"];
       404: components["responses"]["NotFound"];
+    };
+  };
+  "post-dossiers": {
+    parameters: {};
+    responses: {
+      /** Created */
+      201: {
+        content: {
+          "application/json": {
+            id?: number;
+          };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          project: number;
+          testType: number;
+          title: {
+            customer: string;
+            tester?: string;
+          };
+          /** Format: date-time */
+          startDate: string;
+          /** Format: date-time */
+          endDate?: string;
+          deviceList: number[];
+        };
+      };
     };
   };
 }
