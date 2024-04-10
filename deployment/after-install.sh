@@ -23,6 +23,8 @@ mkdir -p /var/docker/keys
 mkdir -p /home/ec2-user/$APPLICATION_NAME
 echo "Created!"
 
+aws ssm get-parameter --region eu-west-1 --name "/tryber/backoffice/$ENVIRONMENT/.env" --with-decryption --query "Parameter.Value" | sed -e 's/\\n/\n/g' -e 's/\\"/"/g' -e 's/^"//' -e 's/"$//' > /var/docker/.env
+source /var/docker/.env
 
 echo "Checking if $DOCKER_COMPOSE_FILE exists..."
 if test -f "$DOCKER_COMPOSE_FILE"; then
@@ -51,6 +53,7 @@ services:
       PORT: 80
       REACT_APP_ENVIRONMENT: $ENVIRONMENT
       REACT_APP_VERSION: ${DOCKER_IMAGE}
+      REACT_APP_REPORT_WEBHOOK: ${REPORT_ZAP_WEBHOOK}
     logging:
       driver: awslogs
       options:

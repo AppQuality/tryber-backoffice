@@ -29,21 +29,18 @@ const Report = ({
 
   async function postData() {
     try {
-      const response = await fetch(
-        "https://hooks.zapier.com/hooks/catch/5196925/3xcaqeu/",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            cp_id: campaignId,
-            email: value,
-            show: "onlyAccepted",
-          }),
-        }
-      );
+      const response = await fetch(react_env.REACT_APP_REPORT_WEBHOOK, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cp_id: campaignId,
+          email: value,
+          show: "onlyAccepted",
+        }),
+      });
       add({
         type: "success",
         message: "Report requested successfully, check your email! ",
