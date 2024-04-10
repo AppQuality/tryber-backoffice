@@ -1,5 +1,5 @@
 import { PageTemplate } from "src/features/PageTemplate";
-import Form from "../components/form";
+import Form from "src/pages/campaigns/components/form";
 
 const NewCampaign = () => {
   return (
