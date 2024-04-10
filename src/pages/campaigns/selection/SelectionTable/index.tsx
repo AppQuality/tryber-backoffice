@@ -1,5 +1,5 @@
 import { Pagination, Table } from "@appquality/appquality-design-system";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import useTableRows from "src/pages/campaigns/selection/SelectionTable/useTableRows";
 import { changeTablePage } from "src/pages/campaigns/selection/selectionSlice";
 import { useAppDispatch, useAppSelector } from "src/store";
@@ -15,12 +15,18 @@ const SelectionTable: FC<{ id: string }> = ({ id }) => {
     currentPage,
     tableColumns: additionalColumns,
   } = useAppSelector((state) => state.selection);
-  const tableColumns = [
-    columns[0],
-    ...additionalColumns,
-    ...columns.slice(1, columns.length - 1),
-    columns[columns.length - 1],
-  ];
+
+  const tableColumns = useMemo(
+    () => [
+      columns[0],
+      columns[1],
+      ...additionalColumns,
+      ...columns.slice(2, columns.length - 2),
+      columns[columns.length - 2],
+    ],
+    [columns, additionalColumns]
+  );
+
   return (
     <StyledSelectionTable columns={tableColumns.length} isFetching={isFetching}>
       <Table
