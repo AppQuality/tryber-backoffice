@@ -15,5 +15,6 @@ declare global {
   var react_env: {
     REACT_APP_ENVIRONMENT: string;
     REACT_APP_VERSION: string;
+    REACT_APP_REPORT_WEBHOOK: string;
   };
 }
