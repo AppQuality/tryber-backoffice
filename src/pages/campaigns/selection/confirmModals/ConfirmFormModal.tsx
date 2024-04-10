@@ -54,7 +54,12 @@ const ConfirmFormModal = ({
         <div>
           This tester selection already has a form associated with it (id:{" "}
           {preselectionFormId}). Proceeding with the import of a new survey will
-          replace the existing form, overwriting it.
+          replace the existing form, overwriting it. <br />
+          <strong>
+            NOTE: that if the current form is a Native Pre-selection form, by
+            proceeding all the related questions and replies will be deleted and
+            it won't be possible to recover them anymore!
+          </strong>
         </div>
       </Text>
     </Modal>
