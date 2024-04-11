@@ -1,6 +1,4 @@
-import { useFormikContext } from "formik";
 import { FormEventHandler } from "react";
-import { NewCampaignValues } from "../FormProvider";
 
 const Select = ({
   name,
@@ -8,16 +6,17 @@ const Select = ({
   options,
   label,
   emptyOption,
+  onChange,
 }: {
   name: string;
   value: number;
   options: { id: number; label: string }[];
   label: string;
   emptyOption?: string;
+  onChange: (value: number) => void;
 }) => {
-  const { setFieldValue } = useFormikContext<NewCampaignValues>();
   const handleChange: FormEventHandler<HTMLSelectElement> = (e) => {
-    setFieldValue(name, e.currentTarget.value);
+    onChange(Number(e.currentTarget.value));
   };
   return (
     <>
