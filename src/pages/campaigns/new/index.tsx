@@ -1,11 +1,12 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { PageTemplate } from "src/features/PageTemplate";
+import CustomerSelect from "./CustomerSelect";
 import FormProvider, { NewCampaignValues } from "./FormProvider";
 import Multiselect from "./components/MultiSelect";
 import TextInput from "./components/TextInput";
 
 const Content = () => {
-  const { setFieldValue } = useFormikContext<NewCampaignValues>();
+  const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const options = [
     { id: 1, label: "android" },
     { id: 2, label: "ios" },
@@ -13,16 +14,8 @@ const Content = () => {
 
   return (
     <>
-      <FormikField name="project">
-        {({ field }: FieldProps) => (
-          <TextInput
-            name={field.name}
-            label="Project"
-            value={field.value}
-            onChange={(value) => setFieldValue(field.name, value)}
-          />
-        )}
-      </FormikField>
+      {JSON.stringify(values)}
+      <CustomerSelect />
 
       <FormikField name="testType">
         {({ field }: FieldProps) => (

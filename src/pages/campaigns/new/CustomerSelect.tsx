@@ -1,43 +1,73 @@
+import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import {
-  Select,
-  Dropdown,
-  Menu,
-  Item,
-} from "@appquality/unguess-design-system";
-import { Field as FormikField, useFormikContext } from "formik";
-import { Field } from "@zendeskgarden/react-dropdowns";
-import { useGetCustomersQuery } from "src/services/tryberApi";
+  useGetCustomersByCustomerProjectsQuery,
+  useGetCustomersQuery,
+} from "src/services/tryberApi";
 import { NewCampaignValues } from "./FormProvider";
+import Select from "./components/Select";
 
 const CustomerSelect = () => {
   const { data: customers } = useGetCustomersQuery();
   const { values, setFieldValue } = useFormikContext<NewCampaignValues>();
 
+  const options = customers
+    ? customers.map((customer) => ({
+        id: customer.id || 0,
+        label: customer.name || "No name",
+      }))
+    : [];
   return (
-    <FormikField name="customer">
-      <Dropdown onSelect={(e) => console.log(e)}>
-        <Field>
-          <Select>
-            {values.customer
-              ? customers?.find(
-                  (customer) => customer.id?.toString() === values.customer
-                )?.name
-              : "Select a customer"}
-          </Select>
-        </Field>
-        <Menu>
-          {customers?.map((customer) => (
-            <Item
-              key={customer.id}
-              value={customer.id}
-              onClick={() => setFieldValue("customer", customer.id)}
-            >
-              {customer.name}
-            </Item>
-          ))}
-        </Menu>
-      </Dropdown>
-    </FormikField>
+    <>
+      <div>
+        <FormikField name="customerId">
+          {({ field }: FieldProps) => (
+            <Select
+              name={field.name}
+              options={options}
+              value={field.value}
+              label="Customer"
+              onChange={(value) => {
+                setFieldValue(field.name, value);
+                setFieldValue("projectId", 0);
+              }}
+            />
+          )}
+        </FormikField>
+      </div>
+      {values.customerId !== 0 && (
+        <ProjectSelect customerId={values.customerId} />
+      )}
+    </>
+  );
+};
+
+const ProjectSelect = ({ customerId }: { customerId: number }) => {
+  const { data: projects } = useGetCustomersByCustomerProjectsQuery({
+    customer: customerId.toString(),
+  });
+  const { setFieldValue } = useFormikContext<NewCampaignValues>();
+
+  const options = projects?.results
+    ? projects.results.map((project) => ({
+        id: project.id,
+        label: project.name,
+      }))
+    : [];
+
+  return (
+    <div>
+      <FormikField name="projectId">
+        {({ field }: FieldProps) => (
+          <Select
+            name={field.name}
+            options={options}
+            value={field.value}
+            label="Project"
+            onChange={(value) => setFieldValue(field.name, value)}
+          />
+        )}
+      </FormikField>
+    </div>
   );
 };
 

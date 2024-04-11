@@ -9,10 +9,11 @@ interface FormProviderInterface {
 }
 
 export interface NewCampaignValues {
-  project: number;
+  projectId: number;
+  customerId: number;
   testType: string;
-  customer: string;
-  tester: string;
+  customerTitle: string;
+  testerTitle: string;
   startDate: string;
   deviceList: number[];
 }
@@ -21,18 +22,20 @@ const FormProvider = ({ children }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
   const initialValues: NewCampaignValues = {
-    project: 0,
+    projectId: 0,
+    customerId: 0,
     testType: "",
-    customer: "",
-    tester: "",
+    customerTitle: "",
+    testerTitle: "",
     startDate: "",
     deviceList: [],
   };
   const validationSchema = yup.object({
-    project: yup.string().required("Project is required"),
+    customerId: yup.number().required("Project is required"),
+    projectId: yup.number().required("Project is required"),
     testType: yup.string().required("Test type is required"),
-    customer: yup.string().required("Customer is required"),
-    tester: yup.string().required("Tester is required"),
+    customerTitle: yup.string().required("Customer Title is required"),
+    testerTitle: yup.string().required("Tester Title is required"),
     startDate: yup.string().required("Start date is required"),
     deviceList: yup.array().min(1, "At least one device is required"),
   });
@@ -44,11 +47,11 @@ const FormProvider = ({ children }: FormProviderInterface) => {
         try {
           await postDossiers({
             body: {
-              project: values.project,
+              project: values.projectId,
               testType: parseInt(values.testType),
               title: {
-                customer: values.customer,
-                tester: values.tester,
+                customer: values.customerTitle,
+                tester: values.testerTitle,
               },
               startDate: values.startDate,
               deviceList: values.deviceList,

@@ -139,6 +139,7 @@ const injectedRtkApi = api.injectEndpoints({
           filterByInclude: queryArg.filterByInclude,
           filterByExclude: queryArg.filterByExclude,
           filterByAge: queryArg.filterByAge,
+          show: queryArg.show,
         },
       }),
     }),
@@ -870,6 +871,30 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    putDossiersByCampaign: build.mutation<
+      PutDossiersByCampaignApiResponse,
+      PutDossiersByCampaignApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/dossiers/${queryArg.campaign}`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
+    getDossiersByCampaign: build.query<
+      GetDossiersByCampaignApiResponse,
+      GetDossiersByCampaignApiArg
+    >({
+      query: (queryArg) => ({ url: `/dossiers/${queryArg.campaign}` }),
+    }),
+    getCustomersByCustomerProjects: build.query<
+      GetCustomersByCustomerProjectsApiResponse,
+      GetCustomersByCustomerProjectsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/customers/${queryArg.customer}/projects`,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -1148,6 +1173,8 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   filterByExclude?: any;
   /** Array with min and max */
   filterByAge?: any;
+  /** Show accepted/candidates or both */
+  show?: "onlyAccepted" | "onlyCandidates" | "all";
 };
 export type GetCampaignsByCampaignClustersApiResponse =
   /** status 200 A UseCase linked with the Campaign */ {
@@ -2501,7 +2528,67 @@ export type PostDossiersApiArg = {
     startDate: string;
     endDate?: string;
     deviceList: number[];
+    csm?: number;
   };
+};
+export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
+export type PutDossiersByCampaignApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    project: number;
+    testType: number;
+    title: {
+      customer: string;
+      tester?: string;
+    };
+    startDate: string;
+    endDate?: string;
+    deviceList: number[];
+    csm?: number;
+  };
+};
+export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
+  id: number;
+  title: {
+    customer: string;
+    tester: string;
+  };
+  startDate: string;
+  endDate: string;
+  customer: {
+    id: number;
+    name: string;
+  };
+  project: {
+    id: number;
+    name: string;
+  };
+  testType: {
+    id: number;
+    name: string;
+  };
+  deviceList: {
+    id: number;
+    name: string;
+  }[];
+  csm: {
+    id: number;
+    name: string;
+  };
+};
+export type GetDossiersByCampaignApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
+export type GetCustomersByCustomerProjectsApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+  }[];
+};
+export type GetCustomersByCustomerProjectsApiArg = {
+  customer: string;
 };
 export type Agreement = {
   title: string;
@@ -2857,4 +2944,7 @@ export const {
   useGetUsersMeRankQuery,
   useGetUsersMeRankListQuery,
   usePostDossiersMutation,
+  usePutDossiersByCampaignMutation,
+  useGetDossiersByCampaignQuery,
+  useGetCustomersByCustomerProjectsQuery,
 } = injectedRtkApi;
