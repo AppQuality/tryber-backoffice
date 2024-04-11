@@ -2,6 +2,7 @@ import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { PageTemplate } from "src/features/PageTemplate";
 import CustomerSelect from "./CustomerSelect";
 import FormProvider, { NewCampaignValues } from "./FormProvider";
+import DateInput from "./components/DateInput";
 import Multiselect from "./components/MultiSelect";
 import TextInput from "./components/TextInput";
 
@@ -39,7 +40,7 @@ const Content = () => {
       </FormikField>
       <FormikField name="startDate">
         {({ field }: FieldProps) => (
-          <TextInput
+          <DateInput
             name={field.name}
             label="Start date"
             value={field.value}
