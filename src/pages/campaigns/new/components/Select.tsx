@@ -22,7 +22,9 @@ const Select = ({
     <>
       <label htmlFor={name}>{label}</label>
       <select name={name} id={name} onChange={handleChange}>
-        <option value="">{emptyOption ? emptyOption : "Select"}</option>
+        <option disabled value="0" selected={value === 0}>
+          {emptyOption ? emptyOption : "Select"}
+        </option>
         {options.map((option) => (
           <option
             key={option.id}
