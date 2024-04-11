@@ -1,5 +1,3 @@
-import { useFormikContext } from "formik";
-import { NewCampaignValues } from "./FormProvider";
 import { FormEventHandler } from "react";
 import { styled } from "styled-components";
 
@@ -22,14 +20,15 @@ const TextInput = ({
   name,
   value,
   label,
+  onChange,
 }: {
   name: string;
   value: string;
   label: string;
+  onChange: (value: string) => void;
 }) => {
-  const { setFieldValue } = useFormikContext<NewCampaignValues>();
   const handleChange: FormEventHandler<HTMLInputElement> = (e) => {
-    setFieldValue(name, e.currentTarget.value);
+    onChange(e.currentTarget.value);
   };
   return (
     <StyledInput>
