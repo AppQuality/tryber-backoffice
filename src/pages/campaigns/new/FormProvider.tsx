@@ -9,7 +9,7 @@ interface FormProviderInterface {
 }
 
 export interface NewCampaignValues {
-  project: string;
+  project: number;
   testType: string;
   customer: string;
   tester: string;
@@ -21,7 +21,7 @@ const FormProvider = ({ children }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
   const initialValues: NewCampaignValues = {
-    project: "",
+    project: 0,
     testType: "",
     customer: "",
     tester: "",
@@ -44,7 +44,7 @@ const FormProvider = ({ children }: FormProviderInterface) => {
         try {
           await postDossiers({
             body: {
-              project: parseInt(values.project),
+              project: values.project,
               testType: parseInt(values.testType),
               title: {
                 customer: values.customer,
