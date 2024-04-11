@@ -1,4 +1,4 @@
-FROM node:16.19-alpine3.17 as base
+FROM node:18-alpine3.17 as base
 
 COPY package.json ./
 COPY yarn.lock ./

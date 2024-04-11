@@ -3,13 +3,22 @@ import styled from "styled-components";
 
 const { ChevronCompactRight } = icons;
 
-const OpenableColumnButton = styled(
-  ({ className, onClick, children, isOpen = false }) => (
-    <div className={`aq-p-1 ${className}`} onClick={onClick}>
-      {children} <ChevronCompactRight className="icon" />
-    </div>
-  )
-)`
+const OpenableColumnButtonComponent = ({
+  className,
+  onClick,
+  children,
+  isOpen = false,
+}: {
+  onClick: () => void;
+  className?: string;
+  children: React.ReactNode;
+  isOpen?: boolean;
+}) => (
+  <div className={`aq-p-1 ${className}`} onClick={onClick}>
+    {children} <ChevronCompactRight className="icon" />
+  </div>
+);
+const OpenableColumnButton = styled(OpenableColumnButtonComponent)`
   display: flex;
   align-items: center;
   justify-content: space-around;
