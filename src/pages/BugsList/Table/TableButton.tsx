@@ -35,7 +35,7 @@ const TableButton = ({
       href={href}
       style={style}
       size="sm"
-      kind="primary"
+      kind="link-hover"
       flat={true}
     >
       {children}
