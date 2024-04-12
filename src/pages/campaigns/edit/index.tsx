@@ -6,7 +6,7 @@ import { useGetDossiersByCampaignQuery } from "src/services/tryberApi";
 const EditCampaign = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetDossiersByCampaignQuery({ campaign: id });
-  console.log(data);
+
   return (
     <PageTemplate type="unguess">
       <Form dossier={data} />
