@@ -1,6 +1,9 @@
 import { Form, Formik, Text } from "@appquality/appquality-design-system";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
-import { usePostDossiersMutation } from "src/services/tryberApi";
+import {
+  useGetUsersMeQuery,
+  usePostDossiersMutation,
+} from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
 
@@ -11,20 +14,25 @@ interface FormProviderInterface {
 export interface NewCampaignValues {
   projectId: number;
   customerId: number;
-  testType: string;
+  testType: number;
   customerTitle: string;
   testerTitle: string;
   startDate: string;
   deviceList: number[];
+  csm: number;
 }
 
 const FormProvider = ({ children }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
+  const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
+  if (isLoading || !data) return null;
+
   const initialValues: NewCampaignValues = {
     projectId: 0,
     customerId: 0,
-    testType: "",
+    csm: data.id,
+    testType: 0,
     customerTitle: "",
     testerTitle: "",
     startDate: "",
@@ -33,11 +41,12 @@ const FormProvider = ({ children }: FormProviderInterface) => {
   const validationSchema = yup.object({
     customerId: yup.number().required("Project is required"),
     projectId: yup.number().required("Project is required"),
-    testType: yup.string().required("Test type is required"),
+    testType: yup.number().required("Test type is required"),
     customerTitle: yup.string().required("Customer Title is required"),
     testerTitle: yup.string().required("Tester Title is required"),
     startDate: yup.string().required("Start date is required"),
     deviceList: yup.array().min(1, "At least one device is required"),
+    csm: yup.number().required("CSM is required"),
   });
   return (
     <Formik
@@ -48,13 +57,14 @@ const FormProvider = ({ children }: FormProviderInterface) => {
           await postDossiers({
             body: {
               project: values.projectId,
-              testType: parseInt(values.testType),
+              testType: values.testType,
               title: {
                 customer: values.customerTitle,
                 tester: values.testerTitle,
               },
               startDate: values.startDate,
               deviceList: values.deviceList,
+              csm: values.csm,
             },
           }).unwrap();
 
