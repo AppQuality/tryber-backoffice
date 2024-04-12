@@ -1,7 +1,7 @@
 import { PageTemplate } from "src/features/PageTemplate";
 import Form from "src/pages/campaigns/components/form";
 
-const NewCampaign = () => {
+const EditCampaign = () => {
   return (
     <PageTemplate type="unguess">
       <Form />
@@ -9,4 +9,4 @@ const NewCampaign = () => {
   );
 };
 
-export default NewCampaign;
+export default EditCampaign;
