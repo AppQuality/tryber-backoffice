@@ -7,6 +7,11 @@ import DeviceMultiselect from "./fields/DeviceMultiselect";
 import StartDatePicker from "./fields/StartDatePicker";
 import TestTypeSelect from "./fields/TestTypeSelect";
 import TesterTitleInput from "./fields/TesterTitleInput";
+import { GetDossiersByCampaignApiResponse } from "src/services/tryberApi";
+
+interface FormProps {
+  dossier?: GetDossiersByCampaignApiResponse;
+}
 
 const FormContent = () => {
   const { values, submitForm, errors } = useFormikContext<NewCampaignValues>();
@@ -29,12 +34,10 @@ const FormContent = () => {
   );
 };
 
-const Form = () => {
-  return (
-    <FormProvider>
-      <FormContent />
-    </FormProvider>
-  );
-};
+const Form = ({ dossier }: FormProps) => (
+  <FormProvider dossier={dossier}>
+    <FormContent />
+  </FormProvider>
+);
 
 export default Form;

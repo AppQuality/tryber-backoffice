@@ -1,6 +1,8 @@
 import { Form, Formik, Text } from "@appquality/appquality-design-system";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import {
+  GetDossiersByCampaignApiResponse,
+  useGetCampaignsByCampaignQuery,
   useGetUsersMeQuery,
   usePostDossiersMutation,
 } from "src/services/tryberApi";
@@ -9,6 +11,7 @@ import * as yup from "yup";
 
 interface FormProviderInterface {
   children: React.ReactNode;
+  dossier?: GetDossiersByCampaignApiResponse;
 }
 
 export interface NewCampaignValues {
@@ -22,21 +25,21 @@ export interface NewCampaignValues {
   csm: number;
 }
 
-const FormProvider = ({ children }: FormProviderInterface) => {
+const FormProvider = ({ children, dossier }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
   if (isLoading || !data) return null;
 
   const initialValues: NewCampaignValues = {
-    projectId: 0,
-    customerId: 0,
-    csm: data.id,
-    testType: 0,
-    customerTitle: "",
-    testerTitle: "",
-    startDate: "",
-    deviceList: [],
+    projectId: dossier?.project.id || 0,
+    customerId: dossier?.customer.id || 0,
+    csm: dossier?.csm.id || data.id,
+    testType: dossier?.testType.id || 0,
+    customerTitle: dossier?.title.customer || "",
+    testerTitle: dossier?.title.tester || "",
+    startDate: dossier?.startDate || "",
+    deviceList: dossier?.deviceList.map((device) => device.id) || [],
   };
   const validationSchema = yup.object({
     customerId: yup.number().required("Project is required"),
