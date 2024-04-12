@@ -3,7 +3,7 @@ import {
   useGetCustomersByCustomerProjectsQuery,
   useGetCustomersQuery,
 } from "src/services/tryberApi";
-import { NewCampaignValues } from "./FormProvider";
+import { NewCampaignValues } from "../FormProvider";
 import Select from "./components/Select";
 
 const CustomerSelect = () => {

@@ -1627,8 +1627,9 @@ export type GetDevicesByDeviceTypeModelsApiArg = {
 };
 export type GetDevicesByDeviceTypeOperatingSystemsApiResponse =
   /** status 200 OK */ {
-    id?: number;
-    name?: string;
+    id: number;
+    name: string;
+    type: string;
   }[];
 export type GetDevicesByDeviceTypeOperatingSystemsApiArg = {
   deviceType: string;
