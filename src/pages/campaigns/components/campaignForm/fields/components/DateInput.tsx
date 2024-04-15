@@ -16,20 +16,17 @@ const StyledInput = styled.div`
   }
 `;
 
+interface DateInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+}
+
 const DateInput = ({
   name,
   value,
   label,
   onChange,
-}: {
-  name: string;
-  value: string;
-  label: string;
-  onChange: (value: string) => void;
-}) => {
-  const handleChange: FormEventHandler<HTMLInputElement> = (e) => {
-    onChange(e.currentTarget.value);
-  };
+  ...props
+}: DateInputProps) => {
   return (
     <StyledInput>
       <label htmlFor={name}>{label}</label>
@@ -38,7 +35,8 @@ const DateInput = ({
         type="date"
         name={name}
         id={name}
-        onChange={handleChange}
+        onChange={onChange}
+        {...props}
       />
     </StyledInput>
   );

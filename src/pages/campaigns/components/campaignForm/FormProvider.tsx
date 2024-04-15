@@ -1,13 +1,13 @@
-import { Form, Formik, Text } from "@appquality/appquality-design-system";
+import { Formik } from "formik";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import {
   GetDossiersByCampaignApiResponse,
-  useGetCampaignsByCampaignQuery,
   useGetUsersMeQuery,
   usePostDossiersMutation,
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
+import { formatDate } from "./formatDate";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -15,26 +15,22 @@ interface FormProviderInterface {
 }
 
 export interface NewCampaignValues {
+  isEdit: boolean;
   projectId: number;
   customerId: number;
   testType: number;
   customerTitle: string;
   testerTitle: string;
   startDate: string;
+  endDate: string;
+  closeDate: string;
+  automaticDates: boolean;
   deviceList: number[];
   csm: number;
+  tl?: number;
+  pm?: number;
+  researcher?: number;
 }
-
-/**
- * convert a date string formatted like this 2004-01-08T00:00:00Z to a date suitable for a input type date "yyyy-mm-dd"
- */
-const formatDate = (date: string) => {
-  const dateObj = new Date(date);
-  const year = dateObj.getFullYear();
-  const month = `0${dateObj.getMonth() + 1}`.slice(-2);
-  const day = `0${dateObj.getDate()}`.slice(-2);
-  return `${year}-${month}-${day}`;
-};
 
 const FormProvider = ({ children, dossier }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
@@ -44,13 +40,20 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
   if (isLoading || !data) return null;
 
   const initialValues: NewCampaignValues = {
+    isEdit: !!dossier,
     projectId: dossier?.project.id || 0,
     customerId: dossier?.customer.id || 0,
     csm: dossier?.csm.id || data.id,
+    // tl: dossier?.tl.id || 0,
+    // pm: dossier?.pm.id || 0,
+    // researcher: dossier?.researcher.id || 0,
     testType: dossier?.testType.id || 0,
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
     startDate: dossier?.startDate ? formatDate(dossier.startDate) : "",
+    endDate: dossier?.endDate ? formatDate(dossier.endDate) : "",
+    closeDate: /* dossier?.closeDate ? formatDate(dossier.closeDate) : */ "",
+    automaticDates: true,
     deviceList: dossier?.deviceList.map((device) => device.id) || [],
   };
 
@@ -61,8 +64,13 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     customerTitle: yup.string().required("Customer Title is required"),
     testerTitle: yup.string().required("Tester Title is required"),
     startDate: yup.string().required("Start date is required"),
+    endDate: yup.string().required("End date is required"),
+    closeDate: yup.string().required("Close date is required"),
     deviceList: yup.array().min(1, "At least one device is required"),
     csm: yup.number().required("CSM is required"),
+    tl: yup.number(),
+    pm: yup.number(),
+    researcher: yup.number(),
   });
   return (
     <Formik
@@ -79,17 +87,22 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
                 tester: values.testerTitle,
               },
               startDate: values.startDate,
+              endDate: values.endDate,
+              // closeDate: values.closeDate,
               deviceList: values.deviceList,
               csm: values.csm,
+              // tl: values.tl,
+              // pm: values.pm,
+              // researcher: values.researcher,
             },
           }).unwrap();
 
           dispatch(
             addMessage(
-              <Text className="aq-text-primary">
+              <p>
                 <strong>Import successful</strong>
                 <div>Campaign has been created successfully</div>
-              </Text>,
+              </p>,
               "success"
             )
           );
@@ -104,7 +117,7 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
         }
       }}
     >
-      <Form id="campaign-form">{children}</Form>
+      {children}
     </Formik>
   );
 };
