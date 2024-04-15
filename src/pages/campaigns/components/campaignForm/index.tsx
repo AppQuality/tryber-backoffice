@@ -1,4 +1,4 @@
-import { useFormikContext } from "formik";
+import { Form as FormikForm, FormikProps } from "formik";
 import FormProvider, { NewCampaignValues } from "./FormProvider";
 import CsmSelect from "./fields/CsmSelect";
 import CustomerSelect from "./fields/CustomerSelect";
@@ -8,6 +8,9 @@ import StartDatePicker from "./fields/StartDatePicker";
 import TestTypeSelect from "./fields/TestTypeSelect";
 import TesterTitleInput from "./fields/TesterTitleInput";
 import { GetDossiersByCampaignApiResponse } from "src/services/tryberApi";
+import EndDatePicker from "./fields/EndDatePicker";
+import CloseDatePicker from "./fields/CloseDatePicker";
+import AutomaticDatesSwitch from "./fields/AutomaticDatesSwitch";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -15,16 +18,23 @@ interface FormProps {
 
 const Form = ({ dossier }: FormProps) => (
   <FormProvider dossier={dossier}>
-    <CustomerSelect />
-    <CsmSelect />
-    <TestTypeSelect />
-    <TesterTitleInput />
-    <CustomerTitleInput />
+    {(props: FormikProps<NewCampaignValues>) => (
+      <FormikForm id="campaign-form">
+        <CustomerSelect />
+        <CsmSelect />
+        <TestTypeSelect />
+        <TesterTitleInput />
+        <CustomerTitleInput />
 
-    <StartDatePicker />
-    <DeviceMultiselect />
+        <StartDatePicker />
+        <EndDatePicker />
+        <CloseDatePicker />
+        {!props.values.isEdit && <AutomaticDatesSwitch />}
+        <DeviceMultiselect />
 
-    <button type="submit">Submit</button>
+        <button type="submit">Submit</button>
+      </FormikForm>
+    )}
   </FormProvider>
 );
 

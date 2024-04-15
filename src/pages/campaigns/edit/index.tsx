@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { PageTemplate } from "src/features/PageTemplate";
-import Form from "src/pages/campaigns/components/form";
+import Form from "src/pages/campaigns/components/campaignForm";
 import { useGetDossiersByCampaignQuery } from "src/services/tryberApi";
 
 const EditCampaign = () => {
