@@ -13,30 +13,18 @@ interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
 }
 
-const FormContent = () => {
-  const { values, submitForm, errors } = useFormikContext<NewCampaignValues>();
-
-  return (
-    <>
-      {JSON.stringify(values)}
-      {JSON.stringify(errors)}
-      <CustomerSelect />
-      <CsmSelect />
-      <TestTypeSelect />
-      <TesterTitleInput />
-      <CustomerTitleInput />
-
-      <StartDatePicker />
-      <DeviceMultiselect />
-
-      <button type="submit">Submit</button>
-    </>
-  );
-};
-
 const Form = ({ dossier }: FormProps) => (
   <FormProvider dossier={dossier}>
-    <FormContent />
+    <CustomerSelect />
+    <CsmSelect />
+    <TestTypeSelect />
+    <TesterTitleInput />
+    <CustomerTitleInput />
+
+    <StartDatePicker />
+    <DeviceMultiselect />
+
+    <button type="submit">Submit</button>
   </FormProvider>
 );
 
