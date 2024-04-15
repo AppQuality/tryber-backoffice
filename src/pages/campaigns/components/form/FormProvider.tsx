@@ -25,10 +25,22 @@ export interface NewCampaignValues {
   csm: number;
 }
 
+/**
+ * convert a date string formatted like this 2004-01-08T00:00:00Z to a date suitable for a input type date "yyyy-mm-dd"
+ */
+const formatDate = (date: string) => {
+  const dateObj = new Date(date);
+  const year = dateObj.getFullYear();
+  const month = `0${dateObj.getMonth() + 1}`.slice(-2);
+  const day = `0${dateObj.getDate()}`.slice(-2);
+  return `${year}-${month}-${day}`;
+};
+
 const FormProvider = ({ children, dossier }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
+
   if (isLoading || !data) return null;
 
   const initialValues: NewCampaignValues = {
@@ -38,9 +50,10 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     testType: dossier?.testType.id || 0,
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
-    startDate: dossier?.startDate || "",
+    startDate: dossier?.startDate ? formatDate(dossier.startDate) : "",
     deviceList: dossier?.deviceList.map((device) => device.id) || [],
   };
+
   const validationSchema = yup.object({
     customerId: yup.number().required("Project is required"),
     projectId: yup.number().required("Project is required"),
