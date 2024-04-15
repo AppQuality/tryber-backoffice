@@ -544,6 +544,24 @@ export interface paths {
     post: operations["post-dossiers"];
     parameters: {};
   };
+  "/dossiers/{campaign}": {
+    get: operations["get-dossiers-campaign"];
+    put: operations["put-dossiers-campaign"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+  };
+  "/customers/{customer}/projects": {
+    get: operations["get-customers-customer-projects"];
+    parameters: {
+      path: {
+        customer: string;
+      };
+    };
+  };
 }
 
 export interface components {
@@ -943,6 +961,28 @@ export interface components {
     search: string;
     testerId: string;
   };
+  requestBodies: {
+    DossierData: {
+      content: {
+        "application/json": {
+          project: number;
+          testType: number;
+          title: {
+            customer: string;
+            tester?: string;
+          };
+          startDate: string;
+          endDate?: string;
+          deviceList: number[];
+          csm?: number;
+          roles?: {
+            role: number;
+            user: number;
+          }[];
+        };
+      };
+    };
+  };
 }
 
 export interface operations {
@@ -1319,6 +1359,8 @@ export interface operations {
         filterByExclude?: unknown;
         /** Array with min and max */
         filterByAge?: unknown;
+        /** Show accepted/candidates or both */
+        show?: "onlyAccepted" | "onlyCandidates" | "all";
       };
     };
     responses: {
@@ -2249,8 +2291,9 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            id?: number;
-            name?: string;
+            id: number;
+            name: string;
+            type: string;
           }[];
         };
       };
@@ -3993,20 +4036,98 @@ export interface operations {
         };
       };
     };
-    requestBody: {
-      content: {
-        "application/json": {
-          project: number;
-          testType: number;
-          title: {
-            customer: string;
-            tester?: string;
+    requestBody: components["requestBodies"]["DossierData"];
+  };
+  "get-dossiers-campaign": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            title: {
+              customer: string;
+              tester: string;
+            };
+            /** Format: date-time */
+            startDate: string;
+            /** Format: date-time */
+            endDate: string;
+            customer: {
+              id: number;
+              name: string;
+            };
+            project: {
+              id: number;
+              name: string;
+            };
+            testType: {
+              id: number;
+              name: string;
+            };
+            deviceList: {
+              id: number;
+              name: string;
+            }[];
+            csm: {
+              id: number;
+              name: string;
+            };
+            roles?: {
+              role?: {
+                id: number;
+                name: string;
+              };
+              user?: {
+                id: number;
+                name: string;
+                surname: string;
+              };
+            }[];
           };
-          /** Format: date-time */
-          startDate: string;
-          /** Format: date-time */
-          endDate?: string;
-          deviceList: number[];
+        };
+      };
+    };
+  };
+  "put-dossiers-campaign": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+    };
+    requestBody: components["requestBodies"]["DossierData"];
+  };
+  "get-customers-customer-projects": {
+    parameters: {
+      path: {
+        customer: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            results: {
+              id: number;
+              name: string;
+            }[];
+          };
         };
       };
     };

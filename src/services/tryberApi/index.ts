@@ -2530,6 +2530,10 @@ export type PostDossiersApiArg = {
     endDate?: string;
     deviceList: number[];
     csm?: number;
+    roles?: {
+      role: number;
+      user: number;
+    }[];
   };
 };
 export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
@@ -2547,6 +2551,10 @@ export type PutDossiersByCampaignApiArg = {
     endDate?: string;
     deviceList: number[];
     csm?: number;
+    roles?: {
+      role: number;
+      user: number;
+    }[];
   };
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
@@ -2577,6 +2585,17 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
     id: number;
     name: string;
   };
+  roles?: {
+    role?: {
+      id: number;
+      name: string;
+    };
+    user?: {
+      id: number;
+      name: string;
+      surname: string;
+    };
+  }[];
 };
 export type GetDossiersByCampaignApiArg = {
   /** A campaign id */
