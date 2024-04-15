@@ -32,7 +32,6 @@ const Multiselect = ({
         multiple
         {...props}
       >
-        <option value="">{emptyOption || "Select"}</option>
         {options.map((option) => (
           <option
             key={option.id}

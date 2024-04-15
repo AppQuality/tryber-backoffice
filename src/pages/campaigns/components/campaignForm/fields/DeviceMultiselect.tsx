@@ -74,10 +74,11 @@ const DeviceMultiselect = () => {
       <FormikField name="deviceList">
         {({ field }: FieldProps) => (
           <Multiselect
-            options={osOptions}
+            options={[{ id: "all", label: "All" }, ...osOptions]}
             name={field.name}
-            label="Device List"
-            value={field.value}
+            label="Operative System List"
+            value={field.value.length ? field.value : ["all"]}
+            emptyOption="Select"
             onChange={(e) => setFieldValue(field.name, e.currentTarget.value)}
           />
         )}
