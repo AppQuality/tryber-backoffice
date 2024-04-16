@@ -2528,12 +2528,22 @@ export type PostDossiersApiArg = {
     };
     startDate: string;
     endDate?: string;
+    closeDate?: string;
     deviceList: number[];
     csm?: number;
     roles?: {
       role: number;
       user: number;
     }[];
+    description?: string;
+    productLink?: string;
+    goal?: string;
+    outOfScope?: string;
+    deviceRequirements?: string;
+    target?: {
+      notes?: string;
+      size?: number;
+    };
   };
 };
 export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
@@ -2549,12 +2559,22 @@ export type PutDossiersByCampaignApiArg = {
     };
     startDate: string;
     endDate?: string;
+    closeDate?: string;
     deviceList: number[];
     csm?: number;
     roles?: {
       role: number;
       user: number;
     }[];
+    description?: string;
+    productLink?: string;
+    goal?: string;
+    outOfScope?: string;
+    deviceRequirements?: string;
+    target?: {
+      notes?: string;
+      size?: number;
+    };
   };
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
@@ -2565,6 +2585,7 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
   };
   startDate: string;
   endDate: string;
+  closeDate: string;
   customer: {
     id: number;
     name: string;
@@ -2596,6 +2617,15 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
       surname: string;
     };
   }[];
+  description?: string;
+  productLink?: string;
+  goal?: string;
+  outOfScope?: string;
+  deviceRequirements?: string;
+  target?: {
+    notes?: string;
+    size?: number;
+  };
 };
 export type GetDossiersByCampaignApiArg = {
   /** A campaign id */
