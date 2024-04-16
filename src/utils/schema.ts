@@ -971,14 +971,27 @@ export interface components {
             customer: string;
             tester?: string;
           };
+          /** Format: date-time */
           startDate: string;
+          /** Format: date-time */
           endDate?: string;
+          /** Format: date-time */
+          closeDate?: string;
           deviceList: number[];
           csm?: number;
           roles?: {
             role: number;
             user: number;
           }[];
+          description?: string;
+          productLink?: string;
+          goal?: string;
+          outOfScope?: string;
+          deviceRequirements?: string;
+          target?: {
+            notes?: string;
+            size?: number;
+          };
         };
       };
     };
@@ -4059,6 +4072,8 @@ export interface operations {
             startDate: string;
             /** Format: date-time */
             endDate: string;
+            /** Format: date-time */
+            closeDate: string;
             customer: {
               id: number;
               name: string;
@@ -4090,6 +4105,15 @@ export interface operations {
                 surname: string;
               };
             }[];
+            description?: string;
+            productLink?: string;
+            goal?: string;
+            outOfScope?: string;
+            deviceRequirements?: string;
+            target?: {
+              notes?: string;
+              size?: number;
+            };
           };
         };
       };
