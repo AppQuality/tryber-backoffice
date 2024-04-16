@@ -11,6 +11,7 @@ import { GetDossiersByCampaignApiResponse } from "src/services/tryberApi";
 import EndDatePicker from "./fields/EndDatePicker";
 import CloseDatePicker from "./fields/CloseDatePicker";
 import AutomaticDatesSwitch from "./fields/AutomaticDatesSwitch";
+import LanguageSelect from "./fields/LanguagesSelect";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -25,7 +26,7 @@ const Form = ({ dossier }: FormProps) => (
         <TestTypeSelect />
         <TesterTitleInput />
         <CustomerTitleInput />
-
+        <LanguageSelect />
         <StartDatePicker />
         <EndDatePicker />
         <CloseDatePicker />
