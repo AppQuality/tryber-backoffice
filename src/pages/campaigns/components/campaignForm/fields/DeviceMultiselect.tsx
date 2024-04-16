@@ -11,7 +11,6 @@ const DeviceMultiselect = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
   const [deviceTypes, setDeviceTypes] = useState<string[]>([
     "Smartphone",
-    "Tablet",
     "PC",
   ]);
   const { data: devices } = useGetDevicesByDeviceTypeOperatingSystemsQuery({
