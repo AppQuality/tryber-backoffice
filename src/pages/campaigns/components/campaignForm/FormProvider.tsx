@@ -8,6 +8,7 @@ import {
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
 import { formatDate } from "./formatDate";
+import { getAssistantIdByRole } from "./getAssistantIdByRole";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -44,9 +45,13 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     projectId: dossier?.project.id || 0,
     customerId: dossier?.customer.id || 0,
     csm: dossier?.csm.id || data.id,
-    // tl: dossier?.tl.id || 0,
-    // pm: dossier?.pm.id || 0,
-    // researcher: dossier?.researcher.id || 0,
+    tl: getAssistantIdByRole({ roles: dossier?.roles, roleToFind: "tl" }) || 0,
+    pm: getAssistantIdByRole({ roles: dossier?.roles, roleToFind: "pm" }) || 0,
+    researcher:
+      getAssistantIdByRole({
+        roles: dossier?.roles,
+        roleToFind: "researcher",
+      }) || 0,
     testType: dossier?.testType.id || 0,
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
