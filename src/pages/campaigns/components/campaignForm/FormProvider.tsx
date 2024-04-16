@@ -31,6 +31,7 @@ export interface NewCampaignValues {
   tl?: number;
   pm?: number;
   researcher?: number;
+  languages: string[];
 }
 
 const FormProvider = ({ children, dossier }: FormProviderInterface) => {
@@ -57,9 +58,10 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     testerTitle: dossier?.title.tester || "",
     startDate: dossier?.startDate ? formatDate(dossier.startDate) : "",
     endDate: dossier?.endDate ? formatDate(dossier.endDate) : "",
-    closeDate: /* dossier?.closeDate ? formatDate(dossier.closeDate) : */ "",
+    closeDate: dossier?.closeDate ? formatDate(dossier.closeDate) : "",
     automaticDates: true,
     deviceList: dossier?.deviceList.map((device) => device.id) || [],
+    languages: /* dossier?.language.id || */ [],
   };
 
   const validationSchema = yup.object({
@@ -76,12 +78,23 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     tl: yup.number(),
     pm: yup.number(),
     researcher: yup.number(),
+    languages: yup.array().min(1, "At least one language is required"),
   });
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={async (values) => {
+        let roles = [];
+        if (values.pm) {
+          roles.push({ role: 1, user: values.pm });
+        }
+        if (values.tl) {
+          roles.push({ role: 2, user: values.tl });
+        }
+        if (values.researcher) {
+          roles.push({ role: 3, user: values.researcher });
+        }
         try {
           await postDossiers({
             body: {
@@ -93,12 +106,11 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
               },
               startDate: values.startDate,
               endDate: values.endDate,
-              // closeDate: values.closeDate,
+              closeDate: values.closeDate,
               deviceList: values.deviceList,
               csm: values.csm,
-              // tl: values.tl,
-              // pm: values.pm,
-              // researcher: values.researcher,
+              roles: roles,
+              //languages: values.languages,
             },
           }).unwrap();
 
