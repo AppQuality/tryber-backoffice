@@ -873,6 +873,8 @@ export interface components {
      * @enum {string}
      */
     ProspectStatus: "draft" | "confirmed" | "done";
+    /** CountryCode */
+    CountryCode: string;
   };
   responses: {
     /** A user */
@@ -992,6 +994,10 @@ export interface components {
             notes?: string;
             size?: number;
           };
+          countries?: components["schemas"]["CountryCode"][];
+          languages?: number[];
+          browsers?: number[];
+          productType?: number;
         };
       };
     };
@@ -4113,6 +4119,19 @@ export interface operations {
             target?: {
               notes?: string;
               size?: number;
+            };
+            countries?: components["schemas"]["CountryCode"][];
+            languages?: {
+              id: number;
+              name: string;
+            }[];
+            browsers?: {
+              id: number;
+              name: string;
+            }[];
+            productType?: {
+              id: number;
+              name: string;
             };
           };
         };

@@ -2544,6 +2544,10 @@ export type PostDossiersApiArg = {
       notes?: string;
       size?: number;
     };
+    countries?: CountryCode[];
+    languages?: number[];
+    browsers?: number[];
+    productType?: number;
   };
 };
 export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
@@ -2575,6 +2579,10 @@ export type PutDossiersByCampaignApiArg = {
       notes?: string;
       size?: number;
     };
+    countries?: CountryCode[];
+    languages?: number[];
+    browsers?: number[];
+    productType?: number;
   };
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
@@ -2625,6 +2633,19 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
   target?: {
     notes?: string;
     size?: number;
+  };
+  countries?: CountryCode[];
+  languages?: {
+    id: number;
+    name: string;
+  }[];
+  browsers?: {
+    id: number;
+    name: string;
+  }[];
+  productType?: {
+    id: number;
+    name: string;
   };
 };
 export type GetDossiersByCampaignApiArg = {
@@ -2893,6 +2914,7 @@ export type RankingItem = {
   name: string;
   monthly_exp: number;
 };
+export type CountryCode = string;
 export const {
   useGetQuery,
   useGetAgreementsQuery,
