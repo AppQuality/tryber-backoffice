@@ -19,6 +19,7 @@
     "@zendeskgarden/react-theming": "^8.75.0",
     "analytics": "^0.8.1",
     "husky": "^7.0.4",
+    "i18n-iso-countries": "^7.11.0",
     "lzutf8": "^0.6.0",
     "moment": "^2.29.4",
     "prettier": "^2.5.1",
