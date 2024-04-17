@@ -1,7 +1,7 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../../FormProvider";
 
-import DateInput from "../components/DateInput";
+import Input from "../components/Input";
 import { ChangeEvent, useMemo } from "react";
 
 const EndDatePicker = () => {
@@ -21,7 +21,8 @@ const EndDatePicker = () => {
   return (
     <FormikField name="endDate">
       {({ field }: FieldProps) => (
-        <DateInput
+        <Input
+          type="date"
           disabled={isDisabled}
           name={field.name}
           label="End date"

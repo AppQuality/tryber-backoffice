@@ -16,7 +16,6 @@ interface FormProviderInterface {
   children: React.ReactNode;
   dossier?: GetDossiersByCampaignApiResponse;
 }
-
 export interface NewCampaignValues {
   isEdit: boolean;
   projectId: string;
@@ -36,6 +35,15 @@ export interface NewCampaignValues {
   researcher?: string;
   languages: string[];
   countries: string[];
+  description?: string;
+  productLink?: string;
+  goal?: string;
+  outOfScope?: string;
+  deviceRequirements?: string;
+  targetNotes?: string;
+  targetSize?: number;
+  browsersList?: string[];
+  productType?: string;
 }
 
 const FormProvider = ({ children, dossier }: FormProviderInterface) => {
@@ -90,6 +98,16 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     deviceList: selectedDevices,
     countries: dossier?.countries || [],
     languages: dossier?.languages?.map((lang) => lang.id.toString()) || [],
+    description: dossier?.description || "",
+    productLink: dossier?.productLink || "",
+    goal: dossier?.goal || "",
+    outOfScope: dossier?.outOfScope || "",
+    deviceRequirements: dossier?.deviceRequirements || "",
+    targetNotes: dossier?.target?.notes || "",
+    targetSize: dossier?.target?.size || 0,
+    browsersList:
+      dossier?.browsers?.map((browser) => browser.id.toString()) || [],
+    productType: dossier?.productType?.toString() || "",
   };
 
   const validationSchema = yup.object({
@@ -108,6 +126,16 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     pm: yup.number(),
     researcher: yup.number(),
     languages: yup.array().min(1, "At least one language is required"),
+    countries: yup.array().min(1, "At least one country is required"),
+    description: yup.string(),
+    productLink: yup.string(),
+    goal: yup.string(),
+    outOfScope: yup.string(),
+    deviceRequirements: yup.string(),
+    targetNotes: yup.string(),
+    targetSize: yup.number().min(1, "Target size must be greater than 0"),
+    browsersList: yup.array().min(1, "At least one browser is required"),
+    productType: yup.string(),
   });
   return (
     <Formik
@@ -144,6 +172,22 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
               languages: values.languages.map((language) =>
                 parseInt(language, 10)
               ),
+              countries: values.countries,
+              description: values.description,
+              productLink: values.productLink,
+              goal: values.goal,
+              outOfScope: values.outOfScope,
+              deviceRequirements: values.deviceRequirements,
+              target: {
+                notes: values.targetNotes,
+                size: values.targetSize,
+              },
+              browsers: values.browsersList?.map((browser) =>
+                parseInt(browser, 10)
+              ),
+              productType: values.productType
+                ? parseInt(values.productType, 10)
+                : undefined,
             },
           }).unwrap();
 

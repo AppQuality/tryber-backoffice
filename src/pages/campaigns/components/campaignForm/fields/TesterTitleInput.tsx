@@ -1,7 +1,7 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../FormProvider";
 
-import TextInput from "./components/TextInput";
+import Input from "./components/Input";
 
 const TesterTitleInput = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
@@ -9,11 +9,11 @@ const TesterTitleInput = () => {
   return (
     <FormikField name="testerTitle">
       {({ field }: FieldProps) => (
-        <TextInput
+        <Input
           name={field.name}
           label="Campaign Title (for tester)"
           value={field.value}
-          onChange={(value) => setFieldValue(field.name, value)}
+          onChange={(e) => setFieldValue(field.name, e.currentTarget.value)}
         />
       )}
     </FormikField>
