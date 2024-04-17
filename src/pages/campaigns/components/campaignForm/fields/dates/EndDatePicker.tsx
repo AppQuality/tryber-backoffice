@@ -1,7 +1,7 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
-import { NewCampaignValues } from "../FormProvider";
+import { NewCampaignValues } from "../../FormProvider";
 
-import DateInput from "./components/DateInput";
+import DateInput from "../components/DateInput";
 import { ChangeEvent, useMemo } from "react";
 
 const EndDatePicker = () => {
