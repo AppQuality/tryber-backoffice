@@ -35,6 +35,7 @@ export interface NewCampaignValues {
   pm?: string;
   researcher?: string;
   languages: string[];
+  countries: string[];
 }
 
 const FormProvider = ({ children, dossier }: FormProviderInterface) => {
@@ -87,6 +88,7 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     automaticDates: true,
     deviceTypes: selectedTypes,
     deviceList: selectedDevices,
+    countries: dossier?.countries || [],
     languages: dossier?.languages?.map((lang) => lang.id.toString()) || [],
   };
 
