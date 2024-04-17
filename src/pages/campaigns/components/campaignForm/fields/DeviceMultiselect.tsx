@@ -4,15 +4,48 @@ import {
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
-import Multiselect from "./components/MultiSelect";
-import { ChangeEvent, useMemo, useState } from "react";
+import Multiselect, { Option } from "./components/MultiSelect";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { groupDevicesByType } from "../groupByType";
+import { set } from "husky";
+
+interface OsMultiselectProps {
+  options: Option[];
+  label: string;
+}
+const OsMultiselect = ({ options, label }: OsMultiselectProps) => {
+  const {
+    values: { deviceList },
+    setFieldValue,
+  } = useFormikContext<NewCampaignValues>();
+
+  return (
+    <Multiselect
+      options={options}
+      label={label}
+      value={deviceList.filter((device) =>
+        options.map((option) => option.id).includes(device)
+      )}
+      emptyOption="Select"
+      onChange={(e) => {
+        if (deviceList.includes(e.currentTarget.value)) {
+          setFieldValue(
+            "deviceList",
+            deviceList.filter((v) => v !== e.currentTarget.value)
+          );
+        } else {
+          setFieldValue("deviceList", [...deviceList, e.currentTarget.value]);
+        }
+      }}
+    />
+  );
+};
 
 const DeviceMultiselect = () => {
-  const { setFieldValue } = useFormikContext<NewCampaignValues>();
-  const [deviceTypes, setDeviceTypes] = useState<string[]>([
-    "Smartphone",
-    "PC",
-  ]);
+  const {
+    setFieldValue,
+    values: { deviceTypes, deviceList },
+  } = useFormikContext<NewCampaignValues>();
   const { data: devices } = useGetDevicesByDeviceTypeOperatingSystemsQuery({
     deviceType: "all",
   });
@@ -22,33 +55,42 @@ const DeviceMultiselect = () => {
     return Array.from(uniqueDeviceTypes);
   }, [devices]);
 
-  const osOptions = useMemo(
-    () =>
-      (devices
-        ? devices
-            .filter((device) => deviceTypes.includes(device.type))
-            .map(
-              (
-                device: GetDevicesByDeviceTypeOperatingSystemsApiResponse[number]
-              ) => ({
-                id: device.id.toString(),
-                label: `${device.type} - ${device.name}`,
-              })
-            )
-        : []
-      ).sort((a: { label: string }, b: { label: string }) =>
-        a.label.localeCompare(b.label)
-      ),
-    [devices, deviceTypes]
-  );
+  const osOptions = useMemo(() => {
+    if (!devices) return {};
+    const devicesOptions = devices
+      .map(
+        (
+          device: GetDevicesByDeviceTypeOperatingSystemsApiResponse[number]
+        ) => ({
+          id: device.id.toString(),
+          label: device.name,
+          type: device.type,
+        })
+      )
+      .sort((a: Option, b: Option) => a.label.localeCompare(b.label));
+    return groupDevicesByType(devicesOptions);
+  }, [devices]);
 
   // handle deviceTypes change
   const handleDeviceTypesChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     if (deviceTypes.includes(value)) {
-      setDeviceTypes(deviceTypes.filter((deviceType) => deviceType !== value));
+      setFieldValue(
+        "deviceTypes",
+        deviceTypes.filter((deviceType) => deviceType !== value)
+      );
+      setFieldValue(
+        "deviceList",
+        deviceList.filter(
+          (device) => !osOptions[value].map((os) => os.id).includes(device)
+        )
+      );
     } else {
-      setDeviceTypes([...deviceTypes, value]);
+      setFieldValue("deviceTypes", [...deviceTypes, value]);
+      setFieldValue("deviceList", [
+        ...deviceList,
+        ...osOptions[value].map((os) => os.id),
+      ]);
     }
   };
 
@@ -70,18 +112,15 @@ const DeviceMultiselect = () => {
           </div>
         ))}
       </fieldset>
-      <FormikField name="deviceList">
-        {({ field }: FieldProps) => (
-          <Multiselect
-            options={[{ id: "all", label: "All" }, ...osOptions]}
-            name={field.name}
-            label="Operative System List"
-            value={field.value.length ? field.value : ["all"]}
-            emptyOption="Select"
-            onChange={(e) => setFieldValue(field.name, e.currentTarget.value)}
-          />
-        )}
-      </FormikField>
+      <fieldset>
+        <legend>Operative System:</legend>
+        {deviceTypes.map((deviceType) => {
+          if (!(deviceType in osOptions)) return null;
+          return (
+            <OsMultiselect options={osOptions[deviceType]} label={deviceType} />
+          );
+        })}
+      </fieldset>
     </div>
   );
 };
