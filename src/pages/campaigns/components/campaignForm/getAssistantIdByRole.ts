@@ -27,5 +27,5 @@ export const getAssistantIdByRole = ({ roles, roleToFind }: Args) => {
     });
   }
 
-  return role?.user?.id;
+  return role?.user?.id.toString();
 };

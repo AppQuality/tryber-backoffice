@@ -12,7 +12,7 @@ const CustomerSelect = () => {
 
   const options = customers
     ? customers.map((customer) => ({
-        id: customer.id || 0,
+        id: customer.id?.toString() || "",
         label: customer.name || "No name",
       }))
     : [];
@@ -28,20 +28,18 @@ const CustomerSelect = () => {
               label="Customer"
               onChange={(value) => {
                 setFieldValue(field.name, value);
-                setFieldValue("projectId", 0);
+                setFieldValue("projectId", "");
               }}
             />
           )}
         </FormikField>
       </div>
-      {values.customerId !== 0 && (
-        <ProjectSelect customerId={values.customerId} />
-      )}
+      {values.customerId && <ProjectSelect customerId={values.customerId} />}
     </>
   );
 };
 
-const ProjectSelect = ({ customerId }: { customerId: number }) => {
+const ProjectSelect = ({ customerId }: { customerId: string }) => {
   const { data: projects } = useGetCustomersByCustomerProjectsQuery({
     customer: customerId.toString(),
   });
@@ -49,7 +47,7 @@ const ProjectSelect = ({ customerId }: { customerId: number }) => {
 
   const options = projects?.results
     ? projects.results.map((project) => ({
-        id: project.id,
+        id: project.id.toString(),
         label: project.name,
       }))
     : [];
