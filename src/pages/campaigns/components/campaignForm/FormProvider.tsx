@@ -2,6 +2,7 @@ import { Formik } from "formik";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import {
   GetDossiersByCampaignApiResponse,
+  useGetDevicesByDeviceTypeOperatingSystemsQuery,
   useGetUsersMeQuery,
   usePostDossiersMutation,
 } from "src/services/tryberApi";
@@ -9,6 +10,7 @@ import { useAppDispatch } from "src/store";
 import * as yup from "yup";
 import { formatDate } from "./formatDate";
 import { getAssistantIdByRole } from "./getAssistantIdByRole";
+import { useMemo } from "react";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -26,7 +28,8 @@ export interface NewCampaignValues {
   endDate: string;
   closeDate: string;
   automaticDates: boolean;
-  deviceList: number[];
+  deviceList: string[];
+  deviceTypes: string[];
   csm: number;
   tl?: number;
   pm?: number;
@@ -38,6 +41,28 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
+  const { data: devices } = useGetDevicesByDeviceTypeOperatingSystemsQuery({
+    deviceType: "all",
+  });
+  const selectedTypes = useMemo(() => {
+    if (!dossier) return ["Smartphone", "PC"];
+
+    const redundantTypeList = dossier.deviceList.map(
+      (device) => devices?.find((d) => d.id === device.id)?.type || ""
+    );
+    return Array.from(new Set(redundantTypeList));
+  }, [dossier, devices]);
+
+  const selectedDevices = useMemo(() => {
+    if (!dossier)
+      return (
+        devices
+          ?.filter((device) => selectedTypes.includes(device.type))
+          .map((device) => device.id.toString()) || []
+      );
+
+    return dossier.deviceList.map((device) => device.id.toString());
+  }, [dossier, devices, selectedTypes]);
 
   if (isLoading || !data) return null;
 
@@ -60,8 +85,9 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     endDate: dossier?.endDate ? formatDate(dossier.endDate) : "",
     closeDate: dossier?.closeDate ? formatDate(dossier.closeDate) : "",
     automaticDates: true,
-    deviceList: dossier?.deviceList.map((device) => device.id) || [],
-    languages: /* dossier?.language.id || */ [],
+    deviceTypes: selectedTypes,
+    deviceList: selectedDevices,
+    languages: dossier?.languages?.map((lang) => lang.id.toString()) || [],
   };
 
   const validationSchema = yup.object({
@@ -73,6 +99,7 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
     startDate: yup.string().required("Start date is required"),
     endDate: yup.string().required("End date is required"),
     closeDate: yup.string().required("Close date is required"),
+    deviceTypes: yup.array().min(1, "At least one device type is required"),
     deviceList: yup.array().min(1, "At least one device is required"),
     csm: yup.number().required("CSM is required"),
     tl: yup.number(),
@@ -107,10 +134,12 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
               startDate: values.startDate,
               endDate: values.endDate,
               closeDate: values.closeDate,
-              deviceList: values.deviceList,
+              deviceList: values.deviceList.map((device) =>
+                parseInt(device, 10)
+              ),
               csm: values.csm,
               roles: roles,
-              //languages: values.languages,
+              //languages: values.languages.map((language) => parseInt(language, 10)),
             },
           }).unwrap();
 
