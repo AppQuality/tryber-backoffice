@@ -1,13 +1,12 @@
-import { FieldProps, Field as FormikField, useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 import {
   GetDevicesByDeviceTypeOperatingSystemsApiResponse,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
 import Multiselect, { Option } from "./components/MultiSelect";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useMemo } from "react";
 import { groupDevicesByType } from "../groupByType";
-import { set } from "husky";
 
 interface OsMultiselectProps {
   options: Option[];

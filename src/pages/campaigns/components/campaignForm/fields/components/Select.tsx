@@ -1,4 +1,5 @@
 import { FormEventHandler } from "react";
+import { Option } from "./MultiSelect";
 
 const Select = ({
   name,
@@ -9,20 +10,17 @@ const Select = ({
   onChange,
 }: {
   name: string;
-  value: number;
-  options: { id: number; label: string }[];
+  value: string;
+  options: Option[];
   label: string;
   emptyOption?: string;
-  onChange: (value: number) => void;
+  onChange: FormEventHandler<HTMLSelectElement>;
 }) => {
-  const handleChange: FormEventHandler<HTMLSelectElement> = (e) => {
-    onChange(Number(e.currentTarget.value));
-  };
   return (
     <>
       <label htmlFor={name}>{label}</label>
-      <select name={name} id={name} onChange={handleChange}>
-        <option disabled value="0" selected={value === 0}>
+      <select name={name} id={name} onChange={onChange}>
+        <option disabled value="0" selected={value === "0"}>
           {emptyOption ? emptyOption : "Select"}
         </option>
         {options.map((option) => (
