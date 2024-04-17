@@ -1,17 +1,16 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../FormProvider";
+import TextArea from "./components/Textarea";
 
-import Input from "./components/Input";
-
-const CustomerTitleInput = () => {
+const DescriptionText = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
 
   return (
-    <FormikField name="customerTitle">
+    <FormikField name="description">
       {({ field }: FieldProps) => (
-        <Input
+        <TextArea
           name={field.name}
-          label="Campaign Title (for customer)"
+          label="Description"
           value={field.value}
           onChange={(e) => setFieldValue(field.name, e.currentTarget.value)}
         />
@@ -20,4 +19,4 @@ const CustomerTitleInput = () => {
   );
 };
 
-export default CustomerTitleInput;
+export default DescriptionText;

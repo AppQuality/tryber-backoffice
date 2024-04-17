@@ -1,7 +1,7 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../../FormProvider";
 
-import DateInput from "../components/DateInput";
+import Input from "../components/Input";
 import { formatDate } from "../../formatDate";
 import { ChangeEvent, useCallback } from "react";
 
@@ -28,7 +28,8 @@ const StartDatePicker = () => {
   return (
     <FormikField name="startDate">
       {({ field }: FieldProps) => (
-        <DateInput
+        <Input
+          type="date"
           name={field.name}
           label="Start date"
           value={field.value}

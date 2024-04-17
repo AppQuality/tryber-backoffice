@@ -10,12 +10,19 @@ import TesterTitleInput from "./fields/TesterTitleInput";
 import { GetDossiersByCampaignApiResponse } from "src/services/tryberApi";
 import EndDatePicker from "./fields/dates/EndDatePicker";
 import CloseDatePicker from "./fields/dates/CloseDatePicker";
-import AutomaticDatesSwitch from "./fields/AutomaticDatesSwitch";
+import AutomaticDatesSwitch from "./fields/dates/AutomaticDatesSwitch";
 import LanguageSelect from "./fields/LanguagesSelect";
 import TlSelect from "./fields/roles/TLSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import CountrySelect from "./fields/CountrySelect";
+import DescriptionText from "./fields/DescriptionText";
+import ProductLinkInput from "./fields/ProductLinkInput";
+import GoalText from "./fields/GoalText";
+import OutOfScopeText from "./fields/OutOfScopeText";
+import DeviceRequirementsText from "./fields/DeviceRequirementsText";
+import TargetNotesText from "./fields/TargetNotesText";
+import TargetSize from "./fields/TargetSize";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -40,6 +47,13 @@ const Form = ({ dossier }: FormProps) => (
         <CloseDatePicker />
         {!props.values.isEdit && <AutomaticDatesSwitch />}
         <DeviceMultiselect />
+        <DescriptionText />
+        <ProductLinkInput />
+        <GoalText />
+        <OutOfScopeText />
+        <DeviceRequirementsText />
+        <TargetNotesText />
+        <TargetSize />
 
         <button type="submit">Submit</button>
       </FormikForm>

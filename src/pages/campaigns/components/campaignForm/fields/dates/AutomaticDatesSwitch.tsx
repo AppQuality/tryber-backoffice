@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik";
-import { NewCampaignValues } from "../FormProvider";
-import { formatDate } from "../formatDate";
+import { NewCampaignValues } from "../../FormProvider";
+import { formatDate } from "../../formatDate";
 import { useCallback } from "react";
 
 const AutomaticDatesSwitch = () => {
