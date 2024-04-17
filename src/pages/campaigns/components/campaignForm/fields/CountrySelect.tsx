@@ -1,25 +1,45 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../FormProvider";
-import Select from "./components/Select";
-import { Option } from "./components/MultiSelect";
+import Multiselect, { Option } from "./components/MultiSelect";
 import countries from "i18n-iso-countries";
+import { useMemo } from "react";
 
 const CountrySelect = () => {
   const { values, setFieldValue } = useFormikContext<NewCampaignValues>();
 
-  const options: Option[] = [];
+  const options: Option[] = useMemo(() => {
+    countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+    const enCountries = countries.getNames("en");
+    return Object.entries(enCountries).map(([id, label]) => ({
+      id,
+      label,
+    }));
+  }, []);
+
   return (
     <div>
-      <FormikField name="customerId">
+      <FormikField name="countries">
         {({ field }: FieldProps) => (
-          <Select
+          <Multiselect
             name={field.name}
             options={options}
             value={field.value}
             label="Country"
-            onChange={(value) => {
-              setFieldValue(field.name, value);
-              setFieldValue("projectId", 0);
+            onChange={(e) => {
+              if (!e.currentTarget.value) setFieldValue(field.name, []);
+              if (values.countries.includes(e.currentTarget.value)) {
+                setFieldValue(
+                  field.name,
+                  values.countries.filter(
+                    (country) => country !== e.currentTarget.value
+                  )
+                );
+                return;
+              }
+              setFieldValue(field.name, [
+                ...values.countries,
+                e.currentTarget.value,
+              ]);
             }}
           />
         )}

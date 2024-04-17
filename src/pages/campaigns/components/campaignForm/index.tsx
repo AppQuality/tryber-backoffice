@@ -15,6 +15,7 @@ import LanguageSelect from "./fields/LanguagesSelect";
 import TlSelect from "./fields/roles/TLSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
+import CountrySelect from "./fields/CountrySelect";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;

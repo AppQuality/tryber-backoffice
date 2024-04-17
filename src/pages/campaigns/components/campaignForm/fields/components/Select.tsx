@@ -20,7 +20,7 @@ const Select = ({
     <>
       <label htmlFor={name}>{label}</label>
       <select name={name} id={name} onChange={onChange}>
-        <option disabled value="0" selected={value === "0"}>
+        <option disabled value="" selected={value === ""}>
           {emptyOption ? emptyOption : "Select"}
         </option>
         {options.map((option) => (
