@@ -19,9 +19,9 @@ interface FormProviderInterface {
 
 export interface NewCampaignValues {
   isEdit: boolean;
-  projectId: number;
-  customerId: number;
-  testType: number;
+  projectId: string;
+  customerId: string;
+  testType: string;
   customerTitle: string;
   testerTitle: string;
   startDate: string;
@@ -30,10 +30,10 @@ export interface NewCampaignValues {
   automaticDates: boolean;
   deviceList: string[];
   deviceTypes: string[];
-  csm: number;
-  tl?: number;
-  pm?: number;
-  researcher?: number;
+  csm: string;
+  tl?: string;
+  pm?: string;
+  researcher?: string;
   languages: string[];
 }
 
@@ -68,17 +68,17 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
 
   const initialValues: NewCampaignValues = {
     isEdit: !!dossier,
-    projectId: dossier?.project.id || 0,
-    customerId: dossier?.customer.id || 0,
-    csm: dossier?.csm.id || data.id,
-    tl: getAssistantIdByRole({ roles: dossier?.roles, roleToFind: "tl" }) || 0,
-    pm: getAssistantIdByRole({ roles: dossier?.roles, roleToFind: "pm" }) || 0,
+    projectId: dossier?.project.id.toString() || "",
+    customerId: dossier?.customer.id.toString() || "",
+    csm: dossier?.csm.id.toString() || data.id.toString(),
+    tl: getAssistantIdByRole({ roles: dossier?.roles, roleToFind: "tl" }) || "",
+    pm: getAssistantIdByRole({ roles: dossier?.roles, roleToFind: "pm" }) || "",
     researcher:
       getAssistantIdByRole({
         roles: dossier?.roles,
         roleToFind: "researcher",
-      }) || 0,
-    testType: dossier?.testType.id || 0,
+      }) || "",
+    testType: dossier?.testType.id.toString() || "",
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
     startDate: dossier?.startDate ? formatDate(dossier.startDate) : "",
@@ -114,19 +114,19 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
       onSubmit={async (values) => {
         let roles = [];
         if (values.pm) {
-          roles.push({ role: 1, user: values.pm });
+          roles.push({ role: 1, user: parseInt(values.pm) });
         }
         if (values.tl) {
-          roles.push({ role: 2, user: values.tl });
+          roles.push({ role: 2, user: parseInt(values.tl) });
         }
         if (values.researcher) {
-          roles.push({ role: 3, user: values.researcher });
+          roles.push({ role: 3, user: parseInt(values.researcher) });
         }
         try {
           await postDossiers({
             body: {
-              project: values.projectId,
-              testType: values.testType,
+              project: parseInt(values.projectId),
+              testType: parseInt(values.testType),
               title: {
                 customer: values.customerTitle,
                 tester: values.testerTitle,
@@ -137,9 +137,11 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
               deviceList: values.deviceList.map((device) =>
                 parseInt(device, 10)
               ),
-              csm: values.csm,
+              csm: parseInt(values.csm),
               roles: roles,
-              //languages: values.languages.map((language) => parseInt(language, 10)),
+              languages: values.languages.map((language) =>
+                parseInt(language, 10)
+              ),
             },
           }).unwrap();
 
