@@ -895,6 +895,21 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/customers/${queryArg.customer}/projects`,
       }),
     }),
+    getUsersByRoleByRole: build.query<
+      GetUsersByRoleByRoleApiResponse,
+      GetUsersByRoleByRoleApiArg
+    >({
+      query: (queryArg) => ({ url: `/users/by-role/${queryArg.role}` }),
+    }),
+    getBrowsers: build.query<GetBrowsersApiResponse, GetBrowsersApiArg>({
+      query: () => ({ url: `/browsers` }),
+    }),
+    getProductTypes: build.query<
+      GetProductTypesApiResponse,
+      GetProductTypesApiArg
+    >({
+      query: () => ({ url: `/productTypes` }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -2661,6 +2676,30 @@ export type GetCustomersByCustomerProjectsApiResponse = /** status 200 OK */ {
 export type GetCustomersByCustomerProjectsApiArg = {
   customer: string;
 };
+export type GetUsersByRoleByRoleApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+    surname: string;
+  }[];
+};
+export type GetUsersByRoleByRoleApiArg = {
+  role: "tester_lead" | "quality_leader" | "ux_researcher";
+};
+export type GetBrowsersApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+  }[];
+};
+export type GetBrowsersApiArg = void;
+export type GetProductTypesApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+  }[];
+};
+export type GetProductTypesApiArg = void;
 export type Agreement = {
   title: string;
   tokens: number;
@@ -3019,4 +3058,7 @@ export const {
   usePutDossiersByCampaignMutation,
   useGetDossiersByCampaignQuery,
   useGetCustomersByCustomerProjectsQuery,
+  useGetUsersByRoleByRoleQuery,
+  useGetBrowsersQuery,
+  useGetProductTypesQuery,
 } = injectedRtkApi;
