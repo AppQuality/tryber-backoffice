@@ -10,7 +10,7 @@ const TestTypeSelect = () => {
 
   const options = testTypes
     ? testTypes.map((testType) => ({
-        id: testType.id,
+        id: testType.id.toString(),
         label: testType.name,
       }))
     : [];
