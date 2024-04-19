@@ -1,3 +1,4 @@
+import { FormGroup, TextareaField } from "@appquality/appquality-design-system";
 interface TextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
@@ -5,10 +6,9 @@ interface TextAreaProps
 
 const TextArea = ({ label, name, ...props }: TextAreaProps) => {
   return (
-    <>
-      <label htmlFor={name}>{label}</label>
-      <textarea id={name} {...props} />
-    </>
+    <FormGroup>
+      <TextareaField name="name" label={label} />
+    </FormGroup>
   );
 };
 export default TextArea;

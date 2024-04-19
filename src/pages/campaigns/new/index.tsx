@@ -1,10 +1,10 @@
 import { PageTemplate } from "src/features/PageTemplate";
-import Form from "../components/campaignForm";
+import CampaignForm from "../components/campaignForm";
 
 const NewCampaign = () => {
   return (
-    <PageTemplate type="unguess">
-      <Form />
+    <PageTemplate>
+      <CampaignForm />
     </PageTemplate>
   );
 };
