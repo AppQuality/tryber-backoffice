@@ -1,49 +1,29 @@
 import React, { createContext, useContext, useState } from "react";
 
-type Item = { id: string; ref?: IntersectionObserverEntry };
+type Item = { id: string; ref?: IntersectionObserverEntry; title: string };
 const Context = createContext<{
-  currentSections: string[];
   sections: Item[];
   pushSection: (section: Item) => void;
-  addSectionToCurrent: (section: string) => void;
-  removeSectionFromCurrent: (section: string) => void;
+  setCurrentSection: (section: string) => void;
   goToSection: (section: string) => void;
+  currentSection: string;
 }>({
-  currentSections: [],
   sections: [],
-  addSectionToCurrent: () => {},
-  removeSectionFromCurrent: () => {},
+  setCurrentSection: () => {},
   pushSection: () => {},
   goToSection: () => {},
+  currentSection: "",
 });
 
 const CampaignFormContext = ({ children }: { children: React.ReactNode }) => {
-  const [currentSections, setCurrentSections] = useState<string[]>([]);
+  const [currentSection, setCurrentSection] = useState<string>("");
   const [sections, setSections] = useState<Item[]>([]);
+  const [isScrolling, setIsScrolling] = useState(false);
   return (
     <Context.Provider
       value={{
-        currentSections,
-        addSectionToCurrent: (section: string) => {
-          setCurrentSections((prev) => {
-            const current = [...prev, section];
-            return current.sort(
-              (a, b) =>
-                sections.findIndex((section) => section.id === a) -
-                sections.findIndex((section) => section.id === b)
-            );
-          });
-        },
-        removeSectionFromCurrent: (section: string) => {
-          setCurrentSections((prev) => {
-            const current = prev.filter((s) => s !== section);
-            return current.sort(
-              (a, b) =>
-                sections.findIndex((section) => section.id === a) -
-                sections.findIndex((section) => section.id === b)
-            );
-          });
-        },
+        setCurrentSection: (section: string) =>
+          !isScrolling ? setCurrentSection(section) : undefined,
         sections,
         pushSection: (section: Item) => {
           setSections((prev) => {
@@ -54,7 +34,25 @@ const CampaignFormContext = ({ children }: { children: React.ReactNode }) => {
             );
           });
         },
-        goToSection: (section: string) => {},
+        goToSection: (section: string) => {
+          if (isScrolling) return;
+          const item = sections.find((item) => item.id === section);
+          if (!item) return;
+          const element = item.ref?.target;
+          if (!element) return;
+          const current = sections.find((item) => item.id === currentSection);
+
+          const scrollTopDiff = Math.abs(
+            // @ts-ignore
+            element.offsetTop - (current?.ref?.target?.offsetTop || 0)
+          );
+
+          setIsScrolling(true);
+          setTimeout(() => setIsScrolling(false), scrollTopDiff * 0.4);
+          element.scrollIntoView({ behavior: "smooth" });
+          setCurrentSection(section);
+        },
+        currentSection,
       }}
     >
       {children}
