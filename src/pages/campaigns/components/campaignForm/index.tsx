@@ -44,16 +44,14 @@ const CampaignForm = ({ dossier }: FormProps) => {
       <FormProvider dossier={dossier}>
         {(props: FormikProps<NewCampaignValues>) => (
           <BSGrid>
-            <div style={{ position: "fixed", right: "-75%", width: "100%" }}>
-              <BSCol size="col-lg-3">
-                <Card title="Sezioni del form" className="aq-mb-3">
-                  <Stepper />
-                </Card>
-                <Button type="submit" size="block">
-                  Submit
-                </Button>
-              </BSCol>
-            </div>
+            <BSCol size="col-lg-3">
+              <Card title="Sezioni del form" className="aq-mb-3">
+                <Stepper />
+              </Card>
+              <Button type="submit" size="block">
+                Submit
+              </Button>
+            </BSCol>
             <BSCol size="col-lg-9">
               <Form id="campaign-form">
                 <Section title="General info" id="general">
