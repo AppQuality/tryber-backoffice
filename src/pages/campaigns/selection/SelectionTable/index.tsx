@@ -21,8 +21,8 @@ const SelectionTable: FC<{ id: string }> = ({ id }) => {
       columns[0],
       columns[1],
       ...additionalColumns,
-      ...columns.slice(2, columns.length - 2),
-      columns[columns.length - 2],
+      ...columns.slice(2, columns.length - 1),
+      columns[columns.length - 1],
     ],
     [columns, additionalColumns]
   );
