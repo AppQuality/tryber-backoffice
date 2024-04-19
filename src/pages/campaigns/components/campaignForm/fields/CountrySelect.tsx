@@ -1,50 +1,44 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../FormProvider";
-import Multiselect, { Option } from "./components/MultiSelect";
 import countries from "i18n-iso-countries";
 import { useMemo } from "react";
+import { ErrorMessage, Dropdown } from "@appquality/appquality-design-system";
 
+interface Option {
+  label: string;
+  value: string;
+}
 const CountrySelect = () => {
   const { values, setFieldValue } = useFormikContext<NewCampaignValues>();
-
-  const options: Option[] = useMemo(() => {
+  const countriesOptions = useMemo(() => {
     countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
     const enCountries = countries.getNames("en");
     return Object.entries(enCountries).map(([id, label]) => ({
-      id,
+      id: id,
+      value: id,
       label,
     }));
   }, []);
 
   return (
-    <div>
-      <FormikField name="countries">
-        {({ field }: FieldProps) => (
-          <Multiselect
+    <FormikField name="countries">
+      {({ field }: FieldProps<NewCampaignValues["countries"]>) => (
+        <>
+          <Dropdown
+            placeholder=""
+            data-qa="country-select"
+            isMulti
             name={field.name}
-            options={options}
-            value={field.value}
-            label="Country"
-            onChange={(e) => {
-              if (!e.currentTarget.value) setFieldValue(field.name, []);
-              if (values.countries.includes(e.currentTarget.value)) {
-                setFieldValue(
-                  field.name,
-                  values.countries.filter(
-                    (country) => country !== e.currentTarget.value
-                  )
-                );
-                return;
-              }
-              setFieldValue(field.name, [
-                ...values.countries,
-                e.currentTarget.value,
-              ]);
-            }}
+            options={countriesOptions}
+            value={countriesOptions.filter((o) =>
+              field.value.includes(o.value)
+            )}
+            onChange={(options) => {}}
           />
-        )}
-      </FormikField>
-    </div>
+          <ErrorMessage name={field.name} />
+        </>
+      )}
+    </FormikField>
   );
 };
 

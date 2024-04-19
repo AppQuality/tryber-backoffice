@@ -1,4 +1,12 @@
-import { Form as FormikForm, FormikProps } from "formik";
+import { FormikProps } from "formik";
+import {
+  BSCol,
+  BSGrid,
+  Button,
+  Card,
+  Form,
+  Steps,
+} from "@appquality/appquality-design-system";
 import FormProvider, { NewCampaignValues } from "./FormProvider";
 import CsmSelect from "./fields/roles/CsmSelect";
 import CustomerSelect from "./fields/CustomerSelect";
@@ -28,37 +36,71 @@ interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
 }
 
-const Form = ({ dossier }: FormProps) => (
+const CampaignForm = ({ dossier }: FormProps) => (
   <FormProvider dossier={dossier}>
     {(props: FormikProps<NewCampaignValues>) => (
-      <FormikForm id="campaign-form">
-        <CustomerSelect />
-        <CsmSelect />
-        <TlSelect />
-        <PmSelect />
-        <ResearcherSelect />
-        <CountrySelect />
-        <TestTypeSelect />
-        <TesterTitleInput />
-        <CustomerTitleInput />
-        <LanguageSelect />
-        <StartDatePicker />
-        <EndDatePicker />
-        <CloseDatePicker />
-        {!props.values.isEdit && <AutomaticDatesSwitch />}
-        <DeviceMultiselect />
-        <DescriptionText />
-        <ProductLinkInput />
-        <GoalText />
-        <OutOfScopeText />
-        <DeviceRequirementsText />
-        <TargetNotesText />
-        <TargetSize />
-
-        <button type="submit">Submit</button>
-      </FormikForm>
+      <BSGrid>
+        <BSCol size="col-lg-3">
+          <Card title="Sezioni del form" className="aq-mb-3">
+            <Steps
+              direction="vertical"
+              current={4}
+              clickHandler={(index, current) => {
+                if (index === current) return;
+              }}
+            >
+              <Steps.Step title="Come" />
+              <Steps.Step title="Dove" />
+              <Steps.Step title="Chi" />
+              <Steps.Step title="Quando" />
+              <Steps.Step title="ma soprattutto Perchè" />
+            </Steps>
+          </Card>
+          <Button type="submit" size="block">
+            Submit
+          </Button>
+        </BSCol>
+        <BSCol size="col-lg-9">
+          <Form id="campaign-form">
+            <Card title="General info" className="aq-mb-4">
+              <CustomerSelect />
+              <TestTypeSelect />
+              <TesterTitleInput />
+              <CustomerTitleInput />
+              <DescriptionText />
+              <StartDatePicker />
+              <EndDatePicker />
+              <CloseDatePicker />
+              {!props.values.isEdit && <AutomaticDatesSwitch />}
+            </Card>
+            <Card title="Cosa" className="aq-mb-4">
+              <ProductLinkInput />
+              <OutOfScopeText />
+            </Card>
+            <Card title="Dove" className="aq-mb-4">
+              <DeviceMultiselect />
+              <DeviceRequirementsText />
+            </Card>
+            <Card title="Chi" className="aq-mb-4">
+              <CountrySelect />
+              <LanguageSelect />
+              <TargetNotesText />
+              <TargetSize />
+            </Card>
+            <Card title="Come" className="aq-mb-4">
+              <GoalText />
+            </Card>
+            <Card title="Ruoli" className="aq-mb-4">
+              <CsmSelect />
+              <TlSelect />
+              <PmSelect />
+              <ResearcherSelect />
+            </Card>
+          </Form>
+        </BSCol>
+      </BSGrid>
     )}
   </FormProvider>
 );
 
-export default Form;
+export default CampaignForm;

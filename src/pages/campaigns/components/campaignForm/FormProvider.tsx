@@ -1,4 +1,4 @@
-import { Formik } from "formik";
+import { Formik } from "@appquality/appquality-design-system";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import {
   GetDossiersByCampaignApiResponse,
