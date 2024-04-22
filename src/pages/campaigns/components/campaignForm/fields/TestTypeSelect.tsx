@@ -2,7 +2,6 @@ import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../FormProvider";
 
 import { useGetCampaignTypesQuery } from "src/services/tryberApi";
-import Select from "./components/Select";
 import {
   Dropdown,
   ErrorMessage,
