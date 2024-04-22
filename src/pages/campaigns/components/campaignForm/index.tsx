@@ -45,13 +45,19 @@ const StickyContainer = styled.div`
   }
 `;
 
+const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
+  @media (min-width: ${({ theme }) => theme.grid.breakpoints.lg}) {
+    order: ${({ lgOrder }) => lgOrder};
+  }
+`;
+
 const CampaignForm = ({ dossier }: FormProps) => {
   return (
     <CampaignFormContext>
       <FormProvider dossier={dossier}>
         {(props: FormikProps<NewCampaignValues>) => (
           <BSGrid>
-            <BSCol size="col-lg-3">
+            <ResponsiveCol size="col-lg-3" lgOrder={1}>
               <StickyContainer>
                 <Card title="Sezioni del form" className="aq-mb-3">
                   <Stepper />
@@ -60,8 +66,8 @@ const CampaignForm = ({ dossier }: FormProps) => {
                   Submit
                 </Button>
               </StickyContainer>
-            </BSCol>
-            <BSCol size="col-lg-9">
+            </ResponsiveCol>
+            <ResponsiveCol size="col-lg-9" lgOrder={2}>
               <Form id="campaign-form">
                 <Section title="General info" id="general">
                   <CustomerSelect />
@@ -98,7 +104,7 @@ const CampaignForm = ({ dossier }: FormProps) => {
                   <ResearcherSelect />
                 </Section>
               </Form>
-            </BSCol>
+            </ResponsiveCol>
           </BSGrid>
         )}
       </FormProvider>
