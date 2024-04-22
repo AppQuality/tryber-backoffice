@@ -5,6 +5,12 @@ import {
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
 import Select from "./components/Select";
+import {
+  Dropdown,
+  ErrorMessage,
+  FormGroup,
+  FormLabel,
+} from "@appquality/appquality-design-system";
 
 const CustomerSelect = () => {
   const { data: customers } = useGetCustomersQuery();
@@ -18,22 +24,24 @@ const CustomerSelect = () => {
     : [];
   return (
     <>
-      <div>
-        <FormikField name="customerId">
-          {({ field }: FieldProps) => (
-            <Select
+      <FormikField name="customerId">
+        {({ field }: FieldProps) => (
+          <FormGroup>
+            <FormLabel htmlFor={field.name} label="Customer" />
+            <Dropdown
+              id={field.name}
               name={field.name}
               options={options}
               value={field.value}
-              label="Customer"
               onChange={(value) => {
                 setFieldValue(field.name, value);
                 setFieldValue("projectId", "");
               }}
             />
-          )}
-        </FormikField>
-      </div>
+            <ErrorMessage name={field.name} />
+          </FormGroup>
+        )}
+      </FormikField>
       {values.customerId && <ProjectSelect customerId={values.customerId} />}
     </>
   );
@@ -56,13 +64,17 @@ const ProjectSelect = ({ customerId }: { customerId: string }) => {
     <div>
       <FormikField name="projectId">
         {({ field }: FieldProps) => (
-          <Select
-            name={field.name}
-            options={options}
-            value={field.value}
-            label="Project"
-            onChange={(value) => setFieldValue(field.name, value)}
-          />
+          <FormGroup>
+            <FormLabel htmlFor={field.name} label="Project" />
+            <Dropdown
+              id={field.name}
+              name={field.name}
+              options={options}
+              value={field.value}
+              onChange={(value) => setFieldValue(field.name, value)}
+            />
+            <ErrorMessage name={field.name} />
+          </FormGroup>
         )}
       </FormikField>
     </div>
