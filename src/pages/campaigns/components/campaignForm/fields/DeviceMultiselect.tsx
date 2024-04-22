@@ -4,10 +4,18 @@ import {
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
-import Multiselect, { Option } from "./components/MultiSelect";
 import { ChangeEvent, useMemo } from "react";
 import { groupDevicesByType } from "../groupByType";
+import {
+  Dropdown,
+  FormGroup,
+  FormLabel,
+} from "@appquality/appquality-design-system";
 
+export interface Option {
+  id: string;
+  label: string;
+}
 interface OsMultiselectProps {
   options: Option[];
   label: string;
@@ -19,24 +27,24 @@ const OsMultiselect = ({ options, label }: OsMultiselectProps) => {
   } = useFormikContext<NewCampaignValues>();
 
   return (
-    <Multiselect
-      options={options}
-      label={label}
-      value={deviceList.filter((device) =>
-        options.map((option) => option.id).includes(device)
-      )}
-      emptyOption="Select"
-      onChange={(e) => {
-        if (deviceList.includes(e.currentTarget.value)) {
-          setFieldValue(
-            "deviceList",
-            deviceList.filter((v) => v !== e.currentTarget.value)
-          );
-        } else {
-          setFieldValue("deviceList", [...deviceList, e.currentTarget.value]);
-        }
-      }}
-    />
+    <FormGroup>
+      <FormLabel htmlFor={label} label={label} />
+      <Dropdown
+        options={options}
+        value={options.filter((option) => deviceList.includes(option.id))}
+        onChange={(value) => {
+          if (!value) return;
+          if (deviceList.includes(value.id)) {
+            setFieldValue(
+              "deviceList",
+              deviceList.filter((v) => v !== value.id)
+            );
+          } else {
+            setFieldValue("deviceList", [...deviceList, value.id]);
+          }
+        }}
+      />
+    </FormGroup>
   );
 };
 

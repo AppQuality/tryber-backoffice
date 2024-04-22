@@ -1,8 +1,13 @@
 import { useFormikContext, Field as FormikField, FieldProps } from "formik";
 import { useGetBrowsersQuery } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
-import Multiselect from "./components/MultiSelect";
 import { useMemo } from "react";
+import {
+  Dropdown,
+  ErrorMessage,
+  FormGroup,
+  FormLabel,
+} from "@appquality/appquality-design-system";
 
 const BrowsersMultiselect = () => {
   const {
@@ -17,35 +22,26 @@ const BrowsersMultiselect = () => {
       browsers?.results.map((browser) => ({
         id: browser.id.toString(),
         label: browser.name,
-      })),
+      })) || [],
     [browsers]
   );
   return (
     <FormikField name="browsersList">
       {({ field }: FieldProps) => (
-        <Multiselect
-          options={options || []}
-          label="Browsers"
-          value={field.value}
-          emptyOption="Select"
-          onChange={(e) => {
-            if (!e.currentTarget.value) {
-              setFieldValue(field.name, []);
-              return;
-            }
-            if (browsersList?.includes(e.currentTarget.value)) {
-              setFieldValue(
-                field.name,
-                browsersList.filter((v) => v !== e.currentTarget.value)
-              );
-              return;
-            }
-            setFieldValue(field.name, [
-              ...(browsersList || []),
-              e.currentTarget.value,
-            ]);
-          }}
-        />
+        <FormGroup>
+          <FormLabel htmlFor={field.name} label="Browsers" />
+          <Dropdown
+            options={options}
+            value={options.filter((option) => field.value.includes(option.id))}
+            onChange={(value) => {
+              if (!value) {
+                setFieldValue(field.name, []);
+                return;
+              }
+            }}
+          />
+          <ErrorMessage name={field.name} />
+        </FormGroup>
       )}
     </FormikField>
   );

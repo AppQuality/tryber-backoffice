@@ -1,4 +1,4 @@
-import { Option } from "./fields/components/MultiSelect";
+import { Option } from "./fields/DeviceMultiselect";
 interface Item extends Option {
   type: string;
 }

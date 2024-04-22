@@ -4,7 +4,6 @@ import {
   useGetCustomersQuery,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
-import Select from "./components/Select";
 import {
   Dropdown,
   ErrorMessage,
@@ -57,6 +56,7 @@ const ProjectSelect = ({ customerId }: { customerId: string }) => {
     ? projects.results.map((project) => ({
         id: project.id.toString(),
         label: project.name,
+        value: project.id.toString(),
       }))
     : [];
 
