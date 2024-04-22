@@ -55,7 +55,7 @@ const CampaignForm = ({ dossier }: FormProps) => {
   return (
     <CampaignFormContext>
       <FormProvider dossier={dossier}>
-        {(props: FormikProps<NewCampaignValues>) => (
+        {({ values: { isEdit } }: FormikProps<NewCampaignValues>) => (
           <BSGrid>
             <ResponsiveCol size="col-lg-3" lgOrder={1}>
               <StickyContainer>
@@ -78,7 +78,7 @@ const CampaignForm = ({ dossier }: FormProps) => {
                   <StartDatePicker />
                   <EndDatePicker />
                   <CloseDatePicker />
-                  {!props.values.isEdit && <AutomaticDatesSwitch />}
+                  {!isEdit && <AutomaticDatesSwitch />}
                 </Section>
                 <Section title="Cosa" id="what">
                   <ProductLinkInput />
