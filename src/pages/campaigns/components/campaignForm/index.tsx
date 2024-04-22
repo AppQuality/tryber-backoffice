@@ -33,10 +33,17 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
+import { styled } from "styled-components";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
 }
+const StickyContainer = styled.div`
+  @media (min-width: ${(p) => p.theme.grid.breakpoints.lg}) {
+    position: sticky;
+    top: 0;
+  }
+`;
 
 const CampaignForm = ({ dossier }: FormProps) => {
   return (
@@ -45,12 +52,14 @@ const CampaignForm = ({ dossier }: FormProps) => {
         {(props: FormikProps<NewCampaignValues>) => (
           <BSGrid>
             <BSCol size="col-lg-3">
-              <Card title="Sezioni del form" className="aq-mb-3">
-                <Stepper />
-              </Card>
-              <Button type="submit" size="block">
-                Submit
-              </Button>
+              <StickyContainer>
+                <Card title="Sezioni del form" className="aq-mb-3">
+                  <Stepper />
+                </Card>
+                <Button type="submit" size="block">
+                  Submit
+                </Button>
+              </StickyContainer>
             </BSCol>
             <BSCol size="col-lg-9">
               <Form id="campaign-form">
