@@ -878,7 +878,7 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/dossiers/${queryArg.campaign}`,
         method: "PUT",
-        body: queryArg.body,
+        body: queryArg.dossierCreationData,
       }),
     }),
     getDossiersByCampaign: build.query<
@@ -2534,71 +2534,21 @@ export type PostDossiersApiResponse = /** status 201 Created */ {
   id?: number;
 };
 export type PostDossiersApiArg = {
-  body: {
-    project: number;
-    testType: number;
-    title: {
-      customer: string;
-      tester?: string;
+  body: DossierCreationData & {
+    duplicate?: {
+      fields?: number;
+      useCases?: number;
+      mailMerges?: number;
+      pages?: number;
+      testers?: number;
     };
-    startDate: string;
-    endDate?: string;
-    closeDate?: string;
-    deviceList: number[];
-    csm?: number;
-    roles?: {
-      role: number;
-      user: number;
-    }[];
-    description?: string;
-    productLink?: string;
-    goal?: string;
-    outOfScope?: string;
-    deviceRequirements?: string;
-    target?: {
-      notes?: string;
-      size?: number;
-    };
-    countries?: CountryCode[];
-    languages?: number[];
-    browsers?: number[];
-    productType?: number;
   };
 };
 export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
 export type PutDossiersByCampaignApiArg = {
   /** A campaign id */
   campaign: string;
-  body: {
-    project: number;
-    testType: number;
-    title: {
-      customer: string;
-      tester?: string;
-    };
-    startDate: string;
-    endDate?: string;
-    closeDate?: string;
-    deviceList: number[];
-    csm?: number;
-    roles?: {
-      role: number;
-      user: number;
-    }[];
-    description?: string;
-    productLink?: string;
-    goal?: string;
-    outOfScope?: string;
-    deviceRequirements?: string;
-    target?: {
-      notes?: string;
-      size?: number;
-    };
-    countries?: CountryCode[];
-    languages?: number[];
-    browsers?: number[];
-    productType?: number;
-  };
+  dossierCreationData: DossierCreationData;
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
   id: number;
@@ -2684,7 +2634,7 @@ export type GetUsersByRoleByRoleApiResponse = /** status 200 OK */ {
   }[];
 };
 export type GetUsersByRoleByRoleApiArg = {
-  role: "tester_lead" | "quality_leader" | "ux_researcher";
+  role: "tester_lead" | "quality_leader" | "ux_researcher" | "assistants";
 };
 export type GetBrowsersApiResponse = /** status 200 OK */ {
   results: {
@@ -2954,6 +2904,36 @@ export type RankingItem = {
   monthly_exp: number;
 };
 export type CountryCode = string;
+export type DossierCreationData = {
+  project: number;
+  testType: number;
+  title: {
+    customer: string;
+    tester?: string;
+  };
+  startDate: string;
+  endDate?: string;
+  closeDate?: string;
+  deviceList: number[];
+  csm?: number;
+  roles?: {
+    role: number;
+    user: number;
+  }[];
+  description?: string;
+  productLink?: string;
+  goal?: string;
+  outOfScope?: string;
+  deviceRequirements?: string;
+  target?: {
+    notes?: string;
+    size?: number;
+  };
+  countries?: CountryCode[];
+  languages?: number[];
+  browsers?: number[];
+  productType?: number;
+};
 export const {
   useGetQuery,
   useGetAgreementsQuery,
