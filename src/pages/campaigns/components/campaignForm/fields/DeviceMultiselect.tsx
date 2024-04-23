@@ -13,7 +13,6 @@ import {
 } from "@appquality/appquality-design-system";
 import { FieldWrapper } from "./components/FieldWrapper";
 import { Option } from "./components/Select";
-import { set } from "husky";
 
 interface OsMultiselectProps {
   options: Option[];
