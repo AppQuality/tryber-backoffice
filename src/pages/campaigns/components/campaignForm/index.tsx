@@ -33,26 +33,41 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
+import { styled } from "styled-components";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
 }
+const StickyContainer = styled.div`
+  @media (min-width: ${(p) => p.theme.grid.breakpoints.lg}) {
+    position: sticky;
+    top: 0;
+  }
+`;
+
+const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
+  @media (min-width: ${({ theme }) => theme.grid.breakpoints.lg}) {
+    order: ${({ lgOrder }) => lgOrder};
+  }
+`;
 
 const CampaignForm = ({ dossier }: FormProps) => {
   return (
     <CampaignFormContext>
       <FormProvider dossier={dossier}>
-        {(props: FormikProps<NewCampaignValues>) => (
+        {({ values: { isEdit } }: FormikProps<NewCampaignValues>) => (
           <BSGrid>
-            <BSCol size="col-lg-3">
-              <Card title="Sezioni del form" className="aq-mb-3">
-                <Stepper />
-              </Card>
-              <Button type="submit" size="block">
-                Submit
-              </Button>
-            </BSCol>
-            <BSCol size="col-lg-9">
+            <ResponsiveCol size="col-lg-3" lgOrder={1}>
+              <StickyContainer>
+                <Card title="Sezioni del form" className="aq-mb-3">
+                  <Stepper />
+                </Card>
+                <Button type="submit" size="block">
+                  Submit
+                </Button>
+              </StickyContainer>
+            </ResponsiveCol>
+            <ResponsiveCol size="col-lg-9" lgOrder={2}>
               <Form id="campaign-form">
                 <Section title="General info" id="general">
                   <CustomerSelect />
@@ -63,7 +78,7 @@ const CampaignForm = ({ dossier }: FormProps) => {
                   <StartDatePicker />
                   <EndDatePicker />
                   <CloseDatePicker />
-                  {!props.values.isEdit && <AutomaticDatesSwitch />}
+                  {!isEdit && <AutomaticDatesSwitch />}
                 </Section>
                 <Section title="Cosa" id="what">
                   <ProductLinkInput />
@@ -89,7 +104,7 @@ const CampaignForm = ({ dossier }: FormProps) => {
                   <ResearcherSelect />
                 </Section>
               </Form>
-            </BSCol>
+            </ResponsiveCol>
           </BSGrid>
         )}
       </FormProvider>

@@ -1,39 +1,27 @@
-import { FieldProps, Field as FormikField, useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 import {
   useGetCustomersByCustomerProjectsQuery,
   useGetCustomersQuery,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
-import Select from "./components/Select";
+import { SelectField } from "./components/Select";
+import { useMemo } from "react";
 
 const CustomerSelect = () => {
   const { data: customers } = useGetCustomersQuery();
-  const { values, setFieldValue } = useFormikContext<NewCampaignValues>();
+  const { values } = useFormikContext<NewCampaignValues>();
 
-  const options = customers
-    ? customers.map((customer) => ({
-        id: customer.id?.toString() || "",
+  const options = useMemo(
+    () =>
+      customers?.map((customer) => ({
+        value: customer.id?.toString() || "",
         label: customer.name || "No name",
-      }))
-    : [];
+      })) || [],
+    [customers]
+  );
   return (
     <>
-      <div>
-        <FormikField name="customerId">
-          {({ field }: FieldProps) => (
-            <Select
-              name={field.name}
-              options={options}
-              value={field.value}
-              label="Customer"
-              onChange={(value) => {
-                setFieldValue(field.name, value);
-                setFieldValue("projectId", "");
-              }}
-            />
-          )}
-        </FormikField>
-      </div>
+      <SelectField name="customerId" options={options} label="Customer" />
       {values.customerId && <ProjectSelect customerId={values.customerId} />}
     </>
   );
@@ -43,30 +31,17 @@ const ProjectSelect = ({ customerId }: { customerId: string }) => {
   const { data: projects } = useGetCustomersByCustomerProjectsQuery({
     customer: customerId.toString(),
   });
-  const { setFieldValue } = useFormikContext<NewCampaignValues>();
-
-  const options = projects?.results
-    ? projects.results.map((project) => ({
+  const options = useMemo(
+    () =>
+      projects?.results.map((project) => ({
         id: project.id.toString(),
         label: project.name,
-      }))
-    : [];
-
-  return (
-    <div>
-      <FormikField name="projectId">
-        {({ field }: FieldProps) => (
-          <Select
-            name={field.name}
-            options={options}
-            value={field.value}
-            label="Project"
-            onChange={(value) => setFieldValue(field.name, value)}
-          />
-        )}
-      </FormikField>
-    </div>
+        value: project.id.toString(),
+      })) || [],
+    [projects]
   );
+
+  return <SelectField name="projectId" options={options} label="Project" />;
 };
 
 export default CustomerSelect;

@@ -4,9 +4,15 @@ import {
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
-import Multiselect, { Option } from "./components/MultiSelect";
-import { ChangeEvent, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { groupDevicesByType } from "../groupByType";
+import {
+  Dropdown,
+  FormGroup,
+  FormLabel,
+} from "@appquality/appquality-design-system";
+import { FieldWrapper } from "./components/FieldWrapper";
+import { Option } from "./components/Select";
 
 interface OsMultiselectProps {
   options: Option[];
@@ -18,25 +24,43 @@ const OsMultiselect = ({ options, label }: OsMultiselectProps) => {
     setFieldValue,
   } = useFormikContext<NewCampaignValues>();
 
+  const handleChange = useCallback(
+    (selectedOptions) => {
+      if (
+        selectedOptions === null ||
+        selectedOptions === undefined ||
+        !Array.isArray(selectedOptions)
+      ) {
+        setFieldValue("deviceList", []);
+        return;
+      }
+      const deSelected = options.filter(
+        (device) =>
+          !selectedOptions.map((opt) => opt.value).includes(device.value)
+      );
+      // deviceList also has devices from other types
+      const allDevices = new Set([
+        ...deviceList,
+        ...selectedOptions.map((opt) => opt.value),
+      ]);
+      deSelected.forEach((device) => {
+        allDevices.delete(device.value);
+      });
+      setFieldValue("deviceList", Array.from(allDevices));
+    },
+    [deviceList, setFieldValue, options]
+  );
+
   return (
-    <Multiselect
-      options={options}
-      label={label}
-      value={deviceList.filter((device) =>
-        options.map((option) => option.id).includes(device)
-      )}
-      emptyOption="Select"
-      onChange={(e) => {
-        if (deviceList.includes(e.currentTarget.value)) {
-          setFieldValue(
-            "deviceList",
-            deviceList.filter((v) => v !== e.currentTarget.value)
-          );
-        } else {
-          setFieldValue("deviceList", [...deviceList, e.currentTarget.value]);
-        }
-      }}
-    />
+    <FormGroup>
+      <FormLabel htmlFor={label} label={label} />
+      <Dropdown
+        isMulti
+        options={options}
+        value={options.filter((option) => deviceList.includes(option.value))}
+        onChange={handleChange}
+      />
+    </FormGroup>
   );
 };
 
@@ -51,7 +75,10 @@ const DeviceMultiselect = () => {
 
   const deviceTypeOptions = useMemo(() => {
     const uniqueDeviceTypes = new Set(devices?.map((device) => device.type));
-    return Array.from(uniqueDeviceTypes);
+    return Array.from(uniqueDeviceTypes).map((deviceType) => ({
+      value: deviceType,
+      label: deviceType,
+    }));
   }, [devices]);
 
   const osOptions = useMemo(() => {
@@ -61,7 +88,7 @@ const DeviceMultiselect = () => {
         (
           device: GetDevicesByDeviceTypeOperatingSystemsApiResponse[number]
         ) => ({
-          id: device.id.toString(),
+          value: device.id.toString(),
           label: device.name,
           type: device.type,
         })
@@ -71,56 +98,60 @@ const DeviceMultiselect = () => {
   }, [devices]);
 
   // handle deviceTypes change
-  const handleDeviceTypesChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
-    if (deviceTypes.includes(value)) {
-      setFieldValue(
-        "deviceTypes",
-        deviceTypes.filter((deviceType) => deviceType !== value)
-      );
-      setFieldValue(
-        "deviceList",
-        deviceList.filter(
-          (device) => !osOptions[value].map((os) => os.id).includes(device)
-        )
-      );
-    } else {
-      setFieldValue("deviceTypes", [...deviceTypes, value]);
-      setFieldValue("deviceList", [
-        ...deviceList,
-        ...osOptions[value].map((os) => os.id),
-      ]);
-    }
-  };
+  const handleDeviceTypesChange = useCallback(
+    (option) => {
+      if (option === null || option === undefined) {
+        setFieldValue("deviceTypes", []);
+        setFieldValue("deviceList", []);
+        return;
+      }
+      if (deviceTypes.includes(option.value)) {
+        setFieldValue(
+          "deviceTypes",
+          deviceTypes.filter((deviceType) => deviceType !== option.value)
+        );
+        setFieldValue(
+          "deviceList",
+          deviceList.filter(
+            (device) =>
+              !osOptions[option.value].map((os) => os.value).includes(device)
+          )
+        );
+      } else {
+        setFieldValue("deviceTypes", [...deviceTypes, option.value]);
+        setFieldValue("deviceList", [
+          ...deviceList,
+          ...osOptions[option.value].map((os) => os.value),
+        ]);
+      }
+    },
+    [deviceTypes, deviceList, osOptions, setFieldValue]
+  );
 
   return (
-    <div>
-      <fieldset>
-        <legend>Choose Device Type:</legend>
-        {deviceTypeOptions.map((deviceType) => (
-          <div key={deviceType}>
-            <input
-              type="checkbox"
-              id={deviceType}
-              name={deviceType}
-              value={deviceType}
-              checked={deviceTypes.includes(deviceType)}
-              onChange={handleDeviceTypesChange}
-            />
-            <label htmlFor={deviceType}>{deviceType}</label>
-          </div>
-        ))}
-      </fieldset>
-      <fieldset>
-        <legend>Operative System:</legend>
+    <>
+      <FormGroup>
+        <FormLabel htmlFor="deviceTypes" label="Choose Device Type" />
+        <Dropdown
+          name="deviceTypes"
+          id="deviceTypes"
+          isMulti
+          options={deviceTypeOptions}
+          value={deviceTypeOptions.filter((opt) =>
+            deviceTypes.includes(opt.value)
+          )}
+          onChange={handleDeviceTypesChange}
+        />
+      </FormGroup>
+      <FieldWrapper>
         {deviceTypes.map((deviceType) => {
           if (!(deviceType in osOptions)) return null;
           return (
             <OsMultiselect options={osOptions[deviceType]} label={deviceType} />
           );
         })}
-      </fieldset>
-    </div>
+      </FieldWrapper>
+    </>
   );
 };
 

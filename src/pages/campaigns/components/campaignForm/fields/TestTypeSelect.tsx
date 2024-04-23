@@ -2,7 +2,12 @@ import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../FormProvider";
 
 import { useGetCampaignTypesQuery } from "src/services/tryberApi";
-import Select from "./components/Select";
+import {
+  Dropdown,
+  ErrorMessage,
+  FormGroup,
+  FormLabel,
+} from "@appquality/appquality-design-system";
 
 const TestTypeSelect = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
@@ -18,13 +23,17 @@ const TestTypeSelect = () => {
   return (
     <FormikField name="testType">
       {({ field }: FieldProps) => (
-        <Select
-          options={options}
-          name={field.name}
-          label="Test Type"
-          value={field.value}
-          onChange={(value) => setFieldValue(field.name, value)}
-        />
+        <FormGroup>
+          <FormLabel htmlFor={field.name} label="Test Type" />
+          <Dropdown
+            id={field.name}
+            options={options}
+            name={field.name}
+            value={field.value}
+            onChange={(value) => setFieldValue(field.name, value)}
+          />
+          <ErrorMessage name={field.name} />
+        </FormGroup>
       )}
     </FormikField>
   );
