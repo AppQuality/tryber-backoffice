@@ -566,7 +566,7 @@ export interface paths {
     get: operations["get-users-by-role-role"];
     parameters: {
       path: {
-        role: "tester_lead" | "quality_leader" | "ux_researcher";
+        role: "tester_lead" | "quality_leader" | "ux_researcher" | "assistants";
       };
     };
   };
@@ -890,6 +890,39 @@ export interface components {
     ProspectStatus: "draft" | "confirmed" | "done";
     /** CountryCode */
     CountryCode: string;
+    DossierCreationData: {
+      project: number;
+      testType: number;
+      title: {
+        customer: string;
+        tester?: string;
+      };
+      /** Format: date-time */
+      startDate: string;
+      /** Format: date-time */
+      endDate?: string;
+      /** Format: date-time */
+      closeDate?: string;
+      deviceList: number[];
+      csm?: number;
+      roles?: {
+        role: number;
+        user: number;
+      }[];
+      description?: string;
+      productLink?: string;
+      goal?: string;
+      outOfScope?: string;
+      deviceRequirements?: string;
+      target?: {
+        notes?: string;
+        size?: number;
+      };
+      countries?: components["schemas"]["CountryCode"][];
+      languages?: number[];
+      browsers?: number[];
+      productType?: number;
+    };
   };
   responses: {
     /** A user */
@@ -978,45 +1011,7 @@ export interface components {
     search: string;
     testerId: string;
   };
-  requestBodies: {
-    DossierData: {
-      content: {
-        "application/json": {
-          project: number;
-          testType: number;
-          title: {
-            customer: string;
-            tester?: string;
-          };
-          /** Format: date-time */
-          startDate: string;
-          /** Format: date-time */
-          endDate?: string;
-          /** Format: date-time */
-          closeDate?: string;
-          deviceList: number[];
-          csm?: number;
-          roles?: {
-            role: number;
-            user: number;
-          }[];
-          description?: string;
-          productLink?: string;
-          goal?: string;
-          outOfScope?: string;
-          deviceRequirements?: string;
-          target?: {
-            notes?: string;
-            size?: number;
-          };
-          countries?: components["schemas"]["CountryCode"][];
-          languages?: number[];
-          browsers?: number[];
-          productType?: number;
-        };
-      };
-    };
-  };
+  requestBodies: {};
 }
 
 export interface operations {
@@ -4070,7 +4065,19 @@ export interface operations {
         };
       };
     };
-    requestBody: components["requestBodies"]["DossierData"];
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DossierCreationData"] & {
+          duplicate?: {
+            fields?: number;
+            useCases?: number;
+            mailMerges?: number;
+            pages?: number;
+            testers?: number;
+          };
+        };
+      };
+    };
   };
   "get-dossiers-campaign": {
     parameters: {
@@ -4168,7 +4175,11 @@ export interface operations {
         };
       };
     };
-    requestBody: components["requestBodies"]["DossierData"];
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DossierCreationData"];
+      };
+    };
   };
   "get-customers-customer-projects": {
     parameters: {
@@ -4193,7 +4204,7 @@ export interface operations {
   "get-users-by-role-role": {
     parameters: {
       path: {
-        role: "tester_lead" | "quality_leader" | "ux_researcher";
+        role: "tester_lead" | "quality_leader" | "ux_researcher" | "assistants";
       };
     };
     responses: {
