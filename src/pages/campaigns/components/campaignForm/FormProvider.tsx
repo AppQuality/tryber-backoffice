@@ -27,8 +27,11 @@ export interface NewCampaignValues {
   customerTitle: string;
   testerTitle: string;
   startDate: string;
+  startTime: string;
   endDate: string;
+  endTime: string;
   closeDate: string;
+  closeTime: string;
   automaticDates: boolean;
   deviceList: string[];
   deviceTypes: string[];
@@ -99,8 +102,11 @@ const FormProvider = ({
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
     startDate: dossier?.startDate ? formatDate(dossier.startDate) : "",
+    startTime: "",
     endDate: dossier?.endDate ? formatDate(dossier.endDate) : "",
+    endTime: "",
     closeDate: dossier?.closeDate ? formatDate(dossier.closeDate) : "",
+    closeTime: "",
     automaticDates: true,
     deviceTypes: selectedTypes,
     deviceList: selectedDevices,
@@ -119,30 +125,33 @@ const FormProvider = ({
   };
 
   const validationSchema = yup.object({
-    customerId: yup.number().required("Project is required"),
+    customerId: yup.number().required("Customer is required"),
     projectId: yup.number().required("Project is required"),
     testType: yup.number().required("Test type is required"),
     customerTitle: yup.string().required("Customer Title is required"),
     testerTitle: yup.string().required("Tester Title is required"),
     startDate: yup.string().required("Start date is required"),
+    startTime: yup.string(),
     endDate: yup.string().required("End date is required"),
+    endTime: yup.string(),
     closeDate: yup.string().required("Close date is required"),
+    closeTime: yup.string(),
     deviceTypes: yup.array().min(1, "At least one device type is required"),
     deviceList: yup.array().min(1, "At least one device is required"),
     csm: yup.number().required("CSM is required"),
     tl: yup.number(),
     pm: yup.number(),
     researcher: yup.number(),
-    languages: yup.array().min(1, "At least one language is required"),
-    countries: yup.array().min(1, "At least one country is required"),
+    languages: yup.array(),
+    countries: yup.array(),
     description: yup.string(),
     productLink: yup.string(),
     goal: yup.string(),
     outOfScope: yup.string(),
     deviceRequirements: yup.string(),
     targetNotes: yup.string(),
-    targetSize: yup.number().min(1, "Target size must be greater than 0"),
-    browsersList: yup.array().min(1, "At least one browser is required"),
+    targetSize: yup.number(),
+    browsersList: yup.array(),
     productType: yup.string(),
   });
   return (
@@ -169,9 +178,9 @@ const FormProvider = ({
                 customer: values.customerTitle,
                 tester: values.testerTitle,
               },
-              startDate: values.startDate,
-              endDate: values.endDate,
-              closeDate: values.closeDate,
+              startDate: values.startDate + "T00:00:00Z",
+              endDate: values.endDate + "T00:00:00Z",
+              closeDate: values.closeDate + "T00:00:00Z",
               deviceList: values.deviceList.map((device) =>
                 parseInt(device, 10)
               ),
