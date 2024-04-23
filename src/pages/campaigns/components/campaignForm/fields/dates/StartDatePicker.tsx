@@ -4,6 +4,12 @@ import { NewCampaignValues } from "../../FormProvider";
 import Input from "../InputField";
 import { formatDate } from "../../formatDate";
 import { ChangeEvent, useCallback } from "react";
+import {
+  DateInput,
+  ErrorMessage,
+  FormGroup,
+  FormLabel,
+} from "@appquality/appquality-design-system";
 
 const StartDatePicker = () => {
   const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
@@ -27,14 +33,16 @@ const StartDatePicker = () => {
   );
   return (
     <FormikField name="startDate">
-      {({ field }: FieldProps) => (
-        <Input
-          type="date"
-          name={field.name}
-          label="Start date"
-          value={field.value}
-          onChange={handleChange}
-        />
+      {({ field, meta }: FieldProps) => (
+        <FormGroup>
+          <FormLabel htmlFor={field.name} label="Start Date" />
+          <DateInput
+            name={field.name}
+            value={field.value}
+            onChange={handleChange}
+          />
+          {meta.error && meta.touched && <ErrorMessage name={field.name} />}
+        </FormGroup>
       )}
     </FormikField>
   );

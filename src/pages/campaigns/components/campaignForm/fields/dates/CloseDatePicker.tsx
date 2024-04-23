@@ -1,8 +1,12 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../../FormProvider";
-
-import Input from "../InputField";
 import { ChangeEvent, useMemo } from "react";
+import {
+  DateInput,
+  ErrorMessage,
+  FormGroup,
+  FormLabel,
+} from "@appquality/appquality-design-system";
 
 const CloseDatePicker = () => {
   const { values, setFieldValue } = useFormikContext<NewCampaignValues>();
@@ -20,15 +24,17 @@ const CloseDatePicker = () => {
   };
   return (
     <FormikField name="closeDate">
-      {({ field }: FieldProps) => (
-        <Input
-          type="date"
-          disabled={isDisabled}
-          name={field.name}
-          label="Close date"
-          value={field.value}
-          onChange={handleChange}
-        />
+      {({ field, meta }: FieldProps) => (
+        <FormGroup>
+          <FormLabel htmlFor={field.name} label="Close Date" />
+          <DateInput
+            disabled={isDisabled}
+            name={field.name}
+            value={field.value}
+            onChange={handleChange}
+          />
+          {meta.error && meta.touched && <ErrorMessage name={field.name} />}
+        </FormGroup>
       )}
     </FormikField>
   );
