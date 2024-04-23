@@ -37,6 +37,7 @@ import { styled } from "styled-components";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
+  isEdit?: boolean;
 }
 const StickyContainer = styled.div`
   @media (min-width: ${(p) => p.theme.grid.breakpoints.lg}) {
@@ -51,10 +52,10 @@ const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
   }
 `;
 
-const CampaignForm = ({ dossier }: FormProps) => {
+const CampaignForm = ({ dossier, isEdit }: FormProps) => {
   return (
     <CampaignFormContext>
-      <FormProvider dossier={dossier}>
+      <FormProvider dossier={dossier} isEdit={isEdit}>
         {({ values: { isEdit } }: FormikProps<NewCampaignValues>) => (
           <BSGrid>
             <ResponsiveCol size="col-lg-3" lgOrder={1}>
