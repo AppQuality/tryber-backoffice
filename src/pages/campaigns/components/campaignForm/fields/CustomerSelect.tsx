@@ -4,7 +4,7 @@ import {
   useGetCustomersQuery,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
-import { SelectField } from "./components/Select";
+import { SelectField } from "./components/SelectField";
 import { useMemo } from "react";
 
 const CustomerSelect = () => {

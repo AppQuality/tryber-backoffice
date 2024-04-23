@@ -4,24 +4,17 @@ import {
   Button,
   Card,
   Form,
+  TextareaField,
 } from "@appquality/appquality-design-system";
-import { FormikProps } from "formik";
 import { GetDossiersByCampaignApiResponse } from "src/services/tryberApi";
-import FormProvider, { NewCampaignValues } from "./FormProvider";
+import FormProvider from "./FormProvider";
 import { Section } from "./Section";
 import { Stepper } from "./Stepper";
 import { CampaignFormContext } from "./campaignFormContext";
 import CountrySelect from "./fields/CountrySelect";
 import CustomerSelect from "./fields/CustomerSelect";
-import DescriptionText from "./fields/DescriptionText";
 import DeviceMultiselect from "./fields/DeviceMultiselect";
-import DeviceRequirementsText from "./fields/DeviceRequirementsText";
-import GoalText from "./fields/GoalText";
 import LanguageSelect from "./fields/LanguagesSelect";
-import OutOfScopeText from "./fields/OutOfScopeText";
-import ProductLinkInput from "./fields/ProductLinkInput";
-import TargetNotesText from "./fields/TargetNotesText";
-import TargetSize from "./fields/TargetSize";
 import TestTypeSelect from "./fields/TestTypeSelect";
 import AutomaticDatesSwitch from "./fields/dates/AutomaticDatesSwitch";
 import CloseDatePicker from "./fields/dates/CloseDatePicker";
@@ -79,28 +72,40 @@ const CampaignForm = ({ dossier, isEdit }: FormProps) => {
                   name="customerTitle"
                   label="Campaign Title (for customer)"
                 />
-                <DescriptionText />
+                <TextareaField name="description" label="Description" />
                 <StartDatePicker />
                 <EndDatePicker />
                 <CloseDatePicker />
                 {!isEdit && <AutomaticDatesSwitch />}
               </Section>
               <Section title="Cosa" id="what">
-                <ProductLinkInput />
-                <OutOfScopeText />
+                <InputField
+                  type="url"
+                  name="productLink"
+                  label="Product Link"
+                />
+                <TextareaField name="outOfScope" label="Out of scope" />
               </Section>
               <Section title="Dove" id="when">
                 <DeviceMultiselect />
-                <DeviceRequirementsText />
+                <TextareaField
+                  name="deviceRequirements"
+                  label="Device requirements"
+                />
               </Section>
               <Section title="Chi" id="who">
                 <CountrySelect />
                 <LanguageSelect />
-                <TargetNotesText />
-                <TargetSize />
+                <TextareaField name="targetNotes" label="Target notes" />
+                <InputField
+                  type="number"
+                  min={0}
+                  name="targetSize"
+                  label="Target Size"
+                />
               </Section>
               <Section title="Come" id="how">
-                <GoalText />
+                <TextareaField name="goal" label="Goals" />
               </Section>
               <Section title="Ruoli" id="roles">
                 <CsmSelect />
