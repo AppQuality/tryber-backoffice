@@ -12,7 +12,7 @@ import {
   FormLabel,
 } from "@appquality/appquality-design-system";
 import { FieldWrapper } from "./components/FieldWrapper";
-import { Option } from "./components/Select";
+import { Option } from "./components/SelectField";
 
 interface OsMultiselectProps {
   options: Option[];
