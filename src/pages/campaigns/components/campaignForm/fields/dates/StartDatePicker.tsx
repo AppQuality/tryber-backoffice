@@ -1,7 +1,7 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../../FormProvider";
 
-import Input from "../components/InputField";
+import Input from "../InputField";
 import { formatDate } from "../../formatDate";
 import { ChangeEvent, useCallback } from "react";
 

@@ -8,7 +8,7 @@ import {
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { useCallback, useMemo } from "react";
-import { NewCampaignValues } from "../../FormProvider";
+import { NewCampaignValues } from "../FormProvider";
 
 export interface Option {
   value: string;

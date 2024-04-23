@@ -11,8 +11,8 @@ import {
   FormGroup,
   FormLabel,
 } from "@appquality/appquality-design-system";
-import { FieldWrapper } from "./components/FieldWrapper";
-import { Option } from "./components/SelectField";
+import { FieldWrapper } from "./FieldWrapper";
+import { Option } from "./SelectField";
 
 interface OsMultiselectProps {
   options: Option[];
