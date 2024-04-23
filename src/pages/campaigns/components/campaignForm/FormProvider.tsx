@@ -1,7 +1,9 @@
 import { Formik } from "@appquality/appquality-design-system";
+import { useMemo } from "react";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import {
   GetDossiersByCampaignApiResponse,
+  PostDossiersApiArg,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
   useGetUsersMeQuery,
   usePostDossiersMutation,
@@ -10,12 +12,12 @@ import { useAppDispatch } from "src/store";
 import * as yup from "yup";
 import { formatDate } from "./formatDate";
 import { getAssistantIdByRole } from "./getAssistantIdByRole";
-import { useMemo } from "react";
 
 interface FormProviderInterface {
   children: React.ReactNode;
   dossier?: GetDossiersByCampaignApiResponse;
   isEdit?: boolean;
+  duplicate?: PostDossiersApiArg["body"]["duplicate"];
 }
 export interface NewCampaignValues {
   isEdit: boolean;
@@ -47,7 +49,12 @@ export interface NewCampaignValues {
   productType?: string;
 }
 
-const FormProvider = ({ children, dossier, isEdit }: FormProviderInterface) => {
+const FormProvider = ({
+  children,
+  dossier,
+  isEdit,
+  duplicate,
+}: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
@@ -189,6 +196,7 @@ const FormProvider = ({ children, dossier, isEdit }: FormProviderInterface) => {
               productType: values.productType
                 ? parseInt(values.productType, 10)
                 : undefined,
+              duplicate: duplicate,
             },
           }).unwrap();
 
