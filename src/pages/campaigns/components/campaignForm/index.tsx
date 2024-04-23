@@ -52,7 +52,7 @@ const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
 const Submit = () => {
   const { submitForm } = useFormikContext();
   return (
-    <Button type="submit" size="block" onClick={() => submitForm}>
+    <Button type="submit" size="block" onClick={submitForm}>
       Submit
     </Button>
   );
