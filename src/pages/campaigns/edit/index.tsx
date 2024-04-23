@@ -9,7 +9,7 @@ const EditCampaign = () => {
 
   return (
     <PageTemplate>
-      <CampaignForm dossier={data} />
+      <CampaignForm dossier={data} isEdit />
     </PageTemplate>
   );
 };

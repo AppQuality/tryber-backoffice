@@ -15,6 +15,7 @@ import { useMemo } from "react";
 interface FormProviderInterface {
   children: React.ReactNode;
   dossier?: GetDossiersByCampaignApiResponse;
+  isEdit?: boolean;
 }
 export interface NewCampaignValues {
   isEdit: boolean;
@@ -46,7 +47,7 @@ export interface NewCampaignValues {
   productType?: string;
 }
 
-const FormProvider = ({ children, dossier }: FormProviderInterface) => {
+const FormProvider = ({ children, dossier, isEdit }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
@@ -76,7 +77,7 @@ const FormProvider = ({ children, dossier }: FormProviderInterface) => {
   if (isLoading || !data) return null;
 
   const initialValues: NewCampaignValues = {
-    isEdit: !!dossier,
+    isEdit: isEdit || false,
     projectId: dossier?.project.id.toString() || "",
     customerId: dossier?.customer.id.toString() || "",
     csm: dossier?.csm.id.toString() || data.id.toString(),
