@@ -25,7 +25,7 @@ import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
 import { styled } from "styled-components";
-import InputField from "./fields/components/InputField";
+import InputField from "./fields/InputField";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;

@@ -1,4 +1,4 @@
-import { Option } from "./fields/components/SelectField";
+import { Option } from "./fields/SelectField";
 interface Item extends Option {
   type: string;
 }
