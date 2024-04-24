@@ -16,6 +16,7 @@ import FormProvider from "./FormProvider";
 import { Section } from "./Section";
 import { Stepper } from "./Stepper";
 import { CampaignFormContext } from "./campaignFormContext";
+import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
 import CustomerSelect from "./fields/CustomerSelect";
 import InputField from "./fields/InputField";
@@ -100,6 +101,7 @@ const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
               </Section>
               <Section title="Dove" id="when">
                 <DeviceMultiselect />
+                <BrowsersMultiselect />
                 <TextareaField
                   name="deviceRequirements"
                   label="Device requirements"
