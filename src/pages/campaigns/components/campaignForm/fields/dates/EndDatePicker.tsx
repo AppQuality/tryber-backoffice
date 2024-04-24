@@ -54,6 +54,7 @@ const EndDatePicker = () => {
               control="time"
               id={field.name}
               value={field.value}
+              disabled={values.automaticDates}
               onChange={handleTimeChange}
             />
             {meta.error && meta.touched && <ErrorMessage name={field.name} />}

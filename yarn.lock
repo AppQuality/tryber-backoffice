@@ -105,10 +105,10 @@
     ajv-draft-04 "^1.0.0"
     call-me-maybe "^1.0.1"
 
-"@appquality/appquality-design-system@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@appquality/appquality-design-system/-/appquality-design-system-2.0.2.tgz#1ed17670bb0e246ef372d0d42ed09f8b89528199"
-  integrity sha512-c3GoIL9LUtaNKoDBfn0ZDzlFvhvYgyMmz7LXuKOAiW8jnVVKTLLabMa60X6/gsrewtsU3Plx+nX6UENC/FE4Eg==
+"@appquality/appquality-design-system@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@appquality/appquality-design-system/-/appquality-design-system-2.0.3.tgz#b3dd4d2352929d99ef3783de6e2ca730f0651cfa"
+  integrity sha512-Y85EDI+7tFrezltAVu0qfblGiJz2NZoEBSxRvFMfVDxo+WnOzX0yDBu/YKcDYb4PEGc2dSusr7O13Kl2f9JJoA==
   dependencies:
     formik "^2.2.9"
     react-bootstrap-icons "^1.5.0"
