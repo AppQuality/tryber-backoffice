@@ -6,30 +6,35 @@ import {
   Form,
   TextareaField,
 } from "@appquality/appquality-design-system";
-import { GetDossiersByCampaignApiResponse } from "src/services/tryberApi";
+import { useFormikContext } from "formik";
+import {
+  GetDossiersByCampaignApiResponse,
+  PostDossiersApiArg,
+} from "src/services/tryberApi";
+import { styled } from "styled-components";
 import FormProvider from "./FormProvider";
 import { Section } from "./Section";
 import { Stepper } from "./Stepper";
 import { CampaignFormContext } from "./campaignFormContext";
 import CountrySelect from "./fields/CountrySelect";
 import CustomerSelect from "./fields/CustomerSelect";
-import DeviceMultiselect from "./fields/DeviceMultiselect";
+import InputField from "./fields/InputField";
 import LanguageSelect from "./fields/LanguagesSelect";
 import TestTypeSelect from "./fields/TestTypeSelect";
 import AutomaticDatesSwitch from "./fields/dates/AutomaticDatesSwitch";
 import CloseDatePicker from "./fields/dates/CloseDatePicker";
 import EndDatePicker from "./fields/dates/EndDatePicker";
 import StartDatePicker from "./fields/dates/StartDatePicker";
+import DeviceMultiselect from "./fields/device/DeviceMultiselect";
 import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
-import { styled } from "styled-components";
-import InputField from "./fields/InputField";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
   isEdit?: boolean;
+  duplicate?: PostDossiersApiArg["body"]["duplicate"];
 }
 const StickyContainer = styled.div`
   @media (min-width: ${(p) => p.theme.grid.breakpoints.lg}) {
@@ -44,19 +49,25 @@ const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
   }
 `;
 
-const CampaignForm = ({ dossier, isEdit }: FormProps) => {
+const Submit = () => {
+  const { submitForm } = useFormikContext();
+  return (
+    <Button type="submit" size="block" onClick={submitForm}>
+      Submit
+    </Button>
+  );
+};
+const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
   return (
     <CampaignFormContext>
-      <FormProvider dossier={dossier} isEdit={isEdit}>
+      <FormProvider dossier={dossier} isEdit={isEdit} duplicate={duplicate}>
         <BSGrid>
           <ResponsiveCol size="col-lg-3" lgOrder={1}>
             <StickyContainer>
               <Card title="Sezioni del form" className="aq-mb-3">
                 <Stepper />
               </Card>
-              <Button type="submit" size="block">
-                Submit
-              </Button>
+              <Submit />
             </StickyContainer>
           </ResponsiveCol>
           <ResponsiveCol size="col-lg-9" lgOrder={2}>
