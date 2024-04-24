@@ -21,6 +21,7 @@ import CountrySelect from "./fields/CountrySelect";
 import CustomerSelect from "./fields/CustomerSelect";
 import InputField from "./fields/InputField";
 import LanguageSelect from "./fields/LanguagesSelect";
+import ProductType from "./fields/ProductTypeSelect";
 import TestTypeSelect from "./fields/TestTypeSelect";
 import AutomaticDatesSwitch from "./fields/dates/AutomaticDatesSwitch";
 import CloseDatePicker from "./fields/dates/CloseDatePicker";
@@ -91,6 +92,7 @@ const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
                 {!isEdit && <AutomaticDatesSwitch />}
               </Section>
               <Section title="Cosa" id="what">
+                <ProductType />
                 <InputField
                   type="url"
                   name="productLink"
