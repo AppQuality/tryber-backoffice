@@ -53,7 +53,7 @@ const CloseDatePicker = () => {
               control="time"
               id={field.name}
               value={field.value}
-              disabled={values.automaticDates}
+              disabled={isDisabled}
               onChange={handleTimeChange}
             />
             {meta.error && meta.touched && <ErrorMessage name={field.name} />}

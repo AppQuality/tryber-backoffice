@@ -120,7 +120,7 @@ const FormProvider = ({
     targetSize: dossier?.target?.size || 0,
     browsersList:
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
-    productType: dossier?.productType?.toString() || "",
+    productType: dossier?.productType?.id.toString() || "",
   };
 
   const validationSchema = yup.object({
