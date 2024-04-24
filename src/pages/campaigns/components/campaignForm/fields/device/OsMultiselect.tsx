@@ -62,7 +62,21 @@ export const OsMultiselect = ({ deviceType }: OsMultiselectProps) => {
   } = useFormikContext<NewCampaignValues>();
   const options = useOptions(deviceType);
 
-  const allOption = { value: "all", label: `All ${getPlural(deviceType)}` };
+  const allOption = useMemo(
+    () => ({ value: "all", label: `All ${getPlural(deviceType)}` }),
+    [deviceType]
+  );
+
+  const getOptions = () => {
+    return [allOption, ...options];
+  };
+  const getValue = useCallback(() => {
+    const values = options.filter((option) =>
+      deviceList.includes(option.value)
+    );
+    if (options.length === values.length) return [allOption];
+    return values;
+  }, [deviceList, options, allOption]);
 
   const handleChange = useCallback(
     (selectedOptions: Readonly<{ label: string; value: string }[]>) => {
@@ -97,19 +111,8 @@ export const OsMultiselect = ({ deviceType }: OsMultiselectProps) => {
       });
       setFieldValue("deviceList", Array.from(allDevices));
     },
-    [deviceList, setFieldValue, options]
+    [deviceList, setFieldValue, options, allOption.value, getValue]
   );
-
-  const getOptions = () => {
-    return [allOption, ...options];
-  };
-  const getValue = () => {
-    const values = options.filter((option) =>
-      deviceList.includes(option.value)
-    );
-    if (options.length === values.length) return [allOption];
-    return values;
-  };
 
   return (
     <FormGroup>
