@@ -1,13 +1,13 @@
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { NewCampaignValues } from "../../FormProvider";
 
-import { useGetCampaignsOwnersQuery } from "src/services/tryberApi";
 import {
   Dropdown,
   ErrorMessage,
   FormGroup,
   FormLabel,
 } from "@appquality/appquality-design-system";
+import { useGetCampaignsOwnersQuery } from "src/services/tryberApi";
 
 const TlSelect = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
@@ -15,7 +15,7 @@ const TlSelect = () => {
 
   const options = tl
     ? tl.map((tl) => ({
-        id: tl.id.toString(),
+        value: tl.id.toString(),
         label: `${tl.name} ${tl.surname}`,
       }))
     : [];
@@ -26,10 +26,16 @@ const TlSelect = () => {
         <FormGroup>
           <FormLabel htmlFor={field.name} label="TL" />
           <Dropdown
+            isMulti
             options={options}
             name={field.name}
-            value={field.value}
-            onChange={(value) => setFieldValue(field.name, value)}
+            value={options.filter((o) => field.value.includes(o.value))}
+            onChange={(value) =>
+              setFieldValue(
+                field.name,
+                value.map((v) => v.value)
+              )
+            }
           />
           <ErrorMessage name={field.name} />
         </FormGroup>

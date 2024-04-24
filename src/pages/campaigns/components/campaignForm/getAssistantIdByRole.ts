@@ -2,30 +2,26 @@ import { GetDossiersByCampaignApiResponse } from "src/services/tryberApi";
 
 interface Args {
   roles: GetDossiersByCampaignApiResponse["roles"];
-  roleToFind: "pm" | "tl" | "researcher";
 }
 
-export const getAssistantIdByRole = ({ roles, roleToFind }: Args) => {
-  const pmRoleId = 1;
-  const tlRoleId = 2;
-  const researcherRoleId = 3;
-  let role;
+export const getByRole = ({ roles, roleId }: Args & { roleId: number }) => {
+  const role = roles?.filter(({ role, user }) => {
+    return role?.id === roleId ? user?.id : null;
+  });
+  return (
+    role?.map((r) => r.user?.id.toString() || "").filter((r) => r.length) || []
+  );
+};
 
-  if (roleToFind === "tl") {
-    role = roles?.find(({ role, user }) => {
-      return role?.id === tlRoleId ? user?.id : null;
-    });
-  }
-  if (roleToFind === "pm") {
-    role = roles?.find(({ role, user }) => {
-      return role?.id === pmRoleId ? user?.id : null;
-    });
-  }
-  if (roleToFind === "researcher") {
-    role = roles?.find(({ role, user }) => {
-      return role?.id === researcherRoleId ? user?.id : null;
-    });
-  }
+export const getTl = ({ roles }: Args) => {
+  return getByRole({ roles, roleId: 2 });
+};
 
-  return role?.user?.id.toString();
+export const getPm = ({ roles }: Args) => {
+  const pm = getByRole({ roles, roleId: 1 });
+  return pm.length ? pm[0] : undefined;
+};
+
+export const getResearcher = ({ roles }: Args) => {
+  return getByRole({ roles, roleId: 3 });
 };

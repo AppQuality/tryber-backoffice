@@ -11,7 +11,7 @@ import {
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
-import { getAssistantIdByRole } from "./getAssistantIdByRole";
+import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -36,9 +36,9 @@ export interface NewCampaignValues {
   deviceList: string[];
   deviceTypes: string[];
   csm: string;
-  tl?: string;
+  tl?: string[];
   pm?: string;
-  researcher?: string;
+  researcher?: string[];
   languages: string[];
   countries: string[];
   description?: string;
@@ -91,13 +91,12 @@ const FormProvider = ({
     projectId: dossier?.project.id.toString() || "",
     customerId: dossier?.customer.id.toString() || "",
     csm: dossier?.csm.id.toString() || data.id.toString(),
-    tl: getAssistantIdByRole({ roles: dossier?.roles, roleToFind: "tl" }) || "",
-    pm: getAssistantIdByRole({ roles: dossier?.roles, roleToFind: "pm" }) || "",
+    tl: getTl({ roles: dossier?.roles }) || [],
+    pm: getPm({ roles: dossier?.roles }) || "",
     researcher:
-      getAssistantIdByRole({
+      getResearcher({
         roles: dossier?.roles,
-        roleToFind: "researcher",
-      }) || "",
+      }) || [],
     testType: dossier?.testType.id.toString() || "",
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
@@ -164,11 +163,15 @@ const FormProvider = ({
         if (values.pm) {
           roles.push({ role: 1, user: parseInt(values.pm) });
         }
-        if (values.tl) {
-          roles.push({ role: 2, user: parseInt(values.tl) });
+        if (values.tl && values.tl.length) {
+          values.tl.forEach((tl) => {
+            roles.push({ role: 2, user: parseInt(tl) });
+          });
         }
-        if (values.researcher) {
-          roles.push({ role: 3, user: parseInt(values.researcher) });
+        if (values.researcher && values.researcher.length) {
+          values.researcher.forEach((researcher) => {
+            roles.push({ role: 3, user: parseInt(researcher) });
+          });
         }
         try {
           await postDossiers({

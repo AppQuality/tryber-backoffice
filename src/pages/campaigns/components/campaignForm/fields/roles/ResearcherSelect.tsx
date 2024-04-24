@@ -1,6 +1,6 @@
+import { useMemo } from "react";
 import { useGetCampaignsOwnersQuery } from "src/services/tryberApi";
 import { SelectField } from "../SelectField";
-import { useMemo } from "react";
 
 const ResearcherSelect = () => {
   const { data: researcher } = useGetCampaignsOwnersQuery();
@@ -14,7 +14,16 @@ const ResearcherSelect = () => {
     [researcher]
   );
 
-  return <SelectField name="researcher" label="Researcher" options={options} />;
+  return (
+    <>
+      <SelectField
+        isMulti
+        name="researcher"
+        label="Researcher"
+        options={options}
+      />
+    </>
+  );
 };
 
 export default ResearcherSelect;
