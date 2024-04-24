@@ -7,6 +7,7 @@ import {
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
   useGetUsersMeQuery,
   usePostDossiersMutation,
+  usePutDossiersByCampaignMutation,
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
@@ -60,6 +61,7 @@ const FormProvider = ({
 }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
   const [postDossiers] = usePostDossiersMutation();
+  const [putDossiers] = usePutDossiersByCampaignMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
   const { data: devices } = useGetDevicesByDeviceTypeOperatingSystemsQuery({
     deviceType: "all",
@@ -174,44 +176,53 @@ const FormProvider = ({
           });
         }
         try {
-          await postDossiers({
-            body: {
-              project: parseInt(values.projectId),
-              testType: parseInt(values.testType),
-              title: {
-                customer: values.customerTitle,
-                tester: values.testerTitle,
-              },
-              startDate: dateTimeToISO(values.startDate, values.startTime),
-              endDate: dateTimeToISO(values.endDate, values.endTime),
-              closeDate: dateTimeToISO(values.closeDate, values.closeTime),
-              deviceList: values.deviceList.map((device) =>
-                parseInt(device, 10)
-              ),
-              csm: parseInt(values.csm),
-              roles: roles,
-              languages: values.languages.map((language) =>
-                parseInt(language, 10)
-              ),
-              countries: values.countries,
-              description: values.description,
-              productLink: values.productLink,
-              goal: values.goal,
-              outOfScope: values.outOfScope,
-              deviceRequirements: values.deviceRequirements,
-              target: {
-                notes: values.targetNotes,
-                size: values.targetSize,
-              },
-              browsers: values.browsersList?.map((browser) =>
-                parseInt(browser, 10)
-              ),
-              productType: values.productType
-                ? parseInt(values.productType, 10)
-                : undefined,
-              duplicate: duplicate,
+          const body = {
+            project: parseInt(values.projectId),
+            testType: parseInt(values.testType),
+            title: {
+              customer: values.customerTitle,
+              tester: values.testerTitle,
             },
-          }).unwrap();
+            startDate: dateTimeToISO(values.startDate, values.startTime),
+            endDate: dateTimeToISO(values.endDate, values.endTime),
+            closeDate: dateTimeToISO(values.closeDate, values.closeTime),
+            deviceList: values.deviceList.map((device) => parseInt(device, 10)),
+            csm: parseInt(values.csm),
+            roles: roles,
+            languages: values.languages.map((language) =>
+              parseInt(language, 10)
+            ),
+            countries: values.countries,
+            description: values.description,
+            productLink: values.productLink,
+            goal: values.goal,
+            outOfScope: values.outOfScope,
+            deviceRequirements: values.deviceRequirements,
+            target: {
+              notes: values.targetNotes,
+              size: values.targetSize,
+            },
+            browsers: values.browsersList?.map((browser) =>
+              parseInt(browser, 10)
+            ),
+            productType: values.productType
+              ? parseInt(values.productType, 10)
+              : undefined,
+          };
+
+          if (isEdit) {
+            await putDossiers({
+              campaign: dossier?.id.toString() || "",
+              dossierCreationData: body,
+            }).unwrap();
+          } else {
+            await postDossiers({
+              body: {
+                ...body,
+                duplicate: duplicate,
+              },
+            }).unwrap();
+          }
 
           dispatch(
             addMessage(
