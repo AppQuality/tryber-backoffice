@@ -1,29 +1,23 @@
 import {
+  Dropdown,
   FormGroup,
   FormLabel,
-  Dropdown,
 } from "@appquality/appquality-design-system";
-import { useCallback, useMemo } from "react";
-import { NewCampaignValues } from "../../FormProvider";
 import { useFormikContext } from "formik";
-import { Option } from "../SelectField";
+import { useCallback, useMemo } from "react";
 import {
   GetDevicesByDeviceTypeOperatingSystemsApiResponse,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
 } from "src/services/tryberApi";
+import { NewCampaignValues } from "../../FormProvider";
 import { groupDevicesByType } from "../../groupByType";
+import { Option } from "../SelectField";
 
 interface OsMultiselectProps {
   deviceType: string;
 }
-export const OsMultiselect = ({ deviceType }: OsMultiselectProps) => {
-  const {
-    values: { deviceList },
-    setFieldValue,
-    errors,
-    touched,
-  } = useFormikContext<NewCampaignValues>();
 
+const useOptions = (deviceType: string) => {
   const { data: devices } = useGetDevicesByDeviceTypeOperatingSystemsQuery({
     deviceType: "all",
   });
@@ -44,16 +38,51 @@ export const OsMultiselect = ({ deviceType }: OsMultiselectProps) => {
     return groupDevicesByType(devicesOptions)[deviceType] || [];
   }, [deviceType, devices]);
 
+  return options;
+};
+
+const getPlural = (deviceType: string) => {
+  const lastChar = deviceType.slice(-1);
+  const suffix =
+    lastChar === "s"
+      ? "es"
+      : lastChar === "y"
+      ? "ies"
+      : lastChar === "h"
+      ? "es"
+      : "s";
+
+  return `${deviceType}${suffix}`;
+};
+
+export const OsMultiselect = ({ deviceType }: OsMultiselectProps) => {
+  const {
+    values: { deviceList },
+    setFieldValue,
+  } = useFormikContext<NewCampaignValues>();
+  const options = useOptions(deviceType);
+
+  const allOption = { value: "all", label: `All ${getPlural(deviceType)}` };
+
   const handleChange = useCallback(
-    (selectedOptions) => {
-      if (
-        selectedOptions === null ||
-        selectedOptions === undefined ||
-        !Array.isArray(selectedOptions)
-      ) {
+    (selectedOptions: Readonly<{ label: string; value: string }[]>) => {
+      if (selectedOptions === null || selectedOptions === undefined) {
         setFieldValue("deviceList", []);
         return;
       }
+
+      const currentValue = getValue();
+
+      if (
+        !currentValue.some((opt) => opt.value === allOption.value) &&
+        selectedOptions.some((opt) => opt.value === allOption.value)
+      ) {
+        selectedOptions = options;
+      }
+
+      selectedOptions = selectedOptions.filter(
+        (opt) => opt.value !== allOption.value
+      );
       const deSelected = options.filter(
         (device) =>
           !selectedOptions.map((opt) => opt.value).includes(device.value)
@@ -71,14 +100,25 @@ export const OsMultiselect = ({ deviceType }: OsMultiselectProps) => {
     [deviceList, setFieldValue, options]
   );
 
+  const getOptions = () => {
+    return [allOption, ...options];
+  };
+  const getValue = () => {
+    const values = options.filter((option) =>
+      deviceList.includes(option.value)
+    );
+    if (options.length === values.length) return [allOption];
+    return values;
+  };
+
   return (
     <FormGroup>
       <FormLabel htmlFor={deviceType} label={deviceType} />
       <Dropdown
         id={deviceType}
         isMulti
-        options={options}
-        value={options.filter((option) => deviceList.includes(option.value))}
+        options={getOptions()}
+        value={getValue()}
         onChange={handleChange}
       />
     </FormGroup>
