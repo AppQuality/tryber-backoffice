@@ -1,19 +1,15 @@
-import { useFormikContext } from "formik";
-import {
-  GetDevicesByDeviceTypeOperatingSystemsApiResponse,
-  useGetDevicesByDeviceTypeOperatingSystemsQuery,
-} from "src/services/tryberApi";
-import { NewCampaignValues } from "../../FormProvider";
-import { useCallback, useMemo } from "react";
-import { groupDevicesByType } from "../../groupByType";
 import {
   Dropdown,
   ErrorMessage,
   FormGroup,
   FormLabel,
 } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
+import { useCallback, useMemo } from "react";
+import { useGetDevicesByDeviceTypeOperatingSystemsQuery } from "src/services/tryberApi";
+import { NewCampaignValues } from "../../FormProvider";
+import { groupDevicesByType } from "../../groupByType";
 import { FieldWrapper } from "../FieldWrapper";
-import { Option } from "../SelectField";
 import { OsMultiselect } from "./OsMultiselect";
 
 const DeviceMultiselect = () => {
@@ -46,35 +42,33 @@ const DeviceMultiselect = () => {
 
   // handle deviceTypes change
   const handleDeviceTypesChange = useCallback(
-    (option) => {
-      if (option === null || option === undefined) {
+    (options: Readonly<{ value: string; label: string }[]>) => {
+      if (options === null || options === undefined) {
         setFieldValue("deviceTypes", []);
         setFieldValue("deviceList", []);
         return;
       }
-      if (Array.isArray(option)) {
-        option.forEach((opt) => {
-          if (deviceTypes.includes(opt.value)) {
-            setFieldValue(
-              "deviceTypes",
-              deviceTypes.filter((deviceType) => deviceType !== opt.value)
-            );
-            setFieldValue(
-              "deviceList",
-              deviceList.filter(
-                (device) =>
-                  !osOptions[opt.value].map((os) => os.value).includes(device)
-              )
-            );
-          } else {
-            setFieldValue("deviceTypes", [...deviceTypes, opt.value]);
-            setFieldValue("deviceList", [
-              ...deviceList,
-              ...osOptions[opt.value].map((os) => os.value),
-            ]);
-          }
-        });
-      }
+
+      setFieldValue(
+        "deviceTypes",
+        options.map((opt) => opt.value)
+      );
+
+      const removedOs = deviceTypes
+        .filter((opt) => !options.map((o) => o.value).includes(opt))
+        .flatMap((deviceType) => osOptions[deviceType].map((os) => os.value));
+
+      const addedOs = options
+        .map((opt) => opt.value)
+        .filter((opt) => !deviceTypes.includes(opt))
+        .flatMap((deviceType) => osOptions[deviceType].map((os) => os.value));
+
+      setFieldValue(
+        "deviceList",
+        deviceList
+          .filter((device) => !removedOs.includes(device))
+          .concat(addedOs)
+      );
     },
     [deviceTypes, deviceList, osOptions, setFieldValue]
   );

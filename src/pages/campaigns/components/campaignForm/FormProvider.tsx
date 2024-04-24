@@ -157,6 +157,7 @@ const FormProvider = ({
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize
       validationSchema={validationSchema}
       onSubmit={async (values) => {
         let roles = [];
