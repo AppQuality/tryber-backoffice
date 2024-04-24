@@ -28,7 +28,7 @@ const ProductType = () => {
             options={options}
             name={field.name}
             value={options.find((o) => field.value === o.value)}
-            onChange={(v) => setFieldValue(field.name, v.value)}
+            onChange={(v) => v && setFieldValue(field.name, v.value)}
           />
           <ErrorMessage name={field.name} />
         </FormGroup>
