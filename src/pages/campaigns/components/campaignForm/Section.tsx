@@ -18,7 +18,7 @@ const Section = ({
   const { setCurrentSection, pushSection } = useCampaignFormContext();
 
   const { ref, inView, entry } = useInView({
-    threshold: 0.9,
+    threshold: 0.8,
   });
   useEffect(() => {
     if (entry) pushSection({ id, ref: entry, title });

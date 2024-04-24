@@ -59,11 +59,15 @@ const Submit = () => {
     </Button>
   );
 };
+const FullGrid = styled(BSGrid)`
+  width: 100%;
+`;
+
 const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
   return (
     <CampaignFormContext>
       <FormProvider dossier={dossier} isEdit={isEdit} duplicate={duplicate}>
-        <BSGrid>
+        <FullGrid>
           <ResponsiveCol size="col-lg-3" lgOrder={1}>
             <StickyContainer>
               <Card title="Sezioni del form" className="aq-mb-3">
@@ -128,7 +132,7 @@ const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
               </Section>
             </Form>
           </ResponsiveCol>
-        </BSGrid>
+        </FullGrid>
       </FormProvider>
     </CampaignFormContext>
   );
