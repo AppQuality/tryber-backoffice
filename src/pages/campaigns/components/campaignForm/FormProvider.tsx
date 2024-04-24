@@ -10,7 +10,7 @@ import {
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
-import { formatDate } from "./formatDate";
+import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getAssistantIdByRole } from "./getAssistantIdByRole";
 
 interface FormProviderInterface {
@@ -102,11 +102,11 @@ const FormProvider = ({
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
     startDate: dossier?.startDate ? formatDate(dossier.startDate) : "",
-    startTime: "",
+    startTime: dossier?.startDate ? formatTime(dossier.startDate) : "00:00",
     endDate: dossier?.endDate ? formatDate(dossier.endDate) : "",
-    endTime: "",
+    endTime: dossier?.endDate ? formatTime(dossier.endDate) : "00:00",
     closeDate: dossier?.closeDate ? formatDate(dossier.closeDate) : "",
-    closeTime: "",
+    closeTime: dossier?.closeDate ? formatTime(dossier.closeDate) : "00:00",
     automaticDates: true,
     deviceTypes: selectedTypes,
     deviceList: selectedDevices,
@@ -178,9 +178,9 @@ const FormProvider = ({
                 customer: values.customerTitle,
                 tester: values.testerTitle,
               },
-              startDate: values.startDate + "T00:00:00Z",
-              endDate: values.endDate + "T00:00:00Z",
-              closeDate: values.closeDate + "T00:00:00Z",
+              startDate: dateTimeToISO(values.startDate, values.startTime),
+              endDate: dateTimeToISO(values.endDate, values.endTime),
+              closeDate: dateTimeToISO(values.closeDate, values.closeTime),
               deviceList: values.deviceList.map((device) =>
                 parseInt(device, 10)
               ),
