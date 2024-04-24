@@ -95,6 +95,7 @@ const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
                   name="productLink"
                   label="Product Link"
                 />
+                <TextareaField name="goal" label="Goals" />
                 <TextareaField name="outOfScope" label="Out of scope" />
               </Section>
               <Section title="Dove" id="when">
@@ -114,9 +115,6 @@ const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
                   name="targetSize"
                   label="Target Size"
                 />
-              </Section>
-              <Section title="Come" id="how">
-                <TextareaField name="goal" label="Goals" />
               </Section>
               <Section title="Ruoli" id="roles">
                 <CsmSelect />
