@@ -1,11 +1,13 @@
 import { useFormikContext } from "formik";
 import {
+  PostCustomersByCustomerProjectsApiResponse,
   useGetCustomersByCustomerProjectsQuery,
   useGetCustomersQuery,
+  usePostCustomersByCustomerProjectsMutation,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
 import { SelectField } from "./SelectField";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { FormLabel, Dropdown } from "@appquality/appquality-design-system";
 
 const CustomerSelect = () => {
@@ -39,6 +41,27 @@ const ProjectSelect = ({ customerId }: { customerId: string }) => {
   const { data: projects } = useGetCustomersByCustomerProjectsQuery({
     customer: customerId.toString(),
   });
+  const { setFieldValue } = useFormikContext<NewCampaignValues>();
+  const [postProject] = usePostCustomersByCustomerProjectsMutation();
+  const createOption = useCallback(async (inputValue: string) => {
+    // create project
+    try {
+      const response = await postProject({
+        customer: customerId,
+        body: { name: inputValue },
+      });
+      if ("data" in response) {
+        setFieldValue(
+          "projectId",
+          (
+            response as { data: PostCustomersByCustomerProjectsApiResponse }
+          ).data.id.toString()
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
   const options = useMemo(
     () =>
       projects?.results.map((project) => ({
@@ -49,7 +72,14 @@ const ProjectSelect = ({ customerId }: { customerId: string }) => {
     [projects]
   );
 
-  return <SelectField name="projectId" options={options} label="Project" />;
+  return (
+    <SelectField
+      name="projectId"
+      label="Project"
+      options={options}
+      onCreateOption={createOption}
+    />
+  );
 };
 
 export default CustomerSelect;

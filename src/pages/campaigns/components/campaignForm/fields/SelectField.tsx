@@ -21,6 +21,7 @@ export interface SelectProps {
   label: string;
   isMulti?: boolean;
   isDisabled?: boolean;
+  onCreateOption?: (inputValue: string) => Promise<void>;
 }
 
 export const SelectField = ({
@@ -29,6 +30,7 @@ export const SelectField = ({
   label,
   isMulti,
   isDisabled,
+  onCreateOption,
 }: SelectProps) => {
   const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const currentValue = values[name];
@@ -75,6 +77,7 @@ export const SelectField = ({
             options={options}
             value={optionValue}
             onChange={handleChange}
+            onCreateOption={onCreateOption}
           />
           <ErrorMessage name={field.name} />
         </FormGroup>
