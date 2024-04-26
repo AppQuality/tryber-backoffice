@@ -22,7 +22,7 @@ const Section = ({
   });
   useEffect(() => {
     if (entry) pushSection({ id, ref: entry, title });
-  }, [entry, id, pushSection, title]);
+  }, [entry, id, title, pushSection]);
 
   useEffect(() => {
     if (inView) setCurrentSection(id);

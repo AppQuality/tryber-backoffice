@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 type Item = { id: string; ref?: IntersectionObserverEntry; title: string };
 const Context = createContext<{
@@ -19,39 +19,49 @@ const CampaignFormContext = ({ children }: { children: React.ReactNode }) => {
   const [currentSection, setCurrentSection] = useState<string>("");
   const [sections, setSections] = useState<Item[]>([]);
   const [isScrolling, setIsScrolling] = useState(false);
+  const pushSection = useCallback((section: Item) => {
+    setSections((prev) => {
+      const items = [...prev, section];
+      return items.filter(
+        (item, index) => items.findIndex((i) => i.id === item.id) === index
+      );
+    });
+  }, []);
+  const handleSetCurrentSection = useCallback(
+    (section: string) =>
+      !isScrolling ? setCurrentSection(section) : undefined,
+    [isScrolling]
+  );
+
+  const goToSection = useCallback(
+    (section: string) => {
+      if (isScrolling) return;
+      const item = sections.find((item) => item.id === section);
+      if (!item) return;
+      const element = item.ref?.target;
+      if (!element) return;
+      const current = sections.find((item) => item.id === currentSection);
+
+      const scrollTopDiff = Math.abs(
+        // @ts-ignore
+        element.offsetTop - (current?.ref?.target?.offsetTop || 0)
+      );
+
+      setIsScrolling(true);
+      setTimeout(() => setIsScrolling(false), scrollTopDiff * 0.4);
+      element.scrollIntoView({ behavior: "smooth" });
+      setCurrentSection(section);
+    },
+    [sections, currentSection, isScrolling]
+  );
+
   return (
     <Context.Provider
       value={{
-        setCurrentSection: (section: string) =>
-          !isScrolling ? setCurrentSection(section) : undefined,
+        setCurrentSection: handleSetCurrentSection,
         sections,
-        pushSection: (section: Item) => {
-          setSections((prev) => {
-            const items = [...prev, section];
-            return items.filter(
-              (item, index) =>
-                items.findIndex((i) => i.id === item.id) === index
-            );
-          });
-        },
-        goToSection: (section: string) => {
-          if (isScrolling) return;
-          const item = sections.find((item) => item.id === section);
-          if (!item) return;
-          const element = item.ref?.target;
-          if (!element) return;
-          const current = sections.find((item) => item.id === currentSection);
-
-          const scrollTopDiff = Math.abs(
-            // @ts-ignore
-            element.offsetTop - (current?.ref?.target?.offsetTop || 0)
-          );
-
-          setIsScrolling(true);
-          setTimeout(() => setIsScrolling(false), scrollTopDiff * 0.4);
-          element.scrollIntoView({ behavior: "smooth" });
-          setCurrentSection(section);
-        },
+        pushSection,
+        goToSection,
         currentSection,
       }}
     >
