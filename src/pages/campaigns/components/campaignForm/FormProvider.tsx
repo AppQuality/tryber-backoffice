@@ -216,12 +216,20 @@ const FormProvider = ({
               dossierCreationData: body,
             }).unwrap();
           } else {
-            await postDossiers({
+            const resp = await postDossiers({
               body: {
                 ...body,
                 duplicate: duplicate,
               },
             }).unwrap();
+
+            window.parent.postMessage(
+              JSON.stringify({
+                type: "go-to-edit",
+                id: resp.id,
+              }),
+              "*"
+            );
           }
 
           dispatch(
