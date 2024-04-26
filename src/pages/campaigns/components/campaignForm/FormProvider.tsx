@@ -13,6 +13,8 @@ import { useAppDispatch } from "src/store";
 import * as yup from "yup";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
+import { useCampaignFormContext } from "./campaignFormContext";
+import { set } from "husky";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -60,6 +62,7 @@ const FormProvider = ({
   duplicate,
 }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
+  const { setIsCreating } = useCampaignFormContext();
   const [postDossiers] = usePostDossiersMutation();
   const [putDossiers] = usePutDossiersByCampaignMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
@@ -140,9 +143,9 @@ const FormProvider = ({
     deviceTypes: yup.array().min(1, "At least one device type is required"),
     deviceList: yup.array().min(1, "At least one device is required"),
     csm: yup.number().required("CSM is required"),
-    tl: yup.number(),
+    tl: yup.array(),
     pm: yup.number(),
-    researcher: yup.number(),
+    researcher: yup.array(),
     languages: yup.array(),
     countries: yup.array(),
     description: yup.string(),
@@ -216,12 +219,16 @@ const FormProvider = ({
               dossierCreationData: body,
             }).unwrap();
           } else {
+            setIsCreating(true);
+
             const resp = await postDossiers({
               body: {
                 ...body,
                 duplicate: duplicate,
               },
             }).unwrap();
+
+            setIsCreating(false);
 
             window.parent.postMessage(
               JSON.stringify({
