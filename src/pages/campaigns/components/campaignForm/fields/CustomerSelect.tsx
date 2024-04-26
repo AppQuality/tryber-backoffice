@@ -43,25 +43,28 @@ const ProjectSelect = ({ customerId }: { customerId: string }) => {
   });
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
   const [postProject] = usePostCustomersByCustomerProjectsMutation();
-  const createOption = useCallback(async (inputValue: string) => {
-    // create project
-    try {
-      const response = await postProject({
-        customer: customerId,
-        body: { name: inputValue },
-      });
-      if ("data" in response) {
-        setFieldValue(
-          "projectId",
-          (
-            response as { data: PostCustomersByCustomerProjectsApiResponse }
-          ).data.id.toString()
-        );
+  const createOption = useCallback(
+    async (inputValue: string) => {
+      // create project
+      try {
+        const response = await postProject({
+          customer: customerId,
+          body: { name: inputValue },
+        });
+        if ("data" in response) {
+          setFieldValue(
+            "projectId",
+            (
+              response as { data: PostCustomersByCustomerProjectsApiResponse }
+            ).data.id.toString()
+          );
+        }
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
+    },
+    [customerId, postProject, setFieldValue]
+  );
   const options = useMemo(
     () =>
       projects?.results.map((project) => ({
