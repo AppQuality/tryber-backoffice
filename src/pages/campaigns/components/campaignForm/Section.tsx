@@ -1,4 +1,4 @@
-import { Card } from "@appquality/appquality-design-system";
+import { Card, Title, Text } from "@appquality/appquality-design-system";
 import { useCampaignFormContext } from "./campaignFormContext";
 
 import { useEffect } from "react";
@@ -6,12 +6,12 @@ import { useInView } from "react-intersection-observer";
 
 const Section = ({
   title,
-  className,
+  subtitle,
   id,
   children,
 }: {
   title: string;
-  className?: string;
+  subtitle?: string;
   id: string;
   children: React.ReactNode;
 }) => {
@@ -22,17 +22,19 @@ const Section = ({
   });
   useEffect(() => {
     if (entry) pushSection({ id, ref: entry, title });
-  }, [entry, id, title]);
+  }, [entry, id, pushSection, title]);
 
   useEffect(() => {
     if (inView) setCurrentSection(id);
-  }, [inView, id]);
+  }, [inView, id, setCurrentSection]);
   return (
-    <div ref={ref} id={id}>
-      <Card title={title} className={`${className || ""} aq-mb-4`}>
-        {children}
-      </Card>
-    </div>
+    <section ref={ref} id={id}>
+      <Title size="ms" className="aq-mb-2 aq-pt-4">
+        {title}
+      </Title>
+      <Text className="aq-mb-4">{subtitle}</Text>
+      <Card className="aq-mb-4">{children}</Card>
+    </section>
   );
 };
 

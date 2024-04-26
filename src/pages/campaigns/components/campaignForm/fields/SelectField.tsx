@@ -20,9 +20,16 @@ export interface SelectProps {
   options: Option[];
   label: string;
   isMulti?: boolean;
+  isDisabled?: boolean;
 }
 
-export const SelectField = ({ name, options, label, isMulti }: SelectProps) => {
+export const SelectField = ({
+  name,
+  options,
+  label,
+  isMulti,
+  isDisabled,
+}: SelectProps) => {
   const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const currentValue = values[name];
   const optionValue = useMemo(() => {
@@ -62,6 +69,7 @@ export const SelectField = ({ name, options, label, isMulti }: SelectProps) => {
           <Dropdown
             isMulti={isMulti}
             isClearable
+            isDisabled={isDisabled}
             id={field.name}
             name={field.name}
             options={options}

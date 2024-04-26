@@ -45,7 +45,7 @@ const StartDatePicker = () => {
       <FormikField name="startDate">
         {({ field, meta }: FieldProps) => (
           <FormGroup>
-            <FormLabel htmlFor={field.name} label="Start Date" />
+            <FormLabel htmlFor={field.name} label="Start Date *" />
             <DateInput
               name={field.name}
               value={field.value}
@@ -59,6 +59,7 @@ const StartDatePicker = () => {
       <FormikField name="startTime">
         {({ field, meta }: FieldProps) => (
           <FormGroup>
+            <FormLabel htmlFor={field.name} label="Start Time *" />
             <Datepicker
               control="time"
               id={field.name}

@@ -14,7 +14,7 @@ const TestTypeSelect = () => {
     [testTypes]
   );
 
-  return <SelectField label="Test type" options={options} name="testType" />;
+  return <SelectField label="Test type *" options={options} name="testType" />;
 };
 
 export default TestTypeSelect;

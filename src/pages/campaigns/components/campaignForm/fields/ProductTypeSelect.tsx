@@ -23,7 +23,7 @@ const ProductType = () => {
     <FormikField name="productType">
       {({ field }: FieldProps) => (
         <FormGroup>
-          <FormLabel htmlFor={field.name} label="Product Type" />
+          <FormLabel htmlFor={field.name} label="Tipologia di prodotto *" />
           <Dropdown
             options={options}
             name={field.name}

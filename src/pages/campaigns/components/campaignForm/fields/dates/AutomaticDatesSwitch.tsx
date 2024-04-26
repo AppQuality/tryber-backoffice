@@ -2,6 +2,7 @@ import { useFormikContext } from "formik";
 import { NewCampaignValues } from "../../FormProvider";
 import { formatDate } from "../../formatDate";
 import { useCallback } from "react";
+import { Checkbox } from "@appquality/appquality-design-system";
 
 const AutomaticDatesSwitch = () => {
   const { values, setFieldValue } = useFormikContext<NewCampaignValues>();
@@ -22,16 +23,11 @@ const AutomaticDatesSwitch = () => {
   }, [values.automaticDates, values.startDate, setFieldValue]);
 
   return (
-    <div>
-      <label>
-        <input
-          type="checkbox"
-          checked={values.automaticDates}
-          onChange={handleChange}
-        />
-        Automatic Dates
-      </label>
-    </div>
+    <Checkbox
+      label="Automatic Dates"
+      checked={values.automaticDates}
+      onChange={handleChange}
+    />
   );
 };
 

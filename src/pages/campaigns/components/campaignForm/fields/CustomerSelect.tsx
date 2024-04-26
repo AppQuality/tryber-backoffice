@@ -6,6 +6,7 @@ import {
 import { NewCampaignValues } from "../FormProvider";
 import { SelectField } from "./SelectField";
 import { useMemo } from "react";
+import { FormLabel, Dropdown } from "@appquality/appquality-design-system";
 
 const CustomerSelect = () => {
   const { data: customers } = useGetCustomersQuery();
@@ -22,7 +23,14 @@ const CustomerSelect = () => {
   return (
     <>
       <SelectField name="customerId" options={options} label="Customer" />
-      {values.customerId && <ProjectSelect customerId={values.customerId} />}
+      {values.customerId ? (
+        <ProjectSelect customerId={values.customerId} />
+      ) : (
+        <div>
+          <FormLabel label="Project" htmlFor="" />
+          <Dropdown isDisabled placeholder="Select a customer" />
+        </div>
+      )}
     </>
   );
 };

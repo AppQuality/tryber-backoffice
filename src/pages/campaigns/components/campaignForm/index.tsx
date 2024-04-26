@@ -3,8 +3,11 @@ import {
   BSGrid,
   Button,
   Card,
+  Dropdown,
   Form,
+  FormLabel,
   TextareaField,
+  Title,
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import {
@@ -32,6 +35,7 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
+import { FieldWrapper } from "./fields/FieldWrapper";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -68,7 +72,7 @@ const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
     <CampaignFormContext>
       <FormProvider dossier={dossier} isEdit={isEdit} duplicate={duplicate}>
         <FullGrid>
-          <ResponsiveCol size="col-lg-3" lgOrder={1}>
+          <ResponsiveCol size="col-lg-3" lgOrder={2}>
             <StickyContainer>
               <Card title="Sezioni del form" className="aq-mb-3">
                 <Stepper />
@@ -76,59 +80,138 @@ const CampaignForm = ({ dossier, isEdit, duplicate }: FormProps) => {
               <Submit />
             </StickyContainer>
           </ResponsiveCol>
-          <ResponsiveCol size="col-lg-9" lgOrder={2}>
+          <ResponsiveCol size="col-lg-9" lgOrder={1}>
             <Form id="campaign-form">
-              <Section title="General info" id="general">
-                <CustomerSelect />
-                <TestTypeSelect />
-                <InputField
-                  name="testerTitle"
-                  label="Campaign Title (for tester)"
-                />
-                <InputField
-                  name="customerTitle"
-                  label="Campaign Title (for customer)"
-                />
-                <TextareaField name="description" label="Description" />
-                <StartDatePicker />
-                <EndDatePicker />
-                <CloseDatePicker />
-                {!isEdit && <AutomaticDatesSwitch />}
+              <Section
+                title="Le informazioni principali della campagna"
+                subtitle="Le informazioni principali della campagnaIn questa sezione ci sono le informazioni essenziali della campagna, come nome e date di partenza e chiusura"
+                id="general"
+              >
+                <Title size="s" className="aq-mb-2">
+                  Nome e tipologia di campagna
+                </Title>
+                <FieldWrapper>
+                  <InputField
+                    name="customerTitle"
+                    label="Campaign Title (for customer) *"
+                  />
+                  <InputField
+                    name="testerTitle"
+                    label="Campaign Title (for tester) *"
+                  />
+                  <TestTypeSelect />
+                  <TextareaField
+                    name="description"
+                    label="Description"
+                    placeholder="Verrà testato il prodotto [nome prodotto, tipologia del prodotto] attraverso un test di [tipologia di test]. 
+Il suo scopo principale è [in che modo il prodotto migliora la vita delle persone]."
+                  />
+                </FieldWrapper>
+                <Title size="s" className="aq-mb-2">
+                  Date della campagna
+                </Title>
+                <FieldWrapper>
+                  <StartDatePicker />
+                  <EndDatePicker />
+                  <CloseDatePicker />
+                  {!isEdit && <AutomaticDatesSwitch />}
+                </FieldWrapper>
               </Section>
-              <Section title="Cosa" id="what">
-                <ProductType />
-                <InputField
-                  type="url"
-                  name="productLink"
-                  label="Product Link"
-                />
-                <TextareaField name="goal" label="Goals" />
-                <TextareaField name="outOfScope" label="Out of scope" />
+              <Section
+                title="Utenti e ruoli"
+                subtitle="Chi saranno i riferimenti della campagna? Definiscilo qui."
+                id="roles"
+              >
+                <Title size="s" className="aq-mb-2">
+                  Utenti e Ruoli operativi
+                </Title>
+                <FieldWrapper>
+                  <CsmSelect />
+                  <TlSelect />
+                  <PmSelect />
+                  <ResearcherSelect />
+                </FieldWrapper>
+                <Title size="s" className="aq-mb-2">
+                  Cliente
+                </Title>
+                <FieldWrapper>
+                  <CustomerSelect />
+                  <div>
+                    <FormLabel label="Referente" htmlFor="" />
+                    <Dropdown isDisabled placeholder="work in progress" />
+                  </div>
+                </FieldWrapper>
               </Section>
-              <Section title="Dove" id="when">
+              <Section
+                title="Il prodotto o servizio da testare"
+                subtitle="Definisci qui tipologia e obiettivi del test"
+                id="what"
+              >
+                <Title size="s" className="aq-mb-2">
+                  Tipologia di prodotto da testare
+                </Title>
+                <FieldWrapper>
+                  <ProductType />
+                  <InputField
+                    type="url"
+                    name="productLink"
+                    label="Product Link"
+                  />
+                </FieldWrapper>
+                <Title size="s" className="aq-mb-2">
+                  Tipologia di prodotto da testare
+                </Title>
+                <FieldWrapper>
+                  <TextareaField
+                    name="goal"
+                    label="Obiettivo del test"
+                    placeholder="L’obiettivo del test è..."
+                  />
+                  <TextareaField
+                    name="outOfScope"
+                    label="Out of scope"
+                    placeholder="Saranno out of scope le seguenti sezioni o le seguenti tipologie di bug"
+                  />
+                </FieldWrapper>
+              </Section>
+              <Section
+                title="Dispositivi e requisiti device per il tester"
+                id="when"
+              >
                 <DeviceMultiselect />
-                <BrowsersMultiselect />
+                <FieldWrapper>
+                  <BrowsersMultiselect />
+                </FieldWrapper>
                 <TextareaField
                   name="deviceRequirements"
                   label="Device requirements"
                 />
               </Section>
               <Section title="Chi" id="who">
-                <CountrySelect />
-                <LanguageSelect />
-                <TextareaField name="targetNotes" label="Target notes" />
+                <Title size="s" className="aq-mb-2">
+                  Requisiti del target di test
+                </Title>
                 <InputField
                   type="number"
                   min={0}
                   name="targetSize"
                   label="Target Size"
+                  style={{ maxWidth: "225px" }}
                 />
-              </Section>
-              <Section title="Ruoli" id="roles">
-                <CsmSelect />
-                <TlSelect />
-                <PmSelect />
-                <ResearcherSelect />
+                <FieldWrapper>
+                  <CountrySelect />
+                  <LanguageSelect />
+                  <TextareaField
+                    name="targetNotes"
+                    label="Requisiti del target"
+                    placeholder="Ad esempio: Gli utenti devono essere di genere distribuito, nella fascia di età 18-65..."
+                  />
+                  <TextareaField
+                    name="targetInstructions"
+                    label="Istruzioni per i tester"
+                    placeholder="Ad esempio: I tester dovranno scaricare il plugin oppure dovranno effettuare un’iscrizione a proprie spese all’abbonamento premium, che verrà rimborsata"
+                  />
+                </FieldWrapper>
               </Section>
             </Form>
           </ResponsiveCol>
