@@ -14,7 +14,6 @@ import * as yup from "yup";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
 import { useCampaignFormContext } from "./campaignFormContext";
-import { set } from "husky";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -129,9 +128,9 @@ const FormProvider = ({
   };
 
   const validationSchema = yup.object({
-    customerId: yup.number().required("Customer is required"),
-    projectId: yup.number().required("Project is required"),
-    testType: yup.number().required("Test type is required"),
+    customerId: yup.string().required("Customer is required"),
+    projectId: yup.string().required("Project is required"),
+    testType: yup.string().required("Test type is required"),
     customerTitle: yup.string().required("Customer Title is required"),
     testerTitle: yup.string().required("Tester Title is required"),
     startDate: yup.string().required("Start date is required"),

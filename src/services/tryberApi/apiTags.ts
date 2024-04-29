@@ -230,6 +230,9 @@ tryberApi.enhanceEndpoints({
     postCustomersByCustomerProjects: {
       invalidatesTags: ["Projects"],
     },
+    postCustomers: {
+      invalidatesTags: ["Customers"],
+    },
   },
 });
 
