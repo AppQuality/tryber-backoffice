@@ -6,6 +6,7 @@ import {
   Dropdown,
   Form,
   FormLabel,
+  Spinner,
   TextareaField,
   Title,
 } from "@appquality/appquality-design-system";
@@ -87,6 +88,7 @@ const CreatingOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 `;
 
 const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
@@ -94,7 +96,14 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
   return (
     <FormProvider dossier={dossier} isEdit={isEdit} duplicate={duplicate}>
       <FullGrid>
-        {isCreating && <CreatingOverlay />}
+        {isCreating && (
+          <CreatingOverlay>
+            Creazione campagna in corso
+            <br />
+            ci potrebbero volere qualche decina di secondi...
+            <br />
+          </CreatingOverlay>
+        )}
         <ResponsiveCol size="col-lg-3" lgOrder={2}>
           <StickyContainer>
             <Card title="Sezioni del form" className="aq-mb-3">
