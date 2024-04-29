@@ -349,6 +349,16 @@ const injectedRtkApi = api.injectEndpoints({
     getCustomers: build.query<GetCustomersApiResponse, GetCustomersApiArg>({
       query: () => ({ url: `/customers` }),
     }),
+    postCustomers: build.mutation<
+      PostCustomersApiResponse,
+      PostCustomersApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/customers`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
     getCustomUserFields: build.query<
       GetCustomUserFieldsApiResponse,
       GetCustomUserFieldsApiArg
@@ -1629,6 +1639,15 @@ export type GetCustomersApiResponse =
     name?: string;
   }[];
 export type GetCustomersApiArg = void;
+export type PostCustomersApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+};
+export type PostCustomersApiArg = {
+  body: {
+    name: string;
+  };
+};
 export type GetCustomUserFieldsApiResponse = /** status 200 OK */ {
   group: {
     id: number;
@@ -2994,6 +3013,7 @@ export const {
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
   useGetCustomersQuery,
+  usePostCustomersMutation,
   useGetCustomUserFieldsQuery,
   useGetDevicesByDeviceTypeModelsQuery,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
