@@ -6,7 +6,6 @@ import {
   Dropdown,
   Form,
   FormLabel,
-  Spinner,
   TextareaField,
   Title,
 } from "@appquality/appquality-design-system";
@@ -40,6 +39,7 @@ import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
 import { FieldWrapper } from "./fields/FieldWrapper";
+import FocusError from "./FocusError";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -247,6 +247,7 @@ Il suo scopo principale è [in che modo il prodotto migliora la vita delle perso
             </Section>
           </Form>
         </ResponsiveCol>
+        <FocusError />
       </FullGrid>
     </FormProvider>
   );
