@@ -51,7 +51,7 @@ const EndDatePicker = () => {
           <FormGroup>
             <FormLabel htmlFor={field.name} label="End Time *" />
             <Datepicker
-              key={field.value}
+              key={field.name}
               control="time"
               id={field.name}
               value={field.value}

@@ -50,7 +50,7 @@ const CloseDatePicker = () => {
           <FormGroup>
             <FormLabel htmlFor={field.name} label="Close Time *" />
             <Datepicker
-              key={field.value}
+              key={field.name}
               control="time"
               id={field.name}
               value={field.value}
