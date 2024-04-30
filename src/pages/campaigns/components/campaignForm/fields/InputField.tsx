@@ -17,7 +17,10 @@ const InputField = ({ name, label, type = "text", ...props }: InputProps) => {
     <FormikField name={name}>
       {({ field, form, meta }: FieldProps) => {
         const handleChange = (val: string) => {
-          form.setFieldValue(field.name, val);
+          form.setFieldValue(
+            field.name,
+            type === "number" ? parseInt(val) : val
+          );
         };
         const handleBlur = () => {
           form.setFieldTouched(field.name, true);
