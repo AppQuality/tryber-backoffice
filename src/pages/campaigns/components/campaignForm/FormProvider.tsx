@@ -78,12 +78,7 @@ const FormProvider = ({
   }, [dossier, devices]);
 
   const selectedDevices = useMemo(() => {
-    if (!dossier)
-      return (
-        devices
-          ?.filter((device) => selectedTypes.includes(device.type))
-          .map((device) => device.id.toString()) || []
-      );
+    if (!dossier) return ["1", "2", "7", "8"];
 
     return dossier.deviceList.map((device) => device.id.toString());
   }, [dossier, devices, selectedTypes]);
