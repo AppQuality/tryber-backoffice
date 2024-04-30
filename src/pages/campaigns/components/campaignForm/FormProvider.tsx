@@ -11,9 +11,9 @@ import {
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
+import { useCampaignFormContext } from "./campaignFormContext";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
-import { useCampaignFormContext } from "./campaignFormContext";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -128,34 +128,34 @@ const FormProvider = ({
   };
 
   const validationSchema = yup.object({
-    customerId: yup.string().required("Customer is required"),
-    projectId: yup.string().required("Project is required"),
-    testType: yup.string().required("Test type is required"),
     customerTitle: yup.string().required("Customer Title is required"),
     testerTitle: yup.string().required("Tester Title is required"),
+    testType: yup.string().required("Test type is required"),
+    description: yup.string(),
     startDate: yup.string().required("Start date is required"),
     startTime: yup.string().required("Start time is required"),
     endDate: yup.string().required("End date is required"),
     endTime: yup.string().required("End time is required"),
     closeDate: yup.string().required("Close date is required"),
     closeTime: yup.string().required("Close time is required"),
-    deviceTypes: yup.array().min(1, "At least one device type is required"),
-    deviceList: yup.array().min(1, "At least one device is required"),
     csm: yup.number().required("CSM is required"),
     tl: yup.array(),
     pm: yup.number(),
     researcher: yup.array(),
-    languages: yup.array(),
-    countries: yup.array(),
-    description: yup.string(),
+    customerId: yup.string().required("Customer is required"),
+    projectId: yup.string().required("Project is required"),
+    productType: yup.string(),
     productLink: yup.string(),
     goal: yup.string(),
     outOfScope: yup.string(),
-    deviceRequirements: yup.string(),
-    targetNotes: yup.string(),
-    targetSize: yup.number(),
+    deviceTypes: yup.array().min(1, "At least one device type is required"),
+    deviceList: yup.array().min(1, "At least one device is required"),
     browsersList: yup.array(),
-    productType: yup.string(),
+    deviceRequirements: yup.string(),
+    targetSize: yup.number(),
+    countries: yup.array(),
+    languages: yup.array(),
+    targetNotes: yup.string(),
   });
   return (
     <Formik
