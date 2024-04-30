@@ -105,7 +105,7 @@ const FormProvider = ({
     endTime: dossier?.endDate ? formatTime(dossier.endDate) : "00:00",
     closeDate: dossier?.closeDate ? formatDate(dossier.closeDate) : "",
     closeTime: dossier?.closeDate ? formatTime(dossier.closeDate) : "00:00",
-    automaticDates: true,
+    automaticDates: !isEdit,
     deviceTypes: selectedTypes,
     deviceList: selectedDevices,
     countries: dossier?.countries || [],
