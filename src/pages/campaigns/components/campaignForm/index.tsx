@@ -96,15 +96,15 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
       <FullGrid>
         {isCreating && (
           <CreatingOverlay>
-            Creazione campagna in corso
+            Creating campaign in progress
             <br />
-            ci potrebbero volere qualche decina di secondi...
+            It may take a few seconds...
             <br />
           </CreatingOverlay>
         )}
         <ResponsiveCol size="col-lg-3" lgOrder={2}>
           <StickyContainer>
-            <Card title="Sezioni del form" className="aq-mb-3">
+            <Card title="Form Sections" className="aq-mb-3">
               <Stepper />
             </Card>
             <Submit />
@@ -112,13 +112,9 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
         </ResponsiveCol>
         <ResponsiveCol size="col-lg-9" lgOrder={1}>
           <Form id="campaign-form">
-            <Section
-              title="Le informazioni principali della campagna"
-              subtitle="Le informazioni principali della campagnaIn questa sezione ci sono le informazioni essenziali della campagna, come nome e date di partenza e chiusura"
-              id="general"
-            >
+            <Section title="Campaign General Informations" id="general">
               <Title size="s" className="aq-mb-2">
-                Nome e tipologia di campagna
+                Campaign name and type
               </Title>
               <FieldWrapper>
                 <InputField
@@ -133,12 +129,11 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <TextareaField
                   name="description"
                   label="Description"
-                  placeholder="Verrà testato il prodotto [nome prodotto, tipologia del prodotto] attraverso un test di [tipologia di test]. 
-Il suo scopo principale è [in che modo il prodotto migliora la vita delle persone]."
+                  placeholder="The product to be tested is [...] and we need to verify that [...]"
                 />
               </FieldWrapper>
               <Title size="s" className="aq-mb-2">
-                Date della campagna
+                Campaign dates
               </Title>
               <FieldWrapper>
                 <StartDatePicker />
@@ -147,13 +142,9 @@ Il suo scopo principale è [in che modo il prodotto migliora la vita delle perso
                 {!isEdit && <AutomaticDatesSwitch />}
               </FieldWrapper>
             </Section>
-            <Section
-              title="Utenti e ruoli"
-              subtitle="Chi saranno i riferimenti della campagna? Definiscilo qui."
-              id="roles"
-            >
+            <Section title="Roles and Customer" id="roles">
               <Title size="s" className="aq-mb-2">
-                Utenti e Ruoli operativi
+                Users and Roles
               </Title>
               <FieldWrapper>
                 <CsmSelect />
@@ -162,20 +153,13 @@ Il suo scopo principale è [in che modo il prodotto migliora la vita delle perso
                 <ResearcherSelect />
               </FieldWrapper>
               <Title size="s" className="aq-mb-2">
-                Cliente
+                Client
               </Title>
               <FieldWrapper>
                 <CustomerSelect />
               </FieldWrapper>
             </Section>
-            <Section
-              title="Il prodotto o servizio da testare"
-              subtitle="Definisci qui tipologia e obiettivi del test"
-              id="what"
-            >
-              <Title size="s" className="aq-mb-2">
-                Tipologia di prodotto da testare
-              </Title>
+            <Section title="What do we need to test?" id="what">
               <FieldWrapper>
                 <ProductType />
                 <InputField
@@ -184,26 +168,20 @@ Il suo scopo principale è [in che modo il prodotto migliora la vita delle perso
                   label="Product Link"
                 />
               </FieldWrapper>
-              <Title size="s" className="aq-mb-2">
-                Tipologia di prodotto da testare
-              </Title>
               <FieldWrapper>
                 <TextareaField
                   name="goal"
-                  label="Obiettivo del test"
-                  placeholder="L’obiettivo del test è..."
+                  label="Test goal"
+                  placeholder="The test goal is to verify that..."
                 />
                 <TextareaField
                   name="outOfScope"
                   label="Out of scope"
-                  placeholder="Saranno out of scope le seguenti sezioni o le seguenti tipologie di bug"
+                  placeholder="The test will not cover..."
                 />
               </FieldWrapper>
             </Section>
-            <Section
-              title="Dispositivi e requisiti device per il tester"
-              id="when"
-            >
+            <Section title="Where do we need to test?" id="where">
               <DeviceMultiselect />
               <FieldWrapper>
                 <BrowsersMultiselect />
@@ -211,11 +189,12 @@ Il suo scopo principale è [in che modo il prodotto migliora la vita delle perso
               <TextareaField
                 name="deviceRequirements"
                 label="Device requirements"
+                placeholder="If necessary, enter specific device requirements here"
               />
             </Section>
-            <Section title="Chi" id="who">
+            <Section title="Who is going to test?" id="who">
               <Title size="s" className="aq-mb-2">
-                Requisiti del target di test
+                Test target requirements
               </Title>
               <InputField
                 type="number"
@@ -230,8 +209,8 @@ Il suo scopo principale è [in che modo il prodotto migliora la vita delle perso
               </FieldWrapper>
               <TextareaField
                 name="targetNotes"
-                label="Requisiti del target"
-                placeholder="Ad esempio: Gli utenti devono essere di genere distribuito, nella fascia di età 18-65..."
+                label="Target requisites and other notes"
+                placeholder="The target must be..."
               />
             </Section>
           </Form>
