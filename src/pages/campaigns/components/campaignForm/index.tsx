@@ -3,9 +3,7 @@ import {
   BSGrid,
   Button,
   Card,
-  Dropdown,
   Form,
-  FormLabel,
   TextareaField,
   Title,
 } from "@appquality/appquality-design-system";
@@ -15,6 +13,7 @@ import {
   PostDossiersApiArg,
 } from "src/services/tryberApi";
 import { styled } from "styled-components";
+import FocusError from "./FocusError";
 import FormProvider from "./FormProvider";
 import { Section } from "./Section";
 import { Stepper } from "./Stepper";
@@ -25,6 +24,7 @@ import {
 import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
 import CustomerSelect from "./fields/CustomerSelect";
+import { FieldWrapper } from "./fields/FieldWrapper";
 import InputField from "./fields/InputField";
 import LanguageSelect from "./fields/LanguagesSelect";
 import ProductType from "./fields/ProductTypeSelect";
@@ -38,8 +38,6 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
-import { FieldWrapper } from "./fields/FieldWrapper";
-import FocusError from "./FocusError";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -168,10 +166,6 @@ Il suo scopo principale è [in che modo il prodotto migliora la vita delle perso
               </Title>
               <FieldWrapper>
                 <CustomerSelect />
-                <div>
-                  <FormLabel label="Referente" htmlFor="" />
-                  <Dropdown isDisabled placeholder="work in progress" />
-                </div>
               </FieldWrapper>
             </Section>
             <Section
@@ -233,17 +227,12 @@ Il suo scopo principale è [in che modo il prodotto migliora la vita delle perso
               <FieldWrapper>
                 <CountrySelect />
                 <LanguageSelect />
-                <TextareaField
-                  name="targetNotes"
-                  label="Requisiti del target"
-                  placeholder="Ad esempio: Gli utenti devono essere di genere distribuito, nella fascia di età 18-65..."
-                />
-                <TextareaField
-                  name="targetInstructions"
-                  label="Istruzioni per i tester"
-                  placeholder="Ad esempio: I tester dovranno scaricare il plugin oppure dovranno effettuare un’iscrizione a proprie spese all’abbonamento premium, che verrà rimborsata"
-                />
               </FieldWrapper>
+              <TextareaField
+                name="targetNotes"
+                label="Requisiti del target"
+                placeholder="Ad esempio: Gli utenti devono essere di genere distribuito, nella fascia di età 18-65..."
+              />
             </Section>
           </Form>
         </ResponsiveCol>
