@@ -231,7 +231,6 @@ const FormProvider = ({
             );
           }
         } catch (e) {
-          setIsCreating(false);
           dispatch(
             addMessage(
               "An error has occurred. Please try again.",
