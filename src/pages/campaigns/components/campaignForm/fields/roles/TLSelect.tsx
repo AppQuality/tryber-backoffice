@@ -7,14 +7,14 @@ import {
   FormGroup,
   FormLabel,
 } from "@appquality/appquality-design-system";
-import { useGetCampaignsOwnersQuery } from "src/services/tryberApi";
+import { useGetUsersByRoleByRoleQuery } from "src/services/tryberApi";
 
 const TlSelect = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
-  const { data: tl } = useGetCampaignsOwnersQuery();
+  const { data: tl } = useGetUsersByRoleByRoleQuery({ role: "assistants" });
 
   const options = tl
-    ? tl.map((tl) => ({
+    ? tl.results.map((tl) => ({
         value: tl.id.toString(),
         label: `${tl.name} ${tl.surname}`,
       }))

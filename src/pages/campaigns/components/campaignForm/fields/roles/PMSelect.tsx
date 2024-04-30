@@ -1,13 +1,13 @@
-import { useGetCampaignsOwnersQuery } from "src/services/tryberApi";
+import { useGetUsersByRoleByRoleQuery } from "src/services/tryberApi";
 import { SelectField } from "../SelectField";
 import { useMemo } from "react";
 
 const PmSelect = () => {
-  const { data: pm } = useGetCampaignsOwnersQuery();
+  const { data: pm } = useGetUsersByRoleByRoleQuery({ role: "assistants" });
 
   const options = useMemo(
     () =>
-      pm?.map((pm) => ({
+      pm?.results.map((pm) => ({
         value: pm.id.toString(),
         label: `${pm.name} ${pm.surname}`,
       })) || [],
