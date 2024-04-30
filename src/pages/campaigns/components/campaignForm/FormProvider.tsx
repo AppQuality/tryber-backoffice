@@ -81,7 +81,7 @@ const FormProvider = ({
     if (!dossier) return ["1", "2", "7", "8"];
 
     return dossier.deviceList.map((device) => device.id.toString());
-  }, [dossier, devices, selectedTypes]);
+  }, [dossier]);
 
   if (isLoading || !data) return null;
 
@@ -222,8 +222,6 @@ const FormProvider = ({
               },
             }).unwrap();
 
-            setIsCreating(false);
-
             window.parent.postMessage(
               JSON.stringify({
                 type: "go-to-edit",
@@ -232,17 +230,8 @@ const FormProvider = ({
               "*"
             );
           }
-
-          dispatch(
-            addMessage(
-              <p>
-                <strong>Import successful</strong>
-                <div>Campaign has been created successfully</div>
-              </p>,
-              "success"
-            )
-          );
         } catch (e) {
+          setIsCreating(false);
           dispatch(
             addMessage(
               "An error has occurred. Please try again.",
@@ -251,6 +240,7 @@ const FormProvider = ({
             )
           );
         }
+        setIsCreating(false);
       }}
     >
       {children}
