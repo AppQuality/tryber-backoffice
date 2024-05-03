@@ -158,7 +158,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 Client
               </Title>
               <FieldWrapper>
-                <CustomerSelect />
+                <CustomerSelect dossier={dossier} />
               </FieldWrapper>
             </Section>
             <Section title="What do we need to test?" id="what">

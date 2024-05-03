@@ -1,18 +1,68 @@
-import { useFormikContext } from "formik";
 import {
+  Dropdown,
+  FormLabel,
+  Text,
+} from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
+import { useCallback, useMemo } from "react";
+import {
+  GetDossiersByCampaignApiResponse,
   PostCustomersApiResponse,
   PostCustomersByCustomerProjectsApiResponse,
   useGetCustomersByCustomerProjectsQuery,
   useGetCustomersQuery,
+  useGetUsersMePermissionsQuery,
   usePostCustomersByCustomerProjectsMutation,
   usePostCustomersMutation,
 } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
 import { SelectField } from "./SelectField";
-import { useCallback, useMemo } from "react";
-import { FormLabel, Dropdown } from "@appquality/appquality-design-system";
 
-const CustomerSelect = () => {
+const CustomerSelect = ({
+  dossier,
+}: {
+  dossier?: GetDossiersByCampaignApiResponse;
+}) => {
+  const { data: permissions } = useGetUsersMePermissionsQuery();
+
+  if (!permissions) return null;
+
+  if (
+    "appq_campaign" in permissions &&
+    typeof permissions.appq_campaign !== "undefined" &&
+    permissions.appq_campaign !== false
+  ) {
+    if (
+      permissions.appq_campaign === true ||
+      (dossier && permissions.appq_campaign.includes(dossier.id))
+    ) {
+      return <CustomerSelectWithPermission />;
+    }
+  }
+
+  return <CustomerSelectWithoutPermission dossier={dossier} />;
+};
+
+const CustomerSelectWithoutPermission = ({
+  dossier,
+}: {
+  dossier?: GetDossiersByCampaignApiResponse;
+}) => {
+  return (
+    <>
+      <div>
+        <FormLabel label="Customer" htmlFor="" />
+        <Text>{dossier?.customer.name}</Text>
+      </div>
+      <div>
+        <FormLabel label="Project" htmlFor="" />
+        <Text>{dossier?.project.name}</Text>
+      </div>
+    </>
+  );
+};
+
+const CustomerSelectWithPermission = () => {
   const { data: customers } = useGetCustomersQuery();
   const { values, setFieldValue } = useFormikContext<NewCampaignValues>();
   const [postCustomer] = usePostCustomersMutation();
