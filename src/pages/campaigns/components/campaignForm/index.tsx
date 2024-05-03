@@ -135,11 +135,13 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               <Title size="s" className="aq-mb-2">
                 Campaign dates
               </Title>
+              <div className="aq-mb-2">
+                {!isEdit && <AutomaticDatesSwitch />}
+              </div>
               <FieldWrapper>
                 <StartDatePicker />
                 <EndDatePicker />
                 <CloseDatePicker />
-                {!isEdit && <AutomaticDatesSwitch />}
               </FieldWrapper>
             </Section>
             <Section title="Roles and Customer" id="roles">
