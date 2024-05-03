@@ -10,14 +10,16 @@ import {
 import { useGetUsersByRoleByRoleQuery } from "src/services/tryberApi";
 
 const TlSelect = () => {
-  const { setFieldValue } = useFormikContext<NewCampaignValues>();
+  const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const { data: tl } = useGetUsersByRoleByRoleQuery({ role: "assistants" });
 
   const options = tl
-    ? tl.results.map((tl) => ({
-        value: tl.id.toString(),
-        label: `${tl.name} ${tl.surname}`,
-      }))
+    ? tl.results
+        .filter((tl) => !values.researcher?.includes(tl.id.toString()))
+        .map((tl) => ({
+          value: tl.id.toString(),
+          label: `${tl.name} ${tl.surname}`,
+        }))
     : [];
 
   return (
