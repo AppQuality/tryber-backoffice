@@ -30,14 +30,9 @@ const CustomerSelect = ({
   if (
     "appq_campaign" in permissions &&
     typeof permissions.appq_campaign !== "undefined" &&
-    permissions.appq_campaign !== false
+    permissions.appq_campaign === true
   ) {
-    if (
-      permissions.appq_campaign === true ||
-      (dossier && permissions.appq_campaign.includes(dossier.id))
-    ) {
-      return <CustomerSelectWithPermission />;
-    }
+    return <CustomerSelectWithPermission />;
   }
 
   return <CustomerSelectWithoutPermission dossier={dossier} />;
