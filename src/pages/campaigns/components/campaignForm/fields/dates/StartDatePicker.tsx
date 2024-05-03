@@ -21,12 +21,12 @@ const StartDatePicker = () => {
       const startDate = new Date(e.target.value);
       const endDate = new Date(startDate);
       const closeDate = new Date(startDate);
-      // set field value of end date to start date + 7 days
-      endDate.setDate(startDate.getDate() + 7);
-      setFieldValue("endDate", formatDate(endDate.toUTCString()));
+      // set field value of end date to start date + 3 days
+      endDate.setDate(startDate.getDate() + 3);
+      setFieldValue("endDate", formatDate(endDate.toISOString()));
       // set field value of close date to start date + 14 days
       closeDate.setDate(startDate.getDate() + 14);
-      setFieldValue("closeDate", formatDate(closeDate.toUTCString()));
+      setFieldValue("closeDate", formatDate(closeDate.toISOString()));
     },
     [setFieldValue, values.automaticDates]
   );
