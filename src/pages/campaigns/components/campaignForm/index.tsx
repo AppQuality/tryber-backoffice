@@ -149,10 +149,10 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 Users and Roles
               </Title>
               <FieldWrapper>
-                <CsmSelect />
-                <TlSelect />
-                <PmSelect />
-                <ResearcherSelect />
+                <CsmSelect dossier={dossier} />
+                <TlSelect dossier={dossier} />
+                <PmSelect dossier={dossier} />
+                <ResearcherSelect dossier={dossier} />
               </FieldWrapper>
               <Title size="s" className="aq-mb-2">
                 Client
