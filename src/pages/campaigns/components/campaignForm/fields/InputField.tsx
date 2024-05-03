@@ -19,7 +19,7 @@ const InputField = ({ name, label, type = "text", ...props }: InputProps) => {
         const handleChange = (val: string) => {
           form.setFieldValue(
             field.name,
-            type === "number" ? parseInt(val) : val
+            type === "number" ? parseInt(val || "0") : val
           );
         };
         const handleBlur = () => {
