@@ -14,7 +14,7 @@ import {
 } from "src/services/tryberApi";
 import { styled } from "styled-components";
 import FocusError from "./FocusError";
-import FormProvider from "./FormProvider";
+import FormProvider, { NewCampaignValues } from "./FormProvider";
 import { Section } from "./Section";
 import { Stepper } from "./Stepper";
 import {
@@ -51,17 +51,11 @@ const StickyContainer = styled.div`
   }
 `;
 
-const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
-  @media (min-width: ${({ theme }) => theme.grid.breakpoints.lg}) {
-    order: ${({ lgOrder }) => lgOrder};
-  }
-`;
-
 const Submit = () => {
-  const { submitForm } = useFormikContext();
+  const { submitForm, values } = useFormikContext<NewCampaignValues>();
   return (
     <Button type="submit" size="block" onClick={submitForm}>
-      Submit
+      {values.isEdit ? "Save" : "Save as Draft"}
     </Button>
   );
 };
@@ -102,15 +96,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
             <br />
           </CreatingOverlay>
         )}
-        <ResponsiveCol size="col-lg-3" lgOrder={2}>
-          <StickyContainer>
-            <Card title="Form Sections" className="aq-mb-3">
-              <Stepper />
-            </Card>
-            <Submit />
-          </StickyContainer>
-        </ResponsiveCol>
-        <ResponsiveCol size="col-lg-9" lgOrder={1}>
+        <BSCol size="col-lg-9">
           <Form id="campaign-form">
             <Section title="Campaign General Informations" id="general">
               <Title size="s" className="aq-mb-2">
@@ -200,7 +186,6 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               </Title>
               <InputField
                 type="number"
-                min={0}
                 name="targetSize"
                 label="Target Size"
                 style={{ maxWidth: "225px" }}
@@ -216,7 +201,15 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               />
             </Section>
           </Form>
-        </ResponsiveCol>
+        </BSCol>
+        <BSCol size="col-lg-3">
+          <StickyContainer>
+            <Card title="Form Sections" className="aq-mb-3">
+              <Stepper />
+            </Card>
+            <Submit />
+          </StickyContainer>
+        </BSCol>
         <FocusError />
       </FullGrid>
     </FormProvider>
