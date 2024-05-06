@@ -90,18 +90,27 @@ const CustomerSelectWithPermission = () => {
   );
   return (
     <>
-      <SelectField
-        name="customerId"
-        options={options}
-        label="Customer"
-        onCreateOption={createOption}
-      />
+      <div>
+        <SelectField
+          name="customerId"
+          options={options}
+          label="Customer"
+          onCreateOption={createOption}
+          placeholder="start typing to create or select"
+        />
+        <Text small>
+          You can select or create a customer by writing the name in the field
+        </Text>
+      </div>
       {values.customerId ? (
         <ProjectSelect customerId={values.customerId} />
       ) : (
         <div>
           <FormLabel label="Project" htmlFor="" />
           <Dropdown isDisabled placeholder="Select a customer" />
+          <Text small>
+            Please select or create a customer to choose a project
+          </Text>
         </div>
       )}
     </>
@@ -147,12 +156,18 @@ const ProjectSelect = ({ customerId }: { customerId: string }) => {
   );
 
   return (
-    <SelectField
-      name="projectId"
-      label="Project"
-      options={options}
-      onCreateOption={createOption}
-    />
+    <>
+      <SelectField
+        name="projectId"
+        label="Project"
+        options={options}
+        onCreateOption={createOption}
+        placeholder="start typing to create or select"
+      />
+      <Text small>
+        You can select or create a project by writing the name in the field
+      </Text>
+    </>
   );
 };
 

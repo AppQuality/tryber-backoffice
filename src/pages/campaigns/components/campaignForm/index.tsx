@@ -132,6 +132,12 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
             </Section>
             <Section title="Roles and Customer" id="roles">
               <Title size="s" className="aq-mb-2">
+                Client
+              </Title>
+              <FieldWrapper>
+                <CustomerSelect dossier={dossier} />
+              </FieldWrapper>
+              <Title size="s" className="aq-mb-2">
                 Users and Roles
               </Title>
               <FieldWrapper>
@@ -139,12 +145,6 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <TlSelect dossier={dossier} />
                 <PmSelect dossier={dossier} />
                 <ResearcherSelect dossier={dossier} />
-              </FieldWrapper>
-              <Title size="s" className="aq-mb-2">
-                Client
-              </Title>
-              <FieldWrapper>
-                <CustomerSelect dossier={dossier} />
               </FieldWrapper>
             </Section>
             <Section title="What do we need to test?" id="what">
