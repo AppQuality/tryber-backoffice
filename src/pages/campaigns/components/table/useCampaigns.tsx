@@ -50,6 +50,7 @@ const useCampaigns = (options?: {
       customer: filters?.customer ? filters.customer.join(",") : undefined,
       status: filters?.status ? filters.status : undefined,
       csm: filters?.csm ? filters.csm : undefined,
+      role_1: filters?.pm ? filters.pm : undefined,
     },
     orderBy: order.field,
     order: order.direction,

@@ -8,6 +8,7 @@ type Filters = {
   type?: number[];
   status?: "running" | "incoming" | "closed";
   csm?: number;
+  pm?: number;
 };
 
 const DefaultOrder: {
