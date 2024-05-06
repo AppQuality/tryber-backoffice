@@ -8,37 +8,20 @@ import {
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { ChangeEvent, useCallback } from "react";
 import { NewCampaignValues } from "../../FormProvider";
-import { formatDate } from "../../formatDate";
 
 const StartDatePicker = () => {
-  const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
+  const { setFieldValue } = useFormikContext<NewCampaignValues>();
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setFieldValue("startDate", e.target.value);
-
-      if (!values.automaticDates) return;
-
-      const startDate = new Date(e.target.value);
-      const endDate = new Date(startDate);
-      const closeDate = new Date(startDate);
-      // set field value of end date to start date + 3 days
-      endDate.setDate(startDate.getDate() + 3);
-      setFieldValue("endDate", formatDate(endDate.toISOString()));
-      // set field value of close date to start date + 14 days
-      closeDate.setDate(startDate.getDate() + 14);
-      setFieldValue("closeDate", formatDate(closeDate.toISOString()));
     },
-    [setFieldValue, values.automaticDates]
+    [setFieldValue]
   );
   const handleTimeChange = useCallback(
     ({ valueText }: { valueText: string }) => {
       setFieldValue("startTime", valueText);
-      if (!values.automaticDates) return;
-
-      setFieldValue("endTime", valueText);
-      setFieldValue("closeTime", valueText);
     },
-    [setFieldValue, values.automaticDates]
+    [setFieldValue]
   );
   return (
     <>

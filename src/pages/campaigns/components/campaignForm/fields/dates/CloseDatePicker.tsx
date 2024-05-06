@@ -6,20 +6,11 @@ import {
   FormLabel,
 } from "@appquality/appquality-design-system";
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
-import { ChangeEvent, useCallback, useMemo } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { NewCampaignValues } from "../../FormProvider";
 
 const CloseDatePicker = () => {
-  const { values, setFieldValue } = useFormikContext<NewCampaignValues>();
-  const isDisabled = useMemo(() => {
-    if (values.isEdit) {
-      return false;
-    }
-    if (values.automaticDates) {
-      return true;
-    }
-    return false;
-  }, [values.isEdit, values.automaticDates]);
+  const { setFieldValue } = useFormikContext<NewCampaignValues>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFieldValue("closeDate", e.target.value);
   };
@@ -36,7 +27,6 @@ const CloseDatePicker = () => {
           <FormGroup>
             <FormLabel htmlFor={field.name} label="Close Date *" />
             <DateInput
-              disabled={isDisabled}
               name={field.name}
               value={field.value}
               onChange={handleChange}
@@ -54,7 +44,6 @@ const CloseDatePicker = () => {
               control="time"
               id={field.name}
               value={field.value}
-              disabled={isDisabled}
               onChange={handleTimeChange}
             />
             {meta.error && meta.touched && <ErrorMessage name={field.name} />}

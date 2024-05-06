@@ -29,7 +29,6 @@ import InputField from "./fields/InputField";
 import LanguageSelect from "./fields/LanguagesSelect";
 import ProductType from "./fields/ProductTypeSelect";
 import TestTypeSelect from "./fields/TestTypeSelect";
-import AutomaticDatesSwitch from "./fields/dates/AutomaticDatesSwitch";
 import CloseDatePicker from "./fields/dates/CloseDatePicker";
 import EndDatePicker from "./fields/dates/EndDatePicker";
 import StartDatePicker from "./fields/dates/StartDatePicker";
@@ -121,9 +120,6 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               <Title size="s" className="aq-mb-2">
                 Campaign dates
               </Title>
-              <div className="aq-mb-2">
-                {!isEdit && <AutomaticDatesSwitch />}
-              </div>
               <FieldWrapper>
                 <StartDatePicker />
                 <EndDatePicker />

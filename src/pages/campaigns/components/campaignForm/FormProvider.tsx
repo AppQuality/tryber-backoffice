@@ -34,7 +34,6 @@ export interface NewCampaignValues {
   endTime: string;
   closeDate: string;
   closeTime: string;
-  automaticDates: boolean;
   deviceList: string[];
   deviceTypes: string[];
   csm: string;
@@ -105,7 +104,6 @@ const FormProvider = ({
     endTime: dossier?.endDate ? formatTime(dossier.endDate) : "00:00",
     closeDate: dossier?.closeDate ? formatDate(dossier.closeDate) : "",
     closeTime: dossier?.closeDate ? formatTime(dossier.closeDate) : "00:00",
-    automaticDates: !isEdit,
     deviceTypes: selectedTypes,
     deviceList: selectedDevices,
     countries: dossier?.countries || [],
