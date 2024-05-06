@@ -3,7 +3,6 @@ import { useFiltersCardContext } from "./FilterContext";
 
 const Eye = icons.EyeFill;
 const Bug = icons.BugFill;
-const Status = icons.ClockHistory;
 
 const useColumns = (): TableType.Column[] => {
   const { setOrder } = useFiltersCardContext();
@@ -17,14 +16,9 @@ const useColumns = (): TableType.Column[] => {
       onSort: (newSort) => setOrder("id", newSort),
     },
     {
-      title: "Customer Title",
+      title: "Titles",
       dataIndex: "title_customer",
       key: "title_customer",
-    },
-    {
-      title: "Tester Title",
-      dataIndex: "title_tester",
-      key: "title_tester",
     },
     {
       title: "Type",
@@ -45,9 +39,9 @@ const useColumns = (): TableType.Column[] => {
       maxWidth: "20ch",
     },
     {
-      title: "CSM",
-      dataIndex: "csm",
-      key: "csm",
+      title: "Peoples",
+      dataIndex: "peoples",
+      key: "peoples",
       maxWidth: "20ch",
     },
     {
@@ -73,10 +67,9 @@ const useColumns = (): TableType.Column[] => {
       maxWidth: "5ch",
     },
     {
-      title: <Status style={{ fontSize: "16px" }} />,
-      dataIndex: "status",
-      key: "status",
-      maxWidth: "5ch",
+      title: "Status",
+      dataIndex: "phase",
+      key: "phase",
     },
     {
       title: "Actions",
