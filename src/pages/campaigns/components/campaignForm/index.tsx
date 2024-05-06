@@ -37,6 +37,7 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
+import FormOverlay from "./FormOverlay";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -68,33 +69,11 @@ const CampaignForm = (props: FormProps) => (
   </CampaignFormContext>
 );
 
-const CreatingOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
-
 const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
-  const { isCreating } = useCampaignFormContext();
   return (
     <FormProvider dossier={dossier} isEdit={isEdit} duplicate={duplicate}>
       <FullGrid>
-        {isCreating && (
-          <CreatingOverlay>
-            Creating campaign in progress
-            <br />
-            It may take a few seconds...
-            <br />
-          </CreatingOverlay>
-        )}
+        <FormOverlay />
         <BSCol size="col-lg-9">
           <Form id="campaign-form">
             <Section title="Campaign General Informations" id="general">
@@ -113,7 +92,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <TestTypeSelect />
                 <TextareaField
                   name="description"
-                  label="Description"
+                  label="Campaign Goal and description"
                   placeholder="The product to be tested is [...] and we need to verify that [...]"
                 />
               </FieldWrapper>
@@ -147,23 +126,16 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               <FieldWrapper>
                 <ProductType />
                 <InputField
-                  type="url"
+                  type="text"
                   name="productLink"
                   label="Product Link"
                 />
               </FieldWrapper>
-              <FieldWrapper>
-                <TextareaField
-                  name="goal"
-                  label="Test goal"
-                  placeholder="The test goal is to verify that..."
-                />
-                <TextareaField
-                  name="outOfScope"
-                  label="Out of scope"
-                  placeholder="The test will not cover..."
-                />
-              </FieldWrapper>
+              <TextareaField
+                name="outOfScope"
+                label="Out of scope"
+                placeholder="The test will not cover..."
+              />
             </Section>
             <Section title="Where do we need to test?" id="where">
               <DeviceMultiselect />

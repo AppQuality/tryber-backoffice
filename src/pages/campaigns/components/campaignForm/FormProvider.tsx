@@ -48,7 +48,7 @@ export interface NewCampaignValues {
   outOfScope?: string;
   deviceRequirements?: string;
   targetNotes?: string;
-  targetSize?: number;
+  targetSize?: string;
   browsersList?: string[];
   productType?: string;
 }
@@ -114,7 +114,7 @@ const FormProvider = ({
     outOfScope: dossier?.outOfScope || "",
     deviceRequirements: dossier?.deviceRequirements || "",
     targetNotes: dossier?.target?.notes || "",
-    targetSize: dossier?.target?.size || 0,
+    targetSize: dossier?.target?.size?.toString(),
     browsersList:
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
@@ -155,7 +155,8 @@ const FormProvider = ({
       initialValues={initialValues}
       enableReinitialize
       validationSchema={validationSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, action) => {
+        action.setSubmitting(true);
         let roles = [];
         if (values.pm) {
           roles.push({ role: 1, user: parseInt(values.pm) });
@@ -195,7 +196,9 @@ const FormProvider = ({
             deviceRequirements: values.deviceRequirements,
             target: {
               notes: values.targetNotes,
-              size: values.targetSize,
+              size: !!values.targetSize
+                ? parseInt(values.targetSize)
+                : undefined,
             },
             browsers: values.browsersList?.map((browser) =>
               parseInt(browser, 10)
@@ -211,8 +214,6 @@ const FormProvider = ({
               dossierCreationData: body,
             }).unwrap();
           } else {
-            setIsCreating(true);
-
             const resp = await postDossiers({
               body: {
                 ...body,
@@ -237,7 +238,7 @@ const FormProvider = ({
             )
           );
         }
-        setIsCreating(false);
+        action.setSubmitting(false);
       }}
     >
       {children}
