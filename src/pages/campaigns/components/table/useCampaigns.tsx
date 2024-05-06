@@ -1,8 +1,10 @@
-import { Button, Text } from "@appquality/appquality-design-system";
+import { Button, Skeleton, Text } from "@appquality/appquality-design-system";
 import {
   GetCampaignsApiArg,
   GetCampaignsApiResponse,
   useGetCampaignsQuery,
+  useGetPhasesQuery,
+  usePutDossiersByCampaignPhasesMutation,
 } from "src/services/tryberApi";
 import openInWordpress from "src/utils/openInWordpress";
 import styled from "styled-components";
@@ -204,7 +206,30 @@ const useCampaigns = (options?: {
 };
 
 const PhaseSelector = ({ campaign }: { campaign: Campaign }) => {
-  return <>{campaign.phase.name}</>;
+  const { data, isLoading } = useGetPhasesQuery();
+  const [updatePhase] = usePutDossiersByCampaignPhasesMutation();
+  if (isLoading || !data || !data.results) return <Skeleton />;
+
+  return (
+    <select
+      onChange={async (e) => {
+        updatePhase({
+          campaign: campaign.id.toString(),
+          body: { phase: Number(e.target.value) },
+        });
+      }}
+    >
+      {data.results.map((phase) => (
+        <option
+          key={phase.id}
+          value={phase.id}
+          selected={phase.id === campaign.phase.id}
+        >
+          {phase.name}
+        </option>
+      ))}
+    </select>
+  );
 };
 
 export default useCampaigns;
