@@ -1,6 +1,7 @@
 import { Formik } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+import { useHistory } from "react-router-dom";
 import {
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
@@ -11,7 +12,6 @@ import {
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
-import { useCampaignFormContext } from "./campaignFormContext";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
 
@@ -60,7 +60,7 @@ const FormProvider = ({
   duplicate,
 }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
-  const { setIsCreating } = useCampaignFormContext();
+  const history = useHistory();
   const [postDossiers] = usePostDossiersMutation();
   const [putDossiers] = usePutDossiersByCampaignMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
@@ -220,14 +220,10 @@ const FormProvider = ({
                 duplicate: duplicate,
               },
             }).unwrap();
-
-            window.parent.postMessage(
-              JSON.stringify({
-                type: "go-to-edit",
-                id: resp.id,
-              }),
-              "*"
-            );
+            if (!resp.id) {
+              throw new Error("An error has occurred. Please try again.");
+            }
+            history.push(`/backoffice/campaigns/new/success/`, { id: resp.id });
           }
         } catch (e) {
           dispatch(

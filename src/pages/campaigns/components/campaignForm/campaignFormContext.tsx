@@ -7,23 +7,18 @@ const Context = createContext<{
   setCurrentSection: (section: string) => void;
   goToSection: (section: string) => void;
   currentSection: string;
-  isCreating: boolean;
-  setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
   sections: [],
   setCurrentSection: () => {},
   pushSection: () => {},
   goToSection: () => {},
   currentSection: "",
-  isCreating: false,
-  setIsCreating: () => {},
 });
 
 const CampaignFormContext = ({ children }: { children: React.ReactNode }) => {
   const [currentSection, setCurrentSection] = useState<string>("");
   const [sections, setSections] = useState<Item[]>([]);
   const [isScrolling, setIsScrolling] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
 
   const pushSection = useCallback((section: Item) => {
     setSections((prev) => {
@@ -69,8 +64,6 @@ const CampaignFormContext = ({ children }: { children: React.ReactNode }) => {
         pushSection,
         goToSection,
         currentSection,
-        isCreating,
-        setIsCreating,
       }}
     >
       {children}
