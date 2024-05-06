@@ -139,6 +139,7 @@ const injectedRtkApi = api.injectEndpoints({
           filterByInclude: queryArg.filterByInclude,
           filterByExclude: queryArg.filterByExclude,
           filterByAge: queryArg.filterByAge,
+          show: queryArg.show,
         },
       }),
     }),
@@ -347,6 +348,16 @@ const injectedRtkApi = api.injectEndpoints({
     }),
     getCustomers: build.query<GetCustomersApiResponse, GetCustomersApiArg>({
       query: () => ({ url: `/customers` }),
+    }),
+    postCustomers: build.mutation<
+      PostCustomersApiResponse,
+      PostCustomersApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/customers`,
+        method: "POST",
+        body: queryArg.body,
+      }),
     }),
     getCustomUserFields: build.query<
       GetCustomUserFieldsApiResponse,
@@ -863,6 +874,62 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: () => ({ url: `/users/me/rank/list` }),
     }),
+    postDossiers: build.mutation<PostDossiersApiResponse, PostDossiersApiArg>({
+      query: (queryArg) => ({
+        url: `/dossiers`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    putDossiersByCampaign: build.mutation<
+      PutDossiersByCampaignApiResponse,
+      PutDossiersByCampaignApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/dossiers/${queryArg.campaign}`,
+        method: "PUT",
+        body: queryArg.dossierCreationData,
+      }),
+    }),
+    getDossiersByCampaign: build.query<
+      GetDossiersByCampaignApiResponse,
+      GetDossiersByCampaignApiArg
+    >({
+      query: (queryArg) => ({ url: `/dossiers/${queryArg.campaign}` }),
+    }),
+    getCustomersByCustomerProjects: build.query<
+      GetCustomersByCustomerProjectsApiResponse,
+      GetCustomersByCustomerProjectsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/customers/${queryArg.customer}/projects`,
+      }),
+    }),
+    postCustomersByCustomerProjects: build.mutation<
+      PostCustomersByCustomerProjectsApiResponse,
+      PostCustomersByCustomerProjectsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/customers/${queryArg.customer}/projects`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    getUsersByRoleByRole: build.query<
+      GetUsersByRoleByRoleApiResponse,
+      GetUsersByRoleByRoleApiArg
+    >({
+      query: (queryArg) => ({ url: `/users/by-role/${queryArg.role}` }),
+    }),
+    getBrowsers: build.query<GetBrowsersApiResponse, GetBrowsersApiArg>({
+      query: () => ({ url: `/browsers` }),
+    }),
+    getProductTypes: build.query<
+      GetProductTypesApiResponse,
+      GetProductTypesApiArg
+    >({
+      query: () => ({ url: `/productTypes` }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -1141,6 +1208,8 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   filterByExclude?: any;
   /** Array with min and max */
   filterByAge?: any;
+  /** Show accepted/candidates or both */
+  show?: "onlyAccepted" | "onlyCandidates" | "all";
 };
 export type GetCampaignsByCampaignClustersApiResponse =
   /** status 200 A UseCase linked with the Campaign */ {
@@ -1570,6 +1639,15 @@ export type GetCustomersApiResponse =
     name?: string;
   }[];
 export type GetCustomersApiArg = void;
+export type PostCustomersApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+};
+export type PostCustomersApiArg = {
+  body: {
+    name: string;
+  };
+};
 export type GetCustomUserFieldsApiResponse = /** status 200 OK */ {
   group: {
     id: number;
@@ -1593,8 +1671,9 @@ export type GetDevicesByDeviceTypeModelsApiArg = {
 };
 export type GetDevicesByDeviceTypeOperatingSystemsApiResponse =
   /** status 200 OK */ {
-    id?: number;
-    name?: string;
+    id: number;
+    name: string;
+    type: string;
   }[];
 export type GetDevicesByDeviceTypeOperatingSystemsApiArg = {
   deviceType: string;
@@ -2480,6 +2559,136 @@ export type GetUsersMeRankListApiResponse = /** status 200 OK */ {
   peers: RankingItem[];
 };
 export type GetUsersMeRankListApiArg = void;
+export type PostDossiersApiResponse = /** status 201 Created */ {
+  id?: number;
+};
+export type PostDossiersApiArg = {
+  body: DossierCreationData & {
+    duplicate?: {
+      fields?: number;
+      useCases?: number;
+      mailMerges?: number;
+      pages?: number;
+      testers?: number;
+    };
+  };
+};
+export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
+export type PutDossiersByCampaignApiArg = {
+  /** A campaign id */
+  campaign: string;
+  dossierCreationData: DossierCreationData;
+};
+export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
+  id: number;
+  title: {
+    customer: string;
+    tester: string;
+  };
+  startDate: string;
+  endDate: string;
+  closeDate: string;
+  customer: {
+    id: number;
+    name: string;
+  };
+  project: {
+    id: number;
+    name: string;
+  };
+  testType: {
+    id: number;
+    name: string;
+  };
+  deviceList: {
+    id: number;
+    name: string;
+  }[];
+  csm: {
+    id: number;
+    name: string;
+  };
+  roles?: {
+    role?: {
+      id: number;
+      name: string;
+    };
+    user?: {
+      id: number;
+      name: string;
+      surname: string;
+    };
+  }[];
+  description?: string;
+  productLink?: string;
+  goal?: string;
+  outOfScope?: string;
+  deviceRequirements?: string;
+  target?: {
+    notes?: string;
+    size?: number;
+  };
+  countries?: CountryCode[];
+  languages?: {
+    id: number;
+    name: string;
+  }[];
+  browsers?: {
+    id: number;
+    name: string;
+  }[];
+  productType?: {
+    id: number;
+    name: string;
+  };
+};
+export type GetDossiersByCampaignApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
+export type GetCustomersByCustomerProjectsApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+  }[];
+};
+export type GetCustomersByCustomerProjectsApiArg = {
+  customer: string;
+};
+export type PostCustomersByCustomerProjectsApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+};
+export type PostCustomersByCustomerProjectsApiArg = {
+  customer: string;
+  body: {
+    name: string;
+  };
+};
+export type GetUsersByRoleByRoleApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+    surname: string;
+  }[];
+};
+export type GetUsersByRoleByRoleApiArg = {
+  role: "tester_lead" | "quality_leader" | "ux_researcher" | "assistants";
+};
+export type GetBrowsersApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+  }[];
+};
+export type GetBrowsersApiArg = void;
+export type GetProductTypesApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+  }[];
+};
+export type GetProductTypesApiArg = void;
 export type Agreement = {
   title: string;
   tokens: number;
@@ -2733,6 +2942,37 @@ export type RankingItem = {
   name: string;
   monthly_exp: number;
 };
+export type CountryCode = string;
+export type DossierCreationData = {
+  project: number;
+  testType: number;
+  title: {
+    customer: string;
+    tester?: string;
+  };
+  startDate: string;
+  endDate?: string;
+  closeDate?: string;
+  deviceList: number[];
+  csm?: number;
+  roles?: {
+    role: number;
+    user: number;
+  }[];
+  description?: string;
+  productLink?: string;
+  goal?: string;
+  outOfScope?: string;
+  deviceRequirements?: string;
+  target?: {
+    notes?: string;
+    size?: number;
+  };
+  countries?: CountryCode[];
+  languages?: number[];
+  browsers?: number[];
+  productType?: number;
+};
 export const {
   useGetQuery,
   useGetAgreementsQuery,
@@ -2773,6 +3013,7 @@ export const {
   useGetCertificationsQuery,
   useGetCountriesByCodeRegionQuery,
   useGetCustomersQuery,
+  usePostCustomersMutation,
   useGetCustomUserFieldsQuery,
   useGetDevicesByDeviceTypeModelsQuery,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
@@ -2833,4 +3074,12 @@ export const {
   useGetUsersMePopupsByPopupQuery,
   useGetUsersMeRankQuery,
   useGetUsersMeRankListQuery,
+  usePostDossiersMutation,
+  usePutDossiersByCampaignMutation,
+  useGetDossiersByCampaignQuery,
+  useGetCustomersByCustomerProjectsQuery,
+  usePostCustomersByCustomerProjectsMutation,
+  useGetUsersByRoleByRoleQuery,
+  useGetBrowsersQuery,
+  useGetProductTypesQuery,
 } = injectedRtkApi;
