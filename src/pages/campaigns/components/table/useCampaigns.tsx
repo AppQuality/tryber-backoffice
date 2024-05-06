@@ -1,4 +1,5 @@
 import { Button, Skeleton, Text } from "@appquality/appquality-design-system";
+import { useEffect } from "react";
 import {
   GetCampaignsApiArg,
   GetCampaignsApiResponse,
@@ -42,7 +43,7 @@ const useCampaigns = (options?: {
 }) => {
   const LIMIT = 100;
   const { page, filters, order } = useFiltersCardContext();
-  const { isLoading, data } = useGetCampaignsQuery({
+  const { isLoading, data, refetch } = useGetCampaignsQuery({
     limit: LIMIT,
     start: (page - 1) * LIMIT,
     mine: filters?.mine ? "true" : undefined,
@@ -50,13 +51,17 @@ const useCampaigns = (options?: {
     filterBy: {
       type: filters?.type ? filters.type.join(",") : undefined,
       customer: filters?.customer ? filters.customer.join(",") : undefined,
-      status: filters?.status ? filters.status : undefined,
+      phase: filters?.status ? filters.status : undefined,
       csm: filters?.csm ? filters.csm : undefined,
       role_1: filters?.pm ? filters.pm : undefined,
     },
     orderBy: order.field,
     order: order.direction,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [filters?.status, refetch]);
 
   if (isLoading || !data || !data.items) {
     return { isLoading: true, data: [], pages: 0 };
@@ -162,7 +167,11 @@ const useCampaigns = (options?: {
           },
           phase: {
             title: campaign.phase.name,
-            content: <PhaseSelector campaign={campaign} />,
+            content: isLoading ? (
+              <Skeleton />
+            ) : (
+              <PhaseSelector campaign={campaign} />
+            ),
           },
           actions: {
             title: "",
@@ -208,24 +217,26 @@ const useCampaigns = (options?: {
 const PhaseSelector = ({ campaign }: { campaign: Campaign }) => {
   const { data, isLoading } = useGetPhasesQuery();
   const [updatePhase] = usePutDossiersByCampaignPhasesMutation();
+
   if (isLoading || !data || !data.results) return <Skeleton />;
 
   return (
     <select
-      onChange={async (e) => {
+      key={`phase-select-${campaign.id}`}
+      onChange={(e) => {
         updatePhase({
           campaign: campaign.id.toString(),
           body: { phase: Number(e.target.value) },
         });
       }}
     >
-      {data.results.map((phase) => (
+      {data.results.map((opt) => (
         <option
-          key={phase.id}
-          value={phase.id}
-          selected={phase.id === campaign.phase.id}
+          key={`phase-opt-${campaign.id}-${opt.id}`}
+          value={opt.id}
+          selected={opt.id === campaign.phase.id}
         >
-          {phase.name}
+          {opt.name}
         </option>
       ))}
     </select>
