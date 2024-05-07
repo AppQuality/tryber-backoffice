@@ -32,6 +32,9 @@ const CustomTable = styled(Table)`
     display: flex;
     align-items: center;
     height: 100%;
+    & > div {
+      width: 100%;
+    }
   }
 `;
 
