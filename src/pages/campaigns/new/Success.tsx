@@ -49,14 +49,7 @@ const Success = (props: Props) => {
   return (
     <PageTemplate>
       <Container>
-        <PageTitle
-          back={{
-            text: "Create a new campaign",
-            navigation: "/backoffice/campaigns/new",
-          }}
-        >
-          Campaign created
-        </PageTitle>
+        <PageTitle>Campaign created</PageTitle>
         <Layout>
           <Text>Your campaign has been created with id {state.id}</Text>
           <Text className="aq-mb-3">What would you like to do next?</Text>
