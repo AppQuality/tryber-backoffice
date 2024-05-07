@@ -1,8 +1,11 @@
-import { Button, Text } from "@appquality/appquality-design-system";
+import { Button, Skeleton, Text } from "@appquality/appquality-design-system";
+import { useEffect } from "react";
 import {
   GetCampaignsApiArg,
   GetCampaignsApiResponse,
   useGetCampaignsQuery,
+  useGetPhasesQuery,
+  usePutDossiersByCampaignPhasesMutation,
 } from "src/services/tryberApi";
 import openInWordpress from "src/utils/openInWordpress";
 import styled from "styled-components";
@@ -40,7 +43,7 @@ const useCampaigns = (options?: {
 }) => {
   const LIMIT = 100;
   const { page, filters, order } = useFiltersCardContext();
-  const { isLoading, data } = useGetCampaignsQuery({
+  const { isLoading, data, refetch } = useGetCampaignsQuery({
     limit: LIMIT,
     start: (page - 1) * LIMIT,
     mine: filters?.mine ? "true" : undefined,
@@ -48,12 +51,17 @@ const useCampaigns = (options?: {
     filterBy: {
       type: filters?.type ? filters.type.join(",") : undefined,
       customer: filters?.customer ? filters.customer.join(",") : undefined,
-      status: filters?.status ? filters.status : undefined,
+      phase: filters?.status ? filters.status : undefined,
       csm: filters?.csm ? filters.csm : undefined,
+      role_1: filters?.pm ? filters.pm : undefined,
     },
     orderBy: order.field,
     order: order.direction,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [filters?.status, refetch]);
 
   if (isLoading || !data || !data.items) {
     return { isLoading: true, data: [], pages: 0 };
@@ -78,102 +86,161 @@ const useCampaigns = (options?: {
         if (typeof campaign.visibility === "undefined") return false;
         return true;
       })
-      .map((campaign) => ({
-        key: campaign.id,
-        id: campaign.id,
-        csm:
-          campaign.csm.name !== "Deleted User"
-            ? `${campaign.csm.name.charAt(0)}. ${campaign.csm.surname}`
-            : "Deleted User",
-        start_date: {
-          title: campaign.startDate,
-          content: (
-            <>
-              <div>{formatDateTime(campaign.startDate).date}</div>
-              <Text small>{formatDateTime(campaign.startDate).time}</Text>
-            </>
-          ),
-        },
-        end_date: {
-          title: campaign.endDate,
-          content: (
-            <>
-              <div>{formatDateTime(campaign.endDate).date}</div>
-              <Text small>{formatDateTime(campaign.endDate).time}</Text>
-            </>
-          ),
-        },
-        title_tester: { title: campaign.name, content: campaign.name },
-        title_customer: campaign.customerTitle
-          ? campaign.customerTitle
-          : campaign.name,
-        result_type: {
-          title: ResultTypeIcon.text(campaign.resultType),
-          content: <ResultTypeIcon resultType={campaign.resultType} />,
-        },
-        project: {
-          title: campaign.customer.name,
-          content: (
-            <>
-              {campaign.project.name}
-              <Text small>{campaign.customer.name}</Text>
-            </>
-          ),
-        },
-        type: {
-          title: BugType.text(campaign.type.area, campaign.type.name),
-          content: (
-            <BugType area={campaign.type.area} name={campaign.type.name} />
-          ),
-        },
-        status: {
-          title: StatusIcon.text(campaign.status, campaign.startDate),
-          content: (
-            <StatusIcon status={campaign.status} start={campaign.startDate} />
-          ),
-        },
-        visible_to: {
-          title: VisibilityIcon.text(campaign.visibility),
-          content: <VisibilityIcon visibility={campaign.visibility} />,
-        },
-        actions: {
-          title: "",
-          content: (
-            <>
-              <TableButton
-                onClick={(e) =>
-                  openInWordpress(e, "open-edit", { id: campaign.id })
-                }
-                size="sm"
-                kind="link-hover"
-              >
-                Edit
-              </TableButton>
-              {" | "}
-              <TableButton
-                onClick={(e) =>
-                  openInWordpress(e, "open-show", { id: campaign.id })
-                }
-                size="sm"
-                kind="link-hover"
-              >
-                View
-              </TableButton>
-              {" | "}
-              <TableButton
-                onClick={(e) =>
-                  openInWordpress(e, "open-bugs", { id: campaign.id })
-                }
-                size="sm"
-                kind="link-hover"
-              >
-                Bugs
-              </TableButton>
-            </>
-          ),
-        },
-      })),
+      .map((campaign) => {
+        const pm = campaign.roles.find((item) => item.role.name === "PM");
+
+        return {
+          key: campaign.id,
+          id: campaign.id,
+          peoples: {
+            title: campaign.csm.name,
+            content: (
+              <>
+                {campaign.csm.name !== "Deleted User"
+                  ? `${campaign.csm.name.charAt(0)}. ${campaign.csm.surname}`
+                  : "Deleted User"}
+                {pm && (
+                  <Text small>
+                    {pm.user.name !== "Deleted User"
+                      ? `${pm.user.name.charAt(0)}. ${pm.user.surname}`
+                      : "Deleted User"}
+                  </Text>
+                )}
+              </>
+            ),
+          },
+          start_date: {
+            title: campaign.startDate,
+            content: (
+              <>
+                <div>{formatDateTime(campaign.startDate).date}</div>
+                <Text small>{formatDateTime(campaign.startDate).time}</Text>
+              </>
+            ),
+          },
+          end_date: {
+            title: campaign.endDate,
+            content: (
+              <>
+                <div>{formatDateTime(campaign.endDate).date}</div>
+                <Text small>{formatDateTime(campaign.endDate).time}</Text>
+              </>
+            ),
+          },
+          title_customer: {
+            title: campaign.customerTitle ?? campaign.name,
+            content: (
+              <>
+                {campaign.customerTitle ?? campaign.name}
+                {campaign.customerTitle && <Text small>{campaign.name}</Text>}
+              </>
+            ),
+          },
+          result_type: {
+            title: ResultTypeIcon.text(campaign.resultType),
+            content: <ResultTypeIcon resultType={campaign.resultType} />,
+          },
+          project: {
+            title: campaign.customer.name,
+            content: (
+              <>
+                {campaign.project.name}
+                <Text small>{campaign.customer.name}</Text>
+              </>
+            ),
+          },
+          type: {
+            title: BugType.text(campaign.type.area, campaign.type.name),
+            content: (
+              <BugType area={campaign.type.area} name={campaign.type.name} />
+            ),
+          },
+          status: {
+            title: StatusIcon.text(campaign.status, campaign.startDate),
+            content: (
+              <StatusIcon status={campaign.status} start={campaign.startDate} />
+            ),
+          },
+          visible_to: {
+            title: VisibilityIcon.text(campaign.visibility),
+            content: <VisibilityIcon visibility={campaign.visibility} />,
+          },
+          phase: {
+            title: campaign.phase.name,
+            content: isLoading ? (
+              <Skeleton />
+            ) : (
+              <PhaseSelector campaign={campaign} />
+            ),
+          },
+          actions: {
+            title: "",
+            content: (
+              <>
+                <TableButton
+                  onClick={(e) =>
+                    openInWordpress(e, "open-edit", { id: campaign.id })
+                  }
+                  size="sm"
+                  kind="link-hover"
+                >
+                  Edit
+                </TableButton>
+                {" | "}
+                <TableButton
+                  onClick={(e) =>
+                    openInWordpress(e, "open-show", { id: campaign.id })
+                  }
+                  size="sm"
+                  kind="link-hover"
+                >
+                  View
+                </TableButton>
+                {" | "}
+                <TableButton
+                  onClick={(e) =>
+                    openInWordpress(e, "open-bugs", { id: campaign.id })
+                  }
+                  size="sm"
+                  kind="link-hover"
+                >
+                  Bugs
+                </TableButton>
+              </>
+            ),
+          },
+        };
+      }),
   };
+};
+
+const PhaseSelector = ({ campaign }: { campaign: Campaign }) => {
+  const { data, isLoading } = useGetPhasesQuery();
+  const [updatePhase] = usePutDossiersByCampaignPhasesMutation();
+
+  if (isLoading || !data || !data.results) return <Skeleton />;
+
+  return (
+    <select
+      key={`phase-select-${campaign.id}`}
+      onChange={(e) => {
+        updatePhase({
+          campaign: campaign.id.toString(),
+          body: { phase: Number(e.target.value) },
+        });
+      }}
+    >
+      {data.results.map((opt) => (
+        <option
+          key={`phase-opt-${campaign.id}-${opt.id}`}
+          value={opt.id}
+          selected={opt.id === campaign.phase.id}
+        >
+          {opt.name}
+        </option>
+      ))}
+    </select>
+  );
 };
 
 export default useCampaigns;

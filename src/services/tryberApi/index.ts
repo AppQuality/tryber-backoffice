@@ -930,6 +930,19 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: () => ({ url: `/productTypes` }),
     }),
+    getPhases: build.query<GetPhasesApiResponse, GetPhasesApiArg>({
+      query: () => ({ url: `/phases` }),
+    }),
+    putDossiersByCampaignPhases: build.mutation<
+      PutDossiersByCampaignPhasesApiResponse,
+      PutDossiersByCampaignPhasesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/dossiers/${queryArg.campaign}/phases`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -1049,6 +1062,21 @@ export type GetCampaignsApiResponse = /** status 200 OK */ {
       id?: number;
       name: string;
     };
+    phase?: {
+      id: number;
+      name: string;
+    };
+    roles?: {
+      role: {
+        id: number;
+        name: string;
+      };
+      user: {
+        id: number;
+        name: string;
+        surname: string;
+      };
+    }[];
   }[];
 } & PaginationData;
 export type GetCampaignsApiArg = {
@@ -2641,6 +2669,10 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
     id: number;
     name: string;
   };
+  phase: {
+    id: number;
+    name: string;
+  };
 };
 export type GetDossiersByCampaignApiArg = {
   /** A campaign id */
@@ -2689,6 +2721,24 @@ export type GetProductTypesApiResponse = /** status 200 OK */ {
   }[];
 };
 export type GetProductTypesApiArg = void;
+export type GetPhasesApiResponse = /** status 200 OK */ {
+  results: {
+    id: number;
+    name: string;
+  }[];
+};
+export type GetPhasesApiArg = void;
+export type PutDossiersByCampaignPhasesApiResponse = /** status 200 OK */ {
+  id: number;
+  name: string;
+};
+export type PutDossiersByCampaignPhasesApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    phase: number;
+  };
+};
 export type Agreement = {
   title: string;
   tokens: number;
@@ -3082,4 +3132,6 @@ export const {
   useGetUsersByRoleByRoleQuery,
   useGetBrowsersQuery,
   useGetProductTypesQuery,
+  useGetPhasesQuery,
+  usePutDossiersByCampaignPhasesMutation,
 } = injectedRtkApi;
