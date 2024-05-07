@@ -2725,6 +2725,10 @@ export type GetPhasesApiResponse = /** status 200 OK */ {
   results: {
     id: number;
     name: string;
+    type: {
+      id: number;
+      name: string;
+    };
   }[];
 };
 export type GetPhasesApiArg = void;

@@ -1,5 +1,10 @@
-import { Button, Skeleton, Text } from "@appquality/appquality-design-system";
-import { useEffect } from "react";
+import {
+  Button,
+  Dropdown,
+  Skeleton,
+  Text,
+} from "@appquality/appquality-design-system";
+import { useEffect, useMemo, useState } from "react";
 import {
   GetCampaignsApiArg,
   GetCampaignsApiResponse,
@@ -41,7 +46,7 @@ const useCampaigns = (options?: {
   order?: GetCampaignsApiArg["order"];
   orderBy?: GetCampaignsApiArg["orderBy"];
 }) => {
-  const LIMIT = 100;
+  const LIMIT = 20;
   const { page, filters, order } = useFiltersCardContext();
   const { isLoading, data, refetch } = useGetCampaignsQuery({
     limit: LIMIT,
@@ -214,32 +219,61 @@ const useCampaigns = (options?: {
   };
 };
 
+const PhaseDropdownWrapper = styled.div`
+  .phase-dropdown {
+    width: 100%;
+  }
+`;
+
 const PhaseSelector = ({ campaign }: { campaign: Campaign }) => {
+  const [value, setValue] = useState<string | undefined>(
+    campaign.phase.id.toString()
+  );
   const { data, isLoading } = useGetPhasesQuery();
   const [updatePhase] = usePutDossiersByCampaignPhasesMutation();
+
+  const options = useMemo(() => {
+    if (!data?.results) return [];
+
+    return Object.values(
+      data.results.reduce((acc, phase) => {
+        const phaseType = phase.type.id;
+
+        if (!acc[phaseType]) {
+          acc[phaseType] = { options: [], label: phase.type.name };
+        }
+
+        acc[phaseType].options.push({
+          value: phase.id.toString(),
+          label: phase.name,
+        });
+        return acc;
+      }, {} as { [key: string]: { options: { value: string; label: string }[]; label: string } })
+    );
+  }, [data?.results]);
 
   if (isLoading || !data || !data.results) return <Skeleton />;
 
   return (
-    <select
-      key={`phase-select-${campaign.id}`}
-      onChange={(e) => {
-        updatePhase({
-          campaign: campaign.id.toString(),
-          body: { phase: Number(e.target.value) },
-        });
-      }}
-    >
-      {data.results.map((opt) => (
-        <option
-          key={`phase-opt-${campaign.id}-${opt.id}`}
-          value={opt.id}
-          selected={opt.id === campaign.phase.id}
-        >
-          {opt.name}
-        </option>
-      ))}
-    </select>
+    <PhaseDropdownWrapper>
+      <Dropdown
+        name={`phase-${campaign.id}`}
+        id={`phase-${campaign.id}`}
+        className="phase-dropdown"
+        options={options}
+        value={options.flatMap((g) => g.options).find((o) => o.value === value)}
+        onChange={(option) => {
+          if (!option) return;
+          setValue(option.value);
+          updatePhase({
+            campaign: campaign.id.toString(),
+            body: {
+              phase: parseInt(option.value),
+            },
+          });
+        }}
+      />
+    </PhaseDropdownWrapper>
   );
 };
 
