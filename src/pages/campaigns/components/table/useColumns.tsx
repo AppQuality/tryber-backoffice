@@ -70,6 +70,7 @@ const useColumns = (): TableType.Column[] => {
       title: "Status",
       dataIndex: "phase",
       key: "phase",
+      maxWidth: "23ch",
     },
     {
       title: "Actions",

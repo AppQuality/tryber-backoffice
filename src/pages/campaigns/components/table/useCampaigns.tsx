@@ -1,24 +1,18 @@
-import {
-  Button,
-  Dropdown,
-  Skeleton,
-  Text,
-} from "@appquality/appquality-design-system";
-import { useEffect, useMemo, useState } from "react";
+import { Button, Skeleton, Text } from "@appquality/appquality-design-system";
+import { useEffect } from "react";
 import {
   GetCampaignsApiArg,
-  GetCampaignsApiResponse,
   useGetCampaignsQuery,
-  useGetPhasesQuery,
-  usePutDossiersByCampaignPhasesMutation,
 } from "src/services/tryberApi";
 import openInWordpress from "src/utils/openInWordpress";
 import styled from "styled-components";
 import BugType from "./BugTypeIcon";
 import { useFiltersCardContext } from "./FilterContext";
+import { PhaseSelector } from "./PhaseSelector";
 import ResultTypeIcon from "./ResultTypeIcon";
 import StatusIcon from "./StatusIcon";
 import VisibilityIcon from "./VisibilityIcon";
+import { Campaign } from "./types";
 
 const formatDateTime = (dateTime: string) => {
   const date = new Date(dateTime.split(" ")[0]).toLocaleDateString("it-IT", {
@@ -33,12 +27,6 @@ const formatDateTime = (dateTime: string) => {
 const TableButton = styled(Button)`
   padding: 0;
 `;
-type Item = NonNullable<GetCampaignsApiResponse["items"]>[number];
-
-type Must<T> = {
-  [P in keyof T]-?: NonNullable<T[P]>;
-};
-type Campaign = Must<Item>;
 
 const useCampaigns = (options?: {
   mine: boolean;
@@ -217,64 +205,6 @@ const useCampaigns = (options?: {
         };
       }),
   };
-};
-
-const PhaseDropdownWrapper = styled.div`
-  .phase-dropdown {
-    width: 100%;
-  }
-`;
-
-const PhaseSelector = ({ campaign }: { campaign: Campaign }) => {
-  const [value, setValue] = useState<string | undefined>(
-    campaign.phase.id.toString()
-  );
-  const { data, isLoading } = useGetPhasesQuery();
-  const [updatePhase] = usePutDossiersByCampaignPhasesMutation();
-
-  const options = useMemo(() => {
-    if (!data?.results) return [];
-
-    return Object.values(
-      data.results.reduce((acc, phase) => {
-        const phaseType = phase.type.id;
-
-        if (!acc[phaseType]) {
-          acc[phaseType] = { options: [], label: phase.type.name };
-        }
-
-        acc[phaseType].options.push({
-          value: phase.id.toString(),
-          label: phase.name,
-        });
-        return acc;
-      }, {} as { [key: string]: { options: { value: string; label: string }[]; label: string } })
-    );
-  }, [data?.results]);
-
-  if (isLoading || !data || !data.results) return <Skeleton />;
-
-  return (
-    <PhaseDropdownWrapper>
-      <Dropdown
-        name={`phase-${campaign.id}`}
-        id={`phase-${campaign.id}`}
-        className="phase-dropdown"
-        options={options}
-        value={options.flatMap((g) => g.options).find((o) => o.value === value)}
-        onChange={(option) => {
-          if (!option) return;
-          setValue(option.value);
-          updatePhase({
-            campaign: campaign.id.toString(),
-            body: {
-              phase: parseInt(option.value),
-            },
-          });
-        }}
-      />
-    </PhaseDropdownWrapper>
-  );
 };
 
 export default useCampaigns;
