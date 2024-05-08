@@ -84,6 +84,13 @@ const FormProvider = ({
 
   if (isLoading || !data) return null;
 
+  // dates default values
+  const startDate = new Date();
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 2);
+  const closeDate = new Date(endDate);
+  closeDate.setDate(endDate.getDate() + 10);
+
   const initialValues: NewCampaignValues = {
     isEdit: isEdit || false,
     projectId: dossier?.project.id.toString() || "",
@@ -98,11 +105,17 @@ const FormProvider = ({
     testType: dossier?.testType.id.toString() || "",
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
-    startDate: dossier?.startDate ? formatDate(dossier.startDate) : "",
+    startDate: dossier?.startDate
+      ? formatDate(dossier.startDate)
+      : formatDate(startDate.toISOString()),
     startTime: dossier?.startDate ? formatTime(dossier.startDate) : "09:00",
-    endDate: dossier?.endDate ? formatDate(dossier.endDate) : "",
+    endDate: dossier?.endDate
+      ? formatDate(dossier.endDate)
+      : formatDate(endDate.toISOString()),
     endTime: dossier?.endDate ? formatTime(dossier.endDate) : "23:59",
-    closeDate: dossier?.closeDate ? formatDate(dossier.closeDate) : "",
+    closeDate: dossier?.closeDate
+      ? formatDate(dossier.closeDate)
+      : formatDate(closeDate.toISOString()),
     closeTime: dossier?.closeDate ? formatTime(dossier.closeDate) : "23:59",
     deviceTypes: selectedTypes,
     deviceList: selectedDevices,
