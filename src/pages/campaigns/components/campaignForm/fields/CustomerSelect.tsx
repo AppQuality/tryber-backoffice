@@ -167,11 +167,11 @@ const ProjectSelect = ({ customerId }: { customerId: string }) => {
     <>
       <SelectField
         name="projectId"
-        label="Project *"
+        label="Project"
+        required
         options={options}
         onCreateOption={createOption}
         placeholder="start typing to create or select"
-        notes="You can select or create a project by writing the name in the field"
       />
     </>
   );
