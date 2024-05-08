@@ -25,7 +25,15 @@ const CloseDatePicker = () => {
       <FormikField name="closeDate">
         {({ field, meta }: FieldProps) => (
           <FormGroup>
-            <FormLabel htmlFor={field.name} label="Close Date *" />
+            <FormLabel
+              htmlFor={field.name}
+              label={
+                <>
+                  <span>Close date</span>{" "}
+                  <span className="aq-text-danger">*</span>
+                </>
+              }
+            />
             <DateInput
               name={field.name}
               value={field.value}
@@ -38,7 +46,15 @@ const CloseDatePicker = () => {
       <FormikField name="closeTime">
         {({ field, meta }: FieldProps) => (
           <FormGroup>
-            <FormLabel htmlFor={field.name} label="Close Time *" />
+            <FormLabel
+              htmlFor={field.name}
+              label={
+                <>
+                  <span>Close time</span>{" "}
+                  <span className="aq-text-danger">*</span>
+                </>
+              }
+            />
             <Datepicker
               key={field.name}
               control="time"

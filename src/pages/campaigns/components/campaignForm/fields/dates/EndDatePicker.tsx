@@ -25,7 +25,15 @@ const EndDatePicker = () => {
       <FormikField name="endDate">
         {({ field, meta }: FieldProps) => (
           <FormGroup>
-            <FormLabel htmlFor={field.name} label="End Date *" />
+            <FormLabel
+              htmlFor={field.name}
+              label={
+                <>
+                  <span>End date</span>{" "}
+                  <span className="aq-text-danger">*</span>
+                </>
+              }
+            />
             <DateInput
               name={field.name}
               value={field.value}
@@ -39,7 +47,15 @@ const EndDatePicker = () => {
       <FormikField name="endTime">
         {({ field, meta }: FieldProps) => (
           <FormGroup>
-            <FormLabel htmlFor={field.name} label="End Time *" />
+            <FormLabel
+              htmlFor={field.name}
+              label={
+                <>
+                  <span>End time</span>{" "}
+                  <span className="aq-text-danger">*</span>
+                </>
+              }
+            />
             <Datepicker
               key={field.name}
               control="time"

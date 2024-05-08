@@ -25,6 +25,7 @@ export interface SelectProps {
   placeholder?: string;
   onCreateOption?: (inputValue: string) => Promise<void>;
   notes?: string;
+  required?: boolean;
 }
 
 export const SelectField = ({
@@ -36,6 +37,7 @@ export const SelectField = ({
   onCreateOption,
   notes,
   placeholder,
+  required,
 }: SelectProps) => {
   const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const currentValue = values[name];
@@ -72,7 +74,15 @@ export const SelectField = ({
     <FormikField name={name}>
       {({ field }: FieldProps<string>) => (
         <FormGroup>
-          <FormLabel htmlFor={field.name} label={label} />
+          <FormLabel
+            htmlFor={field.name}
+            label={
+              <>
+                <span>{label}</span>{" "}
+                {required && <span className="aq-text-danger">*</span>}
+              </>
+            }
+          />
           <Dropdown
             isMulti={isMulti}
             isClearable

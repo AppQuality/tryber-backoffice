@@ -24,7 +24,15 @@ const InputField = ({ name, label, type = "text", ...props }: InputProps) => {
         };
         return (
           <FormGroup>
-            <FormLabel htmlFor={field.name} label={label} />
+            <FormLabel
+              htmlFor={field.name}
+              label={
+                <>
+                  <span>{label}</span>{" "}
+                  {props.required && <span className="aq-text-danger">*</span>}
+                </>
+              }
+            />
             <Input
               id={field.name}
               type={type}

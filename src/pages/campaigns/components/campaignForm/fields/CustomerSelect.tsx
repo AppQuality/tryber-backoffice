@@ -95,25 +95,29 @@ const CustomerSelectWithPermission = () => {
         <SelectField
           name="customerId"
           options={options}
-          label="Customer *"
+          label="Customer"
+          required
           onCreateOption={createOption}
-          placeholder="start typing to create or select"
-          notes="You can select or create a customer by writing the name in the field"
+          placeholder="Start typing to select or add"
         />
       </div>
       {values.customerId ? (
         <ProjectSelect customerId={values.customerId} />
       ) : (
         <div>
-          <FormLabel label="Project *" htmlFor="" />
+          <FormLabel
+            label={
+              <>
+                <span>Project</span> <span className="aq-text-danger">*</span>
+              </>
+            }
+            htmlFor=""
+          />
           <Dropdown
             className="aq-mb-2"
             isDisabled
-            placeholder="Select a customer"
+            placeholder="Start typing to select or add"
           />
-          <Text small>
-            Please select or create a customer to choose a project
-          </Text>
           <ErrorMessage name="projectId" />
         </div>
       )}
