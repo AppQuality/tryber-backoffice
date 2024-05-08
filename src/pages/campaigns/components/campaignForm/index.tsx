@@ -7,6 +7,7 @@ import {
   TextareaField,
   Title,
   Text,
+  FormLabel,
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import {
@@ -107,12 +108,27 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <Title size="s" className="aq-mb-2 aq-pt-4">
                   Give some context to your co-workers
                 </Title>
-                <TextareaField
-                  name="description"
-                  label="Campaign Description"
-                  placeholder="Verrà testato il prodotto [nome prodotto, tipologia del prodotto] attraverso un test di [tipologia di test]. 
+                <FieldWrapper>
+                  <TextareaField
+                    name="description"
+                    label="Campaign Description"
+                    placeholder="Verrà testato il prodotto [nome prodotto, tipologia del prodotto] attraverso un test di [tipologia di test]. 
                   Il suo scopo principale è [in che modo il prodotto migliora la vita delle persone]."
-                />
+                  />
+                  <div>
+                    <FormLabel
+                      htmlFor=""
+                      label="Who is going to see this description?"
+                    />
+                    <Card>
+                      <Title size="s" className="aq-mb-2 aq-text-info">
+                        Use this field to describe the campaign to PMs, TLs and
+                        Researcher
+                      </Title>
+                      <Text>Customers and Trybers will NOT see it</Text>
+                    </Card>
+                  </div>
+                </FieldWrapper>
               </Card>
               <Card className="aq-mb-4" title="Who is the client?">
                 <Title size="s" className="aq-mb-2">
