@@ -156,10 +156,6 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     </Title>
                   )}
                 </FieldWrapper>
-                <Title size="s" className="aq-mb-2 aq-pt-4">
-                  Define closing date <span className="aq-text-danger">*</span>
-                </Title>
-                <FieldWrapper></FieldWrapper>
               </Card>
             </Section>
             <Section
@@ -209,9 +205,14 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 </Title>
                 <FieldWrapper>
                   <TextareaField
+                    name="goal"
+                    label="Test Perimeter"
+                    placeholder="The test will cover..."
+                  />
+                  <TextareaField
                     name="outOfScope"
                     label="Out of scope"
-                    placeholder="The test will not cover..."
+                    placeholder="The test will NOT cover..."
                   />
                 </FieldWrapper>
               </Card>
