@@ -8,6 +8,7 @@ import {
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { ChangeEvent, useCallback } from "react";
 import { NewCampaignValues } from "../../FormProvider";
+import { DateTimeFieldWrapper } from "../FieldWrapper";
 
 const CloseDatePicker = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
@@ -21,9 +22,9 @@ const CloseDatePicker = () => {
     [setFieldValue]
   );
   return (
-    <>
+    <DateTimeFieldWrapper>
       <FormikField name="closeDate">
-        {({ field, meta }: FieldProps) => (
+        {({ field, meta, form: { values } }: FieldProps) => (
           <FormGroup>
             <FormLabel
               htmlFor={field.name}
@@ -38,13 +39,14 @@ const CloseDatePicker = () => {
               name={field.name}
               value={field.value}
               onChange={handleChange}
+              disabled={!values.isEdit}
             />
             {meta.error && meta.touched && <ErrorMessage name={field.name} />}
           </FormGroup>
         )}
       </FormikField>
       <FormikField name="closeTime">
-        {({ field, meta }: FieldProps) => (
+        {({ field, meta, form: { values } }: FieldProps) => (
           <FormGroup>
             <FormLabel
               htmlFor={field.name}
@@ -61,12 +63,13 @@ const CloseDatePicker = () => {
               id={field.name}
               value={field.value}
               onChange={handleTimeChange}
+              disabled={!values.isEdit}
             />
             {meta.error && meta.touched && <ErrorMessage name={field.name} />}
           </FormGroup>
         )}
       </FormikField>
-    </>
+    </DateTimeFieldWrapper>
   );
 };
 

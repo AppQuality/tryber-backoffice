@@ -149,13 +149,17 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <FieldWrapper>
                   <StartDatePicker />
                   <EndDatePicker />
+                  <CloseDatePicker />
+                  {!isEdit && (
+                    <Title size="s" className="aq-text-info aq-pt-2 aq-mt-4">
+                      💡 Close date has been auto-generated
+                    </Title>
+                  )}
                 </FieldWrapper>
                 <Title size="s" className="aq-mb-2 aq-pt-4">
                   Define closing date <span className="aq-text-danger">*</span>
                 </Title>
-                <FieldWrapper>
-                  <CloseDatePicker />
-                </FieldWrapper>
+                <FieldWrapper></FieldWrapper>
               </Card>
             </Section>
             <Section

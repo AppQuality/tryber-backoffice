@@ -8,11 +8,18 @@ import {
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { ChangeEvent, useCallback } from "react";
 import { NewCampaignValues } from "../../FormProvider";
+import { DateTimeFieldWrapper } from "../FieldWrapper";
 
 const EndDatePicker = () => {
-  const { setFieldValue } = useFormikContext<NewCampaignValues>();
+  const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFieldValue("endDate", e.target.value);
+    // if isEdit is false, set closeDate to 10 days after the end date
+    if (!values.isEdit) {
+      const endDate = new Date(e.target.value);
+      endDate.setDate(endDate.getDate() + 10);
+      setFieldValue("closeDate", endDate.toISOString().split("T")[0]);
+    }
   };
   const handleTimeChange = useCallback(
     ({ valueText }: { valueText: string }) => {
@@ -21,7 +28,7 @@ const EndDatePicker = () => {
     [setFieldValue]
   );
   return (
-    <>
+    <DateTimeFieldWrapper>
       <FormikField name="endDate">
         {({ field, meta }: FieldProps) => (
           <FormGroup>
@@ -67,7 +74,7 @@ const EndDatePicker = () => {
           </FormGroup>
         )}
       </FormikField>
-    </>
+    </DateTimeFieldWrapper>
   );
 };
 

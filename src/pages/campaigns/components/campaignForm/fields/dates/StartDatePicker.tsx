@@ -8,6 +8,7 @@ import {
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { ChangeEvent, useCallback } from "react";
 import { NewCampaignValues } from "../../FormProvider";
+import { DateTimeFieldWrapper } from "../FieldWrapper";
 
 const StartDatePicker = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
@@ -24,7 +25,7 @@ const StartDatePicker = () => {
     [setFieldValue]
   );
   return (
-    <>
+    <DateTimeFieldWrapper>
       <FormikField name="startDate">
         {({ field, meta }: FieldProps) => (
           <FormGroup>
@@ -69,7 +70,7 @@ const StartDatePicker = () => {
           </FormGroup>
         )}
       </FormikField>
-    </>
+    </DateTimeFieldWrapper>
   );
 };
 
