@@ -120,20 +120,19 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                       htmlFor=""
                       label="Who is going to see this description?"
                     />
-                    <Card>
-                      <Title size="s" className="aq-mb-2 aq-text-info">
-                        Use this field to describe the campaign to PMs, TLs and
-                        Researcher
-                      </Title>
-                      <Text>Customers and Trybers will NOT see it</Text>
-                    </Card>
+                    <Title size="s" className="aq-mb-1 aq-text-info">
+                      💡 Use this field to describe the campaign to PMs, TLs and
+                      Researcher
+                    </Title>
+                    <Text>Customers and Trybers will NOT see it</Text>
                   </div>
                 </FieldWrapper>
               </Card>
-              <Card className="aq-mb-4" title="Who is the client?">
+              <Card className="aq-mb-4" title="Who is the customer?">
                 <Title size="s" className="aq-mb-2">
-                  Choose or create new customer/project{" "}
+                  Choose new customer/project{" "}
                   <span className="aq-text-danger">*</span>
+                  <span className="aq-text-info"> (💡or create new ones)</span>
                 </Title>
                 <FieldWrapper>
                   <CustomerSelect dossier={dossier} />
@@ -173,9 +172,9 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 </Title>
                 <FieldWrapper>
                   <CsmSelect dossier={dossier} />
-                  <ResearcherSelect dossier={dossier} />
                   <PmSelect dossier={dossier} />
                 </FieldWrapper>
+                <ResearcherSelect dossier={dossier} />
                 <Title size="s" className="aq-mb-2 aq-pt-4">
                   Select Tryber Assistants
                 </Title>
@@ -244,7 +243,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <InputField
                   type="number"
                   name="targetSize"
-                  label="Target Size"
+                  label="Number of participants"
                   style={{ maxWidth: "225px" }}
                 />
                 <FieldWrapper>

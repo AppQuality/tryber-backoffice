@@ -82,6 +82,7 @@ const LanguageSelect = () => {
             isMulti
             value={getValue()}
             onChange={handleChange}
+            placeholder="Start typing to select"
           />
           <ErrorMessage name={field.name} />
         </FormGroup>

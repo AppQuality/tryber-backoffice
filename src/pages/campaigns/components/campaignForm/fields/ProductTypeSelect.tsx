@@ -29,6 +29,7 @@ const ProductType = () => {
             name={field.name}
             value={options.find((o) => field.value === o.value)}
             onChange={(v) => v && setFieldValue(field.name, v.value)}
+            placeholder="Start typing to select"
           />
           <ErrorMessage name={field.name} />
         </FormGroup>

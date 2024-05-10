@@ -81,6 +81,7 @@ const TlSelectWithPermission = () => {
                 value.map((v) => v.value)
               )
             }
+            placeholder="Start typing to select"
           />
           <ErrorMessage name={field.name} />
         </FormGroup>
