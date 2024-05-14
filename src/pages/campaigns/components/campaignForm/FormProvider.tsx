@@ -1,6 +1,7 @@
 import { Formik } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+import { useHistory } from "react-router-dom";
 import {
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
@@ -11,7 +12,6 @@ import {
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
-import { useCampaignFormContext } from "./campaignFormContext";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
 
@@ -48,7 +48,7 @@ export interface NewCampaignValues {
   outOfScope?: string;
   deviceRequirements?: string;
   targetNotes?: string;
-  targetSize?: number;
+  targetSize?: string;
   browsersList?: string[];
   productType?: string;
 }
@@ -60,7 +60,7 @@ const FormProvider = ({
   duplicate,
 }: FormProviderInterface) => {
   const dispatch = useAppDispatch();
-  const { setIsCreating } = useCampaignFormContext();
+  const history = useHistory();
   const [postDossiers] = usePostDossiersMutation();
   const [putDossiers] = usePutDossiersByCampaignMutation();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
@@ -84,6 +84,13 @@ const FormProvider = ({
 
   if (isLoading || !data) return null;
 
+  // dates default values
+  const startDate = new Date();
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 2);
+  const closeDate = new Date(endDate);
+  closeDate.setDate(endDate.getDate() + 10);
+
   const initialValues: NewCampaignValues = {
     isEdit: isEdit || false,
     projectId: dossier?.project.id.toString() || "",
@@ -98,11 +105,17 @@ const FormProvider = ({
     testType: dossier?.testType.id.toString() || "",
     customerTitle: dossier?.title.customer || "",
     testerTitle: dossier?.title.tester || "",
-    startDate: dossier?.startDate ? formatDate(dossier.startDate) : "",
+    startDate: dossier?.startDate
+      ? formatDate(dossier.startDate)
+      : formatDate(startDate.toISOString()),
     startTime: dossier?.startDate ? formatTime(dossier.startDate) : "09:00",
-    endDate: dossier?.endDate ? formatDate(dossier.endDate) : "",
+    endDate: dossier?.endDate
+      ? formatDate(dossier.endDate)
+      : formatDate(endDate.toISOString()),
     endTime: dossier?.endDate ? formatTime(dossier.endDate) : "23:59",
-    closeDate: dossier?.closeDate ? formatDate(dossier.closeDate) : "",
+    closeDate: dossier?.closeDate
+      ? formatDate(dossier.closeDate)
+      : formatDate(closeDate.toISOString()),
     closeTime: dossier?.closeDate ? formatTime(dossier.closeDate) : "23:59",
     deviceTypes: selectedTypes,
     deviceList: selectedDevices,
@@ -114,7 +127,7 @@ const FormProvider = ({
     outOfScope: dossier?.outOfScope || "",
     deviceRequirements: dossier?.deviceRequirements || "",
     targetNotes: dossier?.target?.notes || "",
-    targetSize: dossier?.target?.size || 0,
+    targetSize: dossier?.target?.size?.toString(),
     browsersList:
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
@@ -155,7 +168,8 @@ const FormProvider = ({
       initialValues={initialValues}
       enableReinitialize
       validationSchema={validationSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, action) => {
+        action.setSubmitting(true);
         let roles = [];
         if (values.pm) {
           roles.push({ role: 1, user: parseInt(values.pm) });
@@ -195,7 +209,9 @@ const FormProvider = ({
             deviceRequirements: values.deviceRequirements,
             target: {
               notes: values.targetNotes,
-              size: values.targetSize,
+              size: !!values.targetSize
+                ? parseInt(values.targetSize)
+                : undefined,
             },
             browsers: values.browsersList?.map((browser) =>
               parseInt(browser, 10)
@@ -211,22 +227,16 @@ const FormProvider = ({
               dossierCreationData: body,
             }).unwrap();
           } else {
-            setIsCreating(true);
-
             const resp = await postDossiers({
               body: {
                 ...body,
                 duplicate: duplicate,
               },
             }).unwrap();
-
-            window.parent.postMessage(
-              JSON.stringify({
-                type: "go-to-edit",
-                id: resp.id,
-              }),
-              "*"
-            );
+            if (!resp.id) {
+              throw new Error("An error has occurred. Please try again.");
+            }
+            history.push(`/backoffice/campaigns/new/success/`, { id: resp.id });
           }
         } catch (e) {
           dispatch(
@@ -237,7 +247,7 @@ const FormProvider = ({
             )
           );
         }
-        setIsCreating(false);
+        action.setSubmitting(false);
       }}
     >
       {children}

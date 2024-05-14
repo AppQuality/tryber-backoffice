@@ -17,17 +17,22 @@ const InputField = ({ name, label, type = "text", ...props }: InputProps) => {
     <FormikField name={name}>
       {({ field, form, meta }: FieldProps) => {
         const handleChange = (val: string) => {
-          form.setFieldValue(
-            field.name,
-            type === "number" ? parseInt(val || "0") : val
-          );
+          form.setFieldValue(field.name, val);
         };
         const handleBlur = () => {
           form.setFieldTouched(field.name, true);
         };
         return (
           <FormGroup>
-            <FormLabel htmlFor={field.name} label={label} />
+            <FormLabel
+              htmlFor={field.name}
+              label={
+                <>
+                  <span>{label}</span>{" "}
+                  {props.required && <span className="aq-text-danger">*</span>}
+                </>
+              }
+            />
             <Input
               id={field.name}
               type={type}

@@ -4,6 +4,7 @@ import {
   FieldProps,
   FormGroup,
   FormLabel,
+  Text,
   FormikField,
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
@@ -23,6 +24,8 @@ export interface SelectProps {
   isDisabled?: boolean;
   placeholder?: string;
   onCreateOption?: (inputValue: string) => Promise<void>;
+  notes?: string;
+  required?: boolean;
 }
 
 export const SelectField = ({
@@ -32,7 +35,9 @@ export const SelectField = ({
   isMulti,
   isDisabled,
   onCreateOption,
+  notes,
   placeholder,
+  required,
 }: SelectProps) => {
   const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const currentValue = values[name];
@@ -69,7 +74,15 @@ export const SelectField = ({
     <FormikField name={name}>
       {({ field }: FieldProps<string>) => (
         <FormGroup>
-          <FormLabel htmlFor={field.name} label={label} />
+          <FormLabel
+            htmlFor={field.name}
+            label={
+              <>
+                <span>{label}</span>{" "}
+                {required && <span className="aq-text-danger">*</span>}
+              </>
+            }
+          />
           <Dropdown
             isMulti={isMulti}
             isClearable
@@ -82,6 +95,11 @@ export const SelectField = ({
             onCreateOption={onCreateOption}
             placeholder={placeholder || "Select an option"}
           />
+          {notes && (
+            <Text small className="aq-mt-2">
+              {notes}
+            </Text>
+          )}
           <ErrorMessage name={field.name} />
         </FormGroup>
       )}

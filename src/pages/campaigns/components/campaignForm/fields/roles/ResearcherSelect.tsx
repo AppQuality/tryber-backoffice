@@ -77,6 +77,7 @@ const ResearcherSelectWithPermission = () => {
         name="researcher"
         label="Researcher"
         options={options}
+        placeholder="Start typing to select"
       />
     </>
   );

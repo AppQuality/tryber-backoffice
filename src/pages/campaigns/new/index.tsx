@@ -6,6 +6,7 @@ import {
   useGetDossiersByCampaignQuery,
 } from "src/services/tryberApi";
 import CampaignForm from "../components/campaignForm";
+import { Container, PageTitle } from "@appquality/appquality-design-system";
 
 const NewCampaign = () => {
   const { search } = useLocation();
@@ -18,22 +19,34 @@ const NewCampaign = () => {
   const duplicateTesters = searchParams.get("duplicateTesters");
   return (
     <PageTemplate>
-      {duplicateFrom ? (
-        <DuplicateCampaignForm
-          dossierId={duplicateFrom}
-          duplicate={{
-            ...(duplicateUseCases && { useCases: parseInt(duplicateUseCases) }),
-            ...(duplicateFields && { fields: parseInt(duplicateFields) }),
-            ...(duplicateMailmerges && {
-              mailMerges: parseInt(duplicateMailmerges),
-            }),
-            ...(duplicatePages && { pages: parseInt(duplicatePages) }),
-            ...(duplicateTesters && { testers: parseInt(duplicateTesters) }),
+      <Container>
+        <PageTitle
+          back={{
+            text: "Go back to campaigns list",
+            navigation: "/wp-admin/admin.php?page=mvc_campaigns",
           }}
-        />
-      ) : (
-        <CampaignForm />
-      )}
+        >
+          New Campaign
+        </PageTitle>
+        {duplicateFrom ? (
+          <DuplicateCampaignForm
+            dossierId={duplicateFrom}
+            duplicate={{
+              ...(duplicateUseCases && {
+                useCases: parseInt(duplicateUseCases),
+              }),
+              ...(duplicateFields && { fields: parseInt(duplicateFields) }),
+              ...(duplicateMailmerges && {
+                mailMerges: parseInt(duplicateMailmerges),
+              }),
+              ...(duplicatePages && { pages: parseInt(duplicatePages) }),
+              ...(duplicateTesters && { testers: parseInt(duplicateTesters) }),
+            }}
+          />
+        ) : (
+          <CampaignForm />
+        )}
+      </Container>
     </PageTemplate>
   );
 };

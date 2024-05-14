@@ -61,7 +61,14 @@ const PmSelectWithPermission = () => {
     [pm]
   );
 
-  return <SelectField name="pm" label="PM" options={options} />;
+  return (
+    <SelectField
+      name="pm"
+      label="PM"
+      options={options}
+      placeholder="Start typing to select"
+    />
+  );
 };
 
 export default PmSelect;

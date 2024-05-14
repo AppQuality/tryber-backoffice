@@ -56,7 +56,15 @@ const CsmSelectWithPermission = () => {
     [csm]
   );
 
-  return <SelectField name="csm" label="CSM" options={options} />;
+  return (
+    <SelectField
+      name="csm"
+      label="CSM"
+      options={options}
+      required
+      placeholder="Start typing to select"
+    />
+  );
 };
 
 export default CsmSelect;

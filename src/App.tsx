@@ -21,6 +21,7 @@ import SingleAgreementNew from "./pages/agreements/new";
 import SingleAgreementEdit from "./pages/agreements/view-edit";
 import Campaigns from "./pages/campaigns";
 import NewCampaign from "./pages/campaigns/new";
+import NewCampaignSuccess from "./pages/campaigns/new/Success";
 import EditCampaign from "./pages/campaigns/edit";
 import CampaignPreselectionList from "./pages/campaigns/preselectionFormList";
 import SelectionPage from "./pages/campaigns/selection";
@@ -60,6 +61,10 @@ function App() {
               <SentryRoute
                 path="/backoffice/campaigns/preselection-forms"
                 component={CampaignPreselectionList}
+              />
+              <SentryRoute
+                path="/backoffice/campaigns/new/success"
+                component={NewCampaignSuccess}
               />
               <SentryRoute
                 path="/backoffice/campaigns/new"

@@ -23,12 +23,13 @@ const ProductType = () => {
     <FormikField name="productType">
       {({ field }: FieldProps) => (
         <FormGroup>
-          <FormLabel htmlFor={field.name} label="Product type *" />
+          <FormLabel htmlFor={field.name} label="Product type" />
           <Dropdown
             options={options}
             name={field.name}
             value={options.find((o) => field.value === o.value)}
             onChange={(v) => v && setFieldValue(field.name, v.value)}
+            placeholder="Start typing to select"
           />
           <ErrorMessage name={field.name} />
         </FormGroup>
