@@ -8,7 +8,7 @@ type Filters = {
   type?: number[];
   status?: number;
   csm?: number;
-  pm?: number;
+  pm?: number | "empty";
 };
 
 const DefaultOrder: {

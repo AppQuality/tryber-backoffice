@@ -31,11 +31,13 @@ const FilterByPm = () => {
       isClearable={false}
       options={[
         { value: "mine", label: "Managed by me" },
+        { value: "empty", label: "Without pm" },
         { value: "all", label: "Any pm" },
         ...options,
       ]}
       onChange={(item) => {
         if (item.value === "mine") setFilters({ pm: myId });
+        else if (item.value === "empty") setFilters({ pm: "empty" });
         else if (item.value === "all") setFilters({ pm: undefined });
         else setFilters({ pm: Number(item.value) });
       }}
