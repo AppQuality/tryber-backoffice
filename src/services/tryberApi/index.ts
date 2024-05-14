@@ -139,6 +139,7 @@ const injectedRtkApi = api.injectEndpoints({
           filterByInclude: queryArg.filterByInclude,
           filterByExclude: queryArg.filterByExclude,
           filterByAge: queryArg.filterByAge,
+          show: queryArg.show,
         },
       }),
     }),
@@ -1141,6 +1142,8 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   filterByExclude?: any;
   /** Array with min and max */
   filterByAge?: any;
+  /** Show accepted/candidates or both */
+  show?: "onlyAccepted" | "onlyCandidates" | "all";
 };
 export type GetCampaignsByCampaignClustersApiResponse =
   /** status 200 A UseCase linked with the Campaign */ {
