@@ -5,6 +5,7 @@ import {
   Card,
   Form,
   FormLabel,
+  Skeleton,
   Text,
   TextareaField,
   Title,
@@ -13,8 +14,10 @@ import { useFormikContext } from "formik";
 import {
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
+  useGetDossiersByCampaignQuery,
 } from "src/services/tryberApi";
 import { styled } from "styled-components";
+import { PhaseSelector } from "../PhaseSelector";
 import FocusError from "./FocusError";
 import FormProvider, { NewCampaignValues } from "./FormProvider";
 import { Section } from "./Section";
@@ -50,10 +53,24 @@ const StickyContainer = styled.div`
   }
 `;
 
-const Submit = () => {
+const Phase = ({ id }: { id: number }) => {
+  const { data, isLoading } = useGetDossiersByCampaignQuery({
+    campaign: id.toString(),
+  });
+  if (isLoading) return <Skeleton />;
+  if (!data) return null;
+  return (
+    <div className="aq-mb-3" style={{ position: "relative", zIndex: 10 }}>
+      <PhaseSelector campaign={data} />
+    </div>
+  );
+};
+
+const Submit = ({ dossier }: { dossier: FormProps["dossier"] }) => {
   const { submitForm, values } = useFormikContext<NewCampaignValues>();
   return (
     <>
+      {values.isEdit && dossier && <Phase id={dossier.id} />}
       <Button type="submit" size="block" onClick={submitForm}>
         {values.isEdit ? "Save" : "Save as Draft"}
       </Button>
@@ -287,7 +304,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
         <BSCol size="col-lg-3">
           <StickyContainer>
             <Card title="Azioni" className="aq-mb-3">
-              <Submit />
+              <Submit dossier={dossier} />
             </Card>
             <Card title="Form Sections" className="aq-mb-3">
               <Stepper />

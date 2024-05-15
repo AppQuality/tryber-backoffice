@@ -6,9 +6,9 @@ import {
 } from "src/services/tryberApi";
 import openInWordpress from "src/utils/openInWordpress";
 import styled from "styled-components";
+import { PhaseSelector } from "../PhaseSelector";
 import BugType from "./BugTypeIcon";
 import { useFiltersCardContext } from "./FilterContext";
-import { PhaseSelector } from "./PhaseSelector";
 import ResultTypeIcon from "./ResultTypeIcon";
 import StatusIcon from "./StatusIcon";
 import VisibilityIcon from "./VisibilityIcon";

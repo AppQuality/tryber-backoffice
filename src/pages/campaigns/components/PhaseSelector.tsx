@@ -9,7 +9,6 @@ import {
   usePutDossiersByCampaignPhasesMutation,
 } from "src/services/tryberApi";
 import styled from "styled-components";
-import { Campaign } from "./types";
 
 const PhaseDropdownWrapper = styled.div`
   .phase-dropdown {
@@ -58,7 +57,11 @@ const PhaseLabel = styled(PhaseLabelComponent)<{ id: number }>`
   ${({ id, theme }) => id === 100 && `color:${theme.palette.success};`}
 `;
 
-export const PhaseSelector = ({ campaign }: { campaign: Campaign }) => {
+export const PhaseSelector = ({
+  campaign,
+}: {
+  campaign: { phase: { id: number }; id: number };
+}) => {
   const [value, setValue] = useState<string | undefined>(
     campaign.phase.id.toString()
   );
