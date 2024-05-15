@@ -76,7 +76,14 @@ const DeviceMultiselect = () => {
   return (
     <>
       <FormGroup>
-        <FormLabel htmlFor="deviceTypes" label="Choose Device Type" />
+        <FormLabel
+          htmlFor="deviceTypes"
+          label={
+            <>
+              Choose Device Type <span className="aq-text-danger">*</span>
+            </>
+          }
+        />
         <Dropdown
           name="deviceTypes"
           id="deviceTypes"

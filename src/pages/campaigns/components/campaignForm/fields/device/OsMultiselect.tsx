@@ -116,7 +116,14 @@ export const OsMultiselect = ({ deviceType }: OsMultiselectProps) => {
 
   return (
     <FormGroup>
-      <FormLabel htmlFor={deviceType} label={deviceType} />
+      <FormLabel
+        htmlFor={deviceType}
+        label={
+          <>
+            {deviceType} <span className="aq-text-danger">*</span>
+          </>
+        }
+      />
       <Dropdown
         id={deviceType}
         isMulti
