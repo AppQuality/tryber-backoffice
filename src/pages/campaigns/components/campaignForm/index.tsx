@@ -4,10 +4,10 @@ import {
   Button,
   Card,
   Form,
+  FormLabel,
+  Text,
   TextareaField,
   Title,
-  Text,
-  FormLabel,
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import {
@@ -20,6 +20,7 @@ import FormProvider, { NewCampaignValues } from "./FormProvider";
 import { Section } from "./Section";
 import { Stepper } from "./Stepper";
 import { CampaignFormContext } from "./campaignFormContext";
+import FormOverlay from "./feedbackMessages/FormOverlay";
 import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
 import CustomerSelect from "./fields/CustomerSelect";
@@ -36,7 +37,6 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
-import FormOverlay from "./feedbackMessages/FormOverlay";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -265,6 +265,21 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     placeholder="The target has to..."
                   />
                 </FieldWrapper>
+              </Card>
+            </Section>
+            <Section title="Additional Notes" id="notes" subtitle="">
+              <Card
+                className="aq-mb-4"
+                title="What we need to acknowledge to successfully deliver the test?"
+              >
+                <Title size="s" className="aq-mb-2 ">
+                  Specify any operational constraint or requirements
+                </Title>
+                <TextareaField
+                  name="notes"
+                  label="Additional test notes"
+                  placeholder="The kick-off call will be on... Customers will be release on production on..."
+                />
               </Card>
             </Section>
           </Form>

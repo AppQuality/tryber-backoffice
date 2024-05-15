@@ -2673,6 +2673,7 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
     id: number;
     name: string;
   };
+  notes?: string;
 };
 export type GetDossiersByCampaignApiArg = {
   /** A campaign id */
@@ -3026,6 +3027,7 @@ export type DossierCreationData = {
   languages?: number[];
   browsers?: number[];
   productType?: number;
+  notes?: string;
 };
 export const {
   useGetQuery,

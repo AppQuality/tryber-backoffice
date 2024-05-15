@@ -1,7 +1,7 @@
 import { Formik } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
-import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import { useHistory } from "react-router-dom";
+import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import {
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
@@ -51,6 +51,7 @@ export interface NewCampaignValues {
   targetSize?: string;
   browsersList?: string[];
   productType?: string;
+  notes?: string;
 }
 
 const FormProvider = ({
@@ -131,6 +132,7 @@ const FormProvider = ({
     browsersList:
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
+    notes: dossier?.notes || "",
   };
 
   const validationSchema = yup.object({
@@ -162,6 +164,7 @@ const FormProvider = ({
     countries: yup.array(),
     languages: yup.array(),
     targetNotes: yup.string(),
+    notes: yup.string(),
   });
   return (
     <Formik
@@ -219,6 +222,7 @@ const FormProvider = ({
             productType: values.productType
               ? parseInt(values.productType, 10)
               : undefined,
+            notes: values.notes,
           };
 
           if (isEdit) {
