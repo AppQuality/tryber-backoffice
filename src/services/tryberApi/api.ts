@@ -20,6 +20,7 @@ export const api = createApi({
     "Bugs",
     "Campaigns",
     "Customers",
+    "Projects",
     "CustomUserFields",
     "ExperiencePoints",
     "Forms",
