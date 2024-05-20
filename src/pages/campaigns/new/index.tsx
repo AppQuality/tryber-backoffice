@@ -41,6 +41,7 @@ const NewCampaign = () => {
               }),
               ...(duplicatePages && { pages: parseInt(duplicatePages) }),
               ...(duplicateTesters && { testers: parseInt(duplicateTesters) }),
+              campaign: parseInt(duplicateFrom, 10),
             }}
           />
         ) : (
