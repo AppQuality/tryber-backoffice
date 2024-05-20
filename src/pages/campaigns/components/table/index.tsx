@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { useFiltersCardContext } from "./FilterContext";
 import CampaignTypes from "./Filters/CampaignTypes";
 import Customer from "./Filters/Customer";
+import FilterByPm from "./Filters/FilterByPm";
 import MyCampaign from "./Filters/MyCampaign";
 import Search from "./Filters/Search";
 import Status from "./Filters/Status";
@@ -31,6 +32,9 @@ const CustomTable = styled(Table)`
     display: flex;
     align-items: center;
     height: 100%;
+    & > div {
+      width: 100%;
+    }
   }
 `;
 
@@ -62,8 +66,13 @@ const CampaignsTable = () => {
             </Button>
           </div>
         </div>
-        <div style={{ width: "25ch" }}>
-          <MyCampaign />
+        <div style={{ width: "50ch", display: "flex" }}>
+          <div style={{ width: "25ch" }}>
+            <FilterByPm />
+          </div>
+          <div style={{ width: "25ch" }}>
+            <MyCampaign />
+          </div>
         </div>
       </FilterContainer>
       <FilterContainer className="aq-mb-3">

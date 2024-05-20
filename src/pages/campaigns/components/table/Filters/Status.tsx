@@ -1,14 +1,18 @@
-import { Select } from "@appquality/appquality-design-system";
+import { Select, Skeleton } from "@appquality/appquality-design-system";
+import { useGetPhasesQuery } from "src/services/tryberApi";
 import { useFiltersCardContext } from "../FilterContext";
 
-type ItemTypes = "incoming" | "running" | "closed";
 const Status = () => {
   const { setFilters, filters } = useFiltersCardContext();
-  const options: { value: ItemTypes; label: string }[] = [
-    { value: "incoming", label: "Incoming" },
-    { value: "running", label: "Running" },
-    { value: "closed", label: "Closed" },
-  ];
+  const { data, isLoading } = useGetPhasesQuery();
+
+  const options: { value: string; label: string }[] = (data?.results || []).map(
+    (item) => ({
+      value: item.id.toString(),
+      label: item.name,
+    })
+  );
+  if (isLoading) return <Skeleton />;
   return (
     <Select
       name="status"
@@ -18,13 +22,13 @@ const Status = () => {
       onChange={(item) => {
         if (item && item.value) {
           setFilters({
-            status: item.value as ItemTypes,
+            status: parseInt(item.value),
           });
         } else {
           setFilters({ status: undefined });
         }
       }}
-      value={{ value: filters.status, label: "" }}
+      value={{ value: filters.status?.toString(), label: "" }}
     />
   );
 };

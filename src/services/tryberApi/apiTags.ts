@@ -224,6 +224,15 @@ tryberApi.enhanceEndpoints({
     postJotformsByCampaign: {
       invalidatesTags: ["Selection", "Campaigns", "CampaignForms"],
     },
+    getCustomersByCustomerProjects: {
+      providesTags: ["Customers", "Projects"],
+    },
+    postCustomersByCustomerProjects: {
+      invalidatesTags: ["Projects"],
+    },
+    postCustomers: {
+      invalidatesTags: ["Customers"],
+    },
   },
 });
 
