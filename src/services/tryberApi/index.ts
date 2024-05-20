@@ -2590,7 +2590,8 @@ export type GetUsersMeRankListApiArg = void;
 export type PostDossiersApiResponse =
   /** status 201 Created */
   | {
-      id?: number;
+      id: number;
+      message?: "HOOK_FAILED";
     }
   | /** status 206 Partial Content */ {
       id?: number;
