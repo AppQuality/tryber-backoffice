@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import {
+  DossierCreationData,
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
@@ -188,7 +189,7 @@ const FormProvider = ({
           });
         }
         try {
-          const body = {
+          const body: DossierCreationData = {
             project: parseInt(values.projectId),
             testType: parseInt(values.testType),
             title: {
@@ -240,12 +241,16 @@ const FormProvider = ({
             if (!resp.id) {
               throw new Error("An error has occurred. Please try again.");
             }
-            history.push(`/backoffice/campaigns/new/success/`, { id: resp.id });
+            history.push(`/backoffice/campaigns/new/success/`, {
+              id: resp.id,
+              hookFailed: "message" in resp && resp.message === "HOOK_FAILED",
+            });
           }
         } catch (e) {
+          const error = e as any;
           dispatch(
             addMessage(
-              "An error has occurred. Please try again.",
+              "An error has occurred. Please try again. " + error?.message,
               "danger",
               false
             )

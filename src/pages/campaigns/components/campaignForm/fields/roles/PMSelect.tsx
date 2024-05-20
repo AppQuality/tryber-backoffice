@@ -43,7 +43,7 @@ const PmSelectWithoutPermission = ({
     .join(", ");
   return (
     <FormGroup>
-      <FormLabel label="Researcher" htmlFor="" />
+      <FormLabel label="PM" htmlFor="" />
       <Text>{users && users.length > 0 ? <>{usersNames}</> : <>No PMs</>}</Text>
     </FormGroup>
   );
