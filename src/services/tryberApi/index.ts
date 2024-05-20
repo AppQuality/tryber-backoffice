@@ -2587,9 +2587,14 @@ export type GetUsersMeRankListApiResponse = /** status 200 OK */ {
   peers: RankingItem[];
 };
 export type GetUsersMeRankListApiArg = void;
-export type PostDossiersApiResponse = /** status 201 Created */ {
-  id?: number;
-};
+export type PostDossiersApiResponse =
+  /** status 201 Created */
+  | {
+      id?: number;
+    }
+  | /** status 206 Partial Content */ {
+      id?: number;
+    };
 export type PostDossiersApiArg = {
   body: DossierCreationData & {
     duplicate?: {
@@ -2598,6 +2603,7 @@ export type PostDossiersApiArg = {
       mailMerges?: number;
       pages?: number;
       testers?: number;
+      campaign?: number;
     };
   };
 };
