@@ -1641,6 +1641,10 @@ export type GetCampaignsOwnersApiArg = void;
 export type GetCampaignTypesApiResponse = /** status 200  */ {
   id: number;
   name: string;
+  customRoles: {
+    roleId: number;
+    userIds: number[];
+  }[];
 }[];
 export type GetCampaignTypesApiArg = void;
 export type GetCertificationsApiResponse = /** status 200 OK */ {
