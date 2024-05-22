@@ -99,7 +99,13 @@ const DeviceMultiselect = () => {
       <FieldWrapper>
         {deviceTypes.map((deviceType) => {
           if (!(deviceType in osOptions)) return null;
-          return <OsMultiselect deviceType={deviceType} />;
+          return (
+            <OsMultiselect
+              id={deviceType.replace(/\W/g, "")}
+              key={deviceType.replace(/\W/g, "")}
+              deviceType={deviceType}
+            />
+          );
         })}
         <ErrorMessage name="deviceList" />
       </FieldWrapper>
