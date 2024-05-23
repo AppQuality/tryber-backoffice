@@ -40,6 +40,7 @@ const CloseDatePicker = () => {
               value={field.value}
               onChange={handleChange}
               disabled={!values.isEdit}
+              onBlur={field.onBlur}
             />
             {meta.error && meta.touched && <ErrorMessage name={field.name} />}
           </FormGroup>

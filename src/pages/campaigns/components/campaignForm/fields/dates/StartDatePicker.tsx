@@ -42,6 +42,7 @@ const StartDatePicker = () => {
               name={field.name}
               value={field.value}
               onChange={handleChange}
+              onBlur={field.onBlur}
             />
             {meta.error && meta.touched && <ErrorMessage name={field.name} />}
           </FormGroup>

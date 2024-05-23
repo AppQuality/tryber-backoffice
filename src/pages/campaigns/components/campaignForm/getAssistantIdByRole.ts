@@ -1,5 +1,9 @@
 import { GetDossiersByCampaignApiResponse } from "src/services/tryberApi";
 
+export const PM_ROLE_ID = 1;
+export const TL_ROLE_ID = 2;
+export const RESEARCHER_ROLE_ID = 3;
+
 interface Args {
   roles: GetDossiersByCampaignApiResponse["roles"];
 }
@@ -21,23 +25,23 @@ export const getByRole = ({ roles, roleId }: Args & { roleId: number }) => {
 };
 
 export const getTl = ({ roles }: Args) => {
-  return getByRole({ roles, roleId: 2 });
+  return getByRole({ roles, roleId: TL_ROLE_ID });
 };
 export const getTlObjects = ({ roles }: Args) => {
-  return getByRoleObjects({ roles, roleId: 2 });
+  return getByRoleObjects({ roles, roleId: TL_ROLE_ID });
 };
 
 export const getPm = ({ roles }: Args) => {
-  const pm = getByRole({ roles, roleId: 1 });
+  const pm = getByRole({ roles, roleId: PM_ROLE_ID });
   return pm.length ? pm[0] : undefined;
 };
 export const getPmObjects = ({ roles }: Args) => {
-  return getByRoleObjects({ roles, roleId: 1 });
+  return getByRoleObjects({ roles, roleId: PM_ROLE_ID });
 };
 
 export const getResearcher = ({ roles }: Args) => {
-  return getByRole({ roles, roleId: 3 });
+  return getByRole({ roles, roleId: RESEARCHER_ROLE_ID });
 };
 export const getResearcherObjects = ({ roles }: Args) => {
-  return getByRoleObjects({ roles, roleId: 3 });
+  return getByRoleObjects({ roles, roleId: RESEARCHER_ROLE_ID });
 };
