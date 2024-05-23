@@ -15,6 +15,7 @@ import { Option } from "../SelectField";
 
 interface OsMultiselectProps {
   deviceType: string;
+  id: string;
 }
 
 const useOptions = (deviceType: string) => {
@@ -55,7 +56,7 @@ const getPlural = (deviceType: string) => {
   return `${deviceType}${suffix}`;
 };
 
-export const OsMultiselect = ({ deviceType }: OsMultiselectProps) => {
+export const OsMultiselect = ({ deviceType, id }: OsMultiselectProps) => {
   const {
     values: { deviceList },
     setFieldValue,

@@ -14,12 +14,12 @@ const EndDatePicker = () => {
   const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFieldValue("endDate", e.target.value);
-    // if isEdit is false, set closeDate to 10 days after the end date
-    if (!values.isEdit) {
-      const endDate = new Date(e.target.value);
-      endDate.setDate(endDate.getDate() + 10);
-      setFieldValue("closeDate", endDate.toISOString().split("T")[0]);
-    }
+    // if is a new cp, set closeDate to 10 days after the end date
+    if (values.isEdit) return;
+    const endDate = new Date(e.target.value);
+    if (isNaN(endDate.getTime())) return;
+    endDate.setDate(endDate.getDate() + 10);
+    setFieldValue("closeDate", endDate.toISOString().split("T")[0]);
   };
   const handleTimeChange = useCallback(
     ({ valueText }: { valueText: string }) => {
@@ -45,6 +45,7 @@ const EndDatePicker = () => {
               name={field.name}
               value={field.value}
               onChange={handleChange}
+              onBlur={field.onBlur}
             />
             {meta.error && meta.touched && <ErrorMessage name={field.name} />}
           </FormGroup>
