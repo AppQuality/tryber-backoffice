@@ -4,8 +4,8 @@ import {
   FieldProps,
   FormGroup,
   FormLabel,
-  Text,
   FormikField,
+  Text,
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
 import { useCallback, useMemo } from "react";
@@ -26,6 +26,7 @@ export interface SelectProps {
   onCreateOption?: (inputValue: string) => Promise<void>;
   notes?: string;
   required?: boolean;
+  onChange?: (option: Option) => void;
 }
 
 export const SelectField = ({
@@ -38,6 +39,7 @@ export const SelectField = ({
   notes,
   placeholder,
   required,
+  onChange,
 }: SelectProps) => {
   const { setFieldValue, values } = useFormikContext<NewCampaignValues>();
   const currentValue = values[name];
@@ -66,8 +68,11 @@ export const SelectField = ({
       } else {
         setFieldValue(name, option.value);
       }
+      if (onChange) {
+        onChange(option);
+      }
     },
-    [isMulti, name, setFieldValue]
+    [isMulti, name, setFieldValue, onChange]
   );
 
   return (
