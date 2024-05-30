@@ -44,7 +44,7 @@ const useCampaigns = (options?: {
     filterBy: {
       type: filters?.type ? filters.type.join(",") : undefined,
       customer: filters?.customer ? filters.customer.join(",") : undefined,
-      phase: filters?.status ? filters.status : undefined,
+      phase: filters?.status ? filters.status.join(",") : undefined,
       csm: filters?.csm ? filters.csm : undefined,
       role_1: filters?.pm ? filters.pm : undefined,
     },

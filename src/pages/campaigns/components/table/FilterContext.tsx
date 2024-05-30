@@ -6,7 +6,7 @@ type Filters = {
   search?: string;
   customer?: number[];
   type?: number[];
-  status?: number;
+  status?: number[];
   csm?: number;
   pm?: number | "empty";
 };
