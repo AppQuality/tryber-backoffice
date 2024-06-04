@@ -17,18 +17,23 @@ const Status = () => {
     <Select
       name="status"
       label=""
+      isMulti
       placeholder="Filter by status"
       options={options}
-      onChange={(item) => {
-        if (item && item.value) {
+      onChange={(items) => {
+        if (items && items.length > 0) {
           setFilters({
-            status: parseInt(item.value),
+            status: items.map((i: { value: string }) => parseInt(i.value)),
           });
         } else {
           setFilters({ status: undefined });
         }
       }}
-      value={{ value: filters.status?.toString(), label: "" }}
+      value={
+        filters?.status
+          ? filters.status.map((c) => ({ value: c.toString(), label: "" }))
+          : { value: "", label: "" }
+      }
     />
   );
 };
