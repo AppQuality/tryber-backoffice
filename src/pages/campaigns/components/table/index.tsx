@@ -44,7 +44,7 @@ const CampaignsTable = () => {
   const { isLoading, data, pages } = useCampaigns();
   if (isLoading) return <div>Loading...</div>;
   return (
-    <>
+    <div style={{ minHeight: "95vh" }}>
       <FilterContainer className="aq-my-3">
         <div
           style={{
@@ -76,16 +76,16 @@ const CampaignsTable = () => {
         </div>
       </FilterContainer>
       <FilterContainer className="aq-mb-3">
-        <div style={{ width: "30%" }}>
+        <div style={{ width: "20.5%" }}>
           <Search />
         </div>
-        <div style={{ width: "32.5%" }}>
+        <div style={{ width: "20.5%" }}>
           <Customer />
         </div>
-        <div style={{ width: "22.5%" }}>
+        <div style={{ width: "25.5%" }}>
           <CampaignTypes />
         </div>
-        <div style={{ width: "15%" }}>
+        <div style={{ width: "33%" }}>
           <Status />
         </div>
       </FilterContainer>
@@ -104,7 +104,7 @@ const CampaignsTable = () => {
         current={page}
         maxPages={pages}
       />
-    </>
+    </div>
   );
 };
 export default CampaignsTable;
