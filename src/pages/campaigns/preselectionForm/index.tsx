@@ -319,14 +319,12 @@ const PreselectionForm = () => {
 };
 
 function scrollToFormTitle() {
-  function scrollToFormTitle() {
-    const selector = `[id="formTitle"]`;
-    const formTitleElement = document.querySelector(selector) as HTMLElement;
-    formTitleElement?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-  }
+  const selector = `[id="formTitle"]`;
+  const formTitleElement = document.querySelector(selector) as HTMLElement;
+  formTitleElement?.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
 }
 
 export default PreselectionForm;
