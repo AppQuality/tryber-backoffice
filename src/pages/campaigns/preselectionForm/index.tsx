@@ -178,6 +178,7 @@ const PreselectionForm = () => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
+            //refactor
             const fieldsToSend = values.fields.map((field) => {
               const newField: PreselectionFormQuestion & { id?: number } = {
                 ...(field.questionId ? { id: field.questionId } : {}),
@@ -291,15 +292,8 @@ const PreselectionForm = () => {
                 }
               }
             }
-            // scroll to form title
-            const selector = `[id="formTitle"]`;
-            const formTitleElement = document.querySelector(
-              selector
-            ) as HTMLElement;
-            formTitleElement?.scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-            });
+
+            scrollToFormTitle();
           }}
         >
           <Form>
@@ -323,5 +317,16 @@ const PreselectionForm = () => {
     </PageTemplate>
   );
 };
+
+function scrollToFormTitle() {
+  function scrollToFormTitle() {
+    const selector = `[id="formTitle"]`;
+    const formTitleElement = document.querySelector(selector) as HTMLElement;
+    formTitleElement?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }
+}
 
 export default PreselectionForm;
