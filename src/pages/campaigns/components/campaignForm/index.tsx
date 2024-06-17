@@ -14,6 +14,7 @@ import { useFormikContext } from "formik";
 import {
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
+  useGetCampaignsFormsQuery,
   useGetDossiersByCampaignQuery,
 } from "src/services/tryberApi";
 import { styled } from "styled-components";
@@ -52,6 +53,36 @@ const StickyContainer = styled.div`
     top: 0;
   }
 `;
+
+const SurveyButton = ({ campaign_id }: { campaign_id: string }) => {
+  const { data } = useGetCampaignsFormsQuery({
+    searchBy: "campaign_id",
+    search: campaign_id,
+  });
+
+  if (!data) return null;
+  return (
+    <Button
+      kind="link-hover"
+      onClick={() => {
+        if (!data.results || data.size <= 0) {
+          window.open(
+            "/backoffice/campaigns/preselection-forms/new/",
+            "_blank"
+          );
+        }
+        window.open(
+          `/backoffice/campaigns/preselection-forms/${data.results[0].id}/`,
+          "_blank"
+        );
+      }}
+      size="sm"
+      className="aq-mt-3"
+    >
+      {data.size > 0 ? "Edit survey" : "Create survey"}
+    </Button>
+  );
+};
 
 const Phase = ({ id }: { id: number }) => {
   const { data, isLoading } = useGetDossiersByCampaignQuery({
@@ -281,6 +312,9 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     label="Trybers' additional requirements"
                     placeholder="The target has to..."
                   />
+                  {dossier && dossier.id && (
+                    <SurveyButton campaign_id={dossier.id.toString()} />
+                  )}
                 </FieldWrapper>
               </Card>
             </Section>
