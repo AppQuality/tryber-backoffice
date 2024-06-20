@@ -41,6 +41,7 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
+import { useLocation } from "react-router-dom";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -60,7 +61,11 @@ const SurveyButton = ({ campaign_id }: { campaign_id: string }) => {
     search: campaign_id,
   });
 
+  const path = useLocation().pathname;
+  if (path === "/backoffice/campaigns/new") return null;
+
   if (!data) return null;
+
   return (
     <Button
       kind="link-hover"
