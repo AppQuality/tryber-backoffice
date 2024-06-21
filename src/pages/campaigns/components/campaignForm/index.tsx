@@ -266,7 +266,13 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   type="number"
                   name="targetSize"
                   label="Number of participants"
-                  style={{ maxWidth: "225px" }}
+                  style={{ width: "50%" }}
+                />
+                <InputField
+                  type="number"
+                  name="targetCap"
+                  label="Cap (usually 5x the target size)"
+                  style={{ width: "50%" }}
                 />
                 <FieldWrapper>
                   <CountrySelect />
