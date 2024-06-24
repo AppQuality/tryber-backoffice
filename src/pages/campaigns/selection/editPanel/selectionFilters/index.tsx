@@ -1,5 +1,3 @@
-import { Card } from "@appquality/appquality-design-system";
-import styled from "styled-components";
 import { AgeFilters } from "./FilterItems/AgeFilters";
 import { BughuntingLevelFilters } from "./FilterItems/BughuntingLevelFilters";
 import { DeviceFilters } from "./FilterItems/DeviceFilters";

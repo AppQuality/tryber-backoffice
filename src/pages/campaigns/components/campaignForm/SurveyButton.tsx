@@ -9,6 +9,7 @@ export const SurveyButton = ({ campaign_id }: { campaign_id: string }) => {
   if (!data || isError || isLoading) return null;
   const hasSurvey = () => data.size > 0;
   return (
+    // eslint-disable-next-line react/jsx-no-target-blank
     <a
       href={
         hasSurvey()
