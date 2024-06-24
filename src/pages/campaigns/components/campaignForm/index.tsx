@@ -14,7 +14,6 @@ import { useFormikContext } from "formik";
 import {
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
-  useGetCampaignsFormsQuery,
   useGetDossiersByCampaignQuery,
 } from "src/services/tryberApi";
 import { styled } from "styled-components";
@@ -42,6 +41,7 @@ import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
 import { useLocation } from "react-router-dom";
+import { SurveyButton } from "./SurveyButton";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -54,27 +54,6 @@ const StickyContainer = styled.div`
     top: 0;
   }
 `;
-
-const SurveyButton = ({ campaign_id }: { campaign_id: string }) => {
-  const { data, isError, isLoading } = useGetCampaignsFormsQuery({
-    searchBy: "campaign_id",
-    search: campaign_id,
-  });
-
-  if (!data || isError || isLoading) return null;
-  const hasSurvey = () => data.size > 0;
-  return (
-    <a
-      href={
-        hasSurvey()
-          ? `/backoffice/campaigns/preselection-forms/${data.results[0].id}/`
-          : "/backoffice/campaigns/preselection-forms/new/"
-      }
-    >
-      {hasSurvey() ? "Edit survey" : "Create survey"}
-    </a>
-  );
-};
 
 const Phase = ({ id }: { id: number }) => {
   const { data, isLoading } = useGetDossiersByCampaignQuery({
