@@ -4,7 +4,7 @@ import oldReducers from "src/redux/reducer";
 import { combineReducers } from "redux";
 import jotformReducer from "src/pages/Jotform/jotformSlice";
 import campaignPreselectionReducer from "src/pages/campaigns/preselectionForm/preselectionSlice";
-import campaignPreselectionListReducer from "src/pages/campaigns/preselectionFormList/preselectionListSlice";
+import campaignPreselectionListReducer from "src/pages/preselectionForms/preselectionListSlice";
 import selectionReducer from "src/pages/campaigns/selection/selectionSlice";
 import uxDashboardReducer from "src/pages/UxDashboard/uxDashboardSlice";
 import { useDispatch, useSelector } from "react-redux";

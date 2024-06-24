@@ -1,6 +1,6 @@
 import { BSCol, BSGrid, Button } from "@appquality/appquality-design-system";
-import { OpsUserContainer } from "../../../features/AuthorizedOnlyContainer";
-import { FormTableCard } from "./formTableCard";
+import { OpsUserContainer } from "../../features/AuthorizedOnlyContainer";
+import { FormTableCard } from "./components/formTableCard";
 import { PageTitle } from "@appquality/appquality-design-system";
 import { PageTemplate } from "src/features/PageTemplate";
 

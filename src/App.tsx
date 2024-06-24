@@ -9,7 +9,8 @@ import AdminPayments from "src/pages/Payments";
 import Create from "src/pages/Popups/Create";
 import List from "src/pages/Popups/List";
 import Update from "src/pages/Popups/Update";
-import CampaignPreselection from "src/pages/campaigns/preselectionForm";
+import NewPreselectionForm from "src/pages/preselectionForms/new";
+import EditPreselectionForm from "src/pages/preselectionForms/edit";
 import { setupStore } from "src/store";
 import { PageTemplate } from "./features/PageTemplate";
 import SentryWrapper from "./features/SentryWrapper";
@@ -23,7 +24,7 @@ import Campaigns from "./pages/campaigns";
 import NewCampaign from "./pages/campaigns/new";
 import NewCampaignSuccess from "./pages/campaigns/new/Success";
 import EditCampaign from "./pages/campaigns/edit";
-import CampaignPreselectionList from "./pages/campaigns/preselectionFormList";
+import CampaignPreselectionList from "./pages/preselectionForms";
 import SelectionPage from "./pages/campaigns/selection";
 
 const SentryRoute = Sentry.withSentryRouting(Route);
@@ -52,11 +53,11 @@ function App() {
               <SentryRoute path="/backoffice/jotform" component={Jotform} />
               <SentryRoute
                 path="/backoffice/campaigns/preselection-forms/new"
-                component={CampaignPreselection}
+                component={NewPreselectionForm}
               />
               <SentryRoute
                 path="/backoffice/campaigns/preselection-forms/:id"
-                component={CampaignPreselection}
+                component={EditPreselectionForm}
               />
               <SentryRoute
                 path="/backoffice/campaigns/preselection-forms"
