@@ -40,6 +40,7 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
+import { SurveyButton } from "./SurveyButton";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -286,6 +287,9 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     resize="vertical"
                     placeholder="The target has to..."
                   />
+                  {dossier && dossier.id && (
+                    <SurveyButton campaign_id={dossier.id.toString()} />
+                  )}
                 </FieldWrapper>
               </Card>
             </Section>
