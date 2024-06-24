@@ -56,36 +56,23 @@ const StickyContainer = styled.div`
 `;
 
 const SurveyButton = ({ campaign_id }: { campaign_id: string }) => {
-  const { data } = useGetCampaignsFormsQuery({
+  const { data, isError, isLoading } = useGetCampaignsFormsQuery({
     searchBy: "campaign_id",
     search: campaign_id,
   });
 
-  const path = useLocation().pathname;
-  if (path === "/backoffice/campaigns/new") return null;
-
-  if (!data) return null;
-
+  if (!data || isError || isLoading) return null;
+  const hasSurvey = () => data.size > 0;
   return (
-    <Button
-      kind="link-hover"
-      onClick={() => {
-        if (!data.results || data.size <= 0) {
-          window.open(
-            "/backoffice/campaigns/preselection-forms/new/",
-            "_blank"
-          );
-        }
-        window.open(
-          `/backoffice/campaigns/preselection-forms/${data.results[0].id}/`,
-          "_blank"
-        );
-      }}
-      size="sm"
-      className="aq-mt-3"
+    <a
+      href={
+        hasSurvey()
+          ? `/backoffice/campaigns/preselection-forms/${data.results[0].id}/`
+          : "/backoffice/campaigns/preselection-forms/new/"
+      }
     >
-      {data.size > 0 ? "Edit survey" : "Create survey"}
-    </Button>
+      {hasSurvey() ? "Edit survey" : "Create survey"}
+    </a>
   );
 };
 
