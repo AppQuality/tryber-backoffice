@@ -129,6 +129,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   <TextareaField
                     name="description"
                     label="Campaign Description"
+                    resize="vertical"
                     placeholder="Verrà testato il prodotto [nome prodotto, tipologia del prodotto] attraverso un test di [tipologia di test]. 
                   Il suo scopo principale è [in che modo il prodotto migliora la vita delle persone]."
                   />
@@ -225,11 +226,13 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     name="goal"
                     label="Test Perimeter"
                     placeholder="The test will cover..."
+                    resize="vertical"
                   />
                   <TextareaField
                     name="outOfScope"
                     label="Out of scope"
                     placeholder="The test will NOT cover..."
+                    resize="vertical"
                   />
                 </FieldWrapper>
               </Card>
@@ -248,6 +251,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   <TextareaField
                     name="deviceRequirements"
                     label="Device requirements"
+                    resize="vertical"
                     placeholder="If necessary, enter specific device requirements here"
                   />
                 </FieldWrapper>
@@ -279,6 +283,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   <TextareaField
                     name="targetNotes"
                     label="Trybers' additional requirements"
+                    resize="vertical"
                     placeholder="The target has to..."
                   />
                 </FieldWrapper>
@@ -295,6 +300,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <TextareaField
                   name="notes"
                   label="Additional test notes"
+                  resize="vertical"
                   placeholder="The kick-off call will be on... Customers will be release on production on..."
                 />
               </Card>
