@@ -17,7 +17,7 @@ import { useHistory } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 
 interface FormProviderInterface {
-  savedData: GetCampaignsFormsByFormIdApiResponse;
+  savedData?: GetCampaignsFormsByFormIdApiResponse;
   isEdit: boolean;
   cufList: ApiComponents["schemas"]["CustomUserFieldsData"][];
   children: ReactNode;
@@ -165,7 +165,7 @@ const FormProvider = ({
         if (isEdit) {
           setSaveEdit(true);
           const args: PutCampaignsFormsByFormIdApiArg = {
-            formId: savedData.id.toString(),
+            formId: savedData ? savedData?.id.toString() : "",
             body: {
               name: values.formTitle,
               // @ts-ignore

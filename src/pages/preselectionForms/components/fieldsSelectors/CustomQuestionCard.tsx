@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Card, Radio } from "@appquality/appquality-design-system";
 import { v4 as uuidv4 } from "uuid";
-import { getCustomQuestionTypeLabel } from "../getCustomQuestionTypeLabel";
+import { getCustomQuestionTypeLabel } from "src/pages/preselectionForms/functions/getCustomQuestionTypeLabel";
 
 export const CustomQuestionCard: React.FC<{
   add: (field: AdditionalField) => void;

@@ -9,7 +9,7 @@ import { PencilSquare } from "react-bootstrap-icons";
 import { useHistory } from "react-router-dom";
 import { useGetCampaignsFormsQuery } from "src/services/tryberApi";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { resetList } from "../preselectionListSlice";
+import { resetList } from "src/pages/preselectionForms/listSlice";
 import Columns from "./columns";
 import { FormSearchCard } from "./formSearchCard";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";

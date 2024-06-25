@@ -1,54 +1,21 @@
-import {
-  BSCol,
-  BSGrid,
-  Card,
-  PageTitle,
-} from "@appquality/appquality-design-system";
-import { useParams, useHistory } from "react-router-dom";
+import { BSCol, BSGrid, PageTitle } from "@appquality/appquality-design-system";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { OpsUserContainer } from "src/features/AuthorizedOnlyContainer";
-import { FieldsSelectors } from "src/pages/campaigns/preselectionForm/fieldsSelectors";
-import { FormConfigurator } from "src/pages/campaigns/preselectionForm/formConfigurator";
-import * as Yup from "yup";
-import {
-  PostCampaignsFormsApiArg,
-  PreselectionFormQuestion,
-  PutCampaignsFormsByFormIdApiArg,
-  useGetCampaignsFormsByFormIdQuery,
-  useGetCustomUserFieldsQuery,
-  usePostCampaignsFormsMutation,
-  usePutCampaignsFormsByFormIdMutation,
-} from "src/services/tryberApi";
-import useCufData from "src/pages/campaigns/preselectionForm/useCufData";
-import { useAppDispatch } from "src/store";
-import siteWideMessageStore from "src/redux/siteWideMessages";
+import { FieldsSelectors } from "src/pages/preselectionForms/components/fieldsSelectors";
+import { FormConfigurator } from "src/pages/preselectionForms/components/formConfigurator";
+import { useGetCustomUserFieldsQuery } from "src/services/tryberApi";
 
-import { setLoadedForm } from "./preselectionSlice";
-import { v4 as uuidv4 } from "uuid";
-import { getCustomQuestionTypeLabel } from "./getCustomQuestionTypeLabel";
-import { CopyLinkButton } from "src/pages/preselectionForms/CopyLinkButton";
-import { getProfileTypeLabel } from "./getProfileTypeLabel";
+import { CopyLinkButton } from "src/pages/preselectionForms/components/CopyLinkButton";
 import { PageTemplate } from "src/features/PageTemplate";
 import FormProvider from "src/pages/preselectionForms/components/FormProvider";
 
 const PreselectionForm = () => {
-  const history = useHistory();
-  const { add } = siteWideMessageStore();
-
-  const [createForm] = usePostCampaignsFormsMutation();
-  const [editForm] = usePutCampaignsFormsByFormIdMutation();
-  const { getAllOptions } = useCufData();
   const { id } = useParams<{ id: string }>();
-  const dispatch = useAppDispatch();
   const { data } = useGetCustomUserFieldsQuery();
-  const savedData = useGetCampaignsFormsByFormIdQuery(
-    { formId: id },
-    { skip: !id }
-  );
   const [cufList, setCufList] = useState<
     ApiComponents["schemas"]["CustomUserFieldsData"][]
   >([]);
-  const [saveEdit, setSaveEdit] = useState(false);
 
   useEffect(() => {
     const list: ApiComponents["schemas"]["CustomUserFieldsData"][] = [];
@@ -58,11 +25,6 @@ const PreselectionForm = () => {
     setCufList(list);
   }, [data]);
 
-  useEffect(() => {
-    if (savedData?.data) {
-      dispatch(setLoadedForm(savedData.data));
-    }
-  }, [savedData]);
   return (
     <PageTemplate>
       <OpsUserContainer>
@@ -76,19 +38,13 @@ const PreselectionForm = () => {
           <span>{id ? "Edit Preselection Form" : "New Preselection Form"}</span>
           <CopyLinkButton id={id} />
         </PageTitle>
-        <FormProvider>
+        <FormProvider isEdit={false} cufList={cufList}>
           <BSGrid className="aq-my-4">
             <BSCol size="col-lg-4">
               <FieldsSelectors />
             </BSCol>
             <BSCol size="col-lg-8">
-              {savedData.isLoading || savedData.isFetching ? (
-                <Card>...loading</Card>
-              ) : savedData.error || (id && !savedData.data) ? (
-                <Card>...error retrieving form</Card>
-              ) : (
-                <FormConfigurator />
-              )}
+              <FormConfigurator />
             </BSCol>
           </BSGrid>
         </FormProvider>
