@@ -3,6 +3,7 @@ import {
   BSGrid,
   Button,
   Card,
+  Checkbox,
   Form,
   FormLabel,
   Skeleton,
@@ -41,6 +42,7 @@ import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
 import { SurveyButton } from "./SurveyButton";
+import { useState } from "react";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -94,6 +96,7 @@ const CampaignForm = (props: FormProps) => (
 );
 
 const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
+  const [testerCapState, setTesterCapState] = useState(false);
   return (
     <FormProvider dossier={dossier} isEdit={isEdit} duplicate={duplicate}>
       <FullGrid>
@@ -264,15 +267,46 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               id="who"
             >
               <Card className="aq-mb-4" title="Who are we testing with?">
-                <Title size="s" className="aq-mb-2">
-                  Set the target
-                </Title>
-                <InputField
-                  type="number"
-                  name="targetSize"
-                  label="Number of participants"
-                  style={{ maxWidth: "225px" }}
-                />
+                <FieldWrapper>
+                  <div>
+                    <Title size="s" className="aq-mb-2">
+                      Set the target
+                    </Title>
+                    <div>
+                      <InputField
+                        type="number"
+                        name="targetSize"
+                        label="Number of participants"
+                        style={{ maxWidth: "225px" }}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Title size="s" className="q-mb-2">
+                      Set the maximum candidates capacity
+                    </Title>
+                    <div
+                      style={{
+                        marginTop: "20px",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Checkbox
+                        name="checkboxCap"
+                        id="checkboxCap"
+                        onChange={(e) => setTesterCapState(e.target.checked)}
+                      />
+                      <InputField
+                        disabled={!testerCapState}
+                        type="number"
+                        name="testerCap"
+                        label="Limit the number of participants"
+                        style={{ maxWidth: "225px" }}
+                      />
+                    </div>
+                  </div>
+                </FieldWrapper>
                 <FieldWrapper>
                   <CountrySelect />
                   <LanguageSelect />

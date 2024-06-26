@@ -2666,6 +2666,7 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
   target?: {
     notes?: string;
     size?: number;
+    cap?: number;
   };
   countries?: CountryCode[];
   languages?: {
@@ -2830,8 +2831,12 @@ export type CampaignOptional = {
   ux_effort?: number;
   preview_link?: TranslatablePage;
   manual_link?: TranslatablePage;
-  bugform_link?: {} | TranslatablePage;
+  bugform_link?: boolean | TranslatablePage;
   applied?: boolean;
+  visibility?: {
+    freeSpots?: number;
+    totalSpots?: number;
+  };
 };
 export type CampaignType = {} | {};
 export type CampaignRequired = {
@@ -3033,6 +3038,7 @@ export type DossierCreationData = {
   target?: {
     notes?: string;
     size?: number;
+    cap?: number;
   };
   countries?: CountryCode[];
   languages?: number[];
