@@ -163,16 +163,28 @@ const FormProvider = ({
     deviceList: yup.array().min(1, "At least one device is required"),
     browsersList: yup.array(),
     deviceRequirements: yup.string(),
-    targetSize: yup.string(),
-    targetCap: yup.string().when("targetSize", {
-      is: (val: string) => val && val > 0,
-      then: yup
-        .string()
-        .min(
-          yup.ref("targetSize"),
-          "Cap must be at least equal to the number of participants"
-        ),
-    }),
+    targetSize: yup
+      .string()
+      .test(
+        "cap-set-wihtout-target-size",
+        "Target size must be set",
+        function (value) {
+          const { targetCap } = this.parent;
+          if (!value && targetCap) return false;
+          return true;
+        }
+      ),
+    targetCap: yup
+      .string()
+      .test(
+        "is-greater-or-equal",
+        "Cap must be at least equal to the number of participants",
+        function (value) {
+          const { targetSize } = this.parent;
+          if (value && parseInt(value) < parseInt(targetSize)) return false;
+          return true;
+        }
+      ),
     countries: yup.array(),
     languages: yup.array(),
     targetNotes: yup.string(),
