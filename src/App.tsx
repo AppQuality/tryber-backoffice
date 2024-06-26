@@ -14,7 +14,6 @@ import EditPreselectionForm from "src/pages/preselectionForms/edit";
 import { setupStore } from "src/store";
 import { PageTemplate } from "./features/PageTemplate";
 import SentryWrapper from "./features/SentryWrapper";
-import Jotform from "./pages/Jotform";
 import Prospect from "./pages/Prospect";
 import UxDashboard from "./pages/UxDashboard";
 import AgreementsList from "./pages/agreements/list";
@@ -50,17 +49,16 @@ function App() {
                 path="/backoffice/payments"
                 component={AdminPayments}
               />
-              <SentryRoute path="/backoffice/jotform" component={Jotform} />
               <SentryRoute
-                path="/backoffice/campaigns/preselection-forms/new"
+                path="/backoffice/preselection-forms/new"
                 component={NewPreselectionForm}
               />
               <SentryRoute
-                path="/backoffice/campaigns/preselection-forms/:id"
+                path="/backoffice/preselection-forms/:id"
                 component={EditPreselectionForm}
               />
               <SentryRoute
-                path="/backoffice/campaigns/preselection-forms"
+                path="/backoffice/preselection-forms"
                 component={CampaignPreselectionList}
               />
               <SentryRoute

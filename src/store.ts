@@ -2,7 +2,6 @@ import { configureStore, PreloadedState } from "@reduxjs/toolkit";
 import { tryberApiSlice } from "src/services/tryberApi/apiTags";
 import oldReducers from "src/redux/reducer";
 import { combineReducers } from "redux";
-import jotformReducer from "src/pages/Jotform/jotformSlice";
 import campaignPreselectionReducer from "src/pages/preselectionForms/singleSlice";
 import campaignPreselectionListReducer from "src/pages/preselectionForms/listSlice";
 import selectionReducer from "src/pages/campaigns/selection/selectionSlice";
@@ -12,7 +11,6 @@ import type { TypedUseSelectorHook } from "react-redux";
 
 const rootReducer = combineReducers({
   ...oldReducers,
-  jotform: jotformReducer,
   campaignPreselection: campaignPreselectionReducer,
   campaignPreselectionList: campaignPreselectionListReducer,
   selection: selectionReducer,

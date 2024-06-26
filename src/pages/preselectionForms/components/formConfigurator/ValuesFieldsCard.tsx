@@ -1,6 +1,5 @@
 import { FC, useEffect } from "react";
 import { OptionsField } from "src/pages/preselectionForms/components/formConfigurator/OptionsField";
-import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect";
 import {
   aqBootstrapTheme,
   Card,
@@ -12,6 +11,7 @@ import { DropZone } from "src/pages/preselectionForms/components/formConfigurato
 import { XLg, GripVertical } from "react-bootstrap-icons";
 import { ShortTitleField } from "./ShortTitleField";
 import styled from "styled-components";
+import { CufMultiselect } from "./CufMultiselect";
 
 const StyledInlineField = styled.div`
   display: flex;

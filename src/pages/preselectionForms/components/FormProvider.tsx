@@ -15,6 +15,7 @@ import { Form, Formik } from "@appquality/appquality-design-system";
 import useCufData from "../hooks/useCufData";
 import { useHistory } from "react-router-dom";
 import siteWideMessageStore from "src/redux/siteWideMessages";
+import { scrollToFormTitle } from "../functions/scrollToFormTitle";
 
 interface FormProviderInterface {
   savedData?: GetCampaignsFormsByFormIdApiResponse;

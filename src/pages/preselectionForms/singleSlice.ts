@@ -2,6 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { GetCampaignsFormsByFormIdApiResponse } from "../../services/tryberApi";
 
+interface CufField {
+  fieldData: ApiComponents["schemas"]["CustomUserFieldsData"];
+  checked: boolean;
+}
 interface PreselectionFormState {
   profileFieldsList: ProfileField[];
   cufList: CufField[];
