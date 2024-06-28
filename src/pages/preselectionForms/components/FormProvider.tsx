@@ -218,9 +218,7 @@ const FormProvider = ({
             args.body.campaign = parseInt(values.campaign?.value);
           const res = await createForm(args);
           if (res && "data" in res) {
-            history.push(
-              `/backoffice/campaigns/preselection-forms/${res.data.id}`
-            );
+            history.push(`/backoffice/preselection-forms/${res.data.id}`);
             add({ type: "success", message: "Form saved" });
           } else {
             const errorCode =

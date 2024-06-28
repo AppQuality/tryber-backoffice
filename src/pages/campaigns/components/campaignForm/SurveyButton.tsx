@@ -13,8 +13,8 @@ export const SurveyButton = ({ campaign_id }: { campaign_id: string }) => {
     <a
       href={
         hasSurvey()
-          ? `/backoffice/campaigns/preselection-forms/${data.results[0].id}/`
-          : "/backoffice/campaigns/preselection-forms/new/"
+          ? `/backoffice/preselection-forms/${data.results[0].id}/`
+          : "/backoffice/preselection-forms/new/"
       }
       target="_blank"
     >
