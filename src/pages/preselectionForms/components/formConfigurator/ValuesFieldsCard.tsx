@@ -1,6 +1,5 @@
 import { FC, useEffect } from "react";
-import { OptionsField } from "src/pages/campaigns/preselectionForm/formConfigurator/OptionsField";
-import { CufMultiselect } from "src/pages/Jotform/CufConfigurator/CufMultiselect";
+import { OptionsField } from "src/pages/preselectionForms/components/formConfigurator/OptionsField";
 import {
   aqBootstrapTheme,
   Card,
@@ -8,10 +7,11 @@ import {
   TextareaField,
 } from "@appquality/appquality-design-system";
 import { useDrag } from "react-dnd";
-import { DropZone } from "src/pages/campaigns/preselectionForm/formConfigurator/DropZone";
+import { DropZone } from "src/pages/preselectionForms/components/formConfigurator/DropZone";
 import { XLg, GripVertical } from "react-bootstrap-icons";
 import { ShortTitleField } from "./ShortTitleField";
 import styled from "styled-components";
+import { CufMultiselect } from "./CufMultiselect";
 
 const StyledInlineField = styled.div`
   display: flex;

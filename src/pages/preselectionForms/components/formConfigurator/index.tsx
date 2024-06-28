@@ -2,7 +2,7 @@ import { Field, Button } from "@appquality/appquality-design-system";
 import { FieldArray, useFormikContext } from "formik";
 import { DndProvider, useDragLayer } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { ValuesFieldsCard } from "src/pages/campaigns/preselectionForm/formConfigurator/ValuesFieldsCard";
+import { ValuesFieldsCard } from "src/pages/preselectionForms/components/formConfigurator/ValuesFieldsCard";
 import { CampaignSelect } from "./CampaignSelect";
 
 export const FormConfigurator = () => {
