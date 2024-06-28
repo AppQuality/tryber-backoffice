@@ -41,6 +41,7 @@ import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
 import { SurveyButton } from "./SurveyButton";
+import TargetSize from "./fields/TargetSize";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -264,15 +265,9 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               id="who"
             >
               <Card className="aq-mb-4" title="Who are we testing with?">
-                <Title size="s" className="aq-mb-2">
-                  Set the target
-                </Title>
-                <InputField
-                  type="number"
-                  name="targetSize"
-                  label="Number of participants"
-                  style={{ maxWidth: "225px" }}
-                />
+                <FieldWrapper>
+                  <TargetSize />
+                </FieldWrapper>
                 <FieldWrapper>
                   <CountrySelect />
                   <LanguageSelect />

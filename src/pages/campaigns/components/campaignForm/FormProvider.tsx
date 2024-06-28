@@ -50,6 +50,7 @@ export interface NewCampaignValues {
   deviceRequirements?: string;
   targetNotes?: string;
   targetSize?: string;
+  targetCap?: string;
   browsersList?: string[];
   productType?: string;
   notes?: string;
@@ -130,6 +131,7 @@ const FormProvider = ({
     deviceRequirements: dossier?.deviceRequirements || "",
     targetNotes: dossier?.target?.notes || "",
     targetSize: dossier?.target?.size?.toString(),
+    targetCap: dossier?.target?.cap?.toString(),
     browsersList:
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
@@ -161,7 +163,28 @@ const FormProvider = ({
     deviceList: yup.array().min(1, "At least one device is required"),
     browsersList: yup.array(),
     deviceRequirements: yup.string(),
-    targetSize: yup.number(),
+    targetSize: yup
+      .string()
+      .test(
+        "cap-set-wihtout-target-size",
+        "Target size must be set",
+        function (value) {
+          const { targetCap } = this.parent;
+          if (!value && targetCap) return false;
+          return true;
+        }
+      ),
+    targetCap: yup
+      .string()
+      .test(
+        "is-greater-or-equal",
+        "Cap must be at least equal to the number of participants",
+        function (value) {
+          const { targetSize } = this.parent;
+          if (value && parseInt(value) < parseInt(targetSize)) return false;
+          return true;
+        }
+      ),
     countries: yup.array(),
     languages: yup.array(),
     targetNotes: yup.string(),
@@ -216,6 +239,7 @@ const FormProvider = ({
               size: !!values.targetSize
                 ? parseInt(values.targetSize)
                 : undefined,
+              cap: !!values.targetCap ? parseInt(values.targetCap) : undefined,
             },
             browsers: values.browsersList?.map((browser) =>
               parseInt(browser, 10)
