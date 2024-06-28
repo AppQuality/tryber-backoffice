@@ -176,6 +176,13 @@ const FormProvider = ({
       ),
     targetCap: yup
       .string()
+      .test("is-not-empty", "Cap must be a number", function (value) {
+        const checkCap = document.getElementById(
+          "checkboxCap"
+        ) as HTMLInputElement;
+        if (!value && checkCap.checked) return false;
+        return true;
+      })
       .test(
         "is-greater-or-equal",
         "Cap must be at least equal to the number of participants",
