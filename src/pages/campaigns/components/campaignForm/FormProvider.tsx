@@ -239,7 +239,7 @@ const FormProvider = ({
               size: !!values.targetSize
                 ? parseInt(values.targetSize)
                 : undefined,
-              cap: !!values.targetCap ? parseInt(values.targetCap) : undefined,
+              cap: !!values.targetCap ? parseInt(values.targetCap) : -1, // -1 is passed for no tester cap required
             },
             browsers: values.browsersList?.map((browser) =>
               parseInt(browser, 10)
