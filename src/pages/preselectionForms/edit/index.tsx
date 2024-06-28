@@ -55,7 +55,7 @@ const PreselectionForm = () => {
           size="regular"
           back={{
             text: "Back to list",
-            navigation: "/backoffice/campaigns/preselection-forms",
+            navigation: "/backoffice/preselection-forms",
           }}
         >
           <span>{id ? "Edit Preselection Form" : "New Preselection Form"}</span>

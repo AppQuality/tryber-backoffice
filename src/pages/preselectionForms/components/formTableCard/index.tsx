@@ -50,13 +50,10 @@ export const FormTableCard = () => {
               onClick={(e) => {
                 if (e.ctrlKey)
                   window.open(
-                    `/backoffice/campaigns/preselection-forms/${res.id}`,
+                    `/backoffice/preselection-forms/${res.id}`,
                     "_blank"
                   );
-                else
-                  history.push(
-                    `/backoffice/campaigns/preselection-forms/${res.id}`
-                  );
+                else history.push(`/backoffice/preselection-forms/${res.id}`);
               }}
               style={{ cursor: "pointer" }}
             />
