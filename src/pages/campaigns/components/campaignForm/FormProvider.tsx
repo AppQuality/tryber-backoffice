@@ -132,8 +132,11 @@ const FormProvider = ({
     deviceRequirements: dossier?.deviceRequirements || "",
     targetNotes: dossier?.target?.notes || "",
     targetSize: dossier?.target?.size?.toString(),
-    targetCap: dossier?.target?.cap?.toString(),
     checkboxCap: !!dossier?.target?.cap?.toString(),
+    targetCap:
+      dossier?.target?.cap?.toString() === "-1"
+        ? ""
+        : dossier?.target?.cap?.toString(),
     browsersList:
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
