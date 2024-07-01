@@ -1,15 +1,18 @@
-import { Title, Checkbox } from "@appquality/appquality-design-system";
+import {
+  Title,
+  Checkbox,
+  FormikField,
+  FieldProps,
+} from "@appquality/appquality-design-system";
 import InputField from "./InputField";
-import { useState } from "react";
 import { NewCampaignValues } from "../FormProvider";
 import { useFormikContext } from "formik";
 
 const TargetSize = () => {
   const {
     setFieldValue,
-    values: { targetCap },
+    values: { checkboxCap },
   } = useFormikContext<NewCampaignValues>();
-  const [hasCap, setHasCap] = useState(!!targetCap);
   return (
     <>
       <div>
@@ -30,18 +33,22 @@ const TargetSize = () => {
           Set the maximum candidates capacity
         </Title>
 
-        <Checkbox
-          name="checkboxCap"
-          id="checkboxCap"
-          label="Limit the number of candidates"
-          checked={hasCap}
-          onChange={(e) => {
-            setHasCap(e.target.checked);
-            if (!e.target.checked) setFieldValue("targetCap", "");
-          }}
-        />
+        <FormikField name="checkboxCap">
+          {({ field, form }: FieldProps) => (
+            <Checkbox
+              name={field.name}
+              id="checkboxCap"
+              label="Limit the number of candidates"
+              checked={field.value}
+              onChange={(e) => {
+                setFieldValue("checkboxCap", e.target.checked);
+                if (!e.target.checked) setFieldValue("targetCap", "");
+              }}
+            />
+          )}
+        </FormikField>
         <InputField
-          disabled={!hasCap}
+          disabled={!checkboxCap}
           type="number"
           name="targetCap"
           label=""
