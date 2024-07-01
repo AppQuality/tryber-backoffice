@@ -94,6 +94,7 @@ const FormProvider = ({
   endDate.setDate(startDate.getDate() + 2);
   const closeDate = new Date(endDate);
   closeDate.setDate(endDate.getDate() + 10);
+  const hasCap = !!dossier?.target?.cap && dossier?.target?.cap > -1;
 
   const initialValues: NewCampaignValues = {
     isEdit: isEdit || false,
@@ -132,11 +133,8 @@ const FormProvider = ({
     deviceRequirements: dossier?.deviceRequirements || "",
     targetNotes: dossier?.target?.notes || "",
     targetSize: dossier?.target?.size?.toString(),
-    checkboxCap: !!dossier?.target?.cap?.toString(),
-    targetCap:
-      dossier?.target?.cap?.toString() === "-1"
-        ? ""
-        : dossier?.target?.cap?.toString(),
+    checkboxCap: hasCap,
+    targetCap: hasCap ? dossier?.target?.cap?.toString() : "",
     browsersList:
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
