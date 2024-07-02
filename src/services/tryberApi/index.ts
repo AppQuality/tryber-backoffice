@@ -1466,31 +1466,6 @@ export type GetCampaignsByCampaignUxApiResponse =
     status: "draft" | "published" | "draft-modified";
     goal: string;
     usersNumber: number;
-    insights?: {
-      id: number;
-      title: string;
-      severity: {
-        id: number;
-        name: string;
-      };
-      description: string;
-      clusters:
-        | "all"
-        | {
-            id: number;
-            name: string;
-          }[];
-      videoParts: {
-        id: number;
-        start: number;
-        end: number;
-        mediaId: number;
-        url: string;
-        streamUrl: string;
-        description: string;
-        poster?: string;
-      }[];
-    }[];
     sentiments: {
       id: number;
       value: number;
@@ -1522,22 +1497,6 @@ export type PatchCampaignsByCampaignUxApiArg = {
     | {
         goal: string;
         usersNumber: number;
-        insights: {
-          id?: number;
-          title: string;
-          description: string;
-          severityId: number;
-          order: number;
-          clusterIds: number[] | "all";
-          videoParts: {
-            id?: number;
-            start: number;
-            end: number;
-            mediaId: number;
-            description: string;
-            order: number;
-          }[];
-        }[];
         sentiments: {
           id?: number;
           clusterId: number;

@@ -1,5 +1,4 @@
 import { Title, Form, Text } from "@appquality/appquality-design-system";
-import InsightSection from "./Insights";
 import Test from "./campaign/Goal";
 import Methodology from "./campaign/Methodology";
 import { useInView } from "react-intersection-observer";
@@ -109,14 +108,6 @@ const UxDashboardForm = () => {
           subtitle="Com'è stata l'esperienza complessiva degli utenti con il prodotto"
         >
           <SentimentSection />
-        </FormSection>
-        <FormSection
-          order={2}
-          name="insights"
-          title="Punti principali"
-          subtitle="Cosa abbiamo scoperto dell’esperienza utente"
-        >
-          <InsightSection />
         </FormSection>
       </Form>
     </div>
