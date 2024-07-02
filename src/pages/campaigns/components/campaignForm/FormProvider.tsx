@@ -50,6 +50,8 @@ export interface NewCampaignValues {
   deviceRequirements?: string;
   targetNotes?: string;
   targetSize?: string;
+  targetCap?: string;
+  checkboxCap?: boolean;
   browsersList?: string[];
   productType?: string;
   notes?: string;
@@ -92,6 +94,7 @@ const FormProvider = ({
   endDate.setDate(startDate.getDate() + 2);
   const closeDate = new Date(endDate);
   closeDate.setDate(endDate.getDate() + 10);
+  const hasCap = !!dossier?.target?.cap && dossier?.target?.cap > -1;
 
   const initialValues: NewCampaignValues = {
     isEdit: isEdit || false,
@@ -130,6 +133,8 @@ const FormProvider = ({
     deviceRequirements: dossier?.deviceRequirements || "",
     targetNotes: dossier?.target?.notes || "",
     targetSize: dossier?.target?.size?.toString(),
+    checkboxCap: hasCap,
+    targetCap: hasCap ? dossier?.target?.cap?.toString() : "",
     browsersList:
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
@@ -161,7 +166,33 @@ const FormProvider = ({
     deviceList: yup.array().min(1, "At least one device is required"),
     browsersList: yup.array(),
     deviceRequirements: yup.string(),
-    targetSize: yup.number(),
+    targetSize: yup
+      .string()
+      .test(
+        "cap-set-wihtout-target-size",
+        "Target size must be set",
+        function (value) {
+          const { targetCap } = this.parent;
+          if (!value && targetCap) return false;
+          return true;
+        }
+      ),
+    targetCap: yup
+      .string()
+      .test("is-not-empty", "Cap must be a number", function (value) {
+        const { checkboxCap } = this.parent;
+        if (!value && checkboxCap) return false;
+        return true;
+      })
+      .test(
+        "is-greater-or-equal",
+        "Cap must be at least equal to the number of participants",
+        function (value) {
+          const { targetSize } = this.parent;
+          if (value && parseInt(value) < parseInt(targetSize)) return false;
+          return true;
+        }
+      ),
     countries: yup.array(),
     languages: yup.array(),
     targetNotes: yup.string(),
@@ -216,6 +247,7 @@ const FormProvider = ({
               size: !!values.targetSize
                 ? parseInt(values.targetSize)
                 : undefined,
+              cap: !!values.targetCap ? parseInt(values.targetCap) : -1, // -1 is passed for no tester cap required
             },
             browsers: values.browsersList?.map((browser) =>
               parseInt(browser, 10)

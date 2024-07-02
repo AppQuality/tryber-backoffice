@@ -1,0 +1,24 @@
+import { useGetCampaignsFormsQuery } from "src/services/tryberApi";
+
+export const SurveyButton = ({ campaign_id }: { campaign_id: string }) => {
+  const { data, isError, isLoading } = useGetCampaignsFormsQuery({
+    searchBy: "campaign_id",
+    search: campaign_id,
+  });
+
+  if (!data || isError || isLoading) return null;
+  const hasSurvey = () => data.size > 0;
+  return (
+    // eslint-disable-next-line react/jsx-no-target-blank
+    <a
+      href={
+        hasSurvey()
+          ? `/backoffice/preselection-forms/${data.results[0].id}/`
+          : "/backoffice/preselection-forms/new/"
+      }
+      target="_blank"
+    >
+      {hasSurvey() ? "Edit survey" : "Create survey"}
+    </a>
+  );
+};

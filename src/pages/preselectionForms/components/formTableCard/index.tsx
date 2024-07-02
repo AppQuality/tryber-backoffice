@@ -9,7 +9,7 @@ import { PencilSquare } from "react-bootstrap-icons";
 import { useHistory } from "react-router-dom";
 import { useGetCampaignsFormsQuery } from "src/services/tryberApi";
 import { useAppDispatch, useAppSelector } from "src/store";
-import { resetList } from "../preselectionListSlice";
+import { resetList } from "src/pages/preselectionForms/listSlice";
 import Columns from "./columns";
 import { FormSearchCard } from "./formSearchCard";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
@@ -50,13 +50,10 @@ export const FormTableCard = () => {
               onClick={(e) => {
                 if (e.ctrlKey)
                   window.open(
-                    `/backoffice/campaigns/preselection-forms/${res.id}`,
+                    `/backoffice/preselection-forms/${res.id}`,
                     "_blank"
                   );
-                else
-                  history.push(
-                    `/backoffice/campaigns/preselection-forms/${res.id}`
-                  );
+                else history.push(`/backoffice/preselection-forms/${res.id}`);
               }}
               style={{ cursor: "pointer" }}
             />

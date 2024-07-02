@@ -40,6 +40,8 @@ import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
+import { SurveyButton } from "./SurveyButton";
+import TargetSize from "./fields/TargetSize";
 
 interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -129,6 +131,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   <TextareaField
                     name="description"
                     label="Campaign Description"
+                    resize="vertical"
                     placeholder="Verrà testato il prodotto [nome prodotto, tipologia del prodotto] attraverso un test di [tipologia di test]. 
                   Il suo scopo principale è [in che modo il prodotto migliora la vita delle persone]."
                   />
@@ -225,11 +228,13 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     name="goal"
                     label="Test Perimeter"
                     placeholder="The test will cover..."
+                    resize="vertical"
                   />
                   <TextareaField
                     name="outOfScope"
                     label="Out of scope"
                     placeholder="The test will NOT cover..."
+                    resize="vertical"
                   />
                 </FieldWrapper>
               </Card>
@@ -248,6 +253,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   <TextareaField
                     name="deviceRequirements"
                     label="Device requirements"
+                    resize="vertical"
                     placeholder="If necessary, enter specific device requirements here"
                   />
                 </FieldWrapper>
@@ -259,15 +265,9 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               id="who"
             >
               <Card className="aq-mb-4" title="Who are we testing with?">
-                <Title size="s" className="aq-mb-2">
-                  Set the target
-                </Title>
-                <InputField
-                  type="number"
-                  name="targetSize"
-                  label="Number of participants"
-                  style={{ maxWidth: "225px" }}
-                />
+                <FieldWrapper>
+                  <TargetSize />
+                </FieldWrapper>
                 <FieldWrapper>
                   <CountrySelect />
                   <LanguageSelect />
@@ -279,8 +279,12 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   <TextareaField
                     name="targetNotes"
                     label="Trybers' additional requirements"
+                    resize="vertical"
                     placeholder="The target has to..."
                   />
+                  {dossier && dossier.id && (
+                    <SurveyButton campaign_id={dossier.id.toString()} />
+                  )}
                 </FieldWrapper>
               </Card>
             </Section>
@@ -295,6 +299,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <TextareaField
                   name="notes"
                   label="Additional test notes"
+                  resize="vertical"
                   placeholder="The kick-off call will be on... Customers will be release on production on..."
                 />
               </Card>

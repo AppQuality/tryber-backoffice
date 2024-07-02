@@ -2,7 +2,7 @@ import { Input } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import useDebounce from "src/hooks/useDebounce";
 import { useAppDispatch } from "src/store";
-import { setSearch } from "../preselectionListSlice";
+import { setSearch } from "src/pages/preselectionForms/listSlice";
 
 export const FormSearchCard = () => {
   const dispatch = useAppDispatch();
