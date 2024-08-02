@@ -4,12 +4,10 @@ import {
   Container,
   PageTitle,
   Steps,
+  Title,
 } from "@appquality/appquality-design-system";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
-import {
-  useGetCampaignsByCampaignQuery,
-  useGetUsersMePermissionsQuery,
-} from "src/services/tryberApi";
+import { useGetCampaignsByCampaignQuery } from "src/services/tryberApi";
 import UxDashboardForm from "./UxForm";
 import { useParams } from "react-router-dom";
 import Preview from "./Preview";
@@ -71,7 +69,10 @@ const UxDashboard = () => {
             >
               Tool di compilazione
             </PageTitle>
-            <BSGrid>
+            <Title size="xl">
+              Il CompilationTool è temporaneamente disabilitato. Contatta il
+              supporto se ha bisogno di effettuare modifiche.
+              {/* <BSGrid>
               <ResponsiveCol size="col-lg-3" lgOrder={1}>
                 <Sidebar />
               </ResponsiveCol>
@@ -95,7 +96,8 @@ const UxDashboard = () => {
                 {currentStep === 1 && <Preview />}
                 {currentStep === 2 && <ResultsPage />}
               </ResponsiveCol>
-            </BSGrid>
+            </BSGrid> */}
+            </Title>
           </Container>
         </FormProvider>
       </PageTemplate>
