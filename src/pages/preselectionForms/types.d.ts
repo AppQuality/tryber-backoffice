@@ -4,6 +4,7 @@ interface AdditionalField {
   type: string; // cuf_22 || text || select || multiselect || radio || gender || phone_number ||
   name: string;
   options?: string[];
+  invalidOptions?: string[];
   shortTitle?: string;
   questionId?: number;
 }

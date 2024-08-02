@@ -1,3 +1,7 @@
+import { Form, Formik } from "@appquality/appquality-design-system";
+import { ReactNode, useState } from "react";
+import { useHistory } from "react-router-dom";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   GetCampaignsFormsByFormIdApiResponse,
   PostCampaignsFormsApiArg,
@@ -6,16 +10,12 @@ import {
   usePostCampaignsFormsMutation,
   usePutCampaignsFormsByFormIdMutation,
 } from "src/services/tryberApi";
-import { getCustomQuestionTypeLabel } from "../functions/getCustomQuestionTypeLabel";
-import { getProfileTypeLabel } from "../functions/getProfileTypeLabel";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
-import { ReactNode, useState } from "react";
-import { Form, Formik } from "@appquality/appquality-design-system";
-import useCufData from "../hooks/useCufData";
-import { useHistory } from "react-router-dom";
-import siteWideMessageStore from "src/redux/siteWideMessages";
+import { getCustomQuestionTypeLabel } from "../functions/getCustomQuestionTypeLabel";
+import { getProfileTypeLabel } from "../functions/getProfileTypeLabel";
 import { scrollToFormTitle } from "../functions/scrollToFormTitle";
+import useCufData from "../hooks/useCufData";
 
 interface FormProviderInterface {
   savedData?: GetCampaignsFormsByFormIdApiResponse;
@@ -66,6 +66,9 @@ const FormProvider = ({
           shortTitle: f.short_name,
           type: f.type,
           options: f.options?.map((o) =>
+            typeof o === "string" ? o : o.toString()
+          ),
+          invalidOptions: f.invalidOptions?.map((o) =>
             typeof o === "string" ? o : o.toString()
           ),
           name: `Custom ${getCustomQuestionTypeLabel(f.type)}`,
@@ -149,6 +152,10 @@ const FormProvider = ({
           if (field.options) {
             // @ts-ignore
             newField.options = field.options;
+          }
+          if (field.invalidOptions) {
+            // @ts-ignore
+            newField.invalidOptions = field.invalidOptions;
           }
           if ("selectedOptions" in field && field.selectedOptions) {
             if (field.selectedOptions[0]?.value === "-1") {
