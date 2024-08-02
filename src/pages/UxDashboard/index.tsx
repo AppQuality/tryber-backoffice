@@ -71,7 +71,7 @@ const UxDashboard = () => {
             </PageTitle>
             <Title size="xl">
               Il CompilationTool è temporaneamente disabilitato. Contatta il
-              supporto per le modifiche.
+              supporto se ha bisogno di effettuare modifiche.
               {/* <BSGrid>
               <ResponsiveCol size="col-lg-3" lgOrder={1}>
                 <Sidebar />
