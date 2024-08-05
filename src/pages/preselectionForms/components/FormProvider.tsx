@@ -65,12 +65,7 @@ const FormProvider = ({
           question: f.question,
           shortTitle: f.short_name,
           type: f.type,
-          options: f.options?.map((o) =>
-            typeof o === "string" ? o : o.toString()
-          ),
-          invalidOptions: f.invalidOptions?.map((o) =>
-            typeof o === "string" ? o : o.toString()
-          ),
+          options: f.options,
           name: `Custom ${getCustomQuestionTypeLabel(f.type)}`,
         });
         break;
@@ -119,7 +114,12 @@ const FormProvider = ({
           is: (type: string) =>
             type === "radio" || type === "select" || type === "multiselect",
           then: Yup.array()
-            .of(Yup.string().required("This is a required field"))
+            .of(
+              Yup.object().shape({
+                value: Yup.string().required("This is a required field"),
+                isInvalid: Yup.boolean(),
+              })
+            )
             .min(2, "This field must have at least 2 items"),
         }),
       })
@@ -153,19 +153,17 @@ const FormProvider = ({
             // @ts-ignore
             newField.options = field.options;
           }
-          if (field.invalidOptions) {
-            // @ts-ignore
-            newField.invalidOptions = field.invalidOptions;
-          }
           if ("selectedOptions" in field && field.selectedOptions) {
             if (field.selectedOptions[0]?.value === "-1") {
               getAllOptions(field.cufId).then((res) => {
-                newField.options = res;
+                newField.options = res.map((o) => ({
+                  value: o,
+                }));
               });
             } else {
-              newField.options = field.selectedOptions.map((o) =>
-                parseInt(o.value)
-              );
+              newField.options = field.selectedOptions.map((o) => ({
+                value: parseInt(o.value),
+              }));
             }
           }
           return newField;

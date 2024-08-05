@@ -2837,20 +2837,21 @@ export type PreselectionFormQuestion = {
   short_name?: string;
 } & (
   | {
-      type: "text";
+      type: "text" | "gender" | "phone_number" | "address";
     }
   | {
       type: "multiselect" | "select" | "radio";
-      options: string[];
-      invalidOptions?: string[];
+      options: {
+        value: string;
+        isInvalid?: boolean;
+      }[];
     }
   | {
       type: string;
-      options?: number[];
-      invalidOptions?: number[];
-    }
-  | {
-      type: "gender" | "phone_number" | "address";
+      options?: {
+        value: number;
+        isInvalid?: boolean;
+      }[];
     }
 );
 export type CustomUserFieldsType = "text" | "select" | "multiselect";

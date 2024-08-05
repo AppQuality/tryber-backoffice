@@ -11,6 +11,7 @@ import { XLg } from "react-bootstrap-icons";
 export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
   const {
     values: { fields },
+    setFieldValue,
   } = useFormikContext<PreselectionFormValues>();
   return (
     <>
@@ -21,10 +22,6 @@ export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
           <>
             <div>
               {fields[index].options?.map((option, i) => {
-                const invalidOptions = fields[index].invalidOptions || [];
-                const isInvalid = invalidOptions.includes(
-                  arrayHelpers.form.values.fields[index].options[i]
-                );
                 return (
                   <div
                     style={{
@@ -42,26 +39,20 @@ export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
                       }}
                     >
                       <Field
-                        name={`fields.${index}.options.${i}`}
+                        name={`fields.${index}.options.${i}.value`}
                         type="text"
                       />
                       <Button
                         flat
                         disabled={false}
                         onClick={() => {
-                          if (isInvalid) {
-                            const invalidIndex = invalidOptions.indexOf(option);
-                            invalidOptions.splice(invalidIndex, 1);
-                          } else {
-                            invalidOptions.push(option);
-                          }
-                          arrayHelpers.form.setFieldValue(
-                            `fields.${index}.invalidOptions`,
-                            invalidOptions
-                          );
+                          arrayHelpers.replace(i, {
+                            value: option.value,
+                            isInvalid: !option.isInvalid,
+                          });
                         }}
                       >
-                        {isInvalid ? "invalid" : "valid"}
+                        {option.isInvalid ? "invalid" : "valid"}
                       </Button>
                     </div>
                     <div>

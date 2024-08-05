@@ -3,7 +3,11 @@ interface AdditionalField {
   question: string;
   type: string; // cuf_22 || text || select || multiselect || radio || gender || phone_number ||
   name: string;
-  options?: string[];
+  options?: {
+    // look at types GetCampaignsFormsByFormIdApiResponse -> PreselectionFormQuestion
+    value: string | number;
+    isInvalid?: boolean;
+  }[];
   invalidOptions?: string[];
   shortTitle?: string;
   questionId?: number;

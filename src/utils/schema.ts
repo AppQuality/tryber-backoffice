@@ -705,6 +705,8 @@ export interface components {
       visibility?: {
         freeSpots?: number;
         totalSpots?: number;
+        /** @enum {string} */
+        type?: "available" | "unavailable" | "candidate";
       };
     };
     CampaignRequired: {
@@ -804,20 +806,22 @@ export interface components {
     } & (
       | {
           /** @enum {string} */
-          type: "text";
+          type: "text" | "gender" | "phone_number" | "address";
         }
       | {
           /** @enum {string} */
           type: "multiselect" | "select" | "radio";
-          options: string[];
+          options: {
+            value: string;
+            isInvalid?: boolean;
+          }[];
         }
       | {
           type: string;
-          options?: number[];
-        }
-      | {
-          /** @enum {string} */
-          type: "gender" | "phone_number" | "address";
+          options?: {
+            value: number;
+            isInvalid?: boolean;
+          }[];
         }
     );
     /** Project */
@@ -1238,7 +1242,12 @@ export interface operations {
               /** @enum {string} */
               status?: "running" | "closed" | "incoming";
               /** @enum {string} */
-              visibility?: "admin" | "smallgroup" | "logged" | "public";
+              visibility?:
+                | "admin"
+                | "smallgroup"
+                | "logged"
+                | "public"
+                | "target";
               /** @enum {string} */
               resultType?: "bug" | "bugparade" | "no";
               csm?: {
@@ -1424,7 +1433,11 @@ export interface operations {
         /** Array with min and max */
         filterByAge?: unknown;
         /** Show accepted/candidates or both */
-        show?: "onlyAccepted" | "onlyCandidates" | "all";
+        show?:
+          | "onlyAccepted"
+          | "onlyCandidates"
+          | "all"
+          | "candidatesAndExcluded";
       };
     };
     responses: {
@@ -1457,6 +1470,8 @@ export interface operations {
                 title?: string;
                 value?: string;
               }[];
+              /** @enum {string} */
+              status?: "candidate" | "excluded" | "selected";
             }[];
           } & components["schemas"]["PaginationData"];
         };
@@ -3086,7 +3101,12 @@ export interface operations {
         /** How to order values (ASC, DESC) */
         order?: components["parameters"]["order"];
         /** The field for item order */
-        orderBy?: "name" | "start_date" | "end_date" | "close_date";
+        orderBy?:
+          | "name"
+          | "start_date"
+          | "end_date"
+          | "close_date"
+          | "visibility";
       };
     };
     responses: {
