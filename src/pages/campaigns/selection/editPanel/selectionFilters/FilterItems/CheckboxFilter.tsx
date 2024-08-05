@@ -13,13 +13,13 @@ const CheckboxFilter = ({
 }: {
   title: string;
   key: string;
-  options: CustomQuestionOption[];
+  options: string[] | CustomQuestionOption[];
   selected?: string[];
   onSelect: (checked: boolean, option: string) => ReturnType<typeof setFilters>;
 }) => {
   const dispatch = useAppDispatch();
   const hasInvalidAnswer = useMemo(
-    () => options.some((o) => o.isInvalid),
+    () => options.some((o) => typeof o === "object" && o.isInvalid),
     [options]
   );
   const questionLabel = useMemo(
@@ -38,7 +38,7 @@ const CheckboxFilter = ({
     <FilterContainer>
       <FormLabel htmlFor={`filters.${key}`} label={questionLabel} />
       {options.map((d) => {
-        const { value } = d;
+        const value = typeof d === "string" ? d : d.value;
         return (
           <div key={value}>
             <Checkbox
@@ -46,7 +46,7 @@ const CheckboxFilter = ({
               label={
                 <>
                   <span>{value}</span>
-                  {d.isInvalid && (
+                  {typeof d === "object" && d.isInvalid && (
                     <small className="aq-text-danger"> (*)</small>
                   )}
                 </>
