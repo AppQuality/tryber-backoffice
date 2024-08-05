@@ -8,3 +8,5 @@ interface SelectionFilterRow {
   queryType: SelectOptionType;
   search: string;
 }
+
+type CustomQuestionOption = { value: string | number; isInvalid?: boolean };
