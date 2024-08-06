@@ -3,6 +3,7 @@ import {
   BSGrid,
   Button,
   Card,
+  Checkbox,
   PageTitle,
 } from "@appquality/appquality-design-system";
 import { useParams } from "react-router-dom";
@@ -16,16 +17,20 @@ import {
   useGetUsersMePermissionsQuery,
   useGetUsersMeQuery,
 } from "src/services/tryberApi";
-import { useAppDispatch } from "src/store";
+import { useAppDispatch, useAppSelector } from "src/store";
 import styled from "styled-components";
 import { FilterRecap } from "./FilterRecap";
 import ImportSurveyModal from "./ImportSurveyModal";
 import SelectionTable from "./SelectionTable";
 import Counter from "./counter";
+import Report from "./editPanel/Report";
 import ColumnsConfigurator from "./editPanel/columnsConfigurator";
 import SelectionFilters from "./editPanel/selectionFilters";
-import { openFormModal, openSurveyModal } from "./selectionSlice";
-import Report from "./editPanel/Report";
+import {
+  openFormModal,
+  openSurveyModal,
+  toggleExcluded,
+} from "./selectionSlice";
 
 const BottomCard = styled(Card)`
   .aq-card-body {
@@ -35,6 +40,20 @@ const BottomCard = styled(Card)`
     gap: ${(props) => props.theme.grid.sizes[3]};
   }
 `;
+
+const ShowExcludedTesters = () => {
+  const { showExcluded } = useAppSelector((state) => state.selection);
+  const dispatch = useAppDispatch();
+  return (
+    <Checkbox
+      label="Show excluded testers"
+      checked={showExcluded}
+      onChange={() => {
+        dispatch(toggleExcluded());
+      }}
+    />
+  );
+};
 
 const SelectionPage = () => {
   const { id: campaignId } = useParams<{ id: string }>();
@@ -76,6 +95,9 @@ const SelectionPage = () => {
               </Button>
               <Card title="Add columns" className="aq-mb-3">
                 <ColumnsConfigurator id={campaignId} />
+              </Card>
+              <Card title="Options" className="aq-mb-3">
+                <ShowExcludedTesters />
               </Card>
               <Card
                 title="Filters"
