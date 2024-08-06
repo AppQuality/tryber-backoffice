@@ -149,7 +149,7 @@ const TextQuestionFilterItem = ({
       `question_${id}` as keyof typeof filterByInclude
     ] as string[] | undefined;
     setValue(value?.join(",") || "");
-  }, [filterByInclude]);
+  }, [filterByInclude, id]);
 
   return (
     <FilterContainer>
