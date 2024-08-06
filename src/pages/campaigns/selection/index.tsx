@@ -96,7 +96,7 @@ const SelectionPage = () => {
               <Card title="Add columns" className="aq-mb-3">
                 <ColumnsConfigurator id={campaignId} />
               </Card>
-              <Card title="Options" className="aq-mb-3">
+              <Card className="aq-mb-3">
                 <ShowExcludedTesters />
               </Card>
               <Card
