@@ -31,7 +31,7 @@ const CheckboxFilter = ({
     () => (
       <>
         {hasInvalidAnswer && (
-          <div className="aq-text-danger aq-mb-1"> Domanda a sbarramento</div>
+          <div className="aq-text-danger aq-mb-1"> Knockout question*</div>
         )}
         <span>{title}</span>
       </>
@@ -72,8 +72,10 @@ const CheckboxFilter = ({
       {hasInvalidAnswer && (
         <Text className="aq-mt-2">
           <small>
-            <span className="aq-text-danger">*</span> <Ban /> = Risposta
-            escludente
+            <i>
+              <span className="aq-text-danger">*</span> <Ban /> = Disqualifying
+              answer
+            </i>
           </small>
         </Text>
       )}

@@ -15,7 +15,12 @@ const InvalidButtonComponent = ({
   className?: string;
   onClick: () => void;
 }) => (
-  <IconButtonComponent className={className} kind="danger" onClick={onClick}>
+  <IconButtonComponent
+    title="Disqualifying. Click to make it accepted"
+    className={className}
+    kind="danger"
+    onClick={onClick}
+  >
     <Ban size="16" />
   </IconButtonComponent>
 );
@@ -33,7 +38,12 @@ const ValidButtonComponent = ({
   className?: string;
   onClick: () => void;
 }) => (
-  <IconButtonComponent className={className} kind="success" onClick={onClick}>
+  <IconButtonComponent
+    title="Accepted. Click it to make it disqualyifing"
+    className={className}
+    kind="success"
+    onClick={onClick}
+  >
     <CheckCircle size="16" />
   </IconButtonComponent>
 );

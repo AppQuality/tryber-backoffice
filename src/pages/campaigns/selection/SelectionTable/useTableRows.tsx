@@ -25,8 +25,9 @@ const CheckboxContainer = styled.div`
 `;
 
 const StatusIcon = ({ status }: { status?: string }) => {
-  if (status === "excluded") return <Ban size={16} />;
-  if (status === "candidate") return <CheckCircle size={16} />;
+  if (status === "excluded") return <Ban title="Disqualified" size={16} />;
+  if (status === "candidate")
+    return <CheckCircle title="Qualified" size={16} />;
   return null;
 };
 
