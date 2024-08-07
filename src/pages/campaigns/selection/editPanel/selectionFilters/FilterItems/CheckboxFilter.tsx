@@ -4,8 +4,8 @@ import {
   Text,
 } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
+import { Ban } from "src/components/icons";
 import { useAppDispatch } from "src/store";
-import { Ban } from "../../../icons";
 import { changeTablePage, setFilters } from "../../../selectionSlice";
 import { FilterContainer } from "./components/FilterContainer";
 

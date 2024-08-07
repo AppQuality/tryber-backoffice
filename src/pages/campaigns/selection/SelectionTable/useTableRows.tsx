@@ -1,9 +1,9 @@
 import { TableType } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
+import { Ban, CheckCircle } from "src/components/icons";
 import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
 import { useAppDispatch, useAppSelector } from "src/store";
 import { styled } from "styled-components";
-import { Ban, CheckCircle } from "../icons";
 import { setTableColumns } from "../selectionSlice";
 import useItems from "../useItems";
 interface RowType extends TableType.Row {
