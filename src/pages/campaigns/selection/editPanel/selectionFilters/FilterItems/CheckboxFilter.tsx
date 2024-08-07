@@ -1,8 +1,13 @@
-import { Checkbox, FormLabel } from "@appquality/appquality-design-system";
+import {
+  Checkbox,
+  FormLabel,
+  Text,
+} from "@appquality/appquality-design-system";
+import { useMemo } from "react";
 import { useAppDispatch } from "src/store";
+import { Ban } from "../../../icons";
 import { changeTablePage, setFilters } from "../../../selectionSlice";
 import { FilterContainer } from "./components/FilterContainer";
-import { useMemo } from "react";
 
 const CheckboxFilter = ({
   title,
@@ -25,10 +30,10 @@ const CheckboxFilter = ({
   const questionLabel = useMemo(
     () => (
       <>
-        <span>{title}</span>
         {hasInvalidAnswer && (
-          <small className="aq-text-danger"> (domanda a sbarramento)</small>
+          <div className="aq-text-danger aq-mb-1"> Domanda a sbarramento</div>
         )}
+        <span>{title}</span>
       </>
     ),
     [title, hasInvalidAnswer]
@@ -45,10 +50,12 @@ const CheckboxFilter = ({
               name={`filters.${key}.${value}`}
               label={
                 <>
-                  <span>{value}</span>
                   {typeof d === "object" && d.isInvalid && (
-                    <small className="aq-text-danger"> (*)</small>
+                    <>
+                      <Ban />{" "}
+                    </>
                   )}
+                  <span>{value}</span>
                 </>
               }
               checked={
@@ -62,6 +69,14 @@ const CheckboxFilter = ({
           </div>
         );
       })}
+      {hasInvalidAnswer && (
+        <Text className="aq-mt-2">
+          <small>
+            <span className="aq-text-danger">*</span> <Ban /> = Risposta
+            escludente
+          </small>
+        </Text>
+      )}
     </FilterContainer>
   );
 };
