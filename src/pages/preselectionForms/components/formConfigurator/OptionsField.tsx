@@ -7,6 +7,7 @@ import {
 import { FieldArray, useFormikContext } from "formik";
 import React from "react";
 import { XLg } from "react-bootstrap-icons";
+import { ValidityToggle } from "./ValidityToggle";
 
 export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
   const {
@@ -42,18 +43,15 @@ export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
                         name={`fields.${index}.options.${i}.value`}
                         type="text"
                       />
-                      <Button
-                        flat
-                        disabled={false}
+                      <ValidityToggle
+                        isInvalid={!!option.isInvalid}
                         onClick={() => {
                           arrayHelpers.replace(i, {
                             value: option.value,
                             isInvalid: !option.isInvalid,
                           });
                         }}
-                      >
-                        {option.isInvalid ? "invalid" : "valid"}
-                      </Button>
+                      />
                     </div>
                     <div>
                       <Button
