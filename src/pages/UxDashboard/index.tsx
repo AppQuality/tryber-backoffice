@@ -70,33 +70,31 @@ const UxDashboard = () => {
               Tool di compilazione
             </PageTitle>
             <Title size="xl">
-              Il CompilationTool è temporaneamente disabilitato. Contatta il
-              supporto se ha bisogno di effettuare modifiche.
-              {/* <BSGrid>
-              <ResponsiveCol size="col-lg-3" lgOrder={1}>
-                <Sidebar />
-              </ResponsiveCol>
-              <ResponsiveCol size="col-lg-9" lgOrder={0}>
-                <StyledSteps
-                  current={currentStep}
-                  className="aq-my-4"
-                  direction="horizontal"
-                >
-                  <StyledSteps.Step isCompleted={true} title={"Form"} />
-                  <StyledSteps.Step
-                    isCompleted={currentStep > 0}
-                    title={"Preview"}
-                  />
-                  <StyledSteps.Step
-                    isCompleted={currentStep > 1}
-                    title={"Publish"}
-                  />
-                </StyledSteps>
-                {currentStep === 0 && <UxDashboardForm />}
-                {currentStep === 1 && <Preview />}
-                {currentStep === 2 && <ResultsPage />}
-              </ResponsiveCol>
-            </BSGrid> */}
+              <BSGrid>
+                <ResponsiveCol size="col-lg-3" lgOrder={1}>
+                  <Sidebar />
+                </ResponsiveCol>
+                <ResponsiveCol size="col-lg-9" lgOrder={0}>
+                  <StyledSteps
+                    current={currentStep}
+                    className="aq-my-4"
+                    direction="horizontal"
+                  >
+                    <StyledSteps.Step isCompleted={true} title={"Form"} />
+                    <StyledSteps.Step
+                      isCompleted={currentStep > 0}
+                      title={"Preview"}
+                    />
+                    <StyledSteps.Step
+                      isCompleted={currentStep > 1}
+                      title={"Publish"}
+                    />
+                  </StyledSteps>
+                  {currentStep === 0 && <UxDashboardForm />}
+                  {currentStep === 1 && <Preview />}
+                  {currentStep === 2 && <ResultsPage />}
+                </ResponsiveCol>
+              </BSGrid>
             </Title>
           </Container>
         </FormProvider>
