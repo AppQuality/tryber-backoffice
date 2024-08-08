@@ -3,27 +3,17 @@ import {
   BSGrid,
   Container,
   PageTitle,
-  Steps,
   Title,
 } from "@appquality/appquality-design-system";
-import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
-import { useGetCampaignsByCampaignQuery } from "src/services/tryberApi";
-import UxDashboardForm from "./UxForm";
 import { useParams } from "react-router-dom";
-import Preview from "./Preview";
-import Sidebar from "./Sidebar";
-import FormProvider from "./UxForm/FormProvider";
-import ResultsPage from "./ResultsPage";
-import { useAppSelector } from "src/store";
-import styled from "styled-components";
+import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { PageTemplate } from "src/features/PageTemplate";
+import { useGetCampaignsByCampaignQuery } from "src/services/tryberApi";
+import styled from "styled-components";
+import Sidebar from "./Sidebar";
 import useCanSee from "./useCanSee";
-
-const StyledSteps = styled(Steps)`
-  .step-status-icon {
-    background-color: ${({ theme }) => theme.colors.gray100};
-  }
-`;
+import UxDashboardForm from "./UxForm";
+import FormProvider from "./UxForm/FormProvider";
 
 const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
   @media (min-width: ${({ theme }) => theme.grid.breakpoints.lg}) {
@@ -33,7 +23,6 @@ const ResponsiveCol = styled(BSCol)<{ lgOrder: number }>`
 
 const UxDashboard = () => {
   const { id } = useParams<{ id: string }>();
-  const { currentStep } = useAppSelector((state) => state.uxDashboard);
 
   const { isError, isLoading, hasPermission } = useCanSee(id);
 
@@ -53,7 +42,6 @@ const UxDashboard = () => {
   }
 
   if (hasPermission) {
-    // todo: discuss about appq_video_dashboard permission (change tests)
     return (
       <PageTemplate>
         <FormProvider>
@@ -75,24 +63,7 @@ const UxDashboard = () => {
                   <Sidebar />
                 </ResponsiveCol>
                 <ResponsiveCol size="col-lg-9" lgOrder={0}>
-                  <StyledSteps
-                    current={currentStep}
-                    className="aq-my-4"
-                    direction="horizontal"
-                  >
-                    <StyledSteps.Step isCompleted={true} title={"Form"} />
-                    <StyledSteps.Step
-                      isCompleted={currentStep > 0}
-                      title={"Preview"}
-                    />
-                    <StyledSteps.Step
-                      isCompleted={currentStep > 1}
-                      title={"Publish"}
-                    />
-                  </StyledSteps>
-                  {currentStep === 0 && <UxDashboardForm />}
-                  {currentStep === 1 && <Preview />}
-                  {currentStep === 2 && <ResultsPage />}
+                  <UxDashboardForm />
                 </ResponsiveCol>
               </BSGrid>
             </Title>

@@ -52,7 +52,7 @@ const ResultsPage = () => {
             saveDashboard({
               campaign: id,
               body: {
-                status: "publish",
+                visible: 1,
               },
             })
               .unwrap()

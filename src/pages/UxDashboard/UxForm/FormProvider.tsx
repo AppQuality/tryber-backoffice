@@ -27,7 +27,7 @@ export interface FormSentiment {
   comment: string;
 }
 export interface FormValuesInterface {
-  status?: GetCampaignsByCampaignUxApiResponse["status"];
+  visible?: GetCampaignsByCampaignUxApiResponse["visible"];
   goal: GetCampaignsByCampaignUxApiResponse["goal"];
   methodology: GetCampaignsByCampaignUxApiResponse["methodology"];
   questions: FormQuestion[];
@@ -48,10 +48,9 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
     });
   const { data: campaignData, isLoading: campaignDataLoading } =
     useGetCampaignsByCampaignQuery({ campaign: id });
-
   const initialValues: FormValuesInterface = useMemo(
     () => ({
-      status: currentData?.status,
+      visible: currentData?.visible ?? undefined,
       goal: currentData?.goal || "",
       methodology: currentData?.methodology || {
         name: campaignData?.type || "",
@@ -91,7 +90,7 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const validationSchema = object({
-    status: string(),
+    visible: number(),
     goal: string().required("Campo obbligatorio"),
     methodology: object().shape({
       name: string(),
@@ -164,13 +163,13 @@ const FormProvider = ({ children }: { children: ReactNode }) => {
       initialValues={initialValues}
       enableReinitialize
       onSubmit={async (values, formikHelpers) => {
-        // todo: better typing for values because validationSchema prevent usersNumber to be undefined
         if (values.usersNumber === undefined) return;
 
         formikHelpers.setSubmitting(true);
         const res = await saveDashboard({
           campaign: id,
           body: {
+            visible: values.visible,
             goal: values.goal,
             questions: values.questions.map((question) => ({
               id: question.id,
