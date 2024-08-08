@@ -1238,7 +1238,12 @@ export interface operations {
               /** @enum {string} */
               status?: "running" | "closed" | "incoming";
               /** @enum {string} */
-              visibility?: "admin" | "smallgroup" | "logged" | "public";
+              visibility?:
+                | "admin"
+                | "smallgroup"
+                | "logged"
+                | "public"
+                | "target";
               /** @enum {string} */
               resultType?: "bug" | "bugparade" | "no";
               csm?: {
@@ -1951,8 +1956,6 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            /** @enum {string} */
-            status: "draft" | "published" | "draft-modified";
             goal: string;
             usersNumber: number;
             sentiments: {
@@ -1974,6 +1977,7 @@ export interface operations {
               id: number;
               name: string;
             }[];
+            visible: number;
           };
         };
       };
@@ -2000,30 +2004,25 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json":
-          | {
-              goal: string;
-              usersNumber: number;
-              sentiments: {
-                id?: number;
-                clusterId: number;
-                value: number;
-                comment: string;
-              }[];
-              methodology: {
-                /** @enum {string} */
-                type: "qualitative" | "quantitative" | "quali-quantitative";
-                description: string;
-              };
-              questions: {
-                id?: number;
-                name: string;
-              }[];
-            }
-          | {
-              /** @enum {string} */
-              status: "publish";
-            };
+        "application/json": {
+          goal?: string;
+          usersNumber?: number;
+          visible?: number;
+          methodology?: {
+            description: string;
+            type: string;
+          };
+          sentiments?: {
+            clusterId: number;
+            value: number;
+            comment: string;
+            id?: number;
+          }[];
+          questions?: {
+            name: string;
+            id?: number;
+          }[];
+        };
       };
     };
   };

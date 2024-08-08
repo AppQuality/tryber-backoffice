@@ -1043,7 +1043,7 @@ export type GetCampaignsApiResponse = /** status 200 OK */ {
     startDate?: string;
     endDate?: string;
     status?: "running" | "closed" | "incoming";
-    visibility?: "admin" | "smallgroup" | "logged" | "public";
+    visibility?: "admin" | "smallgroup" | "logged" | "public" | "target";
     resultType?: "bug" | "bugparade" | "no";
     csm?: {
       id: number;
@@ -1463,7 +1463,6 @@ export type PutCampaignsByCampaignTasksAndTaskApiArg = {
 };
 export type GetCampaignsByCampaignUxApiResponse =
   /** status 200 A UseCase linked with the Campaign */ {
-    status: "draft" | "published" | "draft-modified";
     goal: string;
     usersNumber: number;
     sentiments: {
@@ -1484,6 +1483,7 @@ export type GetCampaignsByCampaignUxApiResponse =
       id: number;
       name: string;
     }[];
+    visible: number;
   };
 export type GetCampaignsByCampaignUxApiArg = {
   /** A campaign id */
@@ -1493,28 +1493,25 @@ export type PatchCampaignsByCampaignUxApiResponse = /** status 200 OK */ {};
 export type PatchCampaignsByCampaignUxApiArg = {
   /** A campaign id */
   campaign: string;
-  body:
-    | {
-        goal: string;
-        usersNumber: number;
-        sentiments: {
-          id?: number;
-          clusterId: number;
-          value: number;
-          comment: string;
-        }[];
-        methodology: {
-          type: "qualitative" | "quantitative" | "quali-quantitative";
-          description: string;
-        };
-        questions: {
-          id?: number;
-          name: string;
-        }[];
-      }
-    | {
-        status: "publish";
-      };
+  body: {
+    goal?: string;
+    usersNumber?: number;
+    visible?: number;
+    methodology?: {
+      description: string;
+      type: string;
+    };
+    sentiments?: {
+      clusterId: number;
+      value: number;
+      comment: string;
+      id?: number;
+    }[];
+    questions?: {
+      name: string;
+      id?: number;
+    }[];
+  };
 };
 export type PostCampaignsFormsApiResponse = /** status 201 Created */ {
   id: number;
