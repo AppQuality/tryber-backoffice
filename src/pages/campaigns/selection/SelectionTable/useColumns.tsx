@@ -1,9 +1,11 @@
 import { TableType } from "@appquality/appquality-design-system";
 import { useParams } from "react-router-dom";
+import { useAppSelector } from "src/store";
 import SelectAllFirstDevicesCheckbox from "./components/SelectAllFirstDevicesCheckbox";
 
 export const useColumns: () => TableType.Column[] = () => {
   const { id } = useParams<{ id: string }>();
+  const { showExcluded } = useAppSelector((state) => state.selection);
 
   return [
     {
@@ -83,6 +85,7 @@ export const useColumns: () => TableType.Column[] = () => {
     {
       dataIndex: "actions",
       key: "actions",
+      maxWidth: showExcluded ? "70px" : undefined,
       title: (
         <SelectAllFirstDevicesCheckbox
           data-testid="selectAllFirstDevices"

@@ -19,6 +19,7 @@ export const StyledSelectionTable = styled.div<{
     position: sticky;
     right: 0;
     background: white;
+    justify-content: right;
   }
 
   .lastHeadCell {

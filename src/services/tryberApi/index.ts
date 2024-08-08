@@ -1043,7 +1043,7 @@ export type GetCampaignsApiResponse = /** status 200 OK */ {
     startDate?: string;
     endDate?: string;
     status?: "running" | "closed" | "incoming";
-    visibility?: "admin" | "smallgroup" | "logged" | "public";
+    visibility?: "admin" | "smallgroup" | "logged" | "public" | "target";
     resultType?: "bug" | "bugparade" | "no";
     csm?: {
       id: number;
@@ -1219,6 +1219,7 @@ export type GetCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */ {
       title?: string;
       value?: string;
     }[];
+    status?: "candidate" | "excluded" | "selected";
   }[];
 } & PaginationData;
 export type GetCampaignsByCampaignCandidatesApiArg = {
@@ -1237,7 +1238,7 @@ export type GetCampaignsByCampaignCandidatesApiArg = {
   /** Array with min and max */
   filterByAge?: any;
   /** Show accepted/candidates or both */
-  show?: "onlyAccepted" | "onlyCandidates" | "all";
+  show?: "onlyAccepted" | "onlyCandidates" | "all" | "candidatesAndExcluded";
 };
 export type GetCampaignsByCampaignClustersApiResponse =
   /** status 200 A UseCase linked with the Campaign */ {
@@ -2023,7 +2024,7 @@ export type GetUsersMeCampaignsApiArg = {
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
   /** The field for item order */
-  orderBy?: "name" | "start_date" | "end_date" | "close_date";
+  orderBy?: "name" | "start_date" | "end_date" | "close_date" | "visibility";
 };
 export type GetUsersMeCampaignsByCampaignIdApiResponse = /** status 200 OK */ {
   id: number;
@@ -2795,6 +2796,7 @@ export type CampaignOptional = {
   visibility?: {
     freeSpots?: number;
     totalSpots?: number;
+    type?: "available" | "unavailable" | "candidate";
   };
 };
 export type CampaignType = {} | {};
@@ -2835,18 +2837,21 @@ export type PreselectionFormQuestion = {
   short_name?: string;
 } & (
   | {
-      type: "text";
+      type: "text" | "gender" | "phone_number" | "address";
     }
   | {
       type: "multiselect" | "select" | "radio";
-      options: string[];
+      options: {
+        value: string;
+        isInvalid?: boolean;
+      }[];
     }
   | {
       type: string;
-      options?: number[];
-    }
-  | {
-      type: "gender" | "phone_number" | "address";
+      options?: {
+        value: number;
+        isInvalid?: boolean;
+      }[];
     }
 );
 export type CustomUserFieldsType = "text" | "select" | "multiselect";
