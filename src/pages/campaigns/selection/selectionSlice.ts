@@ -23,6 +23,7 @@ interface SelectionState {
   questionsId: string[];
   tableColumns: TableType.Column[];
   disableApplyFilters: boolean;
+  showExcluded: boolean;
   filters: {
     filterByInclude?: Filter;
     filterByExclude?: Record<"testerIds", string | undefined>;
@@ -43,6 +44,7 @@ export const initialState: SelectionState = {
   questionsId: [],
   tableColumns: [],
   disableApplyFilters: true,
+  showExcluded: false,
   filters: {},
 };
 
@@ -58,6 +60,9 @@ const selectionSlice = createSlice({
     },
     setDisableApplyFilters(state, action: PayloadAction<boolean>) {
       state.disableApplyFilters = action.payload;
+    },
+    toggleExcluded(state) {
+      state.showExcluded = !state.showExcluded;
     },
     setFilters(
       state,
@@ -130,5 +135,6 @@ export const {
   setTableColumns,
   setDisableApplyFilters,
   setFilters,
+  toggleExcluded,
 } = actions;
 export default reducer;

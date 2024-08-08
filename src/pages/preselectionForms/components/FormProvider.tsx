@@ -1,3 +1,7 @@
+import { Form, Formik } from "@appquality/appquality-design-system";
+import { ReactNode, useState } from "react";
+import { useHistory } from "react-router-dom";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   GetCampaignsFormsByFormIdApiResponse,
   PostCampaignsFormsApiArg,
@@ -6,16 +10,12 @@ import {
   usePostCampaignsFormsMutation,
   usePutCampaignsFormsByFormIdMutation,
 } from "src/services/tryberApi";
-import { getCustomQuestionTypeLabel } from "../functions/getCustomQuestionTypeLabel";
-import { getProfileTypeLabel } from "../functions/getProfileTypeLabel";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
-import { ReactNode, useState } from "react";
-import { Form, Formik } from "@appquality/appquality-design-system";
-import useCufData from "../hooks/useCufData";
-import { useHistory } from "react-router-dom";
-import siteWideMessageStore from "src/redux/siteWideMessages";
+import { getCustomQuestionTypeLabel } from "../functions/getCustomQuestionTypeLabel";
+import { getProfileTypeLabel } from "../functions/getProfileTypeLabel";
 import { scrollToFormTitle } from "../functions/scrollToFormTitle";
+import useCufData from "../hooks/useCufData";
 
 interface FormProviderInterface {
   savedData?: GetCampaignsFormsByFormIdApiResponse;
@@ -65,9 +65,7 @@ const FormProvider = ({
           question: f.question,
           shortTitle: f.short_name,
           type: f.type,
-          options: f.options?.map((o) =>
-            typeof o === "string" ? o : o.toString()
-          ),
+          options: f.options,
           name: `Custom ${getCustomQuestionTypeLabel(f.type)}`,
         });
         break;
@@ -116,7 +114,12 @@ const FormProvider = ({
           is: (type: string) =>
             type === "radio" || type === "select" || type === "multiselect",
           then: Yup.array()
-            .of(Yup.string().required("This is a required field"))
+            .of(
+              Yup.object().shape({
+                value: Yup.string().required("This is a required field"),
+                isInvalid: Yup.boolean(),
+              })
+            )
             .min(2, "This field must have at least 2 items"),
         }),
       })
@@ -153,12 +156,14 @@ const FormProvider = ({
           if ("selectedOptions" in field && field.selectedOptions) {
             if (field.selectedOptions[0]?.value === "-1") {
               getAllOptions(field.cufId).then((res) => {
-                newField.options = res;
+                newField.options = res.map((o) => ({
+                  value: o,
+                }));
               });
             } else {
-              newField.options = field.selectedOptions.map((o) =>
-                parseInt(o.value)
-              );
+              newField.options = field.selectedOptions.map((o) => ({
+                value: parseInt(o.value),
+              }));
             }
           }
           return newField;

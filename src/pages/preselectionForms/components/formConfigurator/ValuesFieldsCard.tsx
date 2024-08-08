@@ -1,17 +1,17 @@
-import { FC, useEffect } from "react";
-import { OptionsField } from "src/pages/preselectionForms/components/formConfigurator/OptionsField";
 import {
-  aqBootstrapTheme,
   Card,
   Text,
   TextareaField,
+  aqBootstrapTheme,
 } from "@appquality/appquality-design-system";
+import { FC, useEffect } from "react";
+import { GripVertical, XLg } from "react-bootstrap-icons";
 import { useDrag } from "react-dnd";
 import { DropZone } from "src/pages/preselectionForms/components/formConfigurator/DropZone";
-import { XLg, GripVertical } from "react-bootstrap-icons";
-import { ShortTitleField } from "./ShortTitleField";
+import { OptionsField } from "src/pages/preselectionForms/components/formConfigurator/OptionsField";
 import styled from "styled-components";
 import { CufMultiselect } from "./CufMultiselect";
+import { ShortTitleField } from "./ShortTitleField";
 
 const StyledInlineField = styled.div`
   display: flex;

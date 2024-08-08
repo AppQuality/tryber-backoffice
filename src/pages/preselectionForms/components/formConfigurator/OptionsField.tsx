@@ -4,13 +4,15 @@ import {
   FormLabel,
   aqBootstrapTheme,
 } from "@appquality/appquality-design-system";
-import React from "react";
 import { FieldArray, useFormikContext } from "formik";
+import React from "react";
 import { XLg } from "react-bootstrap-icons";
+import { ValidityToggle } from "./ValidityToggle";
 
 export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
   const {
     values: { fields },
+    setFieldValue,
   } = useFormikContext<PreselectionFormValues>();
   return (
     <>
@@ -20,29 +22,51 @@ export const OptionsField: React.FC<{ index: number }> = ({ index }) => {
         render={(arrayHelpers) => (
           <>
             <div>
-              {fields[index].options?.map((option, i) => (
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr auto",
-                    gridColumnGap: aqBootstrapTheme.grid.spacing.default,
-                  }}
-                  key={i}
-                >
-                  <Field name={`fields.${index}.options.${i}`} type="text" />
-                  <div>
-                    <Button
-                      flat
-                      // @ts-ignore
-                      disabled={fields[index].options?.length <= 2}
-                      style={{ borderColor: aqBootstrapTheme.colors.gray400 }}
-                      onClick={() => arrayHelpers.remove(i)}
+              {fields[index].options?.map((option, i) => {
+                return (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr auto",
+                      gridColumnGap: aqBootstrapTheme.grid.spacing.default,
+                    }}
+                    key={i}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "start",
+                        gap: "8px",
+                      }}
                     >
-                      <XLg />
-                    </Button>
+                      <Field
+                        name={`fields.${index}.options.${i}.value`}
+                        type="text"
+                      />
+                      <ValidityToggle
+                        isInvalid={!!option.isInvalid}
+                        onClick={() => {
+                          arrayHelpers.replace(i, {
+                            value: option.value,
+                            isInvalid: !option.isInvalid,
+                          });
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Button
+                        flat
+                        // @ts-ignore
+                        disabled={fields[index].options?.length <= 2}
+                        style={{ borderColor: aqBootstrapTheme.colors.gray400 }}
+                        onClick={() => arrayHelpers.remove(i)}
+                      >
+                        <XLg />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <Button onClick={() => arrayHelpers.push("")}>Add an Option</Button>
           </>
