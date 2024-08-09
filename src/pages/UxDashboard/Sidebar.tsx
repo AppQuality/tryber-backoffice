@@ -35,10 +35,11 @@ const Sidebar = () => {
 
   const handlePublish = async () => {
     dispatch(setPublishStatus("publishing"));
+    debugger
     await saveDashboard({
       campaign: id,
       body: {
-        visible: 1,
+        visible: values.visible === 1 ? 0 : 1,
       },
     })
       .unwrap()
@@ -68,7 +69,7 @@ const Sidebar = () => {
             disabled={isSubmitting}
             onClick={handleSaveDraft}
           >
-            Salva e nascondi
+            Salva
           </Button>
 
           <Button
@@ -77,13 +78,11 @@ const Sidebar = () => {
             kind="secondary"
             data-qa="publish-dashboard"
             disabled={
-              publishStatus === "publishing" ||
-              values.visible === undefined ||
-              values.visible === 1
+              publishStatus === "publishing" || values.visible === undefined
             }
             onClick={handlePublish}
           >
-            Pubblica
+            {values.visible === 0 ? "Pubblica" : "Nascondi"}
           </Button>
         </>
       </Card>
