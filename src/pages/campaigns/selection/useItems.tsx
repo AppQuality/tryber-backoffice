@@ -2,9 +2,8 @@ import { useGetCampaignsByCampaignCandidatesQuery } from "src/services/tryberApi
 import { useAppSelector } from "src/store";
 
 const useItems = (id: string, options?: { withLimit: boolean }) => {
-  const { currentPage, devicesPerPage, questionsId, filters } = useAppSelector(
-    (state) => state.selection
-  );
+  const { currentPage, devicesPerPage, questionsId, filters, showExcluded } =
+    useAppSelector((state) => state.selection);
   const { filterByInclude, filterByExclude, filterByAge } = filters;
   const { data, isFetching, isLoading, error } =
     useGetCampaignsByCampaignCandidatesQuery({
@@ -16,6 +15,7 @@ const useItems = (id: string, options?: { withLimit: boolean }) => {
           }
         : { start: 0, limit: Number.MAX_SAFE_INTEGER }),
       ...(questionsId.length ? { fields: questionsId.join(",") } : {}),
+      show: showExcluded ? "candidatesAndExcluded" : "onlyCandidates",
       filterByInclude,
       filterByExclude,
       filterByAge,

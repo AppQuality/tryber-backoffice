@@ -31,7 +31,7 @@ const Target = styled(icons.PersonVideo2)`
   color: ${({ theme }) => theme.variants.primary}};
 `;
 
-type Visibility = "public" | "smallgroup" | "logged" | "admin";
+type Visibility = "public" | "smallgroup" | "logged" | "admin" | "target";
 
 const VisibilityIcon = ({ visibility }: { visibility: Visibility }) => {
   if (visibility === "public") return <Public />;

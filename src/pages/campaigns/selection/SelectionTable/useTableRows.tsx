@@ -1,10 +1,11 @@
 import { TableType } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
+import { Ban, CheckCircle } from "src/components/icons";
 import DeviceCheckbox from "src/pages/campaigns/selection/SelectionTable/components/DeviceCheckbox";
-import { useAppDispatch } from "src/store";
+import { useAppDispatch, useAppSelector } from "src/store";
+import { styled } from "styled-components";
 import { setTableColumns } from "../selectionSlice";
 import useItems from "../useItems";
-
 interface RowType extends TableType.Row {
   key: string;
   os: string;
@@ -16,9 +17,24 @@ interface RowType extends TableType.Row {
   [key: string]: any;
 }
 
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: right;
+`;
+
+const StatusIcon = ({ status }: { status?: string }) => {
+  if (status === "excluded") return <Ban title="Disqualified" size={16} />;
+  if (status === "candidate")
+    return <CheckCircle title="Qualified" size={16} />;
+  return null;
+};
+
 const useTableRows = (id: string) => {
   const dispatch = useAppDispatch();
   const [rows, setRows] = useState<RowType[]>([]);
+  const { showExcluded } = useAppSelector((state) => state.selection);
 
   const { data, isFetching, isLoading, error, totalRows } = useItems(id);
   useEffect(() => {
@@ -54,11 +70,14 @@ const useTableRows = (id: string) => {
             actions: {
               title: "select",
               content: (
-                <DeviceCheckbox
-                  campaignId={id}
-                  userId={user.id.toString()}
-                  deviceId={device.id.toString()}
-                />
+                <CheckboxContainer>
+                  {showExcluded ? <StatusIcon status={user.status} /> : null}
+                  <DeviceCheckbox
+                    campaignId={id}
+                    userId={user.id.toString()}
+                    deviceId={device.id.toString()}
+                  />
+                </CheckboxContainer>
               ),
             },
           };

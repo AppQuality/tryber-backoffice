@@ -43,11 +43,7 @@ const QuestionFiltersItems = ({ id }: { id: string }) => {
               id={value.id}
               title={value.short_name ?? value.question}
               type={value.type}
-              options={
-                "options" in value && value.options
-                  ? value.options.map((o) => o.toString())
-                  : undefined
-              }
+              options={"options" in value ? value.options : undefined}
             />
           </div>
         );
@@ -65,7 +61,7 @@ const QuestionFilterItem = ({
   id: number;
   title: string;
   type: string;
-  options?: string[];
+  options?: CustomQuestionOption[];
 }) => {
   if (["radio", "select", "multiselect"].includes(type) && options) {
     return (
@@ -83,7 +79,7 @@ const CheckboxQuestionFilterItem = ({
 }: {
   id: number;
   title: string;
-  options: string[];
+  options: CustomQuestionOption[];
 }) => {
   const { filterByInclude } = useAppSelector(
     (state) => state.selection.filters
@@ -153,7 +149,7 @@ const TextQuestionFilterItem = ({
       `question_${id}` as keyof typeof filterByInclude
     ] as string[] | undefined;
     setValue(value?.join(",") || "");
-  }, [filterByInclude]);
+  }, [filterByInclude, id]);
 
   return (
     <FilterContainer>
