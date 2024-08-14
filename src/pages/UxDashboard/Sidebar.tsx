@@ -35,7 +35,6 @@ const Sidebar = () => {
 
   const handlePublish = async () => {
     dispatch(setPublishStatus("publishing"));
-    debugger
     await saveDashboard({
       campaign: id,
       body: {
@@ -98,7 +97,6 @@ const Sidebar = () => {
         >
           <Steps.Step title="Sulla Campagna" />
           <Steps.Step title="Panoramica" />
-          <Steps.Step title="Nel dettaglio" />
         </Steps>
       </Card>
     </div>
