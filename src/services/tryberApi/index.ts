@@ -2130,7 +2130,9 @@ export type GetUsersMeCampaignsByCampaignIdDevicesApiArg = {
   campaignId: string;
 };
 export type GetUsersMeCampaignsByCampaignIdFormsApiResponse =
-  /** status 200 OK */ (PreselectionFormQuestion & {
+  /** status 200 OK */ ({
+    question: string;
+    short_name?: string;
     value?:
       | number
       | {
@@ -2144,7 +2146,19 @@ export type GetUsersMeCampaignsByCampaignIdFormsApiResponse =
       error?: string;
     };
     id: number;
-  })[];
+  } & (
+    | {
+        type: PreselectionQuestionSimple;
+      }
+    | {
+        type: PreselectionQuestionMultiple;
+        options: string[];
+      }
+    | {
+        type: PreselectionQuestionCuf;
+        options?: number[];
+      }
+  ))[];
 export type GetUsersMeCampaignsByCampaignIdFormsApiArg = {
   campaignId: string;
 };
@@ -2829,22 +2843,29 @@ export type TaskRequired = {
   campaign_id: number;
 };
 export type Task = TaskOptional & TaskRequired;
+export type PreselectionQuestionSimple =
+  | "gender"
+  | "text"
+  | "phone_number"
+  | "address";
+export type PreselectionQuestionMultiple = "multiselect" | "select" | "radio";
+export type PreselectionQuestionCuf = string;
 export type PreselectionFormQuestion = {
   question: string;
   short_name?: string;
 } & (
   | {
-      type: "text" | "gender" | "phone_number" | "address";
+      type: PreselectionQuestionSimple;
     }
   | {
-      type: "multiselect" | "select" | "radio";
-      options: {
+      type: PreselectionQuestionMultiple;
+      options?: {
         value: string;
         isInvalid?: boolean;
       }[];
     }
   | {
-      type: string;
+      type: PreselectionQuestionCuf;
       options?: {
         value: number;
         isInvalid?: boolean;
