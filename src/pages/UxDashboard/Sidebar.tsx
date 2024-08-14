@@ -23,7 +23,6 @@ const Sidebar = () => {
   const dispatch = useAppDispatch();
 
   const handleSaveDraft = () => {
-    values.visible = 0;
     submitForm();
     if (!isValid) {
       add({
