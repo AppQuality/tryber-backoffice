@@ -57,16 +57,14 @@ const UxDashboard = () => {
             >
               Tool di compilazione
             </PageTitle>
-            <Title size="xl">
-              <BSGrid>
-                <ResponsiveCol size="col-lg-3" lgOrder={1}>
-                  <Sidebar />
-                </ResponsiveCol>
-                <ResponsiveCol size="col-lg-9" lgOrder={0}>
-                  <UxDashboardForm />
-                </ResponsiveCol>
-              </BSGrid>
-            </Title>
+            <BSGrid>
+              <ResponsiveCol size="col-lg-3" lgOrder={1}>
+                <Sidebar />
+              </ResponsiveCol>
+              <ResponsiveCol size="col-lg-9" lgOrder={0}>
+                <UxDashboardForm />
+              </ResponsiveCol>
+            </BSGrid>
           </Container>
         </FormProvider>
       </PageTemplate>
