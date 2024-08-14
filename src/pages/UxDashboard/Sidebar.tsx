@@ -46,7 +46,7 @@ const Sidebar = () => {
         add({
           type: "success",
           message: `Dashboard published`,
-          expire: 8,
+          expire: 5,
         });
       })
       .catch((err) => {
