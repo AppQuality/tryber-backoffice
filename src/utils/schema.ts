@@ -2867,7 +2867,6 @@ export interface operations {
               gross: components["schemas"]["Currency"];
             };
             languages?: {
-              id?: number;
               name?: string;
             }[];
             onboarding_completed?: boolean;
@@ -3776,7 +3775,6 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            id?: number;
             name?: string;
           }[];
         };
@@ -3785,7 +3783,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": number[];
+        "application/json": string[];
       };
     };
   };
@@ -3796,7 +3794,6 @@ export interface operations {
       201: {
         content: {
           "application/json": {
-            id: string;
             name: string;
           };
         };
@@ -3806,7 +3803,7 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": {
-          languageId?: number;
+          language_name?: string;
         };
       };
     };
