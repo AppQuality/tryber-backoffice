@@ -51,9 +51,7 @@ const ResultsPage = () => {
             dispatch(setPublishStatus("publishing"));
             saveDashboard({
               campaign: id,
-              body: {
-                status: "publish",
-              },
+              body: {},
             })
               .unwrap()
               .then((res) => {
