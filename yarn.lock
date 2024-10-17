@@ -141,6 +141,11 @@
     "@readme/openapi-parser" "^2.5.0"
     yargs "^17.7.2"
 
+"@appquality/languages@^1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@appquality/languages/-/languages-1.4.3.tgz#7a9f5cb05d1ce9e5eed42af3cadfe63ca5cbd048"
+  integrity sha512-9DEoFEGjTUEwojqGJL7/5I5VDD+XR1BWt3ceKQBGH9VLZK75khO0spexjarD6YAhdUC1d8J4k2qtPl7w+xSBVQ==
+
 "@appquality/stream-player@^1.0.6":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@appquality/stream-player/-/stream-player-1.0.6.tgz#b48d195b77ae0070b4d10384eb28573069b79605"

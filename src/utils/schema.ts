@@ -805,19 +805,17 @@ export interface components {
       short_name?: string;
     } & (
       | {
-          /** @enum {string} */
-          type: "text" | "gender" | "phone_number" | "address";
+          type: components["schemas"]["PreselectionQuestionSimple"];
         }
       | {
-          /** @enum {string} */
-          type: "multiselect" | "select" | "radio";
-          options: {
+          type: components["schemas"]["PreselectionQuestionMultiple"];
+          options?: {
             value: string;
             isInvalid?: boolean;
           }[];
         }
       | {
-          type: string;
+          type: components["schemas"]["PreselectionQuestionCuf"];
           options?: {
             value: number;
             isInvalid?: boolean;
@@ -942,11 +940,23 @@ export interface components {
         cap?: number;
       };
       countries?: components["schemas"]["CountryCode"][];
-      languages?: number[];
+      languages?: string[];
       browsers?: number[];
       productType?: number;
       notes?: string;
     };
+    /**
+     * PreselectionQuestionSimple
+     * @enum {string}
+     */
+    PreselectionQuestionSimple: "gender" | "text" | "phone_number" | "address";
+    /**
+     * PreselectionQuestionMultiple
+     * @enum {string}
+     */
+    PreselectionQuestionMultiple: "multiselect" | "select" | "radio";
+    /** PreselectionQuestionCuf */
+    PreselectionQuestionCuf: string;
   };
   responses: {
     /** A user */
@@ -1966,8 +1976,6 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            /** @enum {string} */
-            status: "draft" | "published" | "draft-modified";
             goal: string;
             usersNumber: number;
             sentiments: {
@@ -1989,6 +1997,7 @@ export interface operations {
               id: number;
               name: string;
             }[];
+            visible: number;
           };
         };
       };
@@ -2015,30 +2024,25 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json":
-          | {
-              goal: string;
-              usersNumber: number;
-              sentiments: {
-                id?: number;
-                clusterId: number;
-                value: number;
-                comment: string;
-              }[];
-              methodology: {
-                /** @enum {string} */
-                type: "qualitative" | "quantitative" | "quali-quantitative";
-                description: string;
-              };
-              questions: {
-                id?: number;
-                name: string;
-              }[];
-            }
-          | {
-              /** @enum {string} */
-              status: "publish";
-            };
+        "application/json": {
+          goal?: string;
+          usersNumber?: number;
+          visible?: number;
+          methodology?: {
+            description: string;
+            type: string;
+          };
+          sentiments?: {
+            clusterId: number;
+            value: number;
+            comment: string;
+            id?: number;
+          }[];
+          questions?: {
+            name: string;
+            id?: number;
+          }[];
+        };
       };
     };
   };
@@ -2863,7 +2867,6 @@ export interface operations {
               gross: components["schemas"]["Currency"];
             };
             languages?: {
-              id?: number;
               name?: string;
             }[];
             onboarding_completed?: boolean;
@@ -3305,7 +3308,9 @@ export interface operations {
       /** OK */
       200: {
         content: {
-          "application/json": (components["schemas"]["PreselectionFormQuestion"] & {
+          "application/json": ({
+            question: string;
+            short_name?: string;
             value?:
               | number
               | {
@@ -3319,7 +3324,19 @@ export interface operations {
               error?: string;
             };
             id: number;
-          })[];
+          } & (
+            | {
+                type: components["schemas"]["PreselectionQuestionSimple"];
+              }
+            | {
+                type: components["schemas"]["PreselectionQuestionMultiple"];
+                options: string[];
+              }
+            | {
+                type: components["schemas"]["PreselectionQuestionCuf"];
+                options?: number[];
+              }
+          ))[];
         };
       };
       403: components["responses"]["NotAuthorized"];
@@ -3758,7 +3775,6 @@ export interface operations {
       200: {
         content: {
           "application/json": {
-            id?: number;
             name?: string;
           }[];
         };
@@ -3767,7 +3783,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": number[];
+        "application/json": string[];
       };
     };
   };
@@ -3778,7 +3794,6 @@ export interface operations {
       201: {
         content: {
           "application/json": {
-            id: string;
             name: string;
           };
         };
@@ -3788,7 +3803,7 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": {
-          languageId?: number;
+          language_name?: string;
         };
       };
     };
@@ -4195,7 +4210,6 @@ export interface operations {
             };
             countries?: components["schemas"]["CountryCode"][];
             languages?: {
-              id: number;
               name: string;
             }[];
             browsers?: {
