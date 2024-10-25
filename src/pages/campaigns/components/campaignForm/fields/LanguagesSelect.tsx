@@ -27,7 +27,6 @@ const LanguageSelect = () => {
     [languageList]
   );
 
-  console.log(options);
   const allOption = useMemo(
     () => ({ value: "all", label: `All Languages` }),
     []
