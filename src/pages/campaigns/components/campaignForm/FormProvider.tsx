@@ -233,7 +233,7 @@ const FormProvider = ({
             deviceList: values.deviceList.map((device) => parseInt(device, 10)),
             csm: parseInt(values.csm),
             roles: roles,
-            languages: values.languages.map((language) => language),
+            languages: values.languages,
             countries: values.countries,
             description: values.description,
             productLink: values.productLink,
