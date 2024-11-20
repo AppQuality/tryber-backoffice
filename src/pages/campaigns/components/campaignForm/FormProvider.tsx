@@ -125,7 +125,7 @@ const FormProvider = ({
     deviceTypes: selectedTypes,
     deviceList: selectedDevices,
     countries: dossier?.countries || [],
-    languages: dossier?.languages?.map((lang) => lang.id.toString()) || [],
+    languages: dossier?.languages?.map((lang) => lang.name) || [],
     description: dossier?.description || "",
     productLink: dossier?.productLink || "",
     goal: dossier?.goal || "",
@@ -233,9 +233,7 @@ const FormProvider = ({
             deviceList: values.deviceList.map((device) => parseInt(device, 10)),
             csm: parseInt(values.csm),
             roles: roles,
-            languages: values.languages.map((language) =>
-              parseInt(language, 10)
-            ),
+            languages: values.languages,
             countries: values.countries,
             description: values.description,
             productLink: values.productLink,

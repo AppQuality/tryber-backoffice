@@ -6,12 +6,12 @@ import {
 } from "@appquality/appquality-design-system";
 import { FieldProps, Field as FormikField, useFormikContext } from "formik";
 import { useCallback, useMemo } from "react";
-import { useGetLanguagesQuery } from "src/services/tryberApi";
 import { NewCampaignValues } from "../FormProvider";
+import { getAllLanguages } from "@appquality/languages";
 
 const LanguageSelect = () => {
   const fieldName = "languages";
-  const { data: languageList } = useGetLanguagesQuery();
+  const languageList = getAllLanguages();
   const {
     values: { languages },
     setFieldValue,
@@ -20,9 +20,9 @@ const LanguageSelect = () => {
   const options = useMemo(
     () =>
       languageList?.map((language) => ({
-        id: language.id.toString(),
-        label: language.name,
-        value: language.id.toString(),
+        id: language,
+        label: language,
+        value: language,
       })) || [],
     [languageList]
   );
