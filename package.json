@@ -7,7 +7,7 @@
     "@analytics/google-tag-manager": "^0.5.3",
     "@appquality/appquality-design-system": "2.0.5",
     "@appquality/craft-blocks": "^0.1.27",
-    "@appquality/languages": "^1.4.3",
+    "@appquality/languages": "^1.4.5",
     "@appquality/stream-player": "^1.0.6",
     "@appquality/unguess-design-system": "^3.1.78",
     "@craco/craco": "^6.4.3",
