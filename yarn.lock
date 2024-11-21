@@ -141,10 +141,10 @@
     "@readme/openapi-parser" "^2.5.0"
     yargs "^17.7.2"
 
-"@appquality/languages@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@appquality/languages/-/languages-1.4.3.tgz#7a9f5cb05d1ce9e5eed42af3cadfe63ca5cbd048"
-  integrity sha512-9DEoFEGjTUEwojqGJL7/5I5VDD+XR1BWt3ceKQBGH9VLZK75khO0spexjarD6YAhdUC1d8J4k2qtPl7w+xSBVQ==
+"@appquality/languages@^1.4.5":
+  version "1.4.5"
+  resolved "https://registry.npmjs.org/@appquality/languages/-/languages-1.4.5.tgz#5cf3a8179981f6323322be625240a2786092d282"
+  integrity sha512-18AJtTZgMToUCTFb9j72xya/QKbZ3i2Cq/heRqbbWr0KSBDYfvJpnyI6JR73eIy10+LKnyLoiJ9GRufPHgFmoQ==
 
 "@appquality/stream-player@^1.0.6":
   version "1.0.6"
