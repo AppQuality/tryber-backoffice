@@ -226,7 +226,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <FieldWrapper>
                   <TextareaField
                     name="goal"
-                    label="Test Perimeter"
+                    label="Test Perimeter (Goal)"
                     placeholder="The test will cover..."
                     resize="vertical"
                   />
