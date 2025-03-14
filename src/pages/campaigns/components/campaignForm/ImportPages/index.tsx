@@ -263,10 +263,7 @@ const ImportPages = ({ dossier }: { dossier: FormProps["dossier"] }) => {
             values.manualAction === "generate"
           ) {
             await fetch(
-              `/wp-json/appq/v1/regenerate-campaign-pages/${dossier.id}`,
-              {
-                method: "POST",
-              }
+              `/wp-json/appq/v1/regenerate-campaign-pages/${dossier.id}`
             );
           }
           if (
