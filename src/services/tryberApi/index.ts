@@ -943,6 +943,26 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    postDossiersByCampaignManual: build.mutation<
+      PostDossiersByCampaignManualApiResponse,
+      PostDossiersByCampaignManualApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/dossiers/${queryArg.campaign}/manual`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    postDossiersByCampaignPreview: build.mutation<
+      PostDossiersByCampaignPreviewApiResponse,
+      PostDossiersByCampaignPreviewApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/dossiers/${queryArg.campaign}/preview`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -2075,15 +2095,7 @@ export type PostUsersMeCampaignsByCampaignIdBugsApiResponse =
     current: string;
     severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
     replicability: "ONCE" | "SOMETIMES" | "ALWAYS";
-    type:
-      | "CRASH"
-      | "GRAPHIC"
-      | "MALFUNCTION"
-      | "OTHER"
-      | "PERFORMANCE"
-      | "SECURITY"
-      | "TYPO"
-      | "USABILITY";
+    type: string;
     notes: string;
     usecase: string;
     device: UserDevice;
@@ -2103,15 +2115,7 @@ export type PostUsersMeCampaignsByCampaignIdBugsApiArg = {
     current: string;
     severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
     replicability: "ONCE" | "SOMETIMES" | "ALWAYS";
-    type:
-      | "CRASH"
-      | "GRAPHIC"
-      | "MALFUNCTION"
-      | "OTHER"
-      | "PERFORMANCE"
-      | "SECURITY"
-      | "TYPO"
-      | "USABILITY";
+    type: string;
     notes: string;
     lastSeen: string;
     usecase: number;
@@ -2578,6 +2582,8 @@ export type PostDossiersApiArg = {
       testers?: number;
       campaign?: number;
     };
+  } & {
+    skipPagesAndTasks?: number;
   };
 };
 export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
@@ -2721,6 +2727,23 @@ export type PutDossiersByCampaignPhasesApiArg = {
   campaign: string;
   body: {
     phase: number;
+  };
+};
+export type PostDossiersByCampaignManualApiResponse = /** status 200 OK */ {};
+export type PostDossiersByCampaignManualApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    importFrom: number;
+  };
+};
+export type PostDossiersByCampaignPreviewApiResponse =
+  /** status 200 OK */ object;
+export type PostDossiersByCampaignPreviewApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    importFrom: number;
   };
 };
 export type Agreement = {
@@ -3135,4 +3158,6 @@ export const {
   useGetProductTypesQuery,
   useGetPhasesQuery,
   usePutDossiersByCampaignPhasesMutation,
+  usePostDossiersByCampaignManualMutation,
+  usePostDossiersByCampaignPreviewMutation,
 } = injectedRtkApi;
