@@ -1097,6 +1097,11 @@ export type GetCampaignsApiResponse = /** status 200 OK */ {
         surname: string;
       };
     }[];
+    quote?: {
+      id: number;
+      price: string;
+      status: string;
+    };
   }[];
 } & PaginationData;
 export type GetCampaignsApiArg = {
