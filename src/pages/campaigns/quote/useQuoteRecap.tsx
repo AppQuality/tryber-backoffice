@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   useGetCampaignsQuery,
   useGetDossiersByCampaignQuery,
@@ -8,7 +9,7 @@ const mapData = <
     id?: number;
     name?: string;
     phase?: { name: string };
-    quote?: { price: string; status: string };
+    quote?: { id: number; price: string; status: string };
   }
 >(
   x: T[]
@@ -17,6 +18,7 @@ const mapData = <
     campaign: `CP${y.id} - ${y.name}`,
     phase: y.phase?.name || "unknown",
     amount: y.quote?.price || "unknown",
+    quoteId: y.quote?.id || 0,
     quoteStatus: y.quote?.status || "unknown",
   }));
 
@@ -34,24 +36,24 @@ export const useQuoteRecap = ({ campaign }: { campaign: number }) => {
     }
   );
 
-  if (!data || !data.items) {
-    return {
-      data: {
+  const { thisCampaign, otherCampaigns } = useMemo(() => {
+    if (!data || !data.items) {
+      return {
         thisCampaign: mapData([]),
         otherCampaigns: mapData([]),
-      },
-      isLoading,
-      isError,
-    };
-  }
+      };
+    }
 
-  const campaignData = data.items.filter((c) => c.id === campaign);
-  const otherCampaigns = data.items.filter((c) => c.id !== campaign);
+    return {
+      thisCampaign: mapData(data.items.filter((c) => c.id === campaign)),
+      otherCampaigns: mapData(data.items.filter((c) => c.id !== campaign)),
+    };
+  }, [data]);
 
   return {
     data: {
-      thisCampaign: mapData(campaignData),
-      otherCampaigns: mapData(otherCampaigns),
+      thisCampaign,
+      otherCampaigns,
     },
     isLoading,
     isError,

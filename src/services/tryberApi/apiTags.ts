@@ -9,7 +9,7 @@ tryberApi.enhanceEndpoints({
       invalidatesTags: ["Campaigns"],
     },
     getCampaigns: {
-      providesTags: ["Campaigns"],
+      providesTags: ["Campaigns", "Quote"],
     },
     getCampaignsByCampaign: {
       providesTags: ["Campaigns"],
@@ -232,6 +232,12 @@ tryberApi.enhanceEndpoints({
     },
     postCustomers: {
       invalidatesTags: ["Customers"],
+    },
+    postDossiersByCampaignQuotations: {
+      invalidatesTags: ["Quote"],
+    },
+    patchDossiersByCampaignQuotationsAndQuote: {
+      invalidatesTags: ["Quote"],
     },
   },
 });
