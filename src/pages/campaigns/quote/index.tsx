@@ -11,15 +11,23 @@ const EditCampaign = () => {
 
   return (
     <PageTemplate>
-      <Card>
-        <QuoteInput campaignId={id} />
-      </Card>
-      <Card>
-        <QuoteTable data={data.thisCampaign} />
-      </Card>
-      <Card>
-        <QuoteTable data={data.otherCampaigns} />
-      </Card>
+      <div className="aq-p-4">
+        <Card className="aq-mb-4">
+          <QuoteInput campaignId={id} />
+        </Card>
+        {data.thisCampaign.length > 0 && (
+          <Card className="aq-mb-4" title="Quotazioni per questa campagna">
+            <QuoteTable data={data.thisCampaign} />
+          </Card>
+        )}
+        <Card className="aq-mb-4" title="Quotazioni per questo cliente">
+          {data.otherCampaigns.length > 0 ? (
+            <QuoteTable data={data.otherCampaigns} />
+          ) : (
+            <div>Questa è la prima quotazione per questo cliente</div>
+          )}
+        </Card>
+      </div>
     </PageTemplate>
   );
 };
