@@ -48,7 +48,7 @@ export const useQuoteRecap = ({ campaign }: { campaign: number }) => {
       thisCampaign: mapData(data.items.filter((c) => c.id === campaign)),
       otherCampaigns: mapData(data.items.filter((c) => c.id !== campaign)),
     };
-  }, [data]);
+  }, [data, campaign]);
 
   return {
     data: {

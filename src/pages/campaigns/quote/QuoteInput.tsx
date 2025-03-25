@@ -1,18 +1,16 @@
-import { Button, FormLabel, Input } from "@appquality/appquality-design-system";
+import {
+  Button,
+  Card,
+  FormLabel,
+  Input,
+} from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import {
   usePatchDossiersByCampaignQuotationsAndQuoteMutation,
   usePostDossiersByCampaignQuotationsMutation,
 } from "src/services/tryberApi";
-import { styled } from "styled-components";
+import { QuoteBanner } from "./QuoteBanner";
 import { useQuoteRecap } from "./useQuoteRecap";
-
-const QuoteInputWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  gap: ${({ theme }) => theme.grid.spacing.default};
-  justify-content: center;
-`;
 
 export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
   const { data, isLoading } = useQuoteRecap({ campaign: Number(campaignId) });
@@ -32,12 +30,15 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
   }, [currentCampaign]);
 
   const isDisabled = currentCampaign?.quoteStatus === "accepted";
+
   if (isLoading) return null;
 
   return (
-    <QuoteInputWrapper>
-      <div style={{ width: "50%" }}>
-        <FormLabel htmlFor="quote" label="Quote" />
+    <Card title="Actions" className="aq-mb-3">
+      {currentCampaign && <QuoteBanner status={currentCampaign.quoteStatus} />}
+
+      <FormLabel htmlFor="quote" label="Quote" />
+      <div className="aq-mb-2">
         <Input
           id="quote"
           type="text"
@@ -48,6 +49,7 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
       </div>
       {!isDisabled && (
         <Button
+          size="block"
           onClick={async () => {
             if (currentCampaign) {
               await updateQuote({
@@ -65,12 +67,11 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
                 },
               });
             }
-            alert(value);
           }}
         >
           Send quote
         </Button>
       )}
-    </QuoteInputWrapper>
+    </Card>
   );
 };
