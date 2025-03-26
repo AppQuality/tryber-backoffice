@@ -15,6 +15,7 @@ const mapData = <
   x: T[]
 ) =>
   x.map((y) => ({
+    campaignId: y.id || 0,
     campaign: `CP${y.id} - ${y.name}`,
     phase: y.phase?.name || "unknown",
     amount: y.quote?.price || "unknown",

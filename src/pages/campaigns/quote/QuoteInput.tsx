@@ -29,7 +29,7 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
     if (currentCampaign) setValue(currentCampaign?.amount);
   }, [currentCampaign]);
 
-  const isDisabled = currentCampaign?.quoteStatus === "accepted";
+  const isDisabled = currentCampaign?.quoteStatus === "approved";
 
   if (isLoading) return null;
 
