@@ -9,22 +9,23 @@ import AdminPayments from "src/pages/Payments";
 import Create from "src/pages/Popups/Create";
 import List from "src/pages/Popups/List";
 import Update from "src/pages/Popups/Update";
-import NewPreselectionForm from "src/pages/preselectionForms/new";
 import EditPreselectionForm from "src/pages/preselectionForms/edit";
+import NewPreselectionForm from "src/pages/preselectionForms/new";
 import { setupStore } from "src/store";
 import { PageTemplate } from "./features/PageTemplate";
 import SentryWrapper from "./features/SentryWrapper";
-import Prospect from "./pages/Prospect";
-import UxDashboard from "./pages/UxDashboard";
 import AgreementsList from "./pages/agreements/list";
 import SingleAgreementNew from "./pages/agreements/new";
 import SingleAgreementEdit from "./pages/agreements/view-edit";
 import Campaigns from "./pages/campaigns";
+import EditCampaign from "./pages/campaigns/edit";
 import NewCampaign from "./pages/campaigns/new";
 import NewCampaignSuccess from "./pages/campaigns/new/Success";
-import EditCampaign from "./pages/campaigns/edit";
-import CampaignPreselectionList from "./pages/preselectionForms";
+import QuotesPage from "./pages/campaigns/quote";
 import SelectionPage from "./pages/campaigns/selection";
+import CampaignPreselectionList from "./pages/preselectionForms";
+import Prospect from "./pages/Prospect";
+import UxDashboard from "./pages/UxDashboard";
 
 const SentryRoute = Sentry.withSentryRouting(Route);
 const history = createBrowserHistory();
@@ -72,6 +73,10 @@ function App() {
               <SentryRoute
                 path="/backoffice/campaigns/:id/edit"
                 component={EditCampaign}
+              />
+              <SentryRoute
+                path="/backoffice/campaigns/:id/quotes"
+                component={QuotesPage}
               />
               <SentryRoute
                 path="/backoffice/campaigns/:id/selection"
