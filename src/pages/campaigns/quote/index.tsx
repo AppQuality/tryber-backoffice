@@ -25,7 +25,7 @@ const EditCampaign = () => {
   return (
     <PageTemplate>
       <FullGrid>
-        <BSCol size="col-lg-9">
+        <BSCol size="col-lg-8">
           <Section
             title="Activity Quotation"
             subtitle="Set the price for this activity. Before proceeding, make sure to review the campaign dossier carefully and consider any previous quotes. If quotes have been created through app.unguess, they will be displayed directly on this page for easy comparison."
@@ -51,7 +51,7 @@ const EditCampaign = () => {
             </Card>
           </Section>
         </BSCol>
-        <BSCol size="col-lg-3">
+        <BSCol size="col-lg-4">
           <StickyContainer>
             <div className="aq-mb-4">
               <QuoteInput campaignId={id} />

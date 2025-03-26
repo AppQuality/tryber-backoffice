@@ -20,8 +20,12 @@ export const QuoteBanner = ({ status }: { status: string }) => {
 
       {status === "pending" && (
         <Text small>
-          Based on the template used, we've prepared this quote. Please check if
-          it is still accurate or needs an update.
+          We've prepared this quote based on the provided template. Please
+          review it to ensure it is accurate or make any necessary updates.
+          <br />
+          If you save it without making changes,{" "}
+          <strong>it will be automatically confirmed</strong>&nbsp;without
+          requiring further action from the client.
         </Text>
       )}
 

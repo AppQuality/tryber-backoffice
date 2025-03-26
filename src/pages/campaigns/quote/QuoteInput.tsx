@@ -9,12 +9,14 @@ import {
   usePatchDossiersByCampaignQuotationsAndQuoteMutation,
   usePostDossiersByCampaignQuotationsMutation,
 } from "src/services/tryberApi";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import { QuoteBanner } from "./QuoteBanner";
 import { useQuoteRecap } from "./useQuoteRecap";
 
 export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
   const { data, isLoading } = useQuoteRecap({ campaign: Number(campaignId) });
   const [value, setValue] = useState("");
+  const { add } = siteWideMessageStore();
   const [createQuote] = usePostDossiersByCampaignQuotationsMutation();
   const [updateQuote] = usePatchDossiersByCampaignQuotationsAndQuoteMutation();
   const [currentCampaign, setCurrentCampaign] =
@@ -51,20 +53,33 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
         <Button
           size="block"
           onClick={async () => {
-            if (currentCampaign) {
-              await updateQuote({
-                campaign: campaignId,
-                quote: currentCampaign.quoteId.toString(),
-                body: {
-                  amount: value,
-                },
+            try {
+              if (currentCampaign) {
+                await updateQuote({
+                  campaign: campaignId,
+                  quote: currentCampaign.quoteId.toString(),
+                  body: {
+                    amount: value,
+                  },
+                }).unwrap();
+              } else {
+                await createQuote({
+                  campaign: campaignId,
+                  body: {
+                    quote: value,
+                  },
+                }).unwrap();
+              }
+
+              add({
+                type: "success",
+                message: "The quote was successfully sent!",
               });
-            } else {
-              await createQuote({
-                campaign: campaignId,
-                body: {
-                  quote: value,
-                },
+            } catch (e) {
+              console.error("Cannot add/edit cp quote", e);
+              add({
+                type: "danger",
+                message: "There was an error sending the quote",
               });
             }
           }}
