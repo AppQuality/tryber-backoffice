@@ -31,7 +31,7 @@ const EditCampaign = () => {
             subtitle="Set the price for this activity. Before proceeding, make sure to review the campaign dossier carefully and consider any previous quotes. If quotes have been created through app.unguess, they will be displayed directly on this page for easy comparison."
             id="quote"
           >
-            {data.thisCampaign.length > -10 && (
+            {data.thisCampaign.length > 0 && (
               <Card
                 className="aq-mb-4"
                 title="Previous quotes for this campaign"
