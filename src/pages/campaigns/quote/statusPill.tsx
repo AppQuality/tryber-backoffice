@@ -8,6 +8,8 @@ export const getQuoteStatusPill = (
       return <Pill type="warning">Proposed</Pill>;
     case "approved":
       return <Pill type="success">Approved</Pill>;
+    case "rejected":
+      return <Pill type="danger">Rejected</Pill>;
     default:
       return <Pill type="primary">Estimated</Pill>;
   }
