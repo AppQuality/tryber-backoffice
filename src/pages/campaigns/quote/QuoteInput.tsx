@@ -5,11 +5,11 @@ import {
   Input,
 } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   usePatchDossiersByCampaignQuotationsAndQuoteMutation,
   usePostDossiersByCampaignQuotationsMutation,
 } from "src/services/tryberApi";
-import siteWideMessageStore from "src/redux/siteWideMessages";
 import { QuoteBanner } from "./QuoteBanner";
 import { useQuoteRecap } from "./useQuoteRecap";
 
@@ -31,7 +31,9 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
     if (currentCampaign) setValue(currentCampaign?.amount);
   }, [currentCampaign]);
 
-  const isDisabled = currentCampaign?.quoteStatus === "approved";
+  const isDisabled = !["pending", "proposed"].includes(
+    currentCampaign?.quoteStatus || ""
+  );
 
   if (isLoading) return null;
 
