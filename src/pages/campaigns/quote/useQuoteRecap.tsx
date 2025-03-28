@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import {
   useGetCampaignsQuery,
   useGetDossiersByCampaignQuery,
+  useGetDossiersByCampaignQuotesHistoryQuery,
 } from "src/services/tryberApi";
 
 const mapData = <
@@ -27,6 +28,21 @@ export const useQuoteRecap = ({ campaign }: { campaign: number }) => {
   const { data: dossier } = useGetDossiersByCampaignQuery({
     campaign: campaign.toString(),
   });
+  const { data: historyData } = useGetDossiersByCampaignQuotesHistoryQuery({
+    campaign: campaign.toString(),
+  });
+
+  const historyItems = (historyData?.items || []).map((h) => ({
+    id: h.campaign.id,
+    name: h.campaign.title,
+    phase: { name: h.campaign.phase_name },
+    quote: {
+      id: h.quote.id,
+      price: h.quote.amount,
+      status: h.quote.status,
+    },
+  }));
+
   const { data, isLoading, isError } = useGetCampaignsQuery(
     {
       fields: "id,name,quote,phase",
@@ -37,16 +53,18 @@ export const useQuoteRecap = ({ campaign }: { campaign: number }) => {
     }
   );
 
-  const { thisCampaign, otherCampaigns } = useMemo(() => {
+  const { thisCampaign, history, otherCampaigns } = useMemo(() => {
     if (!data || !data.items) {
       return {
         thisCampaign: mapData([]),
+        history: mapData([]),
         otherCampaigns: mapData([]),
       };
     }
 
     return {
       thisCampaign: mapData(data.items.filter((c) => c.id === campaign)),
+      history: mapData(historyItems),
       otherCampaigns: mapData(data.items.filter((c) => c.id !== campaign)),
     };
   }, [data, campaign]);
@@ -54,6 +72,7 @@ export const useQuoteRecap = ({ campaign }: { campaign: number }) => {
   return {
     data: {
       thisCampaign,
+      history,
       otherCampaigns,
     },
     isLoading,

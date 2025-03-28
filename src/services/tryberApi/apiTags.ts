@@ -239,6 +239,9 @@ tryberApi.enhanceEndpoints({
     patchDossiersByCampaignQuotationsAndQuote: {
       invalidatesTags: ["Quote"],
     },
+    getDossiersByCampaignQuotesHistory: {
+      providesTags: ["Quote"],
+    },
   },
 });
 

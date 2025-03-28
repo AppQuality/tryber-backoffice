@@ -466,6 +466,14 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    getDossiersByCampaignQuotesHistory: build.query<
+      GetDossiersByCampaignQuotesHistoryApiResponse,
+      GetDossiersByCampaignQuotesHistoryApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/dossiers/${queryArg.campaign}/quotesHistory`,
+      }),
+    }),
     getEducation: build.query<GetEducationApiResponse, GetEducationApiArg>({
       query: () => ({ url: `/education` }),
     }),
@@ -1883,6 +1891,26 @@ export type PatchDossiersByCampaignQuotationsAndQuoteApiArg = {
     amount?: string;
   };
 };
+export type GetDossiersByCampaignQuotesHistoryApiResponse =
+  /** status 200 OK */ {
+    items: {
+      campaign: {
+        id: number;
+        title: string;
+        phase_id: number;
+        phase_name: string;
+      };
+      quote: {
+        id: number;
+        amount: string;
+        status: "pending" | "proposed" | "approved" | "rejected";
+      };
+    }[];
+  };
+export type GetDossiersByCampaignQuotesHistoryApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
 export type GetEducationApiResponse = /** status 200 OK */ {
   id: number;
   name: string;
@@ -3148,6 +3176,7 @@ export const {
   usePutDossiersByCampaignPhasesMutation,
   usePostDossiersByCampaignQuotationsMutation,
   usePatchDossiersByCampaignQuotationsAndQuoteMutation,
+  useGetDossiersByCampaignQuotesHistoryQuery,
   useGetEducationQuery,
   useGetEmploymentsQuery,
   usePostJotformsByCampaignMutation,
