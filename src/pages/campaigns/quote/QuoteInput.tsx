@@ -31,9 +31,9 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
     if (currentCampaign) setValue(currentCampaign?.amount);
   }, [currentCampaign]);
 
-  const isDisabled = !["pending", "proposed"].includes(
-    currentCampaign?.quoteStatus || ""
-  );
+  const isDisabled =
+    currentCampaign &&
+    !["pending", "proposed"].includes(currentCampaign?.quoteStatus || "");
 
   if (isLoading) return null;
 
