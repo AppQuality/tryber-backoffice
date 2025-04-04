@@ -42,11 +42,19 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
       {currentCampaign && <QuoteBanner status={currentCampaign.quoteStatus} />}
 
       <FormLabel htmlFor="quote" label="Quote" />
+      {!isDisabled && (
+        <p className="aq-mb-2">
+          Please enter the quote for this activity. Remember to add a unit for
+          the quote <br />
+          (e.g. 1000 <b>€</b> or 10 <b>Token</b>)
+        </p>
+      )}
       <div className="aq-mb-2">
         <Input
           id="quote"
           type="text"
           value={value}
+          placeholder="1000 €"
           onChange={(e) => setValue(e)}
           disabled={isDisabled}
         />
