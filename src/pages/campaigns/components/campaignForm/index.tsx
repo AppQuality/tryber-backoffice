@@ -215,10 +215,10 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 </Title>
                 <FieldWrapper>
                   <ProductType />
-                  <InputField
-                    type="text"
+                  <TextareaField
                     name="productLink"
                     label="Product Link"
+                    resize="vertical"
                   />
                 </FieldWrapper>
                 <Title size="s" className="aq-mb-2 aq-pt-4">
