@@ -18,32 +18,33 @@ import {
 } from "src/services/tryberApi";
 import { styled } from "styled-components";
 import { PhaseSelector } from "../PhaseSelector";
-import FocusError from "./FocusError";
-import FormProvider, { NewCampaignValues } from "./FormProvider";
-import { Section } from "./Section";
-import { Stepper } from "./Stepper";
 import { CampaignFormContext } from "./campaignFormContext";
 import FormOverlay from "./feedbackMessages/FormOverlay";
 import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
 import CustomerSelect from "./fields/CustomerSelect";
-import { FieldWrapper } from "./fields/FieldWrapper";
-import InputField from "./fields/InputField";
-import LanguageSelect from "./fields/LanguagesSelect";
-import ProductType from "./fields/ProductTypeSelect";
-import TestTypeSelect from "./fields/TestTypeSelect";
 import CloseDatePicker from "./fields/dates/CloseDatePicker";
 import EndDatePicker from "./fields/dates/EndDatePicker";
 import StartDatePicker from "./fields/dates/StartDatePicker";
 import DeviceMultiselect from "./fields/device/DeviceMultiselect";
+import { FieldWrapper } from "./fields/FieldWrapper";
+import InputField from "./fields/InputField";
+import LanguageSelect from "./fields/LanguagesSelect";
+import ProductType from "./fields/ProductTypeSelect";
 import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
 import TlSelect from "./fields/roles/TLSelect";
-import { SurveyButton } from "./SurveyButton";
 import TargetSize from "./fields/TargetSize";
+import TestTypeSelect from "./fields/TestTypeSelect";
+import FocusError from "./FocusError";
+import FormProvider, { NewCampaignValues } from "./FormProvider";
+import ImportPages from "./ImportPages";
+import { Section } from "./Section";
+import { Stepper } from "./Stepper";
+import { SurveyButton } from "./SurveyButton";
 
-interface FormProps {
+export interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
   isEdit?: boolean;
   duplicate?: PostDossiersApiArg["body"]["duplicate"];
@@ -311,6 +312,11 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
             <Card title="Azioni" className="aq-mb-3">
               <Submit dossier={dossier} />
             </Card>
+            {isEdit && (
+              <Card title="Importa pagine" className="aq-mb-3">
+                <ImportPages dossier={dossier} />
+              </Card>
+            )}
             <Card title="Form Sections" className="aq-mb-3">
               <Stepper />
             </Card>
