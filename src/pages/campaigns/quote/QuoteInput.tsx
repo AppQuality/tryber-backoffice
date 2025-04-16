@@ -3,6 +3,7 @@ import {
   Card,
   FormLabel,
   Input,
+  Text,
 } from "@appquality/appquality-design-system";
 import { useEffect, useState } from "react";
 import siteWideMessageStore from "src/redux/siteWideMessages";
@@ -42,13 +43,6 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
       {currentCampaign && <QuoteBanner status={currentCampaign.quoteStatus} />}
 
       <FormLabel htmlFor="quote" label="Quote" />
-      {!isDisabled && (
-        <p className="aq-mb-2">
-          Please enter the quote for this activity. Remember to add a unit for
-          the quote <br />
-          (e.g. 1000 <b>€</b> or 10 <b>Token</b>)
-        </p>
-      )}
       <div className="aq-mb-2">
         <Input
           id="quote"
@@ -58,6 +52,13 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
           onChange={(e) => setValue(e)}
           disabled={isDisabled}
         />
+        {!isDisabled && (
+          <Text small className="aq-mt-2 aq-mb-3">
+            Please enter the quote for this activity. Remember to add a unit for
+            the quote <br />
+            (e.g. 1000 <b>€</b> or 10 <b>Token</b>)
+          </Text>
+        )}
       </div>
       {!isDisabled && (
         <Button
@@ -94,7 +95,7 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
             }
           }}
         >
-          Send quote
+          Confirm quote
         </Button>
       )}
     </Card>
