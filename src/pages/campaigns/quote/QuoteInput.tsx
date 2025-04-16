@@ -95,7 +95,7 @@ export const QuoteInput = ({ campaignId }: { campaignId: string }) => {
             }
           }}
         >
-          Confirm quote
+          Submit quote
         </Button>
       )}
     </Card>
