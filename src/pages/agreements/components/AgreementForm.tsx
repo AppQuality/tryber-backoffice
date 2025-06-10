@@ -95,6 +95,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
                         field.onChange(e);
                         // if agreement change to not token based, calculate number of tokens based on amount
                         if (e.target.checked === false) {
+                          form.setFieldValue("tokenUnitPrice", 1, true);
                           form.setFieldValue(
                             "tokens",
                             roundNumberTwoDecimals(
@@ -118,6 +119,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
                   <FormLabel htmlFor={field.name} label="Token Unit Price" />
                   <div className="input-group">
                     <Input
+                      disabled={!isTokenBased}
                       value={field.value}
                       id={field.name}
                       type="number"
