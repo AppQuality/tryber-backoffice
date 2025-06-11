@@ -50,6 +50,7 @@ export interface NewCampaignValues {
   deviceRequirements?: string;
   targetNotes?: string;
   targetSize?: string;
+  genderRequirements?: string[];
   targetCap?: string;
   checkboxCap?: boolean;
   browsersList?: string[];
