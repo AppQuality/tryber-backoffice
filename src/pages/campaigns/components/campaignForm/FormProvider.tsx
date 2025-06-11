@@ -15,7 +15,6 @@ import { useAppDispatch } from "src/store";
 import * as yup from "yup";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
-import GenderRequirements from "./fields/GenderRequirements";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -203,7 +202,7 @@ const FormProvider = ({
         }
       ),
     genderRequirements: yup.object().shape({
-      customerChoice: yup.string(), // not required, but present
+      customerChoice: yup.string(),
       options: yup.array().of(yup.string().oneOf(["1", "0", "-1", "2"])),
     }),
     countries: yup.array(),
