@@ -29,7 +29,7 @@ const GenderRequirements = () => (
             key={option.value}
             name={field.name}
             label={option.label}
-            checked={field.value?.includes(option.value)}
+            checked={field.value?.options.includes(option.value)}
             onChange={(e) => {
               if (e.target.checked) {
                 form.setFieldValue(field.name, [

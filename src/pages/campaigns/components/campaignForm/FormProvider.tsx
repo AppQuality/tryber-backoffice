@@ -15,6 +15,7 @@ import { useAppDispatch } from "src/store";
 import * as yup from "yup";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
+import GenderRequirements from "./fields/GenderRequirements";
 
 interface FormProviderInterface {
   children: React.ReactNode;
@@ -50,7 +51,10 @@ export interface NewCampaignValues {
   deviceRequirements?: string;
   targetNotes?: string;
   targetSize?: string;
-  genderRequirements?: string[];
+  genderRequirements?: {
+    customerChoice: string;
+    // options?: string[]; // Uncomment if you want to use options
+  };
   targetCap?: string;
   checkboxCap?: boolean;
   browsersList?: string[];
@@ -194,6 +198,10 @@ const FormProvider = ({
           return true;
         }
       ),
+    genderRequirements: yup.object().shape({
+      customerChoice: yup.string().required(),
+      //options: yup.array().of('male', 'female', 'other').required(),
+    }),
     countries: yup.array(),
     languages: yup.array(),
     targetNotes: yup.string(),
