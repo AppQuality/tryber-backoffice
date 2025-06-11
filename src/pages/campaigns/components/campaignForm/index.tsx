@@ -277,7 +277,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <FieldWrapper>
                   <div>
                     <Title size="s" className="aq-mb-2">
-                      Are there any specific requirements for the target?
+                      Gender
                     </Title>
                     <GenderRequirements />
                   </div>
