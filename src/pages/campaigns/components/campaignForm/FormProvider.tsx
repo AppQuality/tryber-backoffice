@@ -53,7 +53,7 @@ export interface NewCampaignValues {
   targetSize?: string;
   genderRequirements?: {
     customerChoice: string;
-    // options?: string[]; // Uncomment if you want to use options
+    options: string[];
   };
   targetCap?: string;
   checkboxCap?: boolean;
@@ -144,6 +144,10 @@ const FormProvider = ({
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
     notes: dossier?.notes || "",
+    genderRequirements: {
+      customerChoice: "",
+      options: [],
+    },
   };
 
   const validationSchema = yup.object({
@@ -199,8 +203,8 @@ const FormProvider = ({
         }
       ),
     genderRequirements: yup.object().shape({
-      customerChoice: yup.string().required(),
-      //options: yup.array().of('male', 'female', 'other').required(),
+      customerChoice: yup.string(), // not required, but present
+      options: yup.array().of(yup.string().oneOf(["1", "0", "-1", "2"])),
     }),
     countries: yup.array(),
     languages: yup.array(),
