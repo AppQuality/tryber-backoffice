@@ -9,10 +9,10 @@ import { NewCampaignValues } from "../FormProvider";
 import styled from "styled-components";
 
 const genderOptions = [
-  { value: "1", label: "Male" },
-  { value: "0", label: "Female" },
-  { value: "2", label: "Non conforming" },
-  { value: "-1", label: "Prefer not to answer" },
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Non conforming" },
+  { value: "not_specified", label: "Prefer not to answer" },
 ];
 
 const CheckboxGrid = styled.div`
