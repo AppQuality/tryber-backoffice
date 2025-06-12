@@ -242,8 +242,11 @@ const FormProvider = ({
     notes: yup.string(),
     cuf: yup.array().of(
       yup.object().shape({
-        id: yup.number().required("CUF ID is required"),
-        value: yup.array().of(yup.number()).required("CUF values are required"),
+        id: yup
+          .number()
+          .required("CUF ID is required")
+          .min(1, "CUF ID is required"),
+        value: yup.array().min(1, "Almeno un elemento è richiesto"),
       })
     ),
   });

@@ -1,4 +1,9 @@
-import { Button, Select, Title } from "@appquality/appquality-design-system";
+import {
+  Button,
+  ErrorMessage,
+  Select,
+  Title,
+} from "@appquality/appquality-design-system";
 import {
   Field as FormikField,
   FieldArray,
@@ -61,28 +66,32 @@ const CufFieldSelect = ({ index }: { index: number }) => {
             (cuf) => cuf.id === parseInt(field.value, 10)
           );
           return (
-            <Select
-              name={field.name}
-              label="Cuf"
-              isDisabled={isLoading}
-              placeholder="Select a CUF"
-              isClearable
-              onChange={(option) => {
-                if (!option || !option.value || option.value === "0") {
-                  form.setFieldValue(field.name, "0");
-                  return;
-                }
-                form.setFieldValue(field.name, option.value);
-              }}
-              options={data.map((cuf) => ({
-                value: cuf.id.toString(),
-                label: cuf.name,
-              }))}
-              value={{
-                label: current?.name || "Select a CUF",
-                value: field.value,
-              }}
-            />
+            <>
+              <Select
+                name={field.name}
+                label="Cuf"
+                isDisabled={isLoading}
+                placeholder="Select a CUF"
+                isClearable
+                onChange={(option) => {
+                  form.setFieldTouched(field.name, true);
+                  if (!option || !option.value || option.value === "0") {
+                    form.setFieldValue(field.name, "0");
+                    return;
+                  }
+                  form.setFieldValue(field.name, option.value);
+                }}
+                options={data.map((cuf) => ({
+                  value: cuf.id.toString(),
+                  label: cuf.name,
+                }))}
+                value={{
+                  label: current?.name || "Select a CUF",
+                  value: field.value,
+                }}
+              />
+              <ErrorMessage name={field.name} />
+            </>
           );
         }}
       </FormikField>
@@ -95,7 +104,9 @@ const CufOptionsSelect = ({ index }: { index: number }) => {
 
   const { values } = useFormikContext<NewCampaignValues>();
   const isCufSelected =
-    values.cuf && index in values.cuf && values.cuf[index].id !== "0";
+    values.cuf &&
+    index in values.cuf &&
+    values.cuf[index].id.toString() !== "0";
 
   const options =
     data.find(
@@ -117,47 +128,51 @@ const CufOptionsSelect = ({ index }: { index: number }) => {
                 field.value.includes(option.id.toString())
               );
           return (
-            <Select
-              isMulti
-              name={field.name}
-              label="Options"
-              isDisabled={isLoading || !isCufSelected}
-              placeholder="Select options"
-              isClearable
-              onChange={(options) => {
-                if (
-                  !options ||
-                  options.length === 0 ||
-                  !Array.isArray(options)
-                ) {
-                  form.setFieldValue(field.name, []);
-                  return;
-                }
-                if (
-                  options.some(
-                    (option) => option.value === allOptions.id.toString()
-                  )
-                ) {
-                  form.setFieldValue(field.name, [allOptions.id.toString()]);
-                  return;
-                }
-                form.setFieldValue(
-                  field.name,
-                  options.map((option) => option.value)
-                );
-              }}
-              options={(allOptionsSelected
-                ? [allOptions]
-                : [allOptions, ...options]
-              ).map((option) => ({
-                value: option.id.toString(),
-                label: option.name,
-              }))}
-              value={current.map((option) => ({
-                label: option.name,
-                value: option.id.toString(),
-              }))}
-            />
+            <>
+              <Select
+                isMulti
+                name={field.name}
+                label="Options"
+                isDisabled={isLoading || !isCufSelected}
+                placeholder="Select options"
+                isClearable
+                onChange={(options) => {
+                  form.setFieldTouched(field.name, true);
+                  if (
+                    !options ||
+                    options.length === 0 ||
+                    !Array.isArray(options)
+                  ) {
+                    form.setFieldValue(field.name, []);
+                    return;
+                  }
+                  if (
+                    options.some(
+                      (option) => option.value === allOptions.id.toString()
+                    )
+                  ) {
+                    form.setFieldValue(field.name, [allOptions.id.toString()]);
+                    return;
+                  }
+                  form.setFieldValue(
+                    field.name,
+                    options.map((option) => option.value)
+                  );
+                }}
+                options={(allOptionsSelected
+                  ? [allOptions]
+                  : [allOptions, ...options]
+                ).map((option) => ({
+                  value: option.id.toString(),
+                  label: option.name,
+                }))}
+                value={current.map((option) => ({
+                  label: option.name,
+                  value: option.id.toString(),
+                }))}
+              />
+              <ErrorMessage name={field.name} />
+            </>
           );
         }}
       </FormikField>
@@ -169,7 +184,7 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr auto;
   gap: 10px;
-  align-items: flex-end;
+  align-items: flex-start;
 `;
 const StyledTitle = styled(Title)`
   display: flex;
@@ -195,7 +210,11 @@ const CufCriteria = () => {
                   <CufFieldSelect index={index} />
                   <CufOptionsSelect index={index} />
 
-                  <Button kind="danger" onClick={() => remove(index)}>
+                  <Button
+                    style={{ alignSelf: "end" }}
+                    kind="danger"
+                    onClick={() => remove(index)}
+                  >
                     <DeleteIcon />
                   </Button>
                 </Wrapper>
