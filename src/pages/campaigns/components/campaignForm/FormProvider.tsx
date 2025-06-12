@@ -52,7 +52,7 @@ export interface NewCampaignValues {
   targetSize?: string;
   genderRequirements?: {
     customerChoice: string;
-    options: string[];
+    options: number[];
   };
   targetCap?: string;
   checkboxCap?: boolean;
@@ -203,9 +203,7 @@ const FormProvider = ({
       ),
     genderRequirements: yup.object().shape({
       customerChoice: yup.string(),
-      options: yup
-        .array()
-        .of(yup.string().oneOf(["male", "female", "other", "not_specified"])),
+      options: yup.array().of(yup.number().oneOf([-1, 0, 1, 2])),
     }),
     countries: yup.array(),
     languages: yup.array(),
@@ -269,26 +267,21 @@ const FormProvider = ({
               ? parseInt(values.productType, 10)
               : undefined,
             notes: values.notes,
+            visibilityCriteria: {
+              gender: values.genderRequirements?.options || [],
+            },
           };
 
           if (isEdit) {
             await putDossiers({
               campaign: dossier?.id.toString() || "",
-              body: {
-                ...body,
-                visibility_criteria: {
-                  gender: values.genderRequirements?.options || [],
-                },
-              },
+              dossierCreationData: body,
             }).unwrap();
           } else {
             const resp = await postDossiers({
               body: {
                 ...body,
                 duplicate: duplicate,
-                visibilityCriteria: {
-                  gender: values.genderRequirements?.options || [],
-                },
               },
             }).unwrap();
             if (!resp.id) {
