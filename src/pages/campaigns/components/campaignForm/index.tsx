@@ -280,8 +280,11 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     </Title>
                     <GenderRequirements />
                   </div>
-                  <CufCriteria />
                 </FieldWrapper>
+                <CufCriteria />
+                <Title size="s" className="aq-mb-2 aq-pt-4">
+                  Add additional requirements or notes
+                </Title>
                 <FieldWrapper>
                   <div>
                     <Title size="s" className="aq-mb-2 aq-pt-4">

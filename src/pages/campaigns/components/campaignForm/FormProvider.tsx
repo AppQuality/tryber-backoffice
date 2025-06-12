@@ -13,6 +13,7 @@ import {
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
+import { useAllFieldsByCuf } from "./fields/CufCriteria";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
 
@@ -62,6 +63,32 @@ export interface NewCampaignValues {
   cuf?: { id: string; value: string[] }[];
 }
 
+const useGetInitialCufCriteria = ({
+  dossier,
+}: {
+  dossier: FormProviderInterface["dossier"];
+}) => {
+  const getAllFieldsByCuf = useAllFieldsByCuf();
+  if (!dossier) return [];
+  if (!dossier.visibilityCriteria || !dossier.visibilityCriteria.cuf) {
+    return [];
+  }
+
+  return dossier.visibilityCriteria.cuf.map((cuf) => {
+    const cufFields = getAllFieldsByCuf(cuf.cufId);
+    if (cufFields.every((field) => cuf.cufValueIds.includes(field.id))) {
+      return {
+        id: cuf.cufId.toString(),
+        value: ["-1"],
+      };
+    }
+    return {
+      id: cuf.cufId.toString(),
+      value: cuf.cufValueIds.map((value) => value.toString()),
+    };
+  });
+};
+
 const FormProvider = ({
   children,
   dossier,
@@ -72,10 +99,12 @@ const FormProvider = ({
   const history = useHistory();
   const [postDossiers] = usePostDossiersMutation();
   const [putDossiers] = usePutDossiersByCampaignMutation();
+  const getAllFieldsByCuf = useAllFieldsByCuf();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
   const { data: devices } = useGetDevicesByDeviceTypeOperatingSystemsQuery({
     deviceType: "all",
   });
+  const initialCufCriteria = useGetInitialCufCriteria({ dossier });
   const selectedTypes = useMemo(() => {
     if (!dossier) return ["Smartphone", "PC"];
 
@@ -148,12 +177,7 @@ const FormProvider = ({
       customerChoice: dossier?.target?.genderQuote || "",
       options: dossier?.visibilityCriteria?.gender || [],
     },
-    cuf: dossier?.visibilityCriteria?.cuf
-      ? dossier.visibilityCriteria.cuf.map((cuf) => ({
-          id: cuf.cufId.toString(),
-          value: cuf.cufValueIds.map((value) => value.toString()),
-        }))
-      : [],
+    cuf: initialCufCriteria,
   };
 
   const validationSchema = yup.object({
@@ -282,13 +306,30 @@ const FormProvider = ({
             notes: values.notes,
             visibilityCriteria: {
               gender: values.genderRequirements?.options || [],
+              cuf: values.cuf
+                ? values.cuf.map((cuf) => {
+                    if (cuf.value.includes("-1")) {
+                      return {
+                        cufId: parseInt(cuf.id, 10),
+                        cufValueIds: getAllFieldsByCuf(Number(cuf.id)).map(
+                          (field) => field.id
+                        ),
+                      };
+                    }
+
+                    return {
+                      cufId: Number(cuf.id),
+                      cufValueIds: cuf.value.map((value) => Number(value)),
+                    };
+                  })
+                : [],
             },
           };
 
           if (isEdit) {
             await putDossiers({
               campaign: dossier?.id.toString() || "",
-              body,
+              dossierCreationData: body,
             }).unwrap();
           } else {
             const resp = await postDossiers({

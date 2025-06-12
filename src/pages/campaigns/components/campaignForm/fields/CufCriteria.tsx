@@ -1,15 +1,31 @@
-import { Select } from "@appquality/appquality-design-system";
+import { Button, Select, Title } from "@appquality/appquality-design-system";
 import {
   Field as FormikField,
   FieldArray,
   FieldProps,
   useFormikContext,
 } from "formik";
+import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
 import {
   CustomUserFieldsDataOption,
   useGetCustomUserFieldsQuery,
 } from "src/services/tryberApi";
+import { styled } from "styled-components";
 import { NewCampaignValues } from "../FormProvider";
+
+export const useAllFieldsByCuf = () => {
+  const { data, isLoading } = useGetCustomUserFieldsQuery();
+
+  if (isLoading) return (cufId: number) => [];
+
+  return (cufId: number) => {
+    if (!data) return [];
+    const cuf = data
+      .flatMap((group) => group.fields || [])
+      .find((field) => field.id === cufId);
+    return cuf ? cuf.options || [] : [];
+  };
+};
 
 const useGetValidCuf = () => {
   const { data, isLoading } = useGetCustomUserFieldsQuery();
@@ -38,7 +54,7 @@ const CufFieldSelect = ({ index }: { index: number }) => {
   const { data, isLoading } = useGetValidCuf();
 
   return (
-    <>
+    <div>
       <FormikField name={`cuf[${index}].id`}>
         {({ field, form }: FieldProps) => {
           const current = data.find(
@@ -70,7 +86,7 @@ const CufFieldSelect = ({ index }: { index: number }) => {
           );
         }}
       </FormikField>
-    </>
+    </div>
   );
 };
 
@@ -86,71 +102,106 @@ const CufOptionsSelect = ({ index }: { index: number }) => {
       (cuf) => values.cuf && cuf.id === parseInt(values.cuf[index].id, 10)
     )?.options || [];
 
+  const allOptions = { id: "-1", name: "All options" };
+
   return (
-    <FormikField name={`cuf[${index}].value`}>
-      {({ field, form }: FieldProps) => {
-        const current = options.filter((option) =>
-          field.value.includes(option.id.toString())
-        );
-        return (
-          <Select
-            isMulti
-            name={field.name}
-            label="Options"
-            isDisabled={isLoading || !isCufSelected}
-            placeholder="Select options"
-            isClearable
-            onChange={(options) => {
-              if (!options || options.length === 0 || !Array.isArray(options)) {
-                form.setFieldValue(field.name, []);
-                return;
-              }
-              form.setFieldValue(
-                field.name,
-                options.map((option) => option.value)
+    <div>
+      <FormikField name={`cuf[${index}].value`}>
+        {({ field, form }: FieldProps) => {
+          const allOptionsSelected = field.value.some(
+            (option: string) => option === allOptions.id.toString()
+          );
+          const current = allOptionsSelected
+            ? [allOptions]
+            : options.filter((option) =>
+                field.value.includes(option.id.toString())
               );
-            }}
-            options={options.map((option) => ({
-              value: option.id.toString(),
-              label: option.name,
-            }))}
-            value={current.map((option) => ({
-              label: option.name,
-              value: option.id.toString(),
-            }))}
-          />
-        );
-      }}
-    </FormikField>
+          return (
+            <Select
+              isMulti
+              name={field.name}
+              label="Options"
+              isDisabled={isLoading || !isCufSelected}
+              placeholder="Select options"
+              isClearable
+              onChange={(options) => {
+                if (
+                  !options ||
+                  options.length === 0 ||
+                  !Array.isArray(options)
+                ) {
+                  form.setFieldValue(field.name, []);
+                  return;
+                }
+                if (
+                  options.some(
+                    (option) => option.value === allOptions.id.toString()
+                  )
+                ) {
+                  form.setFieldValue(field.name, [allOptions.id.toString()]);
+                  return;
+                }
+                form.setFieldValue(
+                  field.name,
+                  options.map((option) => option.value)
+                );
+              }}
+              options={(allOptionsSelected
+                ? [allOptions]
+                : [allOptions, ...options]
+              ).map((option) => ({
+                value: option.id.toString(),
+                label: option.name,
+              }))}
+              value={current.map((option) => ({
+                label: option.name,
+                value: option.id.toString(),
+              }))}
+            />
+          );
+        }}
+      </FormikField>
+    </div>
   );
 };
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 10px;
+  align-items: flex-end;
+`;
+const StyledTitle = styled(Title)`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const CufCriteria = () => {
   const { values } = useFormikContext<NewCampaignValues>();
   return (
     <FieldArray name="cuf">
       {({ push, remove }) => (
-        <div>
-          {values.cuf &&
-            values.cuf.map((item, index) => (
-              <div key={index}>
-                <CufFieldSelect index={index} />
-                <CufOptionsSelect index={index} />
+        <>
+          <StyledTitle size="s" className="aq-mb-2 aq-pt-4">
+            Custom User Fields Criteria
+            <Button kind="link" onClick={() => push({ id: 0, value: [] })}>
+              Add CUF
+            </Button>
+          </StyledTitle>
+          <div>
+            {values.cuf &&
+              values.cuf.map((item, index) => (
+                <Wrapper key={index}>
+                  <CufFieldSelect index={index} />
+                  <CufOptionsSelect index={index} />
 
-                <button type="button" onClick={() => remove(index)}>
-                  Remove
-                </button>
-              </div>
-            ))}
-
-          <button
-            type="button"
-            onClick={() => push({ id: 0, value: [] })}
-            style={{ marginTop: "10px" }}
-          >
-            Add CUF
-          </button>
-        </div>
+                  <Button kind="danger" onClick={() => remove(index)}>
+                    <DeleteIcon />
+                  </Button>
+                </Wrapper>
+              ))}
+          </div>
+        </>
       )}
     </FieldArray>
   );

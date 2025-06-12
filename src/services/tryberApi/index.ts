@@ -1278,8 +1278,6 @@ export type GetCampaignsByCampaignBugsAndBugIdApiResponse =
     };
     media: {
       id: number;
-      url: string;
-      type: string;
     }[];
     status_history: {
       status: string;
