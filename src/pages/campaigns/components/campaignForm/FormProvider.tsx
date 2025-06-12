@@ -55,6 +55,10 @@ export interface NewCampaignValues {
     customerChoice: string;
     options: number[];
   };
+  ageRequirements?: {
+    min: number;
+    max: number;
+  }[];
   targetCap?: string;
   checkboxCap?: boolean;
   browsersList?: string[];

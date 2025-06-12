@@ -20,6 +20,7 @@ import { styled } from "styled-components";
 import { PhaseSelector } from "../PhaseSelector";
 import { CampaignFormContext } from "./campaignFormContext";
 import FormOverlay from "./feedbackMessages/FormOverlay";
+import AgeRequirements from "./fields/AgeRequirements";
 import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
 import CufCriteria from "./fields/CufCriteria";
@@ -274,11 +275,19 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <FieldWrapper>
                   <CountrySelect />
                   <LanguageSelect />
+                </FieldWrapper>
+                <FieldWrapper>
                   <div>
                     <Title size="s" className="aq-mb-2">
                       Gender
                     </Title>
                     <GenderRequirements />
+                  </div>
+                  <div>
+                    <Title size="s" className="aq-mb-2">
+                      Age range
+                    </Title>
+                    <AgeRequirements />
                   </div>
                 </FieldWrapper>
                 <CufCriteria />
