@@ -28,6 +28,7 @@ import EndDatePicker from "./fields/dates/EndDatePicker";
 import StartDatePicker from "./fields/dates/StartDatePicker";
 import DeviceMultiselect from "./fields/device/DeviceMultiselect";
 import { FieldWrapper } from "./fields/FieldWrapper";
+import GenderRequirements from "./fields/GenderRequirements";
 import InputField from "./fields/InputField";
 import LanguageSelect from "./fields/LanguagesSelect";
 import ProductType from "./fields/ProductTypeSelect";
@@ -272,20 +273,28 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <FieldWrapper>
                   <CountrySelect />
                   <LanguageSelect />
+                  <div>
+                    <Title size="s" className="aq-mb-2">
+                      Gender
+                    </Title>
+                    <GenderRequirements />
+                  </div>
                 </FieldWrapper>
-                <Title size="s" className="aq-mb-2 aq-pt-4">
-                  Add additional requirements or notes
-                </Title>
                 <FieldWrapper>
-                  <TextareaField
-                    name="targetNotes"
-                    label="Trybers' additional requirements"
-                    resize="vertical"
-                    placeholder="The target has to..."
-                  />
-                  {dossier && dossier.id && (
-                    <SurveyButton campaign_id={dossier.id.toString()} />
-                  )}
+                  <div>
+                    <Title size="s" className="aq-mb-2 aq-pt-4">
+                      Add additional requirements or notes
+                    </Title>
+                    <TextareaField
+                      name="targetNotes"
+                      label="Trybers' additional requirements"
+                      resize="vertical"
+                      placeholder="The target has to..."
+                    />
+                    {dossier && dossier.id && (
+                      <SurveyButton campaign_id={dossier.id.toString()} />
+                    )}
+                  </div>
                 </FieldWrapper>
               </Card>
             </Section>

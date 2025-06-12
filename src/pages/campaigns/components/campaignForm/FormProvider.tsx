@@ -50,6 +50,10 @@ export interface NewCampaignValues {
   deviceRequirements?: string;
   targetNotes?: string;
   targetSize?: string;
+  genderRequirements?: {
+    customerChoice: string;
+    options: number[];
+  };
   targetCap?: string;
   checkboxCap?: boolean;
   browsersList?: string[];
@@ -139,6 +143,10 @@ const FormProvider = ({
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
     notes: dossier?.notes || "",
+    genderRequirements: {
+      customerChoice: dossier?.target?.genderQuote || "",
+      options: dossier?.visibilityCriteria?.gender || [],
+    },
   };
 
   const validationSchema = yup.object({
@@ -193,6 +201,10 @@ const FormProvider = ({
           return true;
         }
       ),
+    genderRequirements: yup.object().shape({
+      customerChoice: yup.string(),
+      options: yup.array().of(yup.number().oneOf([-1, 0, 1, 2])),
+    }),
     countries: yup.array(),
     languages: yup.array(),
     targetNotes: yup.string(),
@@ -246,6 +258,7 @@ const FormProvider = ({
                 ? parseInt(values.targetSize)
                 : undefined,
               cap: !!values.targetCap ? parseInt(values.targetCap) : -1, // -1 is passed for no tester cap required
+              genderQuote: values.genderRequirements?.customerChoice ?? "",
             },
             browsers: values.browsersList?.map((browser) =>
               parseInt(browser, 10)
@@ -254,6 +267,9 @@ const FormProvider = ({
               ? parseInt(values.productType, 10)
               : undefined,
             notes: values.notes,
+            visibilityCriteria: {
+              gender: values.genderRequirements?.options || [],
+            },
           };
 
           if (isEdit) {
