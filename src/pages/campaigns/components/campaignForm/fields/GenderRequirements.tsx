@@ -1,12 +1,12 @@
 import {
+  Checkbox,
   FormikField,
   FormLabel,
-  Checkbox,
   TextareaField,
 } from "@appquality/appquality-design-system";
 import { FieldProps, useFormikContext } from "formik";
-import { NewCampaignValues } from "../FormProvider";
 import styled from "styled-components";
+import { NewCampaignValues } from "../FormProvider";
 
 const genderOptions = [
   { value: 1, label: "Male" },
@@ -18,9 +18,9 @@ const genderOptions = [
 const CheckboxGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px 32px;
-  margin-bottom: 8px;
-  max-width: 420px;
+  gap: ${({ theme }) => theme.grid.sizes[3]}
+    ${({ theme }) => theme.grid.sizes[4]};
+  margin-bottom: ${({ theme }) => theme.grid.sizes[2]};
 `;
 
 const GenderRequirements = () => {

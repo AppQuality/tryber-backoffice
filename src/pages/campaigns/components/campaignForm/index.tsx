@@ -273,14 +273,14 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 <FieldWrapper>
                   <CountrySelect />
                   <LanguageSelect />
-                </FieldWrapper>
-                <FieldWrapper>
                   <div>
                     <Title size="s" className="aq-mb-2">
                       Gender
                     </Title>
                     <GenderRequirements />
                   </div>
+                </FieldWrapper>
+                <FieldWrapper>
                   <div>
                     <Title size="s" className="aq-mb-2 aq-pt-4">
                       Add additional requirements or notes
