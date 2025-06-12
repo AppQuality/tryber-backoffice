@@ -1278,6 +1278,8 @@ export type GetCampaignsByCampaignBugsAndBugIdApiResponse =
     };
     media: {
       id: number;
+      url: string;
+      type: string;
     }[];
     status_history: {
       status: string;
@@ -1290,8 +1292,7 @@ export type GetCampaignsByCampaignBugsAndBugIdApiArg = {
   campaign: string;
   bugId: string;
 };
-export type PostCampaignsByCampaignCandidatesApiResponse =
-  /** status 200 OK */
+export type PostCampaignsByCampaignCandidatesApiResponse = /** status 200 OK */
   | {
       results: {
         tester_id: number;
@@ -1824,8 +1825,7 @@ export type GetDevicesByDeviceTypeOsVersionsApiArg = {
   /** Key-value Array for item filtering */
   filterBy?: object;
 };
-export type PostDossiersApiResponse =
-  /** status 201 Created */
+export type PostDossiersApiResponse = /** status 201 Created */
   | {
       id: number;
       message?: "HOOK_FAILED";
@@ -2302,9 +2302,9 @@ export type DeleteUsersMeApiArg = {
     reason: string;
   };
 };
-export type PutUsersMeAdditionalsByFieldIdApiResponse =
-  /** status 200 OK */
-  AdditionalField[] | AdditionalField;
+export type PutUsersMeAdditionalsByFieldIdApiResponse = /** status 200 OK */
+  | AdditionalField[]
+  | AdditionalField;
 export type PutUsersMeAdditionalsByFieldIdApiArg = {
   /** The id of the field to edit */
   fieldId: number;
@@ -2523,8 +2523,7 @@ export type PostUsersMeCampaignsByCampaignIdMediaApiArg = {
     media?: {} | string[];
   };
 };
-export type PostUsersMeCertificationsApiResponse =
-  /** status 201 Created */
+export type PostUsersMeCertificationsApiResponse = /** status 201 Created */
   | Certification
   | {
       message: string;

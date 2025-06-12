@@ -59,6 +59,7 @@ export interface NewCampaignValues {
   browsersList?: string[];
   productType?: string;
   notes?: string;
+  cuf?: { id: string; value: string[] }[];
 }
 
 const FormProvider = ({
@@ -147,6 +148,12 @@ const FormProvider = ({
       customerChoice: dossier?.target?.genderQuote || "",
       options: dossier?.visibilityCriteria?.gender || [],
     },
+    cuf: dossier?.visibilityCriteria?.cuf
+      ? dossier.visibilityCriteria.cuf.map((cuf) => ({
+          id: cuf.cufId.toString(),
+          value: cuf.cufValueIds.map((value) => value.toString()),
+        }))
+      : [],
   };
 
   const validationSchema = yup.object({
@@ -209,6 +216,12 @@ const FormProvider = ({
     languages: yup.array(),
     targetNotes: yup.string(),
     notes: yup.string(),
+    cuf: yup.array().of(
+      yup.object().shape({
+        id: yup.number().required("CUF ID is required"),
+        value: yup.array().of(yup.number()).required("CUF values are required"),
+      })
+    ),
   });
   return (
     <Formik
@@ -275,7 +288,7 @@ const FormProvider = ({
           if (isEdit) {
             await putDossiers({
               campaign: dossier?.id.toString() || "",
-              dossierCreationData: body,
+              body,
             }).unwrap();
           } else {
             const resp = await postDossiers({

@@ -22,6 +22,7 @@ import { CampaignFormContext } from "./campaignFormContext";
 import FormOverlay from "./feedbackMessages/FormOverlay";
 import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
+import CufCriteria from "./fields/CufCriteria";
 import CustomerSelect from "./fields/CustomerSelect";
 import CloseDatePicker from "./fields/dates/CloseDatePicker";
 import EndDatePicker from "./fields/dates/EndDatePicker";
@@ -279,6 +280,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     </Title>
                     <GenderRequirements />
                   </div>
+                  <CufCriteria />
                 </FieldWrapper>
                 <FieldWrapper>
                   <div>
