@@ -181,6 +181,10 @@ const FormProvider = ({
       customerChoice: dossier?.target?.genderQuote || "",
       options: dossier?.visibilityCriteria?.gender || [],
     },
+    ageRequirements: dossier?.visibilityCriteria?.ageRanges?.map((r) => ({
+      min: r.min,
+      max: r.max,
+    })) || [{ min: 0, max: 0 }],
     cuf: initialCufCriteria,
   };
 
@@ -251,6 +255,25 @@ const FormProvider = ({
           .required("CUF ID is required")
           .min(1, "CUF ID is required"),
         value: yup.array().min(1, "Almeno un elemento è richiesto"),
+      })
+    ),
+    ageRequirements: yup.array().of(
+      yup.object().shape({
+        min: yup.number().typeError("Min age must be a number").nullable(),
+        max: yup
+          .number()
+          .typeError("Max age must be a number")
+          .nullable()
+          .test(
+            "is-greater-or-equal",
+            "Max age must be greater than min age",
+            function (value) {
+              const { min } = this.parent;
+              if (min === null || min === "" || value === null || !value)
+                return true;
+              return value >= min;
+            }
+          ),
       })
     ),
   });
@@ -329,6 +352,20 @@ const FormProvider = ({
                       cufValueIds: cuf.value.map((value) => Number(value)),
                     };
                   })
+                : [],
+              ageRanges: values.ageRequirements
+                ? values.ageRequirements
+                    .filter(
+                      (age) =>
+                        age.min !== null &&
+                        age.min !== undefined &&
+                        age.max !== null &&
+                        age.max !== undefined
+                    )
+                    .map((age) => ({
+                      min: Number(age.min),
+                      max: Number(age.max),
+                    }))
                 : [],
             },
           };
