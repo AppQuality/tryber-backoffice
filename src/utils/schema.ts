@@ -858,6 +858,17 @@ export interface components {
         showInStats?: boolean;
       } & components["schemas"]["CampaignAdditionalField"])[];
       bugTypes?: number[];
+      visibilityCriteria?: {
+        cuf?: {
+          cufId: number;
+          cufValueIds: number[];
+        }[];
+        gender?: number[];
+        ageRanges?: {
+          min: number;
+          max: number;
+        }[];
+      };
     };
     /** FiscalBirthCity */
     FiscalBirthCity:
@@ -1583,8 +1594,6 @@ export interface operations {
             };
             media: {
               id: number;
-              url: string;
-              type: string;
             }[];
             status_history: {
               status: string;
@@ -2649,18 +2658,6 @@ export interface operations {
         } & {
           /** @default 0 */
           skipPagesAndTasks?: number;
-        } & {
-          visibilityCriteria?: {
-            cuf?: {
-              cuf_id: number;
-              cuf_value_id: number;
-            }[];
-            age_ranges?: {
-              min: number;
-              max: number;
-            }[];
-            gender?: string[];
-          };
         };
       };
     };
@@ -2756,7 +2753,7 @@ export interface operations {
                 min: number;
                 max: number;
               }[];
-              gender?: string[];
+              gender?: number[];
             };
           };
         };
@@ -2780,15 +2777,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DossierCreationData"] & {
-          visibility_criteria?: {
-            age_ranges?: {
-              min: number;
-              max: number;
-            }[];
-            gender?: string[];
-          };
-        };
+        "application/json": components["schemas"]["DossierCreationData"];
       };
     };
   };

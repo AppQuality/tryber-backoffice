@@ -445,7 +445,7 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/dossiers/${queryArg.campaign}`,
         method: "PUT",
-        body: queryArg.body,
+        body: queryArg.dossierCreationData,
       }),
     }),
     getDossiersByCampaign: build.query<
@@ -1278,8 +1278,6 @@ export type GetCampaignsByCampaignBugsAndBugIdApiResponse =
     };
     media: {
       id: number;
-      url: string;
-      type: string;
     }[];
     status_history: {
       status: string;
@@ -1847,33 +1845,13 @@ export type PostDossiersApiArg = {
     };
   } & {
     skipPagesAndTasks?: number;
-  } & {
-    visibilityCriteria?: {
-      cuf?: {
-        cuf_id: number;
-        cuf_value_id: number;
-      }[];
-      age_ranges?: {
-        min: number;
-        max: number;
-      }[];
-      gender?: string[];
-    };
   };
 };
 export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
 export type PutDossiersByCampaignApiArg = {
   /** A campaign id */
   campaign: string;
-  body: DossierCreationData & {
-    visibility_criteria?: {
-      age_ranges?: {
-        min: number;
-        max: number;
-      }[];
-      gender?: string[];
-    };
-  };
+  dossierCreationData: DossierCreationData;
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
   id: number;
@@ -1952,7 +1930,7 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
       min: number;
       max: number;
     }[];
-    gender?: string[];
+    gender?: number[];
   };
 };
 export type GetDossiersByCampaignApiArg = {
@@ -3137,6 +3115,17 @@ export type DossierCreationData = {
     showInStats?: boolean;
   } & CampaignAdditionalField)[];
   bugTypes?: number[];
+  visibilityCriteria?: {
+    cuf?: {
+      cufId: number;
+      cufValueIds: number[];
+    }[];
+    gender?: number[];
+    ageRanges?: {
+      min: number;
+      max: number;
+    }[];
+  };
 };
 export type LevelDefinition = {
   id: number;
