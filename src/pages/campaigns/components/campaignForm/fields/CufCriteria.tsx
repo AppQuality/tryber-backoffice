@@ -68,6 +68,7 @@ const CufFieldSelect = ({ index }: { index: number }) => {
           return (
             <>
               <Select
+                onBlur={() => form.setFieldTouched(field.name, true)}
                 name={field.name}
                 label="Cuf"
                 isDisabled={isLoading}
@@ -131,6 +132,7 @@ const CufOptionsSelect = ({ index }: { index: number }) => {
             <>
               <Select
                 isMulti
+                onBlur={() => form.setFieldTouched(field.name, true)}
                 name={field.name}
                 label="Options"
                 isDisabled={isLoading || !isCufSelected}
