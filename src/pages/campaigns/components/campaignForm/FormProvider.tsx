@@ -144,8 +144,8 @@ const FormProvider = ({
     productType: dossier?.productType?.id.toString() || "",
     notes: dossier?.notes || "",
     genderRequirements: {
-      customerChoice: "",
-      options: [],
+      customerChoice: dossier?.target?.genderQuote || "",
+      options: dossier?.visibilityCriteria?.gender || [],
     },
   };
 
@@ -203,7 +203,9 @@ const FormProvider = ({
       ),
     genderRequirements: yup.object().shape({
       customerChoice: yup.string(),
-      options: yup.array().of(yup.string().oneOf(["1", "0", "-1", "2"])),
+      options: yup
+        .array()
+        .of(yup.string().oneOf(["male", "female", "other", "not_specified"])),
     }),
     countries: yup.array(),
     languages: yup.array(),
@@ -258,6 +260,7 @@ const FormProvider = ({
                 ? parseInt(values.targetSize)
                 : undefined,
               cap: !!values.targetCap ? parseInt(values.targetCap) : -1, // -1 is passed for no tester cap required
+              genderQuote: values.genderRequirements?.customerChoice ?? "",
             },
             browsers: values.browsersList?.map((browser) =>
               parseInt(browser, 10)
@@ -271,13 +274,21 @@ const FormProvider = ({
           if (isEdit) {
             await putDossiers({
               campaign: dossier?.id.toString() || "",
-              dossierCreationData: body,
+              body: {
+                ...body,
+                visibility_criteria: {
+                  gender: values.genderRequirements?.options || [],
+                },
+              },
             }).unwrap();
           } else {
             const resp = await postDossiers({
               body: {
                 ...body,
                 duplicate: duplicate,
+                visibilityCriteria: {
+                  gender: values.genderRequirements?.options || [],
+                },
               },
             }).unwrap();
             if (!resp.id) {
