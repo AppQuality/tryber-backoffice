@@ -62,6 +62,16 @@ const injectedRtkApi = api.injectEndpoints({
     getBrowsers: build.query<GetBrowsersApiResponse, GetBrowsersApiArg>({
       query: () => ({ url: `/browsers` }),
     }),
+    patchBugsByBugIdStatus: build.mutation<
+      PatchBugsByBugIdStatusApiResponse,
+      PatchBugsByBugIdStatusApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/bugs/${queryArg.bugId}/status`,
+        method: "PATCH",
+        body: queryArg.body,
+      }),
+    }),
     postCampaigns: build.mutation<
       PostCampaignsApiResponse,
       PostCampaignsApiArg
@@ -117,6 +127,14 @@ const injectedRtkApi = api.injectEndpoints({
           orderBy: queryArg.orderBy,
           filterBy: queryArg.filterBy,
         },
+      }),
+    }),
+    getCampaignsByCampaignBugsAndBugId: build.query<
+      GetCampaignsByCampaignBugsAndBugIdApiResponse,
+      GetCampaignsByCampaignBugsAndBugIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/bugs/${queryArg.bugId}`,
       }),
     }),
     postCampaignsByCampaignCandidates: build.mutation<
@@ -427,7 +445,7 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/dossiers/${queryArg.campaign}`,
         method: "PUT",
-        body: queryArg.dossierCreationData,
+        body: queryArg.body,
       }),
     }),
     getDossiersByCampaign: build.query<
@@ -1076,6 +1094,13 @@ export type GetBrowsersApiResponse = /** status 200 OK */ {
   }[];
 };
 export type GetBrowsersApiArg = void;
+export type PatchBugsByBugIdStatusApiResponse = /** status 200 OK */ {};
+export type PatchBugsByBugIdStatusApiArg = {
+  bugId: string;
+  body: {
+    status_id: number;
+  };
+};
 export type PostCampaignsApiResponse =
   /** status 201 A single Campaigns with the Campaign id and Project data */ Campaign & {
     id: number;
@@ -1161,6 +1186,10 @@ export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   type: string;
   typeDescription: string;
   preselectionFormId?: number;
+  plan?: {
+    id: number;
+    name: string;
+  };
 };
 export type GetCampaignsByCampaignApiArg = {
   /** A campaign id */
@@ -1222,6 +1251,46 @@ export type GetCampaignsByCampaignBugsApiArg = {
   orderBy?: "severity" | "testerId" | "status" | "type" | "id";
   /** Key-value Array for item filtering */
   filterBy?: object;
+};
+export type GetCampaignsByCampaignBugsAndBugIdApiResponse =
+  /** status 200 OK */ {
+    id: number;
+    title: string;
+    description: string;
+    actual_result: string;
+    expected_result: string;
+    severity: BugSeverity;
+    replicability: {
+      id: number;
+      name: string;
+    };
+    type: {
+      id: number;
+      name: string;
+    };
+    status: BugStatus;
+    reason: string;
+    note: string;
+    usecase: {
+      id: number;
+      title: string;
+      description: string;
+    };
+    media: {
+      id: number;
+      url: string;
+      type: string;
+    }[];
+    status_history: {
+      status: string;
+      reason: string;
+      date: string;
+    }[];
+  };
+export type GetCampaignsByCampaignBugsAndBugIdApiArg = {
+  /** A campaign id */
+  campaign: string;
+  bugId: string;
 };
 export type PostCampaignsByCampaignCandidatesApiResponse =
   /** status 200 OK */
@@ -1778,13 +1847,33 @@ export type PostDossiersApiArg = {
     };
   } & {
     skipPagesAndTasks?: number;
+  } & {
+    visibilityCriteria?: {
+      cuf?: {
+        cuf_id: number;
+        cuf_value_id: number;
+      }[];
+      age_ranges?: {
+        min: number;
+        max: number;
+      }[];
+      gender?: string[];
+    };
   };
 };
 export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
 export type PutDossiersByCampaignApiArg = {
   /** A campaign id */
   campaign: string;
-  dossierCreationData: DossierCreationData;
+  body: DossierCreationData & {
+    visibility_criteria?: {
+      age_ranges?: {
+        min: number;
+        max: number;
+      }[];
+      gender?: string[];
+    };
+  };
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
   id: number;
@@ -1835,6 +1924,7 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
     notes?: string;
     size?: number;
     cap?: number;
+    genderQuote?: string;
   };
   countries?: CountryCode[];
   languages?: {
@@ -1853,6 +1943,17 @@ export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
     name: string;
   };
   notes?: string;
+  visibilityCriteria?: {
+    cuf?: {
+      cufId: number;
+      cufValueIds: number[];
+    }[];
+    ageRanges?: {
+      min: number;
+      max: number;
+    }[];
+    gender?: string[];
+  };
 };
 export type GetDossiersByCampaignApiArg = {
   /** A campaign id */
@@ -2922,6 +3023,11 @@ export type BugTag = {
   id: number;
   name: string;
 };
+export type BugStatus = {
+  id?: number;
+  name?: string;
+  description?: string;
+};
 export type Gender = "male" | "female" | "not-specified" | "other";
 export type ProspectStatus = "draft" | "confirmed" | "done";
 export type TaskOptional = {
@@ -2981,6 +3087,20 @@ export type CustomUserFieldsData = {
   options?: CustomUserFieldsDataOption[];
 };
 export type CountryCode = string;
+export type CampaignAdditionalField = {
+  name: string;
+  slug: string;
+  error: string;
+} & (
+  | {
+      type: "select";
+      options: string[];
+    }
+  | {
+      type: "text";
+      regex: string;
+    }
+);
 export type DossierCreationData = {
   project: number;
   testType: number;
@@ -3006,12 +3126,17 @@ export type DossierCreationData = {
     notes?: string;
     size?: number;
     cap?: number;
+    genderQuote?: string;
   };
   countries?: CountryCode[];
   languages?: string[];
   browsers?: number[];
   productType?: number;
   notes?: string;
+  additionals?: ({
+    showInStats?: boolean;
+  } & CampaignAdditionalField)[];
+  bugTypes?: number[];
 };
 export type LevelDefinition = {
   id: number;
@@ -3051,11 +3176,6 @@ export type Certification = {
   institute: string;
   achievement_date: string;
 };
-export type BugStatus = {
-  id?: number;
-  name?: string;
-  description?: string;
-};
 export type Bug = {
   severity?: BugSeverity;
   status?: BugStatus;
@@ -3064,20 +3184,6 @@ export type Bug = {
   };
   title?: string;
 };
-export type CampaignAdditionalField = {
-  name: string;
-  slug: string;
-  error: string;
-} & (
-  | {
-      type: "select";
-      options: string[];
-    }
-  | {
-      type: "text";
-      regex: string;
-    }
-);
 export type UserDevice = {
   type: string;
   id: number;
@@ -3131,11 +3237,13 @@ export const {
   useGetAgreementsByAgreementIdQuery,
   usePostAuthenticateMutation,
   useGetBrowsersQuery,
+  usePatchBugsByBugIdStatusMutation,
   usePostCampaignsMutation,
   useGetCampaignsQuery,
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
   useGetCampaignsByCampaignBugsQuery,
+  useGetCampaignsByCampaignBugsAndBugIdQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignCandidatesQuery,
   useGetCampaignsByCampaignClustersQuery,

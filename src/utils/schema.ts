@@ -33,6 +33,17 @@ export interface paths {
     /** A request to login with your username and password */
     post: operations["post-authenticate"];
   };
+  "/browsers": {
+    get: operations["get-browsers"];
+  };
+  "/bugs/{bugId}/status": {
+    patch: operations["patch-bugs-bugId-status"];
+    parameters: {
+      path: {
+        bugId: string;
+      };
+    };
+  };
   "/campaigns": {
     /** Get all the Campaigns you have access to */
     get: operations["get-campaigns"];
@@ -58,6 +69,17 @@ export interface paths {
       path: {
         /** A campaign id */
         campaign: components["parameters"]["campaign"];
+      };
+    };
+  };
+  "/campaigns/{campaign}/bugs/{bugId}": {
+    /** Get single bug of a Campaign if you have access to it */
+    get: operations["get-campaigns-single-bug"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+        bugId: string;
       };
     };
   };
@@ -227,6 +249,15 @@ export interface paths {
     post: operations["post-customers"];
     parameters: {};
   };
+  "/customers/{customer}/projects": {
+    get: operations["get-customers-customer-projects"];
+    post: operations["post-customers-customer-projects"];
+    parameters: {
+      path: {
+        customer: string;
+      };
+    };
+  };
   "/custom_user_fields": {
     get: operations["get-customUserFields"];
     parameters: {};
@@ -255,6 +286,57 @@ export interface paths {
     parameters: {
       path: {
         device_type: string;
+      };
+    };
+  };
+  "/dossiers": {
+    post: operations["post-dossiers"];
+    parameters: {};
+  };
+  "/dossiers/{campaign}": {
+    get: operations["get-dossiers-campaign"];
+    put: operations["put-dossiers-campaign"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+  };
+  "/dossiers/{campaign}/phases": {
+    put: operations["put-dossiers-campaign-phases"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+  };
+  "/dossiers/{campaign}/quotations": {
+    post: operations["post-dossiers-campaign-quotations"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+  };
+  "/dossiers/{campaign}/quotations/{quote}": {
+    patch: operations["patch-dossiers-campaign-quotations-quote"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+        quote: string;
+      };
+    };
+  };
+  "/dossiers/{campaign}/quotesHistory": {
+    get: operations["get-dossiers-campaign-quotes-history"];
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
       };
     };
   };
@@ -316,6 +398,9 @@ export interface paths {
       };
     };
   };
+  "/phases": {
+    get: operations["get-phases"];
+  };
   "/popups": {
     /** Retrieve all available popups for admin operations */
     get: operations["get-popups"];
@@ -334,6 +419,10 @@ export interface paths {
       };
     };
   };
+  "/productTypes": {
+    get: operations["get-productTypes"];
+    parameters: {};
+  };
   "/users": {
     /** Get all users you have access to */
     get: operations["get-users"];
@@ -345,6 +434,14 @@ export interface paths {
     parameters: {
       path: {
         email: string;
+      };
+    };
+  };
+  "/users/by-role/{role}": {
+    get: operations["get-users-by-role-role"];
+    parameters: {
+      path: {
+        role: "tester_lead" | "quality_leader" | "ux_researcher" | "assistants";
       };
     };
   };
@@ -541,53 +638,21 @@ export interface paths {
   "/users/me/rank/list": {
     get: operations["get-users-me-rank-list"];
   };
-  "/dossiers": {
-    post: operations["post-dossiers"];
-    parameters: {};
-  };
-  "/dossiers/{campaign}": {
-    get: operations["get-dossiers-campaign"];
-    put: operations["put-dossiers-campaign"];
+  "/dossiers/{campaign}/manual": {
+    post: operations["post-dossiers-campaign-manual"];
     parameters: {
       path: {
         /** A campaign id */
-        campaign: string;
+        campaign: components["parameters"]["campaign"];
       };
     };
   };
-  "/customers/{customer}/projects": {
-    get: operations["get-customers-customer-projects"];
-    post: operations["post-customers-customer-projects"];
-    parameters: {
-      path: {
-        customer: string;
-      };
-    };
-  };
-  "/users/by-role/{role}": {
-    get: operations["get-users-by-role-role"];
-    parameters: {
-      path: {
-        role: "tester_lead" | "quality_leader" | "ux_researcher" | "assistants";
-      };
-    };
-  };
-  "/browsers": {
-    get: operations["get-browsers"];
-  };
-  "/productTypes": {
-    get: operations["get-productTypes"];
-    parameters: {};
-  };
-  "/phases": {
-    get: operations["get-phases"];
-  };
-  "/dossiers/{campaign}/phases": {
-    put: operations["put-dossiers-campaign-phases"];
+  "/dossiers/{campaign}/preview": {
+    post: operations["post-dossiers-campaign-preview"];
     parameters: {
       path: {
         /** A campaign id */
-        campaign: string;
+        campaign: components["parameters"]["campaign"];
       };
     };
   };
@@ -727,6 +792,8 @@ export interface components {
       /** Format: date */
       achievement_date: string;
     };
+    /** CountryCode */
+    CountryCode: string;
     /** CustomUserFieldsData */
     CustomUserFieldsData: {
       id: number;
@@ -752,6 +819,46 @@ export interface components {
       value: number;
       currency: string;
     };
+    DossierCreationData: {
+      project: number;
+      testType: number;
+      title: {
+        customer: string;
+        tester?: string;
+      };
+      /** Format: date-time */
+      startDate: string;
+      /** Format: date-time */
+      endDate?: string;
+      /** Format: date-time */
+      closeDate?: string;
+      deviceList: number[];
+      csm?: number;
+      roles?: {
+        role: number;
+        user: number;
+      }[];
+      description?: string;
+      productLink?: string;
+      goal?: string;
+      outOfScope?: string;
+      deviceRequirements?: string;
+      target?: {
+        notes?: string;
+        size?: number;
+        cap?: number;
+        genderQuote?: string;
+      };
+      countries?: components["schemas"]["CountryCode"][];
+      languages?: string[];
+      browsers?: number[];
+      productType?: number;
+      notes?: string;
+      additionals?: ({
+        showInStats?: boolean;
+      } & components["schemas"]["CampaignAdditionalField"])[];
+      bugTypes?: number[];
+    };
     /** FiscalBirthCity */
     FiscalBirthCity:
       | {
@@ -772,6 +879,11 @@ export interface components {
       | "non-italian"
       | "vat"
       | "company";
+    /**
+     * Gender
+     * @enum {string}
+     */
+    Gender: "male" | "female" | "not-specified" | "other";
     /** LevelDefinition */
     LevelDefinition: {
       id: number;
@@ -799,6 +911,13 @@ export interface components {
       title?: string;
     };
     Olp: number[] | boolean;
+    /** PaginationData */
+    PaginationData: {
+      start: number;
+      limit?: number;
+      size: number;
+      total?: number;
+    };
     /** PreselectionFormQuestion */
     PreselectionFormQuestion: {
       question: string;
@@ -822,10 +941,27 @@ export interface components {
           }[];
         }
     );
+    /** PreselectionQuestionCuf */
+    PreselectionQuestionCuf: string;
+    /**
+     * PreselectionQuestionMultiple
+     * @enum {string}
+     */
+    PreselectionQuestionMultiple: "multiselect" | "select" | "radio";
+    /**
+     * PreselectionQuestionSimple
+     * @enum {string}
+     */
+    PreselectionQuestionSimple: "gender" | "text" | "phone_number" | "address";
     /** Project */
     Project: {
       name?: string;
     };
+    /**
+     * ProspectStatus
+     * @enum {string}
+     */
+    ProspectStatus: "draft" | "confirmed" | "done";
     RankingItem: {
       position: number;
       image: string;
@@ -891,72 +1027,6 @@ export interface components {
         version: string;
       };
     };
-    /**
-     * Gender
-     * @enum {string}
-     */
-    Gender: "male" | "female" | "not-specified" | "other";
-    /** PaginationData */
-    PaginationData: {
-      start: number;
-      limit?: number;
-      size: number;
-      total?: number;
-    };
-    /**
-     * ProspectStatus
-     * @enum {string}
-     */
-    ProspectStatus: "draft" | "confirmed" | "done";
-    /** CountryCode */
-    CountryCode: string;
-    DossierCreationData: {
-      project: number;
-      testType: number;
-      title: {
-        customer: string;
-        tester?: string;
-      };
-      /** Format: date-time */
-      startDate: string;
-      /** Format: date-time */
-      endDate?: string;
-      /** Format: date-time */
-      closeDate?: string;
-      deviceList: number[];
-      csm?: number;
-      roles?: {
-        role: number;
-        user: number;
-      }[];
-      description?: string;
-      productLink?: string;
-      goal?: string;
-      outOfScope?: string;
-      deviceRequirements?: string;
-      target?: {
-        notes?: string;
-        size?: number;
-        cap?: number;
-      };
-      countries?: components["schemas"]["CountryCode"][];
-      languages?: string[];
-      browsers?: number[];
-      productType?: number;
-      notes?: string;
-    };
-    /**
-     * PreselectionQuestionSimple
-     * @enum {string}
-     */
-    PreselectionQuestionSimple: "gender" | "text" | "phone_number" | "address";
-    /**
-     * PreselectionQuestionMultiple
-     * @enum {string}
-     */
-    PreselectionQuestionMultiple: "multiselect" | "select" | "radio";
-    /** PreselectionQuestionCuf */
-    PreselectionQuestionCuf: string;
   };
   responses: {
     /** A user */
@@ -1218,6 +1288,49 @@ export interface operations {
       };
     };
   };
+  "get-browsers": {
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            results: {
+              id: number;
+              name: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  "patch-bugs-bugId-status": {
+    parameters: {
+      path: {
+        bugId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+      /** Forbidden */
+      403: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          status_id: number;
+        };
+      };
+    };
+  };
   /** Get all the Campaigns you have access to */
   "get-campaigns": {
     parameters: {
@@ -1293,6 +1406,11 @@ export interface operations {
                   surname: string;
                 };
               }[];
+              quote?: {
+                id: number;
+                price: string;
+                status: string;
+              };
             }[];
           } & components["schemas"]["PaginationData"];
         };
@@ -1335,6 +1453,10 @@ export interface operations {
             type: string;
             typeDescription: string;
             preselectionFormId?: number;
+            plan?: {
+              id: number;
+              name: string;
+            };
           };
         };
       };
@@ -1417,6 +1539,59 @@ export interface operations {
               updated: string;
             }[];
           } & components["schemas"]["PaginationData"];
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  /** Get single bug of a Campaign if you have access to it */
+  "get-campaigns-single-bug": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+        bugId: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            title: string;
+            description: string;
+            actual_result: string;
+            expected_result: string;
+            severity: components["schemas"]["BugSeverity"];
+            replicability: {
+              id: number;
+              name: string;
+            };
+            type: {
+              id: number;
+              name: string;
+            };
+            status: components["schemas"]["BugStatus"];
+            reason: string;
+            note: string;
+            usecase: {
+              id: number;
+              title: string;
+              description: string;
+            };
+            media: {
+              id: number;
+              url: string;
+              type: string;
+            }[];
+            status_history: {
+              status: string;
+              reason: string;
+              date: string;
+            }[];
+          };
         };
       };
       403: components["responses"]["NotAuthorized"];
@@ -2296,6 +2471,51 @@ export interface operations {
       };
     };
   };
+  "get-customers-customer-projects": {
+    parameters: {
+      path: {
+        customer: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            results: {
+              id: number;
+              name: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
+  "post-customers-customer-projects": {
+    parameters: {
+      path: {
+        customer: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            name: string;
+          };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          name: string;
+        };
+      };
+    };
+  };
   "get-customUserFields": {
     parameters: {};
     responses: {
@@ -2391,6 +2611,296 @@ export interface operations {
       };
       403: components["responses"]["NotAuthorized"];
       404: components["responses"]["NotFound"];
+    };
+  };
+  "post-dossiers": {
+    parameters: {};
+    responses: {
+      /** Created */
+      201: {
+        content: {
+          "application/json": {
+            id: number;
+            /** @enum {string} */
+            message?: "HOOK_FAILED";
+          };
+        };
+      };
+      /** Partial Content */
+      206: {
+        content: {
+          "application/json": {
+            id?: number;
+          };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DossierCreationData"] & {
+          duplicate?: {
+            fields?: number;
+            useCases?: number;
+            mailMerges?: number;
+            pages?: number;
+            testers?: number;
+            campaign?: number;
+          };
+        } & {
+          /** @default 0 */
+          skipPagesAndTasks?: number;
+        } & {
+          visibilityCriteria?: {
+            cuf?: {
+              cuf_id: number;
+              cuf_value_id: number;
+            }[];
+            age_ranges?: {
+              min: number;
+              max: number;
+            }[];
+            gender?: string[];
+          };
+        };
+      };
+    };
+  };
+  "get-dossiers-campaign": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            title: {
+              customer: string;
+              tester: string;
+            };
+            /** Format: date-time */
+            startDate: string;
+            /** Format: date-time */
+            endDate: string;
+            /** Format: date-time */
+            closeDate: string;
+            customer: {
+              id: number;
+              name: string;
+            };
+            project: {
+              id: number;
+              name: string;
+            };
+            testType: {
+              id: number;
+              name: string;
+            };
+            deviceList: {
+              id: number;
+              name: string;
+            }[];
+            csm: {
+              id: number;
+              name: string;
+            };
+            roles?: {
+              role?: {
+                id: number;
+                name: string;
+              };
+              user?: {
+                id: number;
+                name: string;
+                surname: string;
+              };
+            }[];
+            description?: string;
+            productLink?: string;
+            goal?: string;
+            outOfScope?: string;
+            deviceRequirements?: string;
+            target?: {
+              notes?: string;
+              size?: number;
+              cap?: number;
+              genderQuote?: string;
+            };
+            countries?: components["schemas"]["CountryCode"][];
+            languages?: {
+              name: string;
+            }[];
+            browsers?: {
+              id: number;
+              name: string;
+            }[];
+            productType?: {
+              id: number;
+              name: string;
+            };
+            phase: {
+              id: number;
+              name: string;
+            };
+            notes?: string;
+            visibilityCriteria?: {
+              cuf?: {
+                cufId: number;
+                cufValueIds: number[];
+              }[];
+              ageRanges?: {
+                min: number;
+                max: number;
+              }[];
+              gender?: string[];
+            };
+          };
+        };
+      };
+    };
+  };
+  "put-dossiers-campaign": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DossierCreationData"] & {
+          visibility_criteria?: {
+            age_ranges?: {
+              min: number;
+              max: number;
+            }[];
+            gender?: string[];
+          };
+        };
+      };
+    };
+  };
+  "put-dossiers-campaign-phases": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            id: number;
+            name: string;
+          };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          phase: number;
+        };
+      };
+    };
+  };
+  "post-dossiers-campaign-quotations": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** Created */
+      201: {
+        content: {
+          "application/json": {
+            id?: number;
+          };
+        };
+      };
+      /** Not Found */
+      404: unknown;
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          quote?: string;
+          notes?: string;
+        };
+      };
+    };
+  };
+  "patch-dossiers-campaign-quotations-quote": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+        quote: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          amount?: string;
+        };
+      };
+    };
+  };
+  "get-dossiers-campaign-quotes-history": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            items: {
+              campaign: {
+                id: number;
+                title: string;
+                phase_id: number;
+                phase_name: string;
+              };
+              quote: {
+                id: number;
+                amount: string;
+                /** @enum {string} */
+                status: "pending" | "proposed" | "approved" | "rejected";
+              };
+            }[];
+          };
+        };
+      };
     };
   };
   /** Get all education levels */
@@ -2681,6 +3191,25 @@ export interface operations {
       404: components["responses"]["NotFound"];
     };
   };
+  "get-phases": {
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            results: {
+              id: number;
+              name: string;
+              type: {
+                id: number;
+                name: string;
+              };
+            }[];
+          };
+        };
+      };
+    };
+  };
   /** Retrieve all available popups for admin operations */
   "get-popups": {
     parameters: {
@@ -2767,6 +3296,22 @@ export interface operations {
       };
     };
   };
+  "get-productTypes": {
+    parameters: {};
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            results: {
+              id: number;
+              name: string;
+            }[];
+          };
+        };
+      };
+    };
+  };
   /** Get all users you have access to */
   "get-users": {
     responses: {
@@ -2831,6 +3376,27 @@ export interface operations {
       400: unknown;
       /** Not Found */
       404: unknown;
+    };
+  };
+  "get-users-by-role-role": {
+    parameters: {
+      path: {
+        role: "tester_lead" | "quality_leader" | "ux_researcher" | "assistants";
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": {
+            results: {
+              id: number;
+              name: string;
+              surname: string;
+            }[];
+          };
+        };
+      };
     };
   };
   /** Get your user data */
@@ -3223,16 +3789,7 @@ export interface operations {
             severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
             /** @enum {string} */
             replicability: "ONCE" | "SOMETIMES" | "ALWAYS";
-            /** @enum {string} */
-            type:
-              | "CRASH"
-              | "GRAPHIC"
-              | "MALFUNCTION"
-              | "OTHER"
-              | "PERFORMANCE"
-              | "SECURITY"
-              | "TYPO"
-              | "USABILITY";
+            type: string;
             notes: string;
             usecase: string;
             device: components["schemas"]["UserDevice"];
@@ -3258,16 +3815,7 @@ export interface operations {
           severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
           /** @enum {string} */
           replicability: "ONCE" | "SOMETIMES" | "ALWAYS";
-          /** @enum {string} */
-          type:
-            | "CRASH"
-            | "GRAPHIC"
-            | "MALFUNCTION"
-            | "OTHER"
-            | "PERFORMANCE"
-            | "SECURITY"
-            | "TYPO"
-            | "USABILITY";
+          type: string;
           notes: string;
           lastSeen: string;
           usecase: number;
@@ -4107,134 +4655,11 @@ export interface operations {
       404: components["responses"]["NotFound"];
     };
   };
-  "post-dossiers": {
-    parameters: {};
-    responses: {
-      /** Created */
-      201: {
-        content: {
-          "application/json": {
-            id: number;
-            /** @enum {string} */
-            message?: "HOOK_FAILED";
-          };
-        };
-      };
-      /** Partial Content */
-      206: {
-        content: {
-          "application/json": {
-            id?: number;
-          };
-        };
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["DossierCreationData"] & {
-          duplicate?: {
-            fields?: number;
-            useCases?: number;
-            mailMerges?: number;
-            pages?: number;
-            testers?: number;
-            campaign?: number;
-          };
-        };
-      };
-    };
-  };
-  "get-dossiers-campaign": {
+  "post-dossiers-campaign-manual": {
     parameters: {
       path: {
         /** A campaign id */
-        campaign: string;
-      };
-    };
-    responses: {
-      /** OK */
-      200: {
-        content: {
-          "application/json": {
-            id: number;
-            title: {
-              customer: string;
-              tester: string;
-            };
-            /** Format: date-time */
-            startDate: string;
-            /** Format: date-time */
-            endDate: string;
-            /** Format: date-time */
-            closeDate: string;
-            customer: {
-              id: number;
-              name: string;
-            };
-            project: {
-              id: number;
-              name: string;
-            };
-            testType: {
-              id: number;
-              name: string;
-            };
-            deviceList: {
-              id: number;
-              name: string;
-            }[];
-            csm: {
-              id: number;
-              name: string;
-            };
-            roles?: {
-              role?: {
-                id: number;
-                name: string;
-              };
-              user?: {
-                id: number;
-                name: string;
-                surname: string;
-              };
-            }[];
-            description?: string;
-            productLink?: string;
-            goal?: string;
-            outOfScope?: string;
-            deviceRequirements?: string;
-            target?: {
-              notes?: string;
-              size?: number;
-              cap?: number;
-            };
-            countries?: components["schemas"]["CountryCode"][];
-            languages?: {
-              name: string;
-            }[];
-            browsers?: {
-              id: number;
-              name: string;
-            }[];
-            productType?: {
-              id: number;
-              name: string;
-            };
-            phase: {
-              id: number;
-              name: string;
-            };
-            notes?: string;
-          };
-        };
-      };
-    };
-  };
-  "put-dossiers-campaign": {
-    parameters: {
-      path: {
-        /** A campaign id */
-        campaign: string;
+        campaign: components["parameters"]["campaign"];
       };
     };
     responses: {
@@ -4247,148 +4672,31 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DossierCreationData"];
-      };
-    };
-  };
-  "get-customers-customer-projects": {
-    parameters: {
-      path: {
-        customer: string;
-      };
-    };
-    responses: {
-      /** OK */
-      200: {
-        content: {
-          "application/json": {
-            results: {
-              id: number;
-              name: string;
-            }[];
-          };
-        };
-      };
-    };
-  };
-  "post-customers-customer-projects": {
-    parameters: {
-      path: {
-        customer: string;
-      };
-    };
-    responses: {
-      /** OK */
-      200: {
-        content: {
-          "application/json": {
-            id: number;
-            name: string;
-          };
-        };
-      };
-    };
-    requestBody: {
-      content: {
         "application/json": {
-          name: string;
+          importFrom: number;
         };
       };
     };
   };
-  "get-users-by-role-role": {
-    parameters: {
-      path: {
-        role: "tester_lead" | "quality_leader" | "ux_researcher" | "assistants";
-      };
-    };
-    responses: {
-      /** OK */
-      200: {
-        content: {
-          "application/json": {
-            results: {
-              id: number;
-              name: string;
-              surname: string;
-            }[];
-          };
-        };
-      };
-    };
-  };
-  "get-browsers": {
-    responses: {
-      /** OK */
-      200: {
-        content: {
-          "application/json": {
-            results: {
-              id: number;
-              name: string;
-            }[];
-          };
-        };
-      };
-    };
-  };
-  "get-productTypes": {
-    parameters: {};
-    responses: {
-      /** OK */
-      200: {
-        content: {
-          "application/json": {
-            results: {
-              id: number;
-              name: string;
-            }[];
-          };
-        };
-      };
-    };
-  };
-  "get-phases": {
-    responses: {
-      /** OK */
-      200: {
-        content: {
-          "application/json": {
-            results: {
-              id: number;
-              name: string;
-              type: {
-                id: number;
-                name: string;
-              };
-            }[];
-          };
-        };
-      };
-    };
-  };
-  "put-dossiers-campaign-phases": {
+  "post-dossiers-campaign-preview": {
     parameters: {
       path: {
         /** A campaign id */
-        campaign: string;
+        campaign: components["parameters"]["campaign"];
       };
     };
     responses: {
       /** OK */
       200: {
         content: {
-          "application/json": {
-            id: number;
-            name: string;
-          };
+          "application/json": { [key: string]: unknown };
         };
       };
     };
     requestBody: {
       content: {
         "application/json": {
-          phase: number;
+          importFrom: number;
         };
       };
     };
