@@ -59,7 +59,11 @@ const AgeRequirements = () => {
               </StyledRow>
             </div>
           ))}
-          <Button kind="secondary" onClick={() => push({ min: "", max: "" })}>
+          <Button
+            size="sm"
+            kind="secondary"
+            onClick={() => push({ min: "", max: "" })}
+          >
             + Add age range
           </Button>
         </>
