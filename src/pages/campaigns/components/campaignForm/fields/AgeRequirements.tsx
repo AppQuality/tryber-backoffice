@@ -11,8 +11,7 @@ import styled from "styled-components";
 
 const StyledRow = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.grid.sizes[3]}
-    ${({ theme }) => theme.grid.sizes[4]};
+  gap: ${({ theme }) => theme.grid.sizes[4]};
   align-items: center;
   flex-direction: row;
   margin-bottom: ${({ theme }) => theme.grid.sizes[3]};
