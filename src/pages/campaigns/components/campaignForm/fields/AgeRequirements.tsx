@@ -6,12 +6,16 @@ import {
 } from "@appquality/appquality-design-system";
 import { FieldArray, useFormikContext } from "formik";
 import { NewCampaignValues } from "../FormProvider";
+import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
 import styled from "styled-components";
 
-const Row = styled.div`
+const StyledRow = styled.div`
   display: flex;
-  gap: 16px;
-  align-items: flex-end;
+  gap: ${({ theme }) => theme.grid.sizes[3]}
+    ${({ theme }) => theme.grid.sizes[4]};
+  align-items: center;
+  flex-direction: row;
+  margin-bottom: ${({ theme }) => theme.grid.sizes[3]};
 `;
 
 const AgeRequirements = () => {
@@ -32,13 +36,7 @@ const AgeRequirements = () => {
           {ageRanges.map((age, index) => (
             <div key={index}>
               <FormLabel label="" htmlFor={`age-${index}-min`} />
-              <Row
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+              <StyledRow>
                 <Text style={{ fontWeight: "bold" }}>From</Text>
                 <Input
                   id={`age-${index}-min`}
@@ -56,13 +54,13 @@ const AgeRequirements = () => {
                   placeholder="Max age"
                 />
                 <Button size="sm" kind="danger" onClick={() => remove(index)}>
-                  Delete range
+                  <DeleteIcon />
                 </Button>
-              </Row>
+              </StyledRow>
             </div>
           ))}
           <Button kind="secondary" onClick={() => push({ min: "", max: "" })}>
-            Add age range
+            + Add age range
           </Button>
         </>
       )}
