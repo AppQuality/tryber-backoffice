@@ -181,10 +181,11 @@ const FormProvider = ({
       customerChoice: dossier?.target?.genderQuote || "",
       options: dossier?.visibilityCriteria?.gender || [],
     },
-    ageRequirements: dossier?.visibilityCriteria?.ageRanges?.map((r) => ({
-      min: r.min,
-      max: r.max,
-    })) || [{ min: 0, max: 0 }],
+    ageRequirements:
+      dossier?.visibilityCriteria?.ageRanges?.map((r) => ({
+        min: r.min,
+        max: r.max,
+      })) || [],
     cuf: initialCufCriteria,
   };
 
