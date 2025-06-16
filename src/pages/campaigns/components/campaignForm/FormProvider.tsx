@@ -52,7 +52,6 @@ export interface NewCampaignValues {
   targetNotes?: string;
   targetSize?: string;
   genderRequirements?: {
-    customerChoice: string;
     options: number[];
   };
   ageRequirements?: {
@@ -178,7 +177,6 @@ const FormProvider = ({
     productType: dossier?.productType?.id.toString() || "",
     notes: dossier?.notes || "",
     genderRequirements: {
-      customerChoice: dossier?.target?.genderQuote || "",
       options: dossier?.visibilityCriteria?.gender || [],
     },
     ageRequirements:
@@ -242,7 +240,6 @@ const FormProvider = ({
         }
       ),
     genderRequirements: yup.object().shape({
-      customerChoice: yup.string(),
       options: yup.array().of(yup.number().oneOf([-1, 0, 1, 2])),
     }),
     countries: yup.array(),
@@ -326,7 +323,6 @@ const FormProvider = ({
                 ? parseInt(values.targetSize)
                 : undefined,
               cap: !!values.targetCap ? parseInt(values.targetCap) : -1, // -1 is passed for no tester cap required
-              genderQuote: values.genderRequirements?.customerChoice ?? "",
             },
             browsers: values.browsersList?.map((browser) =>
               parseInt(browser, 10)
