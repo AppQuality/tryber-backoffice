@@ -44,6 +44,7 @@ const AgeRequirements = () => {
                         id={field.name}
                         type="number"
                         extra={{
+                          min: 14,
                           max: age.max || undefined,
                           onBlur: () => form.setFieldTouched(field.name),
                         }}
@@ -62,7 +63,7 @@ const AgeRequirements = () => {
                         id={field.name}
                         type="number"
                         extra={{
-                          min: age.min || undefined,
+                          min: age.min || 14,
                           onBlur: () => form.setFieldTouched(field.name),
                         }}
                         value={field.value || ""}
