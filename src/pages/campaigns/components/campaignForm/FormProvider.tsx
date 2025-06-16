@@ -64,6 +64,7 @@ export interface NewCampaignValues {
   productType?: string;
   notes?: string;
   cuf?: { id: string; value: string[] }[];
+  provinces?: string[];
 }
 
 const useGetInitialCufCriteria = ({
@@ -185,6 +186,7 @@ const FormProvider = ({
         max: r.max,
       })) || [],
     cuf: initialCufCriteria,
+    provinces: dossier?.visibilityCriteria?.province || [],
   };
 
   const validationSchema = yup.object({
@@ -274,6 +276,7 @@ const FormProvider = ({
           ),
       })
     ),
+    provinces: yup.array().of(yup.string()),
   });
   return (
     <Formik
@@ -364,6 +367,7 @@ const FormProvider = ({
                       max: Number(age.max),
                     }))
                 : [],
+              provinces: values.provinces || [],
             },
           };
 
