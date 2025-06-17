@@ -6451,6 +6451,11 @@ compute-scroll-into-view@^2.0.4:
   resolved "https://registry.yarnpkg.com/compute-scroll-into-view/-/compute-scroll-into-view-2.0.4.tgz#2b444b2b9e4724819d2531efacb7ac094155fdf6"
   integrity sha512-y/ZA3BGnxoM/QHHQ2Uy49CLtnWPbt4tTPpEEZiEmmiWBFKjej7nEyH8Ryz54jH0MLXflUYA3Er2zUxPSJu5R+g==
 
+comuni-province-regioni@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.npmjs.org/comuni-province-regioni/-/comuni-province-regioni-0.4.3.tgz#287c312f1caac8cf8b770d6b707a7ca1e7b6f1d4"
+  integrity sha512-UhJmDaIUg5nDHiHAfIcMGX87E6f54z6UU538WQHeqTOA/BxjSz5ZQCsVclGRT9c801Fe3BLfD5uDoatvRbl9xg==
+
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"

@@ -34,6 +34,7 @@ import GenderRequirements from "./fields/GenderRequirements";
 import InputField from "./fields/InputField";
 import LanguageSelect from "./fields/LanguagesSelect";
 import ProductType from "./fields/ProductTypeSelect";
+import ProvinceSelect from "./fields/ProvinceSelect";
 import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
@@ -274,6 +275,9 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                 </FieldWrapper>
                 <FieldWrapper>
                   <CountrySelect />
+                  <div>
+                    <ProvinceSelect />
+                  </div>
                   <LanguageSelect />
                 </FieldWrapper>
                 <FieldWrapper>
@@ -291,9 +295,6 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   </div>
                 </FieldWrapper>
                 <CufCriteria />
-                <Title size="s" className="aq-mb-2 aq-pt-4">
-                  Add additional requirements or notes
-                </Title>
                 <FieldWrapper>
                   <div>
                     <Title size="s" className="aq-mb-2 aq-pt-4">
@@ -305,6 +306,8 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                       resize="vertical"
                       placeholder="The target has to..."
                     />
+                  </div>
+                  <div style={{ alignSelf: "flex-end", justifySelf: "center" }}>
                     {dossier && dossier.id && (
                       <SurveyButton campaign_id={dossier.id.toString()} />
                     )}

@@ -2,7 +2,6 @@ import {
   Checkbox,
   FormikField,
   FormLabel,
-  TextareaField,
 } from "@appquality/appquality-design-system";
 import { FieldProps, useFormikContext } from "formik";
 import styled from "styled-components";
@@ -31,7 +30,7 @@ const GenderRequirements = () => {
         field,
         form,
       }: FieldProps<NewCampaignValues["genderRequirements"]>) => {
-        const value = field.value || { customerChoice: "", options: [] };
+        const value = field.value || { options: [] as number[] };
         return (
           <div>
             <FormLabel htmlFor={field.name} label={""} />
@@ -53,12 +52,6 @@ const GenderRequirements = () => {
                 />
               ))}
             </CheckboxGrid>
-            <TextareaField
-              {...getFieldProps(`${field.name}.customerChoice`)}
-              label="Customer requirements:"
-              resize="vertical"
-              placeholder="Specify any custom gender requirements here"
-            />
           </div>
         );
       }}
