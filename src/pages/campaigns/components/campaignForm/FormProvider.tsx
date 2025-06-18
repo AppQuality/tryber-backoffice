@@ -13,6 +13,7 @@ import {
 } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
 import * as yup from "yup";
+import { useAllFieldsByCuf } from "./fields/CufCriteria";
 import { dateTimeToISO, formatDate, formatTime } from "./formatDate";
 import { getPm, getResearcher, getTl } from "./getAssistantIdByRole";
 
@@ -50,12 +51,47 @@ export interface NewCampaignValues {
   deviceRequirements?: string;
   targetNotes?: string;
   targetSize?: string;
+  genderRequirements?: {
+    options: number[];
+  };
+  ageRequirements?: {
+    min: number;
+    max: number;
+  }[];
   targetCap?: string;
   checkboxCap?: boolean;
   browsersList?: string[];
   productType?: string;
   notes?: string;
+  cuf?: { id: string; value: string[] }[];
+  provinces?: string[];
 }
+
+const useGetInitialCufCriteria = ({
+  dossier,
+}: {
+  dossier: FormProviderInterface["dossier"];
+}) => {
+  const getAllFieldsByCuf = useAllFieldsByCuf();
+  if (!dossier) return [];
+  if (!dossier.visibilityCriteria || !dossier.visibilityCriteria.cuf) {
+    return [];
+  }
+
+  return dossier.visibilityCriteria.cuf.map((cuf) => {
+    const cufFields = getAllFieldsByCuf(cuf.cufId);
+    if (cufFields.every((field) => cuf.cufValueIds.includes(field.id))) {
+      return {
+        id: cuf.cufId.toString(),
+        value: ["-1"],
+      };
+    }
+    return {
+      id: cuf.cufId.toString(),
+      value: cuf.cufValueIds.map((value) => value.toString()),
+    };
+  });
+};
 
 const FormProvider = ({
   children,
@@ -67,10 +103,12 @@ const FormProvider = ({
   const history = useHistory();
   const [postDossiers] = usePostDossiersMutation();
   const [putDossiers] = usePutDossiersByCampaignMutation();
+  const getAllFieldsByCuf = useAllFieldsByCuf();
   const { data, isLoading } = useGetUsersMeQuery({ fields: "id" });
   const { data: devices } = useGetDevicesByDeviceTypeOperatingSystemsQuery({
     deviceType: "all",
   });
+  const initialCufCriteria = useGetInitialCufCriteria({ dossier });
   const selectedTypes = useMemo(() => {
     if (!dossier) return ["Smartphone", "PC"];
 
@@ -139,6 +177,16 @@ const FormProvider = ({
       dossier?.browsers?.map((browser) => browser.id.toString()) || [],
     productType: dossier?.productType?.id.toString() || "",
     notes: dossier?.notes || "",
+    genderRequirements: {
+      options: dossier?.visibilityCriteria?.gender || [],
+    },
+    ageRequirements:
+      dossier?.visibilityCriteria?.ageRanges?.map((r) => ({
+        min: r.min,
+        max: r.max,
+      })) || [],
+    cuf: initialCufCriteria,
+    provinces: dossier?.visibilityCriteria?.province || [],
   };
 
   const validationSchema = yup.object({
@@ -193,10 +241,62 @@ const FormProvider = ({
           return true;
         }
       ),
-    countries: yup.array(),
+    genderRequirements: yup.object().shape({
+      options: yup.array().of(yup.number().oneOf([-1, 0, 1, 2])),
+    }),
+    countries: yup
+      .array()
+      .test(
+        "contry-no-italy-with-provinces",
+        "You cannot select an Italian province if you have chosen another country. Please modify your selection to find available testers",
+        function (value) {
+          const { provinces } = this.parent;
+          if (
+            value &&
+            value?.length > 0 &&
+            provinces.length > 0 &&
+            (value.length > 1 || value[0] !== "IT")
+          )
+            return false;
+          return true;
+        }
+      ),
     languages: yup.array(),
     targetNotes: yup.string(),
     notes: yup.string(),
+    cuf: yup.array().of(
+      yup.object().shape({
+        id: yup
+          .number()
+          .required("CUF ID is required")
+          .min(1, "CUF ID is required"),
+        value: yup.array().min(1, "Almeno un elemento è richiesto"),
+      })
+    ),
+    ageRequirements: yup.array().of(
+      yup.object().shape({
+        min: yup
+          .number()
+          .typeError("Min age must be a number")
+          .min(16, "Min age must be at least 16")
+          .nullable(),
+        max: yup
+          .number()
+          .typeError("Max age must be a number")
+          .nullable()
+          .test(
+            "is-greater-or-equal",
+            "Max age must be greater than min age",
+            function (value) {
+              const { min } = this.parent;
+              if (min === null || min === "" || value === null || !value)
+                return true;
+              return value >= min;
+            }
+          ),
+      })
+    ),
+    provinces: yup.array().of(yup.string()),
   });
   return (
     <Formik
@@ -254,6 +354,41 @@ const FormProvider = ({
               ? parseInt(values.productType, 10)
               : undefined,
             notes: values.notes,
+            visibilityCriteria: {
+              gender: values.genderRequirements?.options || [],
+              cuf: values.cuf
+                ? values.cuf.map((cuf) => {
+                    if (cuf.value.includes("-1")) {
+                      return {
+                        cufId: parseInt(cuf.id, 10),
+                        cufValueIds: getAllFieldsByCuf(Number(cuf.id)).map(
+                          (field) => field.id
+                        ),
+                      };
+                    }
+
+                    return {
+                      cufId: Number(cuf.id),
+                      cufValueIds: cuf.value.map((value) => Number(value)),
+                    };
+                  })
+                : [],
+              ageRanges: values.ageRequirements
+                ? values.ageRequirements
+                    .filter(
+                      (age) =>
+                        age.min !== null &&
+                        age.min !== undefined &&
+                        age.max !== null &&
+                        age.max !== undefined
+                    )
+                    .map((age) => ({
+                      min: Number(age.min),
+                      max: Number(age.max),
+                    }))
+                : [],
+              provinces: values.provinces || [],
+            },
           };
 
           if (isEdit) {

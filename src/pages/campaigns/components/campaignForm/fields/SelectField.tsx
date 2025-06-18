@@ -3,8 +3,8 @@ import {
   ErrorMessage,
   FieldProps,
   FormGroup,
-  FormLabel,
   FormikField,
+  FormLabel,
   Text,
 } from "@appquality/appquality-design-system";
 import { useFormikContext } from "formik";
@@ -46,7 +46,9 @@ export const SelectField = ({
   const optionValue = useMemo(() => {
     if (currentValue) {
       if (isMulti && Array.isArray(currentValue)) {
-        return options.filter((option) => currentValue.includes(option.value));
+        return options.filter((option) => {
+          return (currentValue as string[]).includes(option.value);
+        });
       }
       return options.find((option) => option.value === currentValue);
     } else {

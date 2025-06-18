@@ -20,17 +20,21 @@ import { styled } from "styled-components";
 import { PhaseSelector } from "../PhaseSelector";
 import { CampaignFormContext } from "./campaignFormContext";
 import FormOverlay from "./feedbackMessages/FormOverlay";
+import AgeRequirements from "./fields/AgeRequirements";
 import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
+import CufCriteria from "./fields/CufCriteria";
 import CustomerSelect from "./fields/CustomerSelect";
 import CloseDatePicker from "./fields/dates/CloseDatePicker";
 import EndDatePicker from "./fields/dates/EndDatePicker";
 import StartDatePicker from "./fields/dates/StartDatePicker";
 import DeviceMultiselect from "./fields/device/DeviceMultiselect";
 import { FieldWrapper } from "./fields/FieldWrapper";
+import GenderRequirements from "./fields/GenderRequirements";
 import InputField from "./fields/InputField";
 import LanguageSelect from "./fields/LanguagesSelect";
 import ProductType from "./fields/ProductTypeSelect";
+import ProvinceSelect from "./fields/ProvinceSelect";
 import CsmSelect from "./fields/roles/CsmSelect";
 import PmSelect from "./fields/roles/PMSelect";
 import ResearcherSelect from "./fields/roles/ResearcherSelect";
@@ -266,26 +270,50 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               id="who"
             >
               <Card className="aq-mb-4" title="Who are we testing with?">
-                <FieldWrapper>
-                  <TargetSize />
-                </FieldWrapper>
-                <FieldWrapper>
-                  <CountrySelect />
-                  <LanguageSelect />
-                </FieldWrapper>
-                <Title size="s" className="aq-mb-2 aq-pt-4">
-                  Add additional requirements or notes
-                </Title>
-                <FieldWrapper>
+                <div className="aq-mb-3">
                   <TextareaField
                     name="targetNotes"
                     label="Trybers' additional requirements"
                     resize="vertical"
                     placeholder="The target has to..."
                   />
-                  {dossier && dossier.id && (
-                    <SurveyButton campaign_id={dossier.id.toString()} />
-                  )}
+                </div>
+                <FieldWrapper>
+                  <TargetSize />
+                </FieldWrapper>
+                <FieldWrapper>
+                  <CountrySelect />
+                  <div>
+                    <ProvinceSelect />
+                  </div>
+                  <LanguageSelect />
+                </FieldWrapper>
+                <FieldWrapper>
+                  <div>
+                    <Title size="s" className="aq-mb-2">
+                      Gender
+                    </Title>
+                    <GenderRequirements />
+                  </div>
+                  <div>
+                    <Title size="s" className="aq-mb-2">
+                      Age range
+                    </Title>
+                    <AgeRequirements />
+                  </div>
+                </FieldWrapper>
+                <CufCriteria />
+                <FieldWrapper>
+                  <div>
+                    <Title size="s" className="aq-mb-2 aq-pt-4">
+                      Add additional requirements or notes
+                    </Title>
+                  </div>
+                  <div style={{ alignSelf: "flex-end", justifySelf: "center" }}>
+                    {dossier && dossier.id && (
+                      <SurveyButton campaign_id={dossier.id.toString()} />
+                    )}
+                  </div>
                 </FieldWrapper>
               </Card>
             </Section>
