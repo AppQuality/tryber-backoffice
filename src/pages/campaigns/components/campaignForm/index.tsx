@@ -270,6 +270,14 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               id="who"
             >
               <Card className="aq-mb-4" title="Who are we testing with?">
+                <div className="aq-mb-3">
+                  <TextareaField
+                    name="targetNotes"
+                    label="Trybers' additional requirements"
+                    resize="vertical"
+                    placeholder="The target has to..."
+                  />
+                </div>
                 <FieldWrapper>
                   <TargetSize />
                 </FieldWrapper>
@@ -300,12 +308,6 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     <Title size="s" className="aq-mb-2 aq-pt-4">
                       Add additional requirements or notes
                     </Title>
-                    <TextareaField
-                      name="targetNotes"
-                      label="Trybers' additional requirements"
-                      resize="vertical"
-                      placeholder="The target has to..."
-                    />
                   </div>
                   <div style={{ alignSelf: "flex-end", justifySelf: "center" }}>
                     {dossier && dossier.id && (
