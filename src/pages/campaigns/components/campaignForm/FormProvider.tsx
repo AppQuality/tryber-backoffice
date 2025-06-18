@@ -248,7 +248,7 @@ const FormProvider = ({
       .array()
       .test(
         "contry-no-italy-with-provinces",
-        "If you select provinces, you must select only Italy as country",
+        "You cannot select an Italian province if you have chosen another country. Please modify your selection to find available testers",
         function (value) {
           const { provinces } = this.parent;
           if (
