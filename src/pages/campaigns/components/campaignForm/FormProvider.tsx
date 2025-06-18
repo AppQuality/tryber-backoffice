@@ -244,7 +244,23 @@ const FormProvider = ({
     genderRequirements: yup.object().shape({
       options: yup.array().of(yup.number().oneOf([-1, 0, 1, 2])),
     }),
-    countries: yup.array(),
+    countries: yup
+      .array()
+      .test(
+        "contry-no-italy-with-provinces",
+        "You cannot select an Italian province if you have chosen another country. Please modify your selection to find available testers",
+        function (value) {
+          const { provinces } = this.parent;
+          if (
+            value &&
+            value?.length > 0 &&
+            provinces.length > 0 &&
+            (value.length > 1 || value[0] !== "IT")
+          )
+            return false;
+          return true;
+        }
+      ),
     languages: yup.array(),
     targetNotes: yup.string(),
     notes: yup.string(),
@@ -259,7 +275,11 @@ const FormProvider = ({
     ),
     ageRequirements: yup.array().of(
       yup.object().shape({
-        min: yup.number().typeError("Min age must be a number").nullable(),
+        min: yup
+          .number()
+          .typeError("Min age must be a number")
+          .min(16, "Min age must be at least 16")
+          .nullable(),
         max: yup
           .number()
           .typeError("Max age must be a number")

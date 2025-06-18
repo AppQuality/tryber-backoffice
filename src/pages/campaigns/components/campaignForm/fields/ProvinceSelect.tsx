@@ -20,7 +20,10 @@ const ProvinceSelect = () => {
                 label: name,
                 value: province,
               }))}
-              onBlur={field.onBlur}
+              onBlur={() => {
+                form.setFieldTouched(field.name, true);
+                form.setFieldTouched("countries", true);
+              }}
               onChange={(value) => {
                 form.setFieldValue(
                   field.name,
