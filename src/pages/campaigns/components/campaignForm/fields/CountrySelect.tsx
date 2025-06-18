@@ -4,7 +4,7 @@ import {
   FormGroup,
   FormLabel,
 } from "@appquality/appquality-design-system";
-import { FieldProps, Field as FormikField, useFormikContext } from "formik";
+import { Field as FormikField, FieldProps, useFormikContext } from "formik";
 import countryList from "i18n-iso-countries";
 import { useCallback, useMemo } from "react";
 import { NewCampaignValues } from "../FormProvider";
@@ -71,11 +71,12 @@ const CountrySelect = () => {
 
   return (
     <FormikField name="countries">
-      {({ field }: FieldProps<NewCampaignValues["countries"]>) => (
+      {({ field, form }: FieldProps<NewCampaignValues["countries"]>) => (
         <FormGroup>
           <FormLabel htmlFor={field.name} label="Countries" />
           <Dropdown
             isMulti
+            onBlur={() => form.setFieldTouched(field.name, true)}
             name={field.name}
             id={field.name}
             options={getOptions()}

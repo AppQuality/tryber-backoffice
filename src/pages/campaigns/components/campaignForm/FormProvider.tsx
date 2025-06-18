@@ -275,7 +275,11 @@ const FormProvider = ({
     ),
     ageRequirements: yup.array().of(
       yup.object().shape({
-        min: yup.number().typeError("Min age must be a number").nullable(),
+        min: yup
+          .number()
+          .typeError("Min age must be a number")
+          .min(16, "Min age must be at least 16")
+          .nullable(),
         max: yup
           .number()
           .typeError("Max age must be a number")
