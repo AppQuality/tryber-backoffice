@@ -244,7 +244,23 @@ const FormProvider = ({
     genderRequirements: yup.object().shape({
       options: yup.array().of(yup.number().oneOf([-1, 0, 1, 2])),
     }),
-    countries: yup.array(),
+    countries: yup
+      .array()
+      .test(
+        "contry-no-italy-with-provinces",
+        "If you select provinces, you must select only Italy as country",
+        function (value) {
+          const { provinces } = this.parent;
+          if (
+            value &&
+            value?.length > 0 &&
+            provinces.length > 0 &&
+            (value.length > 1 || value[0] !== "IT")
+          )
+            return false;
+          return true;
+        }
+      ),
     languages: yup.array(),
     targetNotes: yup.string(),
     notes: yup.string(),
