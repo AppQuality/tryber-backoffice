@@ -7,9 +7,9 @@ import {
   FieldProps,
   Form,
   FormGroup,
-  FormLabel,
   Formik,
   FormikField,
+  FormLabel,
   Input,
   TextareaField,
 } from "@appquality/appquality-design-system";
@@ -53,7 +53,10 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
     expirationDate: agreement
       ? new Date(agreement.expirationDate.split(" ")[0])
       : new Date(),
-    isTokenBased: agreement?.isTokenBased || false,
+    isTokenBased:
+      typeof agreement?.isTokenBased !== "undefined"
+        ? agreement?.isTokenBased
+        : true,
     note: agreement?.note || "",
     customer: agreement?.customer?.id?.toString() || "",
   };
