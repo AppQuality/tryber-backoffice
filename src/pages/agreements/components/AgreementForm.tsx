@@ -53,7 +53,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
     expirationDate: agreement
       ? new Date(agreement.expirationDate.split(" ")[0])
       : new Date(),
-    isTokenBased: agreement?.isTokenBased || false,
+    isTokenBased: agreement?.isTokenBased || true,
     note: agreement?.note || "",
     customer: agreement?.customer?.id?.toString() || "",
   };
