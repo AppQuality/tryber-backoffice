@@ -13,6 +13,8 @@ import { useFiltersCardContext } from "../FilterContext";
 import Button from "./TableButton";
 import Severity from "./Severity";
 import Type from "./Type";
+import AiSuggestion from "./AISuggestion";
+import AiScore from "./AiScore";
 
 const LIMIT = 100;
 
@@ -80,6 +82,12 @@ const BugsTable = ({ id }: { id: string }) => {
               title: r.severity.name,
               content: <Severity severity={r.severity} />,
             },
+            ai_suggestion: {
+              content: <AiSuggestion campaignId={id} bugId={r.id} />,
+            },
+            score: {
+              content: <AiScore campaignId={id} bugId={r.id} />,
+            },
             status: {
               title: r.status.name,
               content: r.status.name,
@@ -134,6 +142,18 @@ const BugsTable = ({ id }: { id: string }) => {
             title: "Title",
             dataIndex: "title",
             key: "title",
+          },
+          {
+            title: "AI Suggestion",
+            dataIndex: "ai_suggestion",
+            key: "ai_suggestion",
+            maxWidth: "15ch",
+          },
+          {
+            title: "Score",
+            dataIndex: "score",
+            key: "score",
+            maxWidth: "10ch",
           },
           {
             title: "Status",
