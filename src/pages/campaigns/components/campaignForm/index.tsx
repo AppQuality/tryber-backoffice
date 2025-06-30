@@ -303,18 +303,14 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                   </div>
                 </FieldWrapper>
                 <CufCriteria />
-                <FieldWrapper>
+                {dossier && dossier.id && (
                   <div>
-                    <Title size="s" className="aq-mb-2 aq-pt-4">
-                      Add additional requirements or notes
+                    <Title size="s" className="aq-mb-2">
+                      Survey{" "}
                     </Title>
+                    <SurveyButton campaign_id={dossier.id.toString()} />
                   </div>
-                  <div style={{ alignSelf: "flex-end", justifySelf: "center" }}>
-                    {dossier && dossier.id && (
-                      <SurveyButton campaign_id={dossier.id.toString()} />
-                    )}
-                  </div>
-                </FieldWrapper>
+                )}
               </Card>
             </Section>
             <Section title="Additional Notes" id="notes" subtitle="">
