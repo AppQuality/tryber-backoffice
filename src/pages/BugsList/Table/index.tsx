@@ -4,17 +4,21 @@ import {
   Card,
   icons,
   aqBootstrapTheme as theme,
+  Modal,
 } from "@appquality/appquality-design-system";
 import {
   useGetCampaignsByCampaignBugsQuery,
   GetCampaignsByCampaignBugsApiArg,
 } from "src/services/tryberApi";
 import { useFiltersCardContext } from "../FilterContext";
+import { Button as AppQualityButton } from "@appquality/appquality-design-system";
+import { ReactComponent as InfoIcon } from "src/assets/info-icon.svg";
 import Button from "./TableButton";
 import Severity from "./Severity";
 import Type from "./Type";
 import AiSuggestion from "./AISuggestion";
 import AiScore from "./AiScore";
+import { useState } from "react";
 
 const LIMIT = 100;
 
@@ -22,6 +26,7 @@ const StarFill = icons.StarFill;
 
 const BugsTable = ({ id }: { id: string }) => {
   const { filters, page, setPage, order, setOrder } = useFiltersCardContext();
+  const [infoModal, setInfoModal] = useState(false);
 
   let orderBy: GetCampaignsByCampaignBugsApiArg["orderBy"] = "id";
   if (order.field === "internalId") orderBy = "id";
@@ -150,10 +155,21 @@ const BugsTable = ({ id }: { id: string }) => {
             maxWidth: "15ch",
           },
           {
-            title: "Score",
+            title: (
+              <div>
+                <span>Score</span>
+                <AppQualityButton
+                  onClick={() => setInfoModal(true)}
+                  kind="transparent"
+                  style={{ paddingLeft: 4 }}
+                >
+                  <InfoIcon />
+                </AppQualityButton>
+              </div>
+            ),
             dataIndex: "score",
             key: "score",
-            maxWidth: "10ch",
+            maxWidth: "15ch",
           },
           {
             title: "Status",
@@ -195,6 +211,21 @@ const BugsTable = ({ id }: { id: string }) => {
           maxPages={Math.ceil(data.total / data.limit)}
         />
       ) : null}
+      {infoModal && (
+        <Modal
+          isOpen={infoModal}
+          onClose={() => setInfoModal(false)}
+          title="AI Score"
+        >
+          <p>
+            The AI Score is a percentage that reflects how accurately the tester
+            has evaluated the bug according to the AI based on several criteria
+            — including scope relevance, a well-formed title and aligned to the
+            usecase, a clear description, appropriate severity, correct type,
+            and attached media.
+          </p>
+        </Modal>
+      )}
     </Card>
   );
 };
