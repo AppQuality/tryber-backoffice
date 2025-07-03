@@ -189,6 +189,14 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/campaigns/${queryArg.campaign}/bugs/${queryArg.bugId}`,
       }),
     }),
+    getCampaignsByCampaignBugsAndBugIdAiReview: build.query<
+      GetCampaignsByCampaignBugsAndBugIdAiReviewApiResponse,
+      GetCampaignsByCampaignBugsAndBugIdAiReviewApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/bugs/${queryArg.bugId}/aiReview`,
+      }),
+    }),
     getCampaignsByCampaignCandidates: build.query<
       GetCampaignsByCampaignCandidatesApiResponse,
       GetCampaignsByCampaignCandidatesApiArg
@@ -1376,6 +1384,18 @@ export type GetCampaignsByCampaignBugsAndBugIdApiResponse =
     };
   };
 export type GetCampaignsByCampaignBugsAndBugIdApiArg = {
+  /** A campaign id */
+  campaign: string;
+  bugId: string;
+};
+export type GetCampaignsByCampaignBugsAndBugIdAiReviewApiResponse =
+  /** status 200 OK */ {
+    ai_status: string;
+    ai_reason: string;
+    score_percentage: number;
+    ai_notes?: string;
+  };
+export type GetCampaignsByCampaignBugsAndBugIdAiReviewApiArg = {
   /** A campaign id */
   campaign: string;
   bugId: string;
@@ -3241,6 +3261,7 @@ export const {
   usePutCampaignsByCampaignMutation,
   useGetCampaignsByCampaignBugsQuery,
   useGetCampaignsByCampaignBugsAndBugIdQuery,
+  useGetCampaignsByCampaignBugsAndBugIdAiReviewQuery,
   useGetCampaignsByCampaignCandidatesQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignClustersQuery,
