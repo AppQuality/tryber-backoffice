@@ -8,6 +8,7 @@ const StyledSuggestion = styled.span<{ suggestion: string }>`
   ${({ suggestion }) => suggestion === "need_review" && `color: #C78430;`}
   ${({ suggestion }) => suggestion === "approved" && `color: #02807A;`}
   text-transform: capitalize;
+  cursor: pointer;
 `;
 
 const AiSuggestion = ({
