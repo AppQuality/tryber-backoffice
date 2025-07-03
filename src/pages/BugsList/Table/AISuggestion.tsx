@@ -1,3 +1,5 @@
+import { Modal } from "@appquality/appquality-design-system";
+import { useState } from "react";
 import { useGetCampaignsByCampaignBugsAndBugIdAiReviewQuery } from "src/services/tryberApi";
 import styled from "styled-components";
 
@@ -15,6 +17,7 @@ const AiSuggestion = ({
   campaignId: string;
   bugId: number;
 }) => {
+  const [statusInfoModal, setInfoModal] = useState(false);
   const { data, isError } = useGetCampaignsByCampaignBugsAndBugIdAiReviewQuery({
     campaign: campaignId,
     bugId: bugId.toString(),
@@ -31,7 +34,23 @@ const AiSuggestion = ({
   const label = labelMap[data.ai_status] || data.ai_status;
 
   return (
-    <StyledSuggestion suggestion={data.ai_status}>{label}</StyledSuggestion>
+    <>
+      <StyledSuggestion
+        onClick={() => setInfoModal(true)}
+        suggestion={data.ai_status}
+      >
+        {label}
+      </StyledSuggestion>
+      {statusInfoModal && (
+        <Modal
+          isOpen={statusInfoModal}
+          onClose={() => setInfoModal(false)}
+          title="AI Status Reason"
+        >
+          <p>{data.ai_reason}</p>
+        </Modal>
+      )}
+    </>
   );
 };
 

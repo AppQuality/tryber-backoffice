@@ -26,7 +26,8 @@ const StarFill = icons.StarFill;
 
 const BugsTable = ({ id }: { id: string }) => {
   const { filters, page, setPage, order, setOrder } = useFiltersCardContext();
-  const [infoModal, setInfoModal] = useState(false);
+  const [scoreModal, setScoreModal] = useState(false);
+  const [statusModal, setStatusModal] = useState(false);
 
   let orderBy: GetCampaignsByCampaignBugsApiArg["orderBy"] = "id";
   if (order.field === "internalId") orderBy = "id";
@@ -149,17 +150,28 @@ const BugsTable = ({ id }: { id: string }) => {
             key: "title",
           },
           {
-            title: "AI Suggestion",
+            title: (
+              <div>
+                <span>AI Suggestion</span>
+                <AppQualityButton
+                  onClick={() => setStatusModal(true)}
+                  kind="transparent"
+                  style={{ paddingLeft: 4 }}
+                >
+                  <InfoIcon />
+                </AppQualityButton>
+              </div>
+            ),
             dataIndex: "ai_suggestion",
             key: "ai_suggestion",
-            maxWidth: "15ch",
+            maxWidth: "25ch",
           },
           {
             title: (
               <div>
                 <span>Score</span>
                 <AppQualityButton
-                  onClick={() => setInfoModal(true)}
+                  onClick={() => setScoreModal(true)}
                   kind="transparent"
                   style={{ paddingLeft: 4 }}
                 >
@@ -211,10 +223,10 @@ const BugsTable = ({ id }: { id: string }) => {
           maxPages={Math.ceil(data.total / data.limit)}
         />
       ) : null}
-      {infoModal && (
+      {scoreModal && (
         <Modal
-          isOpen={infoModal}
-          onClose={() => setInfoModal(false)}
+          isOpen={scoreModal}
+          onClose={() => setScoreModal(false)}
           title="AI Score"
         >
           <p>
@@ -223,6 +235,25 @@ const BugsTable = ({ id }: { id: string }) => {
             — including scope relevance, a well-formed title and aligned to the
             usecase, a clear description, appropriate severity, correct type,
             and attached media.
+          </p>
+        </Modal>
+      )}
+      {statusModal && (
+        <Modal
+          isOpen={statusModal}
+          onClose={() => setStatusModal(false)}
+          title="AI Suggestion"
+        >
+          <p>
+            The AI Suggestion is a status recommendation provided by the AI
+            based on the score percentage achieved by the bug based on the score
+            criteria. It can be:
+            <br />
+            Approved : 60% or more
+            <br />
+            Need Review : Between 40% and 60%
+            <br />
+            Refused : Less than 40%
           </p>
         </Modal>
       )}
