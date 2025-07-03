@@ -1,6 +1,8 @@
 import { Modal } from "@appquality/appquality-design-system";
 import { useState } from "react";
 import { useGetCampaignsByCampaignBugsAndBugIdAiReviewQuery } from "src/services/tryberApi";
+import { Button as AppQualityButton } from "@appquality/appquality-design-system";
+import { ReactComponent as InfoIcon } from "src/assets/info-icon.svg";
 import styled from "styled-components";
 
 const StyledSuggestion = styled.span<{ suggestion: string }>`
@@ -8,7 +10,6 @@ const StyledSuggestion = styled.span<{ suggestion: string }>`
   ${({ suggestion }) => suggestion === "need_review" && `color: #C78430;`}
   ${({ suggestion }) => suggestion === "approved" && `color: #02807A;`}
   text-transform: capitalize;
-  cursor: pointer;
 `;
 
 const AiSuggestion = ({
@@ -36,12 +37,14 @@ const AiSuggestion = ({
 
   return (
     <>
-      <StyledSuggestion
+      <StyledSuggestion suggestion={data.ai_status}>{label}</StyledSuggestion>
+      <AppQualityButton
         onClick={() => setInfoModal(true)}
-        suggestion={data.ai_status}
+        kind="transparent"
+        style={{ paddingLeft: 4 }}
       >
-        {label}
-      </StyledSuggestion>
+        <InfoIcon width={15} height={15} />
+      </AppQualityButton>
       {statusInfoModal && (
         <Modal
           isOpen={statusInfoModal}
