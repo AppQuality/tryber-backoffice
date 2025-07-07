@@ -41,7 +41,7 @@ const AiSuggestion = ({
       <AppQualityButton
         onClick={() => setInfoModal(true)}
         kind="transparent"
-        style={{ paddingLeft: 4 }}
+        style={{ padding: 0, paddingLeft: 4 }}
       >
         <InfoIcon width={15} height={15} />
       </AppQualityButton>

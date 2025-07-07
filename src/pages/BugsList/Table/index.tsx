@@ -156,7 +156,7 @@ const BugsTable = ({ id }: { id: string }) => {
                 <AppQualityButton
                   onClick={() => setStatusModal(true)}
                   kind="transparent"
-                  style={{ paddingLeft: 4 }}
+                  style={{ padding: 0, paddingLeft: 4 }}
                 >
                   <InfoIcon />
                 </AppQualityButton>
@@ -173,7 +173,7 @@ const BugsTable = ({ id }: { id: string }) => {
                 <AppQualityButton
                   onClick={() => setScoreModal(true)}
                   kind="transparent"
-                  style={{ paddingLeft: 4 }}
+                  style={{ padding: 0, paddingLeft: 4 }}
                 >
                   <InfoIcon />
                 </AppQualityButton>
