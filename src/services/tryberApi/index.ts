@@ -462,6 +462,15 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.dossierCreationData,
       }),
     }),
+    getDossiersByCampaignAvailableTesters: build.query<
+      GetDossiersByCampaignAvailableTestersApiResponse,
+      GetDossiersByCampaignAvailableTestersApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/dossiers/${queryArg.campaign}/availableTesters`,
+        params: { refresh: queryArg.refresh },
+      }),
+    }),
     postDossiersByCampaignManual: build.mutation<
       PostDossiersByCampaignManualApiResponse,
       PostDossiersByCampaignManualApiArg
@@ -1390,10 +1399,10 @@ export type GetCampaignsByCampaignBugsAndBugIdApiArg = {
 };
 export type GetCampaignsByCampaignBugsAndBugIdAiReviewApiResponse =
   /** status 200 OK */ {
-    ai_status: string;
-    ai_reason: string;
-    score_percentage: number;
     ai_notes?: string;
+    ai_reason: string;
+    ai_status: string;
+    score_percentage: number;
   };
 export type GetCampaignsByCampaignBugsAndBugIdAiReviewApiArg = {
   /** A campaign id */
@@ -1957,6 +1966,15 @@ export type PutDossiersByCampaignApiArg = {
   /** A campaign id */
   campaign: string;
   dossierCreationData: DossierCreationData;
+};
+export type GetDossiersByCampaignAvailableTestersApiResponse =
+  /** status 200 OK */ {
+    count: number;
+    lastUpdate: string;
+  };
+export type GetDossiersByCampaignAvailableTestersApiArg = {
+  campaign: string;
+  refresh?: "1" | "0";
 };
 export type PostDossiersByCampaignManualApiResponse = /** status 200 OK */ {};
 export type PostDossiersByCampaignManualApiArg = {
@@ -3293,6 +3311,7 @@ export const {
   usePostDossiersMutation,
   useGetDossiersByCampaignQuery,
   usePutDossiersByCampaignMutation,
+  useGetDossiersByCampaignAvailableTestersQuery,
   usePostDossiersByCampaignManualMutation,
   usePutDossiersByCampaignPhasesMutation,
   usePostDossiersByCampaignPreviewMutation,
