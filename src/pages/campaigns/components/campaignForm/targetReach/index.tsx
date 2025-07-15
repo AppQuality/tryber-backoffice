@@ -45,8 +45,8 @@ export const TargetReachInfo = ({
     });
 
   const stoplightColor = useMemo(() => {
-    if (!cap) return "grey";
-    if (!data?.count) return "grey";
+    if (!cap || !data?.count) return "grey";
+
     if (data.count > cap * 8) return "green";
     if (data.count > cap * 4) return "yellow";
     return "red";
