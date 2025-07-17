@@ -422,6 +422,7 @@ const FormProvider = ({
           );
         }
         action.setSubmitting(false);
+        action.setTouched({});
       }}
     >
       {children}

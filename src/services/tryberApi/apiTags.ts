@@ -242,6 +242,12 @@ tryberApi.enhanceEndpoints({
     getDossiersByCampaignQuotesHistory: {
       providesTags: ["Quote"],
     },
+    putDossiersByCampaign: {
+      invalidatesTags: ["Campaigns"],
+    },
+    getDossiersByCampaign: {
+      providesTags: ["Campaigns"],
+    },
   },
 });
 
