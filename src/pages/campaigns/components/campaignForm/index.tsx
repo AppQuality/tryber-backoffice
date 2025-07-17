@@ -273,7 +273,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
             >
               <TargetReachInfo
                 campaignId={dossier?.id}
-                cap={dossier?.target?.cap}
+                testers={dossier?.target?.size}
               />
               <Card className="aq-mb-4" title="Who are we testing with?">
                 <div className="aq-mb-3">

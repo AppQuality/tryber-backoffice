@@ -1,9 +1,11 @@
 import { Button, Text, Title } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
 import { useMemo, useState } from "react";
 import { ArrowClockwise } from "react-bootstrap-icons";
 import { useGetDossiersByCampaignAvailableTestersQuery } from "src/services/tryberApi";
 import { styled } from "styled-components";
-import { formatDate, formatTime } from "../formatDate";
+import { formatIsoToLocalDateTime } from "../formatDate";
+import { NewCampaignValues } from "../FormProvider";
 import { Stoplight } from "./Stoplight";
 
 const StyledContainer = styled.div`
@@ -11,9 +13,10 @@ const StyledContainer = styled.div`
   top: 0;
   right: 0;
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
   align-content: center;
+  gap: 1rem;
 `;
 
 const TitleContainer = styled.div`
@@ -32,10 +35,10 @@ function prettyPrintNumber(num: number): string {
 
 export const TargetReachInfo = ({
   campaignId,
-  cap,
+  testers,
 }: {
   campaignId?: number;
-  cap?: number;
+  testers?: number;
 }) => {
   const [disableCache, setDisableCache] = useState<"0" | "1" | undefined>();
   const { data, isLoading, isFetching, isError, refetch } =
@@ -43,14 +46,27 @@ export const TargetReachInfo = ({
       campaign: campaignId?.toString() || "",
       refresh: disableCache,
     });
+  const { touched } = useFormikContext<NewCampaignValues>();
+
+  const targetTouched = useMemo(() => {
+    return (
+      touched.targetSize ||
+      touched.countries ||
+      touched.provinces ||
+      touched.ageRequirements ||
+      touched.genderRequirements ||
+      touched.languages ||
+      touched.cuf
+    );
+  }, [touched]);
 
   const stoplightColor = useMemo(() => {
-    if (!cap || !data?.count) return "grey";
+    if (!testers || !data?.count) return "grey";
 
-    if (data.count > cap * 8) return "green";
-    if (data.count > cap * 4) return "yellow";
+    if (data.count > testers * 8) return "green";
+    if (data.count > testers * 4) return "yellow";
     return "red";
-  }, [data?.count, cap]);
+  }, [data?.count, testers]);
 
   const prettyCount = useMemo(() => {
     if (!data?.count) return "0";
@@ -75,9 +91,13 @@ export const TargetReachInfo = ({
         </TitleContainer>
 
         <Text small>
-          Updated on: {formatDate(data.lastUpdate)} at{" "}
-          {formatTime(data.lastUpdate)}.{" "}
+          Updated on: {formatIsoToLocalDateTime(data.lastUpdate)}
         </Text>
+        {targetTouched && (
+          <Text small color={"danger"}>
+            ⚠️ Target reach has been modified
+          </Text>
+        )}
         <Button
           kind="link"
           size="sm"

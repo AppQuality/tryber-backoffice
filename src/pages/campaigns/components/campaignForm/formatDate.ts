@@ -10,6 +10,14 @@ export const formatDate = (date: string) => {
   return date.split("T")[0];
 };
 
+export const formatIsoToLocalDateTime = (isoString: string): string => {
+  const date = new Date(isoString);
+  return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}`;
+};
+
 export const formatTime = (date: string) => {
   let dateObj = new Date(date);
   var userTimezoneOffset = dateObj.getTimezoneOffset() * 60000;
