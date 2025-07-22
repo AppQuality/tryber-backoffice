@@ -8,11 +8,13 @@ const Section = ({
   subtitle,
   id,
   children,
+  style,
 }: {
   title: string;
   subtitle: string;
   id: string;
   children: React.ReactNode;
+  style?: React.CSSProperties;
 }) => {
   const { setCurrentSection, pushSection } = useCampaignFormContext();
 
@@ -27,7 +29,7 @@ const Section = ({
     if (inView) setCurrentSection(id);
   }, [inView, id, setCurrentSection]);
   return (
-    <section ref={ref} id={id} className="aq-mb-4 aq-pt-4">
+    <section ref={ref} id={id} className="aq-mb-4 aq-pt-4" style={style}>
       <Title size="ms" className="aq-mb-2">
         {title}
       </Title>

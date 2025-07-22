@@ -47,6 +47,7 @@ import ImportPages from "./ImportPages";
 import { Section } from "./Section";
 import { Stepper } from "./Stepper";
 import { SurveyButton } from "./SurveyButton";
+import { TargetReachInfo } from "./targetReach";
 
 export interface FormProps {
   dossier?: GetDossiersByCampaignApiResponse;
@@ -268,7 +269,12 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
               title="Target Details"
               subtitle="Define the target details here."
               id="who"
+              style={{ position: "relative" }}
             >
+              <TargetReachInfo
+                campaignId={dossier?.id}
+                testers={dossier?.target?.size}
+              />
               <Card className="aq-mb-4" title="Who are we testing with?">
                 <div className="aq-mb-3">
                   <TextareaField
