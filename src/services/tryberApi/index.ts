@@ -1367,6 +1367,8 @@ export type GetCampaignsByCampaignBugsAndBugIdApiResponse =
     id: number;
     media: {
       id: number;
+      type: string;
+      url: string;
     }[];
     note: string;
     reason: string;
@@ -1877,6 +1879,7 @@ export type PostDossiersApiArg = {
   };
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
+  autoApply: number;
   browsers?: {
     id: number;
     name: string;
@@ -3122,6 +3125,7 @@ export type DossierCreationData = {
   additionals?: ({
     showInStats?: boolean;
   } & CampaignAdditionalField)[];
+  autoApply?: boolean;
   browsers?: number[];
   bugTypes?: number[];
   closeDate?: string;
