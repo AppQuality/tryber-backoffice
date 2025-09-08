@@ -21,6 +21,7 @@ import { PhaseSelector } from "../PhaseSelector";
 import { CampaignFormContext } from "./campaignFormContext";
 import FormOverlay from "./feedbackMessages/FormOverlay";
 import AgeRequirements from "./fields/AgeRequirements";
+import AutoApply from "./fields/AutoApply";
 import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
 import CufCriteria from "./fields/CufCriteria";
@@ -129,6 +130,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     required
                   />
                   <TestTypeSelect />
+                  <AutoApply />
                 </FieldWrapper>
                 <Title size="s" className="aq-mb-2 aq-pt-4">
                   Give some context to your co-workers

@@ -65,6 +65,7 @@ export interface NewCampaignValues {
   notes?: string;
   cuf?: { id: string; value: string[] }[];
   provinces?: string[];
+  autoApply?: boolean;
 }
 
 const useGetInitialCufCriteria = ({
@@ -187,6 +188,7 @@ const FormProvider = ({
       })) || [],
     cuf: initialCufCriteria,
     provinces: dossier?.visibilityCriteria?.province || [],
+    autoApply: dossier?.autoApply === 1,
   };
 
   const validationSchema = yup.object({
@@ -354,6 +356,7 @@ const FormProvider = ({
               ? parseInt(values.productType, 10)
               : undefined,
             notes: values.notes,
+            autoApply: values.autoApply,
             visibilityCriteria: {
               gender: values.genderRequirements?.options || [],
               cuf: values.cuf
