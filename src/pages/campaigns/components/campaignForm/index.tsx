@@ -130,7 +130,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     required
                   />
                   <TestTypeSelect />
-                  <AutoApply />
+                  {isEdit && <AutoApply />}
                 </FieldWrapper>
                 <Title size="s" className="aq-mb-2 aq-pt-4">
                   Give some context to your co-workers
