@@ -259,6 +259,16 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({ url: `/campaigns/${queryArg.campaign}/payouts` }),
     }),
+    putCampaignsByCampaignPayouts: build.mutation<
+      PutCampaignsByCampaignPayoutsApiResponse,
+      PutCampaignsByCampaignPayoutsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/payouts`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
     getCampaignsByCampaignProspect: build.query<
       GetCampaignsByCampaignProspectApiResponse,
       GetCampaignsByCampaignProspectApiArg
@@ -459,7 +469,7 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/dossiers/${queryArg.campaign}`,
         method: "PUT",
-        body: queryArg.dossierCreationData,
+        body: queryArg.body,
       }),
     }),
     getDossiersByCampaignAvailableTesters: build.query<
@@ -797,6 +807,40 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/users/me/campaigns/${queryArg.campaignId}/media`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    getUsersMeCampaignsByCampaignIdPayoutData: build.query<
+      GetUsersMeCampaignsByCampaignIdPayoutDataApiResponse,
+      GetUsersMeCampaignsByCampaignIdPayoutDataApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/payout_data`,
+      }),
+    }),
+    getUsersMeCampaignsByCampaignIdPreview: build.query<
+      GetUsersMeCampaignsByCampaignIdPreviewApiResponse,
+      GetUsersMeCampaignsByCampaignIdPreviewApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/preview`,
+      }),
+    }),
+    getUsersMeCampaignsByCampaignIdTasks: build.query<
+      GetUsersMeCampaignsByCampaignIdTasksApiResponse,
+      GetUsersMeCampaignsByCampaignIdTasksApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/tasks`,
+      }),
+    }),
+    postUsersMeCampaignsByCampaignIdTasksAndTaskId: build.mutation<
+      PostUsersMeCampaignsByCampaignIdTasksAndTaskIdApiResponse,
+      PostUsersMeCampaignsByCampaignIdTasksAndTaskIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/tasks/${queryArg.taskId}`,
         method: "POST",
         body: queryArg.body,
       }),
@@ -1562,6 +1606,46 @@ export type GetCampaignsByCampaignPayoutsApiArg = {
   /** A campaign id */
   campaign: string;
 };
+export type PutCampaignsByCampaignPayoutsApiResponse = /** status 200 OK */ {
+  campaign_complete_bonus_eur?: number;
+  campaign_pts?: number;
+  critical_bug_payout?: number;
+  high_bug_payout?: number;
+  low_bug_payout?: number;
+  medium_bug_payout?: number;
+  minimum_bugs?: number;
+  payout_limit?: number;
+  percent_usecases?: number;
+  point_multiplier_critical?: number;
+  point_multiplier_high?: number;
+  point_multiplier_low?: number;
+  point_multiplier_medium?: number;
+  point_multiplier_perfect?: number;
+  point_multiplier_refused?: number;
+  top_tester_bonus?: number;
+};
+export type PutCampaignsByCampaignPayoutsApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    campaign_complete_bonus_eur?: number;
+    campaign_pts?: number;
+    critical_bug_payout?: number;
+    high_bug_payout?: number;
+    low_bug_payout?: number;
+    medium_bug_payout?: number;
+    minimum_bugs?: number;
+    payout_limit?: number;
+    percent_usecases?: number;
+    point_multiplier_critical?: number;
+    point_multiplier_high?: number;
+    point_multiplier_low?: number;
+    point_multiplier_medium?: number;
+    point_multiplier_perfect?: number;
+    point_multiplier_refused?: number;
+    top_tester_bonus?: number;
+  };
+};
 export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
   items: {
     bugs: {
@@ -1875,6 +1959,8 @@ export type PostDossiersApiArg = {
       useCases?: number;
     };
   } & {
+    autoApply?: number;
+    pageVersion?: "v1" | "v2";
     skipPagesAndTasks?: number;
   };
 };
@@ -1968,7 +2054,9 @@ export type PutDossiersByCampaignApiResponse = /** status 200 OK */ {};
 export type PutDossiersByCampaignApiArg = {
   /** A campaign id */
   campaign: string;
-  dossierCreationData: DossierCreationData;
+  body: DossierCreationData & {
+    autoApply?: number;
+  };
 };
 export type GetDossiersByCampaignAvailableTestersApiResponse =
   /** status 200 OK */ {
@@ -2435,9 +2523,16 @@ export type GetUsersMeCampaignsByCampaignIdApiResponse = /** status 200 OK */ {
     invalid: string[];
     valid: string[];
   };
+  campaign_type: {
+    icon: string;
+    id: number;
+    name: string;
+  };
   devices?: ({
     id: number;
   } & UserDevice)[];
+  end_date: string;
+  goal: string;
   hasBugForm: boolean;
   id: number;
   language?: {
@@ -2574,6 +2669,81 @@ export type PostUsersMeCampaignsByCampaignIdMediaApiArg = {
   campaignId: string;
   body: {
     media?: {} | string[];
+  };
+};
+export type GetUsersMeCampaignsByCampaignIdPayoutDataApiResponse =
+  /** status 200 OK */ {
+    campaign_complete_bonus_eur: number;
+    campaign_pts: number;
+    critical_bug_payout: number;
+    high_bug_payout: number;
+    low_bug_payout: number;
+    medium_bug_payout: number;
+    minimum_bugs: number;
+    payout_limit: number;
+    percent_usecases: number;
+    point_multiplier_critical: number;
+    point_multiplier_high: number;
+    point_multiplier_low: number;
+    point_multiplier_medium: number;
+    point_multiplier_perfect: number;
+    point_multiplier_refused: number;
+    top_tester_bonus: number;
+  };
+export type GetUsersMeCampaignsByCampaignIdPayoutDataApiArg = {
+  campaignId: string;
+};
+export type GetUsersMeCampaignsByCampaignIdPreviewApiResponse =
+  /** status 200 OK */ {
+    acceptedDevices: {
+      console?: AvailableDevice[] | "all";
+      pc?: AvailableDevice[] | "all";
+      smartTv?: AvailableDevice[] | "all";
+      smartphone?: AvailableDevice[] | "all";
+      smartwatch?: AvailableDevice[] | "all";
+      tablet?: AvailableDevice[] | "all";
+    };
+    cap?: {
+      free: number;
+      value: number;
+    };
+    content: string;
+    endDate: string;
+    selectionStatus?: "starting" | "excluded" | "ready" | "complete";
+    startDate: string;
+    status: "available" | "applied" | "excluded" | "selected";
+    title: string;
+    tl?: {
+      email: string;
+      name: string;
+    };
+    type: {
+      icon: string;
+      name: string;
+    };
+  };
+export type GetUsersMeCampaignsByCampaignIdPreviewApiArg = {
+  campaignId: string;
+};
+export type GetUsersMeCampaignsByCampaignIdTasksApiResponse =
+  /** status 200 OK */ {
+    content: string;
+    id: number;
+    is_required: number;
+    name: string;
+    status: "completed" | "pending";
+  }[];
+export type GetUsersMeCampaignsByCampaignIdTasksApiArg = {
+  campaignId: string;
+};
+export type PostUsersMeCampaignsByCampaignIdTasksAndTaskIdApiResponse =
+  /** status 200 OK */ string;
+export type PostUsersMeCampaignsByCampaignIdTasksAndTaskIdApiArg = {
+  /** the campaign id */
+  campaignId: string;
+  taskId: string;
+  body: {
+    status: "completed";
   };
 };
 export type GetUsersMeCampaignsByCampaignCompatibleDevicesApiResponse =
@@ -3125,7 +3295,6 @@ export type DossierCreationData = {
   additionals?: ({
     showInStats?: boolean;
   } & CampaignAdditionalField)[];
-  autoApply?: boolean;
   browsers?: number[];
   bugTypes?: number[];
   closeDate?: string;
@@ -3235,6 +3404,9 @@ export type UserDevice = {
   };
   type: string;
 };
+export type AvailableDevice = {
+  name: string;
+};
 export type FiscalType =
   | "withholding"
   | "witholding-extra"
@@ -3291,6 +3463,7 @@ export const {
   useGetCampaignsByCampaignGroupsQuery,
   useGetCampaignsByCampaignObservationsQuery,
   useGetCampaignsByCampaignPayoutsQuery,
+  usePutCampaignsByCampaignPayoutsMutation,
   useGetCampaignsByCampaignProspectQuery,
   usePatchCampaignsByCampaignProspectMutation,
   usePutCampaignsByCampaignProspectMutation,
@@ -3357,6 +3530,10 @@ export const {
   useGetUsersMeCampaignsByCampaignIdFormsQuery,
   usePostUsersMeCampaignsByCampaignIdFormsMutation,
   usePostUsersMeCampaignsByCampaignIdMediaMutation,
+  useGetUsersMeCampaignsByCampaignIdPayoutDataQuery,
+  useGetUsersMeCampaignsByCampaignIdPreviewQuery,
+  useGetUsersMeCampaignsByCampaignIdTasksQuery,
+  usePostUsersMeCampaignsByCampaignIdTasksAndTaskIdMutation,
   useGetUsersMeCampaignsByCampaignCompatibleDevicesQuery,
   usePostUsersMeCertificationsMutation,
   useDeleteUsersMeCertificationsByCertificationIdMutation,
