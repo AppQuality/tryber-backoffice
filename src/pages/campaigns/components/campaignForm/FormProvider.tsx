@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
 import {
-  DossierCreationData,
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
   useGetDevicesByDeviceTypeOperatingSystemsQuery,
@@ -65,6 +64,7 @@ export interface NewCampaignValues {
   notes?: string;
   cuf?: { id: string; value: string[] }[];
   provinces?: string[];
+  autoApply?: boolean;
 }
 
 const useGetInitialCufCriteria = ({
@@ -187,6 +187,7 @@ const FormProvider = ({
       })) || [],
     cuf: initialCufCriteria,
     provinces: dossier?.visibilityCriteria?.province || [],
+    autoApply: dossier?.autoApply === 1,
   };
 
   const validationSchema = yup.object({
@@ -320,7 +321,7 @@ const FormProvider = ({
           });
         }
         try {
-          const body: DossierCreationData = {
+          const body = {
             project: parseInt(values.projectId),
             testType: parseInt(values.testType),
             title: {
@@ -354,6 +355,7 @@ const FormProvider = ({
               ? parseInt(values.productType, 10)
               : undefined,
             notes: values.notes,
+            autoApply: values.autoApply ? 1 : 0,
             visibilityCriteria: {
               gender: values.genderRequirements?.options || [],
               cuf: values.cuf
@@ -394,7 +396,7 @@ const FormProvider = ({
           if (isEdit) {
             await putDossiers({
               campaign: dossier?.id.toString() || "",
-              dossierCreationData: body,
+              body,
             }).unwrap();
           } else {
             const resp = await postDossiers({
