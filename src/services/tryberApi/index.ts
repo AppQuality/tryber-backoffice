@@ -149,6 +149,16 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: () => ({ url: `/campaigns/owners` }),
     }),
+    patchCampaignsByCampaignIdVisibility: build.mutation<
+      PatchCampaignsByCampaignIdVisibilityApiResponse,
+      PatchCampaignsByCampaignIdVisibilityApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaignId}/visibility`,
+        method: "PATCH",
+        body: queryArg.body,
+      }),
+    }),
     getCampaignsByCampaign: build.query<
       GetCampaignsByCampaignApiResponse,
       GetCampaignsByCampaignApiArg
@@ -269,6 +279,16 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    postCampaignsByCampaignPreview: build.mutation<
+      PostCampaignsByCampaignPreviewApiResponse,
+      PostCampaignsByCampaignPreviewApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/preview`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
     getCampaignsByCampaignProspect: build.query<
       GetCampaignsByCampaignProspectApiResponse,
       GetCampaignsByCampaignProspectApiArg
@@ -330,7 +350,7 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/campaigns/${queryArg.campaign}/tasks`,
         method: "POST",
-        body: queryArg.taskOptional,
+        body: queryArg.body,
       }),
     }),
     getCampaignsByCampaignTasksAndTask: build.query<
@@ -845,6 +865,34 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    postUsersMeCampaignsByCampaignIdTasksAndTaskIdMedia: build.mutation<
+      PostUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaApiResponse,
+      PostUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/tasks/${queryArg.taskId}/media`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    getUsersMeCampaignsByCampaignIdTasksAndTaskIdMedia: build.query<
+      GetUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaApiResponse,
+      GetUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/users/me/campaigns/${queryArg.campaignId}/tasks/${queryArg.taskId}/media`,
+      }),
+    }),
+    deleteUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaMediaId:
+      build.mutation<
+        DeleteUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaMediaIdApiResponse,
+        DeleteUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaMediaIdApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/me/campaigns/${queryArg.campaignId}/tasks/${queryArg.taskId}/media/${queryArg.mediaId}`,
+          method: "DELETE",
+        }),
+      }),
     getUsersMeCampaignsByCampaignCompatibleDevices: build.query<
       GetUsersMeCampaignsByCampaignCompatibleDevicesApiResponse,
       GetUsersMeCampaignsByCampaignCompatibleDevicesApiArg
@@ -1034,6 +1082,7 @@ const injectedRtkApi = api.injectEndpoints({
           limit: queryArg.limit,
           orderBy: queryArg.orderBy,
           order: queryArg.order,
+          filterBy: queryArg.filterBy,
         },
       }),
     }),
@@ -1331,6 +1380,14 @@ export type GetCampaignsOwnersApiResponse = /** status 200 OK */ {
   surname: string;
 }[];
 export type GetCampaignsOwnersApiArg = void;
+export type PatchCampaignsByCampaignIdVisibilityApiResponse =
+  /** status 200 OK */ string;
+export type PatchCampaignsByCampaignIdVisibilityApiArg = {
+  campaignId: string;
+  body: {
+    type: "internal" | "target";
+  };
+};
 export type GetCampaignsByCampaignApiResponse = /** status 200 OK */ {
   id: number;
   plan?: {
@@ -1646,6 +1703,13 @@ export type PutCampaignsByCampaignPayoutsApiArg = {
     top_tester_bonus?: number;
   };
 };
+export type PostCampaignsByCampaignPreviewApiResponse = /** status 200 OK */ {};
+export type PostCampaignsByCampaignPreviewApiArg = {
+  campaign: string;
+  body: {
+    content: string;
+  };
+};
 export type GetCampaignsByCampaignProspectApiResponse = /** status 200 OK */ {
   items: {
     bugs: {
@@ -1769,12 +1833,26 @@ export type GetCampaignsByCampaignTasksApiArg = {
   campaign: string;
 };
 export type PostCampaignsByCampaignTasksApiResponse =
-  /** status 201 Created */ undefined;
+  /** status 201 Created */ {
+    content: string;
+    id: number;
+    title: string;
+  };
 export type PostCampaignsByCampaignTasksApiArg = {
   /** A campaign id */
   campaign: string;
   /** The data of the new UseCase to link to the Campaign */
-  taskOptional: TaskOptional;
+  body: {
+    content: string;
+    is_required: number;
+    position?: number;
+    prefix?: string;
+    title: string;
+    upload?: {
+      language: string;
+      policy: "optimize" | "allow";
+    };
+  };
 };
 export type GetCampaignsByCampaignTasksAndTaskApiResponse =
   /** status 200 A UseCase linked with the Campaign */ Task;
@@ -1960,8 +2038,13 @@ export type PostDossiersApiArg = {
     };
   } & {
     autoApply?: number;
+    bugLanguage?: BugLang;
+    hasBugForm?: number;
+    hasBugParade?: number;
     pageVersion?: "v1" | "v2";
     skipPagesAndTasks?: number;
+  } & {
+    notify_everyone: 0 | 1;
   };
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
@@ -2056,6 +2139,8 @@ export type PutDossiersByCampaignApiArg = {
   campaign: string;
   body: DossierCreationData & {
     autoApply?: number;
+    bugLanguage?: BugLang | boolean;
+    hasBugParade?: number;
   };
 };
 export type GetDossiersByCampaignAvailableTestersApiResponse =
@@ -2534,6 +2619,7 @@ export type GetUsersMeCampaignsByCampaignIdApiResponse = /** status 200 OK */ {
   end_date: string;
   goal: string;
   hasBugForm: boolean;
+  hasBugParade: number;
   id: number;
   language?: {
     code: string;
@@ -2709,7 +2795,12 @@ export type GetUsersMeCampaignsByCampaignIdPreviewApiResponse =
     };
     content: string;
     endDate: string;
-    selectionStatus?: "starting" | "excluded" | "ready" | "complete";
+    selectionStatus?:
+      | "starting"
+      | "excluded"
+      | "ready"
+      | "complete"
+      | "not-started";
     startDate: string;
     status: "available" | "applied" | "excluded" | "selected";
     title: string;
@@ -2727,6 +2818,7 @@ export type GetUsersMeCampaignsByCampaignIdPreviewApiArg = {
 };
 export type GetUsersMeCampaignsByCampaignIdTasksApiResponse =
   /** status 200 OK */ {
+    can_upload_media: boolean;
     content: string;
     id: number;
     is_required: number;
@@ -2746,6 +2838,45 @@ export type PostUsersMeCampaignsByCampaignIdTasksAndTaskIdApiArg = {
     status: "completed";
   };
 };
+export type PostUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaApiResponse =
+  /** status 200 OK */ {
+    failed?: {
+      errorCode: "FILE_TOO_BIG" | "INVALID_FILE_EXTENSION" | "GENERIC_ERROR";
+      name: string;
+    }[];
+    files?: {
+      name: string;
+      path: string;
+    }[];
+  };
+export type PostUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaApiArg = {
+  campaignId: string;
+  taskId: string;
+  body: {
+    media?: {} | string[];
+  };
+};
+export type GetUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaApiResponse =
+  /** status 200 OK */ {
+    items: {
+      id: number;
+      location: string;
+      name: string;
+      mimetype?: string;
+    }[];
+  };
+export type GetUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaApiArg = {
+  campaignId: string;
+  taskId: string;
+};
+export type DeleteUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaMediaIdApiResponse =
+  /** status 200 OK */ {};
+export type DeleteUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaMediaIdApiArg =
+  {
+    campaignId: string;
+    taskId: string;
+    mediaId: string;
+  };
 export type GetUsersMeCampaignsByCampaignCompatibleDevicesApiResponse =
   /** status 200 OK */ UserDevice[];
 export type GetUsersMeCampaignsByCampaignCompatibleDevicesApiArg = {
@@ -3065,6 +3196,8 @@ export type GetUsersMePendingBootyApiArg = {
     | "activity";
   /** How to order values (ASC, DESC) */
   order?: "ASC" | "DESC";
+  /** Key-value Array for item filtering */
+  filterBy?: object;
 };
 export type GetUsersMePermissionsApiResponse = /** status 200 OK */ {
   appq_bug?: Olp;
@@ -3340,6 +3473,7 @@ export type DossierCreationData = {
     provinces?: string[];
   };
 };
+export type BugLang = "IT" | "GB" | "ES" | "FR" | "DE";
 export type LevelDefinition = {
   hold?: number;
   id: number;
@@ -3451,6 +3585,7 @@ export const {
   useGetCampaignsFormsByFormIdQuery,
   usePutCampaignsFormsByFormIdMutation,
   useGetCampaignsOwnersQuery,
+  usePatchCampaignsByCampaignIdVisibilityMutation,
   useGetCampaignsByCampaignQuery,
   usePutCampaignsByCampaignMutation,
   useGetCampaignsByCampaignBugsQuery,
@@ -3464,6 +3599,7 @@ export const {
   useGetCampaignsByCampaignObservationsQuery,
   useGetCampaignsByCampaignPayoutsQuery,
   usePutCampaignsByCampaignPayoutsMutation,
+  usePostCampaignsByCampaignPreviewMutation,
   useGetCampaignsByCampaignProspectQuery,
   usePatchCampaignsByCampaignProspectMutation,
   usePutCampaignsByCampaignProspectMutation,
@@ -3534,6 +3670,9 @@ export const {
   useGetUsersMeCampaignsByCampaignIdPreviewQuery,
   useGetUsersMeCampaignsByCampaignIdTasksQuery,
   usePostUsersMeCampaignsByCampaignIdTasksAndTaskIdMutation,
+  usePostUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaMutation,
+  useGetUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaQuery,
+  useDeleteUsersMeCampaignsByCampaignIdTasksAndTaskIdMediaMediaIdMutation,
   useGetUsersMeCampaignsByCampaignCompatibleDevicesQuery,
   usePostUsersMeCertificationsMutation,
   useDeleteUsersMeCertificationsByCertificationIdMutation,
