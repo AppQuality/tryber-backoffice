@@ -12,14 +12,14 @@ const AutoApprove = () => {
 
   return (
     <div>
-      <FormLabel htmlFor="autoApprove" label="Auto-approve Bugs" />
+      <FormLabel htmlFor="autoApprove" label="AI-Powered Bug Approval" />
 
       <FormikField name="autoApprove">
         {({ field }: FieldProps) => (
           <Checkbox
             name={field.name}
             id="autoApprove"
-            label="Should AI agent auto-approve bugs once they are reported?"
+            label="Auto-approve bugs once they are reported?"
             checked={field.value}
             onChange={(e) => {
               setFieldValue("autoApprove", e.target.checked);
