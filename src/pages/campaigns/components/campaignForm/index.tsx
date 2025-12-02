@@ -22,6 +22,7 @@ import { CampaignFormContext } from "./campaignFormContext";
 import FormOverlay from "./feedbackMessages/FormOverlay";
 import AgeRequirements from "./fields/AgeRequirements";
 import AutoApply from "./fields/AutoApply";
+import AutoApprove from "./fields/AutoApprove";
 import BrowsersMultiselect from "./fields/BrowsersMultiselect";
 import CountrySelect from "./fields/CountrySelect";
 import CufCriteria from "./fields/CufCriteria";
@@ -130,6 +131,7 @@ const CampaignFormContent = ({ dossier, isEdit, duplicate }: FormProps) => {
                     required
                   />
                   <TestTypeSelect />
+                  {isEdit && <AutoApprove />}
                   {isEdit && <AutoApply />}
                 </FieldWrapper>
                 <Title size="s" className="aq-mb-2 aq-pt-4">
