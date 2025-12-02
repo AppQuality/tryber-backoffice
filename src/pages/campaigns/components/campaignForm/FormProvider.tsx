@@ -403,6 +403,7 @@ const FormProvider = ({
               body: {
                 ...body,
                 duplicate: duplicate,
+                notify_everyone: 1,
               },
             }).unwrap();
             if (!resp.id) {
