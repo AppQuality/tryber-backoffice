@@ -19,7 +19,7 @@ const AutoApprove = () => {
           <Checkbox
             name={field.name}
             id="autoApprove"
-            label="Auto-approve bugs once they are reported?"
+            label="Enable AI to automatically approve reported bugs"
             checked={field.value}
             onChange={(e) => {
               setFieldValue("autoApprove", e.target.checked);
