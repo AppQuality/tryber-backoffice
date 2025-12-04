@@ -2038,6 +2038,7 @@ export type PostDossiersApiArg = {
     };
   } & {
     autoApply?: number;
+    autoApprove?: number;
     bugLanguage?: BugLang;
     hasBugForm?: number;
     hasBugParade?: number;
@@ -2049,6 +2050,7 @@ export type PostDossiersApiArg = {
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
   autoApply: number;
+  autoApprove: number;
   browsers?: {
     id: number;
     name: string;
@@ -2139,6 +2141,7 @@ export type PutDossiersByCampaignApiArg = {
   campaign: string;
   body: DossierCreationData & {
     autoApply?: number;
+    autoApprove?: number;
     bugLanguage?: BugLang | boolean;
     hasBugParade?: number;
   };
