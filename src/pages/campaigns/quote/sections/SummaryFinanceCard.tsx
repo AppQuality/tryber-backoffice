@@ -1,18 +1,9 @@
-import React from "react";
 import {
   aqBootstrapTheme,
   BSCol,
   Card,
 } from "@appquality/appquality-design-system";
-import { styled } from "styled-components";
-
-const HorizontalDivider = styled.div`
-  margin-top: 12px;
-  margin-bottom: 12px;
-  width: 100%;
-  height: 1px;
-  background: #ccc;
-`;
+import { HorizontalDivider } from "../components/Dividers";
 
 export const SummaryFinanceCard = () => {
   return (

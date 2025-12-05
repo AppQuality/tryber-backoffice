@@ -1,4 +1,3 @@
-import React from "react";
 import {
   aqBootstrapTheme,
   BSCol,
@@ -6,16 +5,8 @@ import {
   Card,
   Input,
 } from "@appquality/appquality-design-system";
-import { styled } from "styled-components";
 import { Section } from "../../components/campaignForm/Section";
-
-const HorizontalDivider = styled.div`
-  margin-top: 12px;
-  margin-bottom: 12px;
-  width: 100%;
-  height: 1px;
-  background: #ccc;
-`;
+import { HorizontalDivider } from "../components/Dividers";
 
 type CostAndResourceDetailsSectionProps = {
   campaignId?: string;

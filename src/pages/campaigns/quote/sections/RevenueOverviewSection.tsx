@@ -1,4 +1,3 @@
-import React from "react";
 import {
   aqBootstrapTheme,
   BSCol,
@@ -7,22 +6,8 @@ import {
   Dropdown,
   Input,
 } from "@appquality/appquality-design-system";
-import { styled } from "styled-components";
 import { Section } from "../../components/campaignForm/Section";
-
-const VerticalDivider = styled.div`
-  width: 1px;
-  height: 3em;
-  background: #ccc;
-`;
-
-const HorizontalDivider = styled.div`
-  margin-top: 12px;
-  margin-bottom: 12px;
-  width: 100%;
-  height: 1px;
-  background: #ccc;
-`;
+import { VerticalDivider } from "../components/Dividers";
 
 export const RevenueOverviewSection = () => {
   const saveButtonContainer = (
