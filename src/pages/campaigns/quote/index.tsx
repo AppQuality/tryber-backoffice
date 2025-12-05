@@ -81,9 +81,10 @@ const EditCampaign = () => {
                 style={{
                   display: "flex",
                   gap: aqBootstrapTheme.grid.spacing.default,
+                  justifyContent: "center",
                 }}
               >
-                <BSCol size="col-lg-2">
+                <BSCol size="col-lg-6">
                   <div>
                     Token used{" "}
                     <span style={{ color: aqBootstrapTheme.palette.danger }}>
@@ -97,7 +98,7 @@ const EditCampaign = () => {
                     placeholder="E.g. 10"
                   />
                 </BSCol>
-                <BSCol size="col-lg-2">
+                <BSCol size="col-lg-6">
                   <div>
                     Linked agreement{" "}
                     <span style={{ color: aqBootstrapTheme.palette.danger }}>
