@@ -6,6 +6,8 @@ import {
   Dropdown,
   Input,
 } from "@appquality/appquality-design-system";
+import { useParams } from "react-router";
+import { useGetDossiersByCampaignAgreementsQuery } from "src/services/tryberApi";
 import { Section } from "../../components/campaignForm/Section";
 import { VerticalDivider } from "../components/Dividers";
 
@@ -17,6 +19,9 @@ export const RevenueOverviewSection = () => {
       </Button>
     </div>
   );
+
+  const { id } = useParams<{ id: string }>();
+  const { data } = useGetDossiersByCampaignAgreementsQuery({ campaign: id });
 
   return (
     <Section
@@ -40,7 +45,7 @@ export const RevenueOverviewSection = () => {
             <Input
               id="token-used"
               type="string"
-              value=""
+              value={data ? data.tokens?.toString() : ""}
               placeholder="E.g. 10"
             />
           </BSCol>
@@ -52,6 +57,10 @@ export const RevenueOverviewSection = () => {
             <Dropdown
               name="agreement-dropdown"
               placeholder="Choose an agreement..."
+              defaultValue={{
+                label: data?.agreement?.id?.toString() || "",
+                value: data?.agreement?.id?.toString() || "",
+              }}
               options={[
                 { label: "Agreement 1", value: "1" },
                 { label: "Agreement 2", value: "2" },
