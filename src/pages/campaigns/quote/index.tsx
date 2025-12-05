@@ -1,5 +1,4 @@
 import {
-  Accordion,
   aqBootstrapTheme,
   BSCol,
   BSGrid,
@@ -12,10 +11,10 @@ import {
 import { useParams } from "react-router-dom";
 import { PageTemplate } from "src/features/PageTemplate";
 import { styled } from "styled-components";
-import { Section } from "../components/campaignForm/Section";
 import { QuoteInput } from "./QuoteInput";
-import { QuoteTable } from "./QuoteRecap";
 import { useQuoteRecap } from "./useQuoteRecap";
+import { Section } from "../components/campaignForm/Section";
+import { QuoteHistorySection } from "./sections/QuoteHistorySection";
 
 const FullGrid = styled(BSGrid)`
   width: 100%;
@@ -58,36 +57,10 @@ const EditCampaign = () => {
     <PageTemplate>
       <FullGrid>
         <BSCol size="col-lg-8">
-          <Section
-            title="Quote History"
-            subtitle="Review past quotes for this campaign or compare with similar templates to ensure accurate pricing"
-            id="quote"
-          >
-            <Card className="aq-mb-4" title="Quote history & comparison">
-              <Accordion initialActive={""} id="quote-history-accordion">
-                <Accordion.Item
-                  id="quote-history-campaign"
-                  title="Previous quotes for this campaign"
-                  key={"campaign-quotes"}
-                >
-                  {data.history.length > 0 && (
-                    <QuoteTable data={data.history} />
-                  )}
-                </Accordion.Item>
-                <Accordion.Item
-                  id="quote-history-template-workspace"
-                  title="All other quotes for this template in this workspace"
-                  key={"other-quotes"}
-                >
-                  {data.otherCampaigns.length > 0 ? (
-                    <QuoteTable data={data.otherCampaigns} />
-                  ) : (
-                    <div>This is the first quote for this workspace.</div>
-                  )}
-                </Accordion.Item>
-              </Accordion>
-            </Card>
-          </Section>
+          <QuoteHistorySection
+            history={data.history}
+            otherCampaigns={data.otherCampaigns}
+          />
           <Section
             title="Revenue Overview"
             subtitle="Track campaign revenue, token usage, and linked agreements"

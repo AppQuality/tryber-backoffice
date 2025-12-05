@@ -3,17 +3,15 @@ import React from "react";
 import openInWordpress from "src/utils/openInWordpress";
 import { getQuoteStatusPill } from "./statusPill";
 
-export const QuoteTable = ({
-  data,
-}: {
-  data: {
-    campaignId: number;
-    campaign: string;
-    phase: string;
-    amount: string;
-    quoteStatus: string;
-  }[];
-}) => {
+export type QuoteTableRow = {
+  campaignId: number;
+  campaign: string;
+  phase: string;
+  amount: string;
+  quoteStatus: string;
+};
+
+export const QuoteTable = ({ data }: { data: QuoteTableRow[] }) => {
   return (
     <Table
       isStriped
