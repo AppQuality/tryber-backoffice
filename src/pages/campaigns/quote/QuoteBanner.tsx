@@ -14,18 +14,14 @@ export const QuoteBanner = ({ status }: { status: string }) => {
   return (
     <div className="aq-mb-4">
       <StyledDiv>
-        <Title size="s">The quote is now:</Title>
+        <Title size="s">Current Quote:</Title>
         {getQuoteStatusPill(status)}
       </StyledDiv>
 
       {status === "pending" && (
-        <Text small>
-          We've prepared this quote based on the provided template. Please
-          review it to ensure it is accurate or make any necessary updates.
-          <br />
-          If you save it without making changes,{" "}
-          <strong>it will be automatically confirmed</strong>&nbsp;without
-          requiring further action from the client.
+        <Text small color={"info"}>
+          💡 Please <strong>review this template-based quote.</strong>
+          <br /> Saving it without changes will automatically confirm it
         </Text>
       )}
 
