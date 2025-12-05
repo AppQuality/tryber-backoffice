@@ -2045,7 +2045,7 @@ export type PostDossiersApiArg = {
     pageVersion?: "v1" | "v2";
     skipPagesAndTasks?: number;
   } & {
-    notify_everyone: 0 | 1;
+    notify_everyone?: 0 | 1;
   };
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
