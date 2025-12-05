@@ -2,10 +2,7 @@ import {
   aqBootstrapTheme,
   BSCol,
   BSGrid,
-  Button,
   Card,
-  Dropdown,
-  Input,
   Steps,
 } from "@appquality/appquality-design-system";
 import { useParams } from "react-router-dom";
@@ -13,8 +10,9 @@ import { PageTemplate } from "src/features/PageTemplate";
 import { styled } from "styled-components";
 import { QuoteInput } from "./QuoteInput";
 import { useQuoteRecap } from "./useQuoteRecap";
-import { Section } from "../components/campaignForm/Section";
 import { QuoteHistorySection } from "./sections/QuoteHistorySection";
+import { RevenueOverviewSection } from "./sections/RevenueOverviewSection";
+import { CostAndResourceDetailsSection } from "./sections/CostAndResourceDetailsSection";
 
 const FullGrid = styled(BSGrid)`
   width: 100%;
@@ -27,12 +25,6 @@ const StickyContainer = styled.div`
   }
 `;
 
-const VerticalDivider = styled.div`
-  width: 1px;
-  height: 3em;
-  background: #ccc;
-`;
-
 const HorizontalDivider = styled.div`
   margin-top: 12px;
   margin-bottom: 12px;
@@ -40,14 +32,6 @@ const HorizontalDivider = styled.div`
   height: 1px;
   background: #ccc;
 `;
-
-const saveButtonContainer = (
-  <div style={{ display: "flex", justifyContent: "flex-end" }}>
-    <Button kind="primary" size="sm">
-      Save
-    </Button>
-  </div>
-);
 
 const EditCampaign = () => {
   const { id } = useParams<{ id: string }>();
@@ -61,231 +45,12 @@ const EditCampaign = () => {
             history={data.history}
             otherCampaigns={data.otherCampaigns}
           />
-          <Section
-            title="Revenue Overview"
-            subtitle="Track campaign revenue, token usage, and linked agreements"
-            id="quote"
-          >
-            <Card className="aq-mb-4" title="Revenue details">
-              <div
-                style={{
-                  display: "flex",
-                  gap: aqBootstrapTheme.grid.spacing.default,
-                  justifyContent: "center",
-                }}
-              >
-                <BSCol size="col-6 col-lg-6 col-md-12 ">
-                  <div>
-                    Token used{" "}
-                    <span style={{ color: aqBootstrapTheme.palette.danger }}>
-                      *
-                    </span>
-                  </div>
-                  <Input
-                    id="token-used"
-                    type="string"
-                    value=""
-                    placeholder="E.g. 10"
-                  />
-                </BSCol>
-                <BSCol size="col-6 col-lg-6 col-md-12">
-                  <div>
-                    Linked agreement{" "}
-                    <span style={{ color: aqBootstrapTheme.palette.danger }}>
-                      *
-                    </span>
-                  </div>
-                  <Dropdown
-                    name="agreement-dropdown"
-                    placeholder="Choose an agreement..."
-                    options={[
-                      { label: "Agreement 1", value: "1" },
-                      { label: "Agreement 2", value: "2" },
-                    ]}
-                  />
-                  <Button
-                    forwardedAs="a"
-                    href="/backoffice/agreements/new"
-                    kind="link"
-                    target="_blank"
-                  >
-                    <span style={{ color: aqBootstrapTheme.palette.info }}>
-                      Agreement not found? Create a new one
-                    </span>
-                  </Button>
-                </BSCol>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "24px 24px 24px 30px",
-                  gap: "25px",
-                  backgroundColor: "#f9f9f9",
-                }}
-              >
-                <BSCol size="col-lg-2">
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      alignContent: "center",
-                      gap: "4px 25px",
-                      flexDirection: "column",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontWeight: aqBootstrapTheme.typography.fontWeight.bold,
-                      }}
-                    >
-                      TOKEN VALUE
-                    </span>
-                    <strong
-                      style={{
-                        fontSize: "24px",
-                        fontWeight: aqBootstrapTheme.typography.fontWeight.bold,
-                        color: aqBootstrapTheme.palette.primary,
-                      }}
-                    >
-                      --€
-                    </strong>
-                  </div>
-                </BSCol>
-                <VerticalDivider />
-                <BSCol size="col-lg-2">
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      alignContent: "center",
-                      flexDirection: "column",
-                      gap: "4px 25px",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontWeight: aqBootstrapTheme.typography.fontWeight.bold,
-                      }}
-                    >
-                      TOTAL REVENUE
-                    </span>
-                    <strong
-                      style={{
-                        fontSize: "24px",
-                        fontWeight: aqBootstrapTheme.typography.fontWeight.bold,
-                        color: aqBootstrapTheme.palette.secondary,
-                      }}
-                    >
-                      --€
-                    </strong>
-                  </div>
-                </BSCol>
-              </div>
-              {saveButtonContainer}
-            </Card>
-          </Section>
-          <Section
-            title="Cost & Resource details"
-            subtitle="Overview of costs and allocated resources"
-            id="resources"
-          >
-            <Card className="aq-mb-4" title="Community costs">
-              <span style={{ color: aqBootstrapTheme.palette.info }}>
-                💡 These parameters are read-only. Manage them in the
-                <Button
-                  forwardedAs="a"
-                  href={`/backoffice/${id}/prospect`}
-                  kind="link"
-                  target="_blank"
-                >
-                  <span style={{ color: aqBootstrapTheme.palette.info }}>
-                    Prospect section
-                  </span>
-                </Button>
-              </span>
-              <div
-                style={{
-                  display: "flex",
-                  gap: aqBootstrapTheme.grid.spacing.default,
-                  justifyContent: "center",
-                }}
-              >
-                <BSCol size="col-6 col-lg-6 col-md-12 ">
-                  <div>
-                    Assistant Costs{" "}
-                    <span style={{ color: aqBootstrapTheme.palette.danger }}>
-                      *
-                    </span>
-                  </div>
-                  <Input
-                    id="assistant-costs"
-                    type="string"
-                    value=""
-                    disabled
-                    placeholder="-"
-                  />
-                </BSCol>
-                <BSCol size="col-6 col-lg-6 col-md-12">
-                  <div>
-                    Tester Payouts{" "}
-                    <span style={{ color: aqBootstrapTheme.palette.danger }}>
-                      *
-                    </span>
-                  </div>
-                  <Input
-                    id="tester-payouts"
-                    type="string"
-                    value=""
-                    disabled
-                    placeholder="-"
-                  />
-                </BSCol>
-              </div>
-              <HorizontalDivider />
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <span>TOTAL COMMUNITY COSTS: </span>
-                <span style={{ fontWeight: "bold", marginLeft: "4px" }}>
-                  --€
-                </span>
-              </div>
-            </Card>
-            <Card className="aq-mb-4" title="Human Resources cost">
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-start",
-                }}
-              >
-                <span style={{ color: aqBootstrapTheme.palette.info }}>
-                  💡
-                  <span style={{ fontWeight: "bold" }}>
-                    Add Human Resources
-                  </span>{" "}
-                  and{" "}
-                  <span style={{ fontWeight: "bold" }}>
-                    fill all required fields
-                  </span>{" "}
-                  (*) to enable saving
-                </span>
-                <div>
-                  <Button
-                    forwardedAs="a"
-                    href={`/backoffice/${id}/prospect`}
-                    kind="link"
-                    target="_blank"
-                  >
-                    + Add Human Resources
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </Section>
+
+          <RevenueOverviewSection />
+
+          <CostAndResourceDetailsSection campaignId={id} />
         </BSCol>
+
         <BSCol size="col-lg-4">
           <StickyContainer>
             <div className="aq-mb-4">
