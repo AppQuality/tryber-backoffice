@@ -33,6 +33,22 @@ const VerticalDivider = styled.div`
   background: #ccc;
 `;
 
+const HorizontalDivider = styled.div`
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  height: 1px;
+  background: #ccc;
+`;
+
+const saveButtonContainer = (
+  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+    <Button kind="primary" size="sm">
+      Save
+    </Button>
+  </div>
+);
+
 const EditCampaign = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useQuoteRecap({ campaign: Number(id) });
@@ -84,7 +100,7 @@ const EditCampaign = () => {
                   justifyContent: "center",
                 }}
               >
-                <BSCol size="col-lg-6">
+                <BSCol size="col-6 col-lg-6 col-md-12 ">
                   <div>
                     Token used{" "}
                     <span style={{ color: aqBootstrapTheme.palette.danger }}>
@@ -98,7 +114,7 @@ const EditCampaign = () => {
                     placeholder="E.g. 10"
                   />
                 </BSCol>
-                <BSCol size="col-lg-6">
+                <BSCol size="col-6 col-lg-6 col-md-12">
                   <div>
                     Linked agreement{" "}
                     <span style={{ color: aqBootstrapTheme.palette.danger }}>
@@ -194,6 +210,104 @@ const EditCampaign = () => {
                     </strong>
                   </div>
                 </BSCol>
+              </div>
+              {saveButtonContainer}
+            </Card>
+          </Section>
+          <Section
+            title="Cost & Resource details"
+            subtitle="Overview of costs and allocated resources"
+            id="resources"
+          >
+            <Card className="aq-mb-4" title="Community costs">
+              <span style={{ color: aqBootstrapTheme.palette.info }}>
+                💡 These parameters are read-only. Manage them in the
+                <Button
+                  forwardedAs="a"
+                  href={`/backoffice/${id}/prospect`}
+                  kind="link"
+                  target="_blank"
+                >
+                  <span style={{ color: aqBootstrapTheme.palette.info }}>
+                    Prospect section
+                  </span>
+                </Button>
+              </span>
+              <div
+                style={{
+                  display: "flex",
+                  gap: aqBootstrapTheme.grid.spacing.default,
+                  justifyContent: "center",
+                }}
+              >
+                <BSCol size="col-6 col-lg-6 col-md-12 ">
+                  <div>
+                    Assistant Costs{" "}
+                    <span style={{ color: aqBootstrapTheme.palette.danger }}>
+                      *
+                    </span>
+                  </div>
+                  <Input
+                    id="assistant-costs"
+                    type="string"
+                    value=""
+                    disabled
+                    placeholder="-"
+                  />
+                </BSCol>
+                <BSCol size="col-6 col-lg-6 col-md-12">
+                  <div>
+                    Tester Payouts{" "}
+                    <span style={{ color: aqBootstrapTheme.palette.danger }}>
+                      *
+                    </span>
+                  </div>
+                  <Input
+                    id="tester-payouts"
+                    type="string"
+                    value=""
+                    disabled
+                    placeholder="-"
+                  />
+                </BSCol>
+              </div>
+              <HorizontalDivider />
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <span>TOTAL COMMUNITY COSTS: </span>
+                <span style={{ fontWeight: "bold", marginLeft: "4px" }}>
+                  --€
+                </span>
+              </div>
+            </Card>
+            <Card className="aq-mb-4" title="Human Resources cost">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <span style={{ color: aqBootstrapTheme.palette.info }}>
+                  💡
+                  <span style={{ fontWeight: "bold" }}>
+                    Add Human Resources
+                  </span>
+                  and
+                  <span style={{ fontWeight: "bold" }}>
+                    fill all required fields
+                  </span>
+                  (*) to enable saving
+                </span>
+                <div>
+                  <Button
+                    forwardedAs="a"
+                    href={`/backoffice/${id}/prospect`}
+                    kind="link"
+                    target="_blank"
+                  >
+                    + Add Human Resources
+                  </Button>
+                </div>
               </div>
             </Card>
           </Section>
