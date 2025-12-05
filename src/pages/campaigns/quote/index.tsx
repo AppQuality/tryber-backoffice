@@ -114,7 +114,7 @@ const EditCampaign = () => {
                   />
                   <Button
                     forwardedAs="a"
-                    href="https://tryber.me/backoffice/agreements/new"
+                    href="/backoffice/agreements/new"
                     kind="link"
                     target="_blank"
                   >
