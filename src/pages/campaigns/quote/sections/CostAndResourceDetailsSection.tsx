@@ -7,6 +7,7 @@ import {
 } from "@appquality/appquality-design-system";
 import { Section } from "../../components/campaignForm/Section";
 import { HorizontalDivider } from "../components/Dividers";
+import { useGetDossiersByCampaignCostsQuery } from "src/services/tryberApi";
 
 type CostAndResourceDetailsSectionProps = {
   campaignId?: string;
@@ -15,6 +16,15 @@ type CostAndResourceDetailsSectionProps = {
 export const CostAndResourceDetailsSection = ({
   campaignId,
 }: CostAndResourceDetailsSectionProps) => {
+  const { data: assistantTotal } = useGetDossiersByCampaignCostsQuery({
+    campaign: campaignId ?? "",
+    filterBy: { type: "4" },
+  });
+
+  const { data: testerTotal } = useGetDossiersByCampaignCostsQuery({
+    campaign: campaignId ?? "",
+    filterBy: { type: "1,2,3" },
+  });
   return (
     <Section
       title="Cost & Resource details"
@@ -50,7 +60,9 @@ export const CostAndResourceDetailsSection = ({
             <Input
               id="assistant-costs"
               type="string"
-              value=""
+              value={
+                assistantTotal?.totalCost ? `${assistantTotal.totalCost}€` : ""
+              }
               disabled
               placeholder="-"
             />
@@ -63,7 +75,7 @@ export const CostAndResourceDetailsSection = ({
             <Input
               id="tester-payouts"
               type="string"
-              value=""
+              value={testerTotal?.totalCost ? `${testerTotal.totalCost}€` : ""}
               disabled
               placeholder="-"
             />
@@ -72,7 +84,9 @@ export const CostAndResourceDetailsSection = ({
         <HorizontalDivider />
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <span>TOTAL COMMUNITY COSTS: </span>
-          <span style={{ fontWeight: "bold", marginLeft: "4px" }}>--€</span>
+          <span style={{ fontWeight: "bold", marginLeft: "4px" }}>
+            {(assistantTotal?.totalCost ?? 0) + (testerTotal?.totalCost ?? 0)}€
+          </span>
         </div>
       </Card>
       <Card className="aq-mb-4" title="Human Resources cost">
