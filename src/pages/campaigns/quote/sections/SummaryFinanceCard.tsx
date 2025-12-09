@@ -19,8 +19,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
   const { data: communityCostsData, isLoading: isCommunityCostsDataLoading } =
     useGetDossiersByCampaignCostsQuery({
       campaign: campaignId,
-
-      filterBy: { type: "1" },
+      filterBy: { type: "1,2,3" },
     });
 
   const { data: hrCostsData, isLoading: isHrCostsDataLoading } =
@@ -35,6 +34,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
     isHrCostsDataLoading
   )
     return <Skeleton />;
+
   return (
     <Card className="aq-mb-4" title="Summary finance">
       <div
