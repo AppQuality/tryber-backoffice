@@ -57,7 +57,7 @@ const EditCampaign = () => {
           <StickyContainer>
             <div className="aq-mb-4">
               <QuoteInput campaignId={id} />
-              <SummaryFinanceCard />
+              <SummaryFinanceCard campaignId={id} />
               <FormSectionCard />
             </div>
           </StickyContainer>

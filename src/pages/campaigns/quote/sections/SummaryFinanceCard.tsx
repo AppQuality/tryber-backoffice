@@ -2,10 +2,39 @@ import {
   aqBootstrapTheme,
   BSCol,
   Card,
+  Skeleton,
 } from "@appquality/appquality-design-system";
+import {
+  useGetDossiersByCampaignAgreementsQuery,
+  useGetDossiersByCampaignCostsQuery,
+} from "src/services/tryberApi";
 import { HorizontalDivider } from "../components/Dividers";
 
-export const SummaryFinanceCard = () => {
+export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
+  const { data: agreementData, isLoading: isAgreementDataLoading } =
+    useGetDossiersByCampaignAgreementsQuery({
+      campaign: campaignId,
+    });
+
+  const { data: communityCostsData, isLoading: isCommunityCostsDataLoading } =
+    useGetDossiersByCampaignCostsQuery({
+      campaign: campaignId,
+      filterBy: { type: "1,2,3" },
+    });
+
+  const { data: hrCostsData, isLoading: isHrCostsDataLoading } =
+    useGetDossiersByCampaignCostsQuery({
+      campaign: campaignId,
+      filterBy: { type: "4" },
+    });
+
+  if (
+    isAgreementDataLoading ||
+    isCommunityCostsDataLoading ||
+    isHrCostsDataLoading
+  )
+    return <Skeleton />;
+
   return (
     <Card className="aq-mb-4" title="Summary finance">
       <div
@@ -30,7 +59,11 @@ export const SummaryFinanceCard = () => {
               color: aqBootstrapTheme.palette.secondary,
             }}
           >
-            --€
+            {agreementData?.tokens && agreementData?.agreement?.value
+              ? `${(
+                  agreementData.tokens * agreementData.agreement.value
+                ).toFixed(2)}€`
+              : "--€"}
           </span>
         </div>
 
@@ -48,7 +81,9 @@ export const SummaryFinanceCard = () => {
               color: aqBootstrapTheme.palette.primary,
             }}
           >
-            --€
+            {communityCostsData?.totalCost
+              ? `${communityCostsData.totalCost.toFixed(2)}€`
+              : "--€"}
           </span>
         </div>
 
@@ -66,7 +101,9 @@ export const SummaryFinanceCard = () => {
               color: aqBootstrapTheme.palette.primary,
             }}
           >
-            --€
+            {hrCostsData?.totalCost
+              ? `${hrCostsData.totalCost.toFixed(2)}€`
+              : "--€"}
           </span>
         </div>
 
@@ -87,7 +124,11 @@ export const SummaryFinanceCard = () => {
               color: aqBootstrapTheme.palette.primary,
             }}
           >
-            --€
+            {(
+              (communityCostsData?.totalCost || 0) +
+              (hrCostsData?.totalCost || 0)
+            ).toFixed(2)}
+            €
           </span>
         </div>
 
@@ -127,7 +168,16 @@ export const SummaryFinanceCard = () => {
                   color: aqBootstrapTheme.colors.green,
                 }}
               >
-                --%
+                {agreementData?.tokens && agreementData?.agreement?.value
+                  ? `${(
+                      ((agreementData.tokens * agreementData.agreement.value -
+                        ((communityCostsData?.totalCost || 0) +
+                          (hrCostsData?.totalCost || 0))) /
+                        (agreementData.tokens *
+                          agreementData.agreement.value)) *
+                      100
+                    ).toFixed(2)}%`
+                  : "--%"}
               </strong>
             </div>
           </BSCol>
