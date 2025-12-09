@@ -7,6 +7,7 @@ import {
 import {
   useGetDossiersByCampaignAgreementsQuery,
   useGetDossiersByCampaignCostsQuery,
+  useGetDossiersByCampaignHumanResourcesQuery,
 } from "src/services/tryberApi";
 import { HorizontalDivider } from "../components/Dividers";
 
@@ -19,14 +20,21 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
   const { data: communityCostsData, isLoading: isCommunityCostsDataLoading } =
     useGetDossiersByCampaignCostsQuery({
       campaign: campaignId,
-      filterBy: { type: "1,2,3" },
+      filterBy: { type: "1,2,3,4" },
     });
 
   const { data: hrCostsData, isLoading: isHrCostsDataLoading } =
-    useGetDossiersByCampaignCostsQuery({
+    useGetDossiersByCampaignHumanResourcesQuery({
       campaign: campaignId,
-      filterBy: { type: "4" },
     });
+
+  const hrCostsTotal =
+    hrCostsData?.items && hrCostsData?.items.length > 0
+      ? hrCostsData.items.reduce(
+          (acc, hr) => acc + (hr?.days ?? 0) * (hr?.rate?.value ?? 0),
+          0
+        )
+      : 0;
 
   if (
     isAgreementDataLoading ||
@@ -101,9 +109,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
               color: aqBootstrapTheme.palette.primary,
             }}
           >
-            {hrCostsData?.totalCost
-              ? `${hrCostsData.totalCost.toFixed(2)}€`
-              : "--€"}
+            {hrCostsTotal.toFixed(2)}€{" "}
           </span>
         </div>
 
@@ -124,11 +130,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
               color: aqBootstrapTheme.palette.primary,
             }}
           >
-            {(
-              (communityCostsData?.totalCost || 0) +
-              (hrCostsData?.totalCost || 0)
-            ).toFixed(2)}
-            €
+            {((communityCostsData?.totalCost || 0) + hrCostsTotal).toFixed(2)}€
           </span>
         </div>
 
@@ -171,8 +173,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
                 {agreementData?.tokens && agreementData?.agreement?.value
                   ? `${(
                       ((agreementData.tokens * agreementData.agreement.value -
-                        ((communityCostsData?.totalCost || 0) +
-                          (hrCostsData?.totalCost || 0))) /
+                        ((communityCostsData?.totalCost || 0) + hrCostsTotal)) /
                         (agreementData.tokens *
                           agreementData.agreement.value)) *
                       100
