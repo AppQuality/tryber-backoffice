@@ -3,14 +3,16 @@ import {
   BSCol,
   Button,
   Card,
-  Dropdown,
   ErrorMessage,
   FieldProps,
   FormGroup,
   Formik,
   FormikField,
+  FormLabel,
   Input,
+  Select,
 } from "@appquality/appquality-design-system";
+import { Form, useFormikContext } from "formik";
 import { useParams } from "react-router";
 import {
   useGetCustomersByCustomerIdAgreementsQuery,
@@ -18,10 +20,10 @@ import {
   useGetDossiersByCampaignQuery,
   usePutDossiersByCampaignAgreementsMutation,
 } from "src/services/tryberApi";
-import { Section } from "../../components/campaignForm/Section";
+import { styled } from "styled-components";
 import * as yup from "yup";
+import { Section } from "../../components/campaignForm/Section";
 import { VerticalDivider } from "../components/Dividers";
-import { Form, useFormikContext } from "formik";
 
 type RevenueOverviewFormValues = {
   agreement: {
@@ -33,11 +35,16 @@ type RevenueOverviewFormValues = {
 };
 
 type RevenueFormContentProps = {
-  agreementsOptions: { label: string; value: string }[];
+  agreementsOptions: { label: React.ReactNode; value: string }[];
 };
 
+const Wrapper = styled.div`
+  .aq-select-single small {
+    display: none;
+  }
+`;
 const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
-  const { values, setFieldValue } =
+  const { values, setFieldValue, isSubmitting, isValid, dirty } =
     useFormikContext<RevenueOverviewFormValues>();
   return (
     <Form>
@@ -53,12 +60,19 @@ const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
             <FormikField name="tokenUsage">
               {({ field }: FieldProps) => (
                 <FormGroup>
-                  <div>
-                    Token Used{" "}
-                    <span style={{ color: aqBootstrapTheme.palette.danger }}>
-                      *
-                    </span>
-                  </div>
+                  <FormLabel
+                    htmlFor="tokenUsage"
+                    label={
+                      <>
+                        Token Used{" "}
+                        <span
+                          style={{ color: aqBootstrapTheme.palette.danger }}
+                        >
+                          *
+                        </span>
+                      </>
+                    }
+                  />
                   <Input
                     id="tokenUsage"
                     type="string"
@@ -77,21 +91,27 @@ const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
             <FormikField name="agreement">
               {({ field }: FieldProps) => (
                 <FormGroup>
-                  <div>
-                    Linked agreement{" "}
-                    <span style={{ color: aqBootstrapTheme.palette.danger }}>
-                      *
-                    </span>
-                  </div>
-                  <Dropdown
-                    name="agreement-dropdown"
-                    value={field.value}
-                    placeholder="Choose an agreement..."
-                    options={agreementsOptions}
-                    onChange={(value) => {
-                      setFieldValue(field.name, value, true);
-                    }}
-                  />
+                  <Wrapper>
+                    <Select
+                      label={
+                        <>
+                          Linked Agreement{" "}
+                          <span
+                            style={{ color: aqBootstrapTheme.palette.danger }}
+                          >
+                            *
+                          </span>
+                        </>
+                      }
+                      name="agreement-dropdown"
+                      value={field.value}
+                      placeholder="Choose an agreement..."
+                      options={agreementsOptions}
+                      onChange={(value) => {
+                        setFieldValue(field.name, value, true);
+                      }}
+                    />
+                  </Wrapper>
                   <ErrorMessage name={field.name} />
                   <Button
                     forwardedAs="a"
@@ -182,7 +202,12 @@ const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
         </div>
       </Card>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button type="submit" kind="primary" size="sm">
+        <Button
+          disabled={isSubmitting || !isValid || !dirty}
+          type="submit"
+          kind="primary"
+          size="sm"
+        >
           Save
         </Button>
       </div>
@@ -205,7 +230,12 @@ export const RevenueOverviewSection = () => {
 
   const agreementsOptions = customerAgreements
     ? customerAgreements.items.map((agreement) => ({
-        label: agreement.name,
+        label: (
+          <>
+            <div>{agreement.name}</div>
+            <small>🪙 0/100 available tokens 💰 146€ / token</small>
+          </>
+        ),
         value: agreement.id?.toString() || "",
         tokenValue: agreement.value || 0,
       }))

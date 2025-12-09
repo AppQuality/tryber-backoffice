@@ -21,7 +21,7 @@ const AutoApprove = () => {
             id="autoApprove"
             label="Enable AI to automatically approve reported bugs"
             checked={field.value}
-            onChange={(e) => {
+            onChange={(e: any) => {
               setFieldValue("autoApprove", e.target.checked);
             }}
           />

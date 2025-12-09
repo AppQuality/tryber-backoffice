@@ -21,7 +21,7 @@ const AutoApply = () => {
             id="autoApply"
             label="Should auto-select candidates once the tester applies?"
             checked={field.value}
-            onChange={(e) => {
+            onChange={(e: any) => {
               setFieldValue("autoApply", e.target.checked);
             }}
           />

@@ -1,5 +1,4 @@
 import { Button, Table } from "@appquality/appquality-design-system";
-import React from "react";
 import openInWordpress from "src/utils/openInWordpress";
 import { getQuoteStatusPill } from "./statusPill";
 
@@ -22,7 +21,7 @@ export const QuoteTable = ({ data }: { data: QuoteTableRow[] }) => {
             content: (
               <Button
                 kind="link-hover"
-                onClick={(e) =>
+                onClick={(e: any) =>
                   openInWordpress(e, "open-edit", { id: d.campaignId })
                 }
                 style={{ padding: 0 }}

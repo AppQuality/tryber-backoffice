@@ -254,6 +254,12 @@ tryberApi.enhanceEndpoints({
     getDossiersByCampaignHumanResources: {
       providesTags: ["HumanResources"],
     },
+    getDossiersByCampaignAgreements: {
+      providesTags: ["Agreements"],
+    },
+    putDossiersByCampaignAgreements: {
+      invalidatesTags: ["Agreements"],
+    },
   },
 });
 

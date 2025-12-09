@@ -20,10 +20,6 @@ const FluidContainer = styled.div`
   }
 `;
 
-const HeaderButton = (props: Parameters<typeof Button>[0]) => {
-  return <Button {...props} size="sm" kind="link-hover" />;
-};
-
 const BugsList = () => {
   const { id } = useParams<{ id: string }>();
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
@@ -37,20 +33,25 @@ const BugsList = () => {
           isOpen={isStatsModalOpen}
           setIsOpen={setIsStatsModalOpen}
         />
-        <HeaderButton
+        <Button
           as="a"
           href={`/wp-admin/admin.php?page=mvc_campaigns`}
-          kind="secondary"
           className="aq-mr-2"
+          size="sm"
+          kind="link-hover"
         >
           {"<"} To Campaign List
-        </HeaderButton>
-        <HeaderButton as="a" href={`/campaigns/${id}`} className="aq-mr-2">
+        </Button>
+        <Button
+          as="a"
+          href={`/campaigns/${id}`}
+          className="aq-mr-2"
+          size="sm"
+          kind="link-hover"
+        >
           {"<"} To Dashboard
-        </HeaderButton>
-        <HeaderButton onClick={() => setIsStatsModalOpen(true)}>
-          Stats
-        </HeaderButton>
+        </Button>
+        <Button onClick={() => setIsStatsModalOpen(true)}>Stats</Button>
         <FilterContext>
           <div className="aq-my-3">
             <Filters id={id} />

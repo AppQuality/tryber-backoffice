@@ -41,7 +41,7 @@ const GenderRequirements = () => {
                   name={`${field.name}.options`}
                   label={option.label}
                   checked={value.options.includes(option.value)}
-                  onChange={(e) => {
+                  onChange={(e: any) => {
                     const newOptions = e.target.checked
                       ? [...value.options, option.value]
                       : value.options.filter(
