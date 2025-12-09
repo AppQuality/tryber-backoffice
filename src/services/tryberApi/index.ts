@@ -544,6 +544,16 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/dossiers/${queryArg.campaign}/humanResources`,
       }),
     }),
+    putDossiersByCampaignHumanResources: build.mutation<
+      PutDossiersByCampaignHumanResourcesApiResponse,
+      PutDossiersByCampaignHumanResourcesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/dossiers/${queryArg.campaign}/humanResources`,
+        method: "PUT",
+        body: queryArg.body,
+      }),
+    }),
     postDossiersByCampaignManual: build.mutation<
       PostDossiersByCampaignManualApiResponse,
       PostDossiersByCampaignManualApiArg
@@ -1167,6 +1177,16 @@ const injectedRtkApi = api.injectEndpoints({
       GetUsersMeRankListApiArg
     >({
       query: () => ({ url: `/users/me/rank/list` }),
+    }),
+    postCampaignsByCampaignTasksAndUsecaseSurveyJotform: build.mutation<
+      PostCampaignsByCampaignTasksAndUsecaseSurveyJotformApiResponse,
+      PostCampaignsByCampaignTasksAndUsecaseSurveyJotformApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/tasks/${queryArg.usecase}/survey/jotform`,
+        method: "POST",
+        body: queryArg.body,
+      }),
     }),
   }),
   overrideExisting: false,
@@ -2266,6 +2286,18 @@ export type GetDossiersByCampaignHumanResourcesApiResponse =
 export type GetDossiersByCampaignHumanResourcesApiArg = {
   /** A campaign id */
   campaign: string;
+};
+export type PutDossiersByCampaignHumanResourcesApiResponse =
+  /** status 200 OK */ undefined;
+export type PutDossiersByCampaignHumanResourcesApiArg = {
+  /** A campaign id */
+  campaign: string;
+  /** Overwrites the data for the given campaign in the campaign_human_resources table */
+  body: {
+    assignee: number;
+    days: number;
+    rate: number;
+  }[];
 };
 export type PostDossiersByCampaignManualApiResponse = /** status 200 OK */ {};
 export type PostDossiersByCampaignManualApiArg = {
@@ -3368,6 +3400,16 @@ export type GetUsersMeRankListApiResponse = /** status 200 OK */ {
   tops: RankingItem[];
 };
 export type GetUsersMeRankListApiArg = void;
+export type PostCampaignsByCampaignTasksAndUsecaseSurveyJotformApiResponse =
+  /** status 200 OK */ {};
+export type PostCampaignsByCampaignTasksAndUsecaseSurveyJotformApiArg = {
+  campaign: string;
+  usecase: string;
+  body: {
+    jotformId: string;
+    testerQuestionId: string;
+  };
+};
 export type Agreement = {
   expirationDate: string;
   isTokenBased?: boolean;
@@ -3753,6 +3795,7 @@ export const {
   useGetDossiersByCampaignAvailableTestersQuery,
   useGetDossiersByCampaignCostsQuery,
   useGetDossiersByCampaignHumanResourcesQuery,
+  usePutDossiersByCampaignHumanResourcesMutation,
   usePostDossiersByCampaignManualMutation,
   usePutDossiersByCampaignPhasesMutation,
   usePostDossiersByCampaignPreviewMutation,
@@ -3826,4 +3869,5 @@ export const {
   useGetUsersMePopupsByPopupQuery,
   useGetUsersMeRankQuery,
   useGetUsersMeRankListQuery,
+  usePostCampaignsByCampaignTasksAndUsecaseSurveyJotformMutation,
 } = injectedRtkApi;
