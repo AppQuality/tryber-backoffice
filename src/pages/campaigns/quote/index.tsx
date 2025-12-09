@@ -1,10 +1,4 @@
-import {
-  aqBootstrapTheme,
-  BSCol,
-  BSGrid,
-  Card,
-  Steps,
-} from "@appquality/appquality-design-system";
+import { BSCol, BSGrid } from "@appquality/appquality-design-system";
 import { useParams } from "react-router-dom";
 import { PageTemplate } from "src/features/PageTemplate";
 import { styled } from "styled-components";
