@@ -9,6 +9,7 @@ import { RevenueOverviewSection } from "./sections/RevenueOverviewSection";
 import { CostAndResourceDetailsSection } from "./sections/CostAndResourceDetailsSection";
 import { SummaryFinanceCard } from "./sections/SummaryFinanceCard";
 import { FormSectionCard } from "./sections/FormSectionCard";
+import { useGetDossiersByCampaignQuery } from "src/services/tryberApi";
 
 const FullGrid = styled(BSGrid)`
   width: 100%;
@@ -21,26 +22,25 @@ const StickyContainer = styled.div`
   }
 `;
 
-const HorizontalDivider = styled.div`
-  margin-top: 12px;
-  margin-bottom: 12px;
-  width: 100%;
-  height: 1px;
-  background: #ccc;
-`;
-
 const EditCampaign = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useQuoteRecap({ campaign: Number(id) });
+
+  const { data: dossierData, isLoading: isDossierLoading } =
+    useGetDossiersByCampaignQuery({
+      campaign: id,
+    });
 
   return (
     <PageTemplate>
       <FullGrid>
         <BSCol size="col-lg-8">
-          <QuoteHistorySection
-            history={data.history}
-            otherCampaigns={data.otherCampaigns}
-          />
+          {dossierData?.hasPlan && (
+            <QuoteHistorySection
+              history={data.history}
+              otherCampaigns={data.otherCampaigns}
+            />
+          )}
 
           <RevenueOverviewSection />
 
@@ -50,8 +50,8 @@ const EditCampaign = () => {
         <BSCol size="col-lg-4">
           <StickyContainer>
             <div className="aq-mb-4">
-              <QuoteInput campaignId={id} />
-              <SummaryFinanceCard />
+              {dossierData?.hasPlan && <QuoteInput campaignId={id} />}
+              <SummaryFinanceCard campaignId={id} />
               <FormSectionCard />
             </div>
           </StickyContainer>

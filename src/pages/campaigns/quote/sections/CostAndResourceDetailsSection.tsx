@@ -8,6 +8,7 @@ import {
 import { Section } from "../../components/campaignForm/Section";
 import { HorizontalDivider } from "../components/Dividers";
 import { useGetDossiersByCampaignCostsQuery } from "src/services/tryberApi";
+import HumanResources from "./HumanResources";
 
 type CostAndResourceDetailsSectionProps = {
   campaignId?: string;
@@ -90,32 +91,7 @@ export const CostAndResourceDetailsSection = ({
         </div>
       </Card>
       <Card className="aq-mb-4" title="Human Resources cost">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-          }}
-        >
-          <span style={{ color: aqBootstrapTheme.palette.info }}>
-            💡
-            <span style={{ fontWeight: "bold" }}>
-              Add Human Resources
-            </span> and{" "}
-            <span style={{ fontWeight: "bold" }}>fill all required fields</span>{" "}
-            (*) to enable saving
-          </span>
-          <div>
-            <Button
-              forwardedAs="a"
-              href={`/backoffice/${campaignId}/prospect`}
-              kind="link"
-              target="_blank"
-            >
-              + Add Human Resources
-            </Button>
-          </div>
-        </div>
+        <HumanResources campaignId={campaignId || "0"} />
       </Card>
     </Section>
   );
