@@ -233,7 +233,10 @@ export const RevenueOverviewSection = () => {
         label: (
           <>
             <div>{agreement.name}</div>
-            <small>🪙 0/100 available tokens 💰 146€ / token</small>
+            <small>
+              🪙 {agreement.remainingTokens}/{agreement.totalTokens} available
+              tokens 💰 {agreement.value}€ / token
+            </small>
           </>
         ),
         value: agreement.id?.toString() || "",
