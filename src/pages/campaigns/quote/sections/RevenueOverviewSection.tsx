@@ -14,6 +14,7 @@ import {
 } from "@appquality/appquality-design-system";
 import { Form, useFormikContext } from "formik";
 import { useParams } from "react-router";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   useGetCustomersByCustomerIdAgreementsQuery,
   useGetDossiersByCampaignAgreementsQuery,
@@ -218,6 +219,8 @@ const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
 export const RevenueOverviewSection = () => {
   const { id } = useParams<{ id: string }>();
   const { data: dossier } = useGetDossiersByCampaignQuery({ campaign: id });
+  const { add } = siteWideMessageStore();
+
   const { data: campaignAgreement } = useGetDossiersByCampaignAgreementsQuery({
     campaign: id,
   });
@@ -272,7 +275,17 @@ export const RevenueOverviewSection = () => {
         agreementId: Number(values.agreement.value),
         tokens: Number(values.tokenUsage),
       },
-    });
+    })
+      .unwrap()
+      .then((res) => {
+        add({ type: "success", message: "All set! Data saved successfully" });
+      })
+      .catch((e) => {
+        add({
+          type: "danger",
+          message: "Oops! Something went wrong. Please try again.",
+        });
+      });
   };
   return (
     <Section
