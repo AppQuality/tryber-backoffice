@@ -48,8 +48,7 @@ const FormProvider = ({
         items: (data.items || []).map((item) => ({
           assignee: item?.assignee?.id || 0,
           days: item?.days || 0,
-          // @ts-ignore
-          role: item?.work_rate?.id || 0,
+          role: item?.rate?.id || 0,
         })),
       }}
       validationSchema={validationSchema}
