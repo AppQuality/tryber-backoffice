@@ -3,17 +3,17 @@ import {
   BSGrid,
   Button,
   Card,
+  Container,
   Title,
 } from "@appquality/appquality-design-system";
-import FilterContext from "src/pages/agreements/list/FilterContext";
-import styled from "styled-components";
-import CustomersFilter from "src/pages/agreements/list/Filters/CustomersFilter";
-import { Container } from "@appquality/appquality-design-system";
-import { Agreements } from "./Agreements";
 import { ReactNode } from "react";
-import { useGetAgreementsQuery } from "src/services/tryberApi";
 import ErrorUnauthorized from "src/features/ErrorUnauthorized/ErrorUnauthorized";
 import { PageTemplate } from "src/features/PageTemplate";
+import FilterContext from "src/pages/agreements/list/FilterContext";
+import CustomersFilter from "src/pages/agreements/list/Filters/CustomersFilter";
+import { useGetAgreementsQuery } from "src/services/tryberApi";
+import styled from "styled-components";
+import { Agreements } from "./Agreements";
 
 const FluidContainer = styled.div`
     padding: 2rem;
@@ -25,10 +25,6 @@ const FlexContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
-const HeaderButton = (props: Parameters<typeof Button>[0]) => {
-  return <Button {...props} size="md" kind="secondary" />;
-};
 
 const AgreementsListPageContent = ({ children }: { children: ReactNode }) => {
   const { isLoading, isFetching, error } = useGetAgreementsQuery({});
@@ -60,14 +56,16 @@ const AgreementsListPage = () => (
       <FluidContainer>
         <FlexContainer>
           <Title size="m">Agreements List</Title>
-          <HeaderButton
+          <Button
+            size="md"
+            kind="secondary"
             as="a"
             href={`/backoffice/agreements/new`}
             className="aq-mr-2"
             id="add-new-agreement-btn"
           >
             + Add New
-          </HeaderButton>
+          </Button>
         </FlexContainer>
         <Card className="aq-pb-4">
           <FilterContext>

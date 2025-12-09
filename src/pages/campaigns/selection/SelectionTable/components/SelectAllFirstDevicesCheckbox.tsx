@@ -25,7 +25,7 @@ const SelectAllFirstDevicesCheckbox: FC<{ campaignId: string }> = ({
     <Checkbox
       name="selectAllFirstDevices"
       id="selectAllFirstDevices"
-      onChange={(e) => {
+      onChange={(e: any) => {
         dispatch(clearSelectedDevice());
 
         if (e.target.checked) {
