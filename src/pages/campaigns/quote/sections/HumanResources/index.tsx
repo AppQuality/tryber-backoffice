@@ -4,10 +4,13 @@ import {
   ErrorMessage,
   FormLabel,
   Input,
+  Modal,
+  ModalBody,
   Select,
   Text,
 } from "@appquality/appquality-design-system";
 import { FieldArray, useFormikContext } from "formik";
+import { useState } from "react";
 import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
 import {
   useGetDossiersByCampaignQuery,
@@ -96,6 +99,48 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
     useFormikContext<FormProps>();
   const { data: assignees } = useAssignees({ campaignId });
   const { data: rates } = useRates();
+  const [rowPendingRemoval, setRowPendingRemoval] = useState<number | null>(
+    null
+  );
+
+  const ModalHR = ({
+    isOpen,
+    onCancel,
+    onConfirm,
+  }: {
+    isOpen?: boolean;
+    onCancel: () => void;
+    onConfirm: () => void;
+  }) => {
+    return (
+      <Modal
+        title="Delete this Research cost?"
+        isOpen={isOpen}
+        onClose={onCancel}
+        footer={
+          <div className="aq-float-right">
+            <Button onClick={onCancel} className="aq-mx-2">
+              Cancel
+            </Button>
+            <Button kind="danger" onClick={onConfirm} className="aq-mx-2">
+              Delete
+            </Button>
+          </div>
+        }
+      >
+        <ModalBody>
+          <Text>
+            <strong>
+              This will permanently remove this cost item from the campaign
+              budget.
+            </strong>{" "}
+            <br />
+            Are you sure?
+          </Text>
+        </ModalBody>
+      </Modal>
+    );
+  };
 
   return (
     <>
@@ -113,7 +158,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
             {values.items &&
               values.items.length > 0 &&
               values.items.map((item, index) => (
-                <StyledRow>
+                <StyledRow key={`hr-row-${index}`}>
                   <div>
                     <Select
                       menuTargetQuery={"body"}
@@ -181,13 +226,23 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                     <Button
                       size="sm"
                       kind="danger"
-                      onClick={() => arrayHelpers.remove(index)}
+                      onClick={() => setRowPendingRemoval(index)}
                     >
                       <DeleteIcon />
                     </Button>
                   </div>
                 </StyledRow>
               ))}
+            <ModalHR
+              isOpen={rowPendingRemoval !== null}
+              onCancel={() => setRowPendingRemoval(null)}
+              onConfirm={() => {
+                if (rowPendingRemoval === null) return;
+                arrayHelpers.remove(rowPendingRemoval);
+                setRowPendingRemoval(null);
+                submitForm();
+              }}
+            />
             <div>
               <Button
                 forwardedAs="a"
