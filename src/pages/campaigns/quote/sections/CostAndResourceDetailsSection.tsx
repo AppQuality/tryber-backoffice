@@ -37,7 +37,7 @@ export const CostAndResourceDetailsSection = ({
           💡 These parameters are read-only. Manage them in the
           <Button
             forwardedAs="a"
-            href={`/backoffice/${campaignId}/prospect`}
+            href={`/backoffice/campaigns/${campaignId}/prospect`}
             kind="link"
             target="_blank"
           >
