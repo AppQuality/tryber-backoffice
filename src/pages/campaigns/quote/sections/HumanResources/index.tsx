@@ -42,6 +42,7 @@ const StyledRow = styled.div`
 `;
 
 type RateOption = {
+  notSaved?: boolean;
   value: string;
   label: string;
   dailyRate: number;
@@ -275,7 +276,11 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         <Button
                           size="sm"
                           kind="danger"
-                          onClick={() => setRowPendingRemoval(index)}
+                          onClick={() => {
+                            values.items[index].notSaved
+                              ? arrayHelpers.remove(index)
+                              : setRowPendingRemoval(index);
+                          }}
                         >
                           <DeleteIcon />
                         </Button>
@@ -322,7 +327,12 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
               <Button
                 forwardedAs="a"
                 onClick={() => {
-                  arrayHelpers.push({ assignee: 0, days: 0, role: 0 });
+                  arrayHelpers.push({
+                    notSaved: true,
+                    assignee: 0,
+                    days: 0,
+                    role: 0,
+                  });
                 }}
                 kind="link"
               >
