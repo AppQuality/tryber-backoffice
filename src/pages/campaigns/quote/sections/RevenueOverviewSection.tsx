@@ -27,7 +27,7 @@ import { Section } from "../../components/campaignForm/Section";
 import { VerticalDivider } from "../components/Dividers";
 
 type RevenueOverviewFormValues = {
-  agreement: number;
+  agreement: string;
   tokenUsage: string;
 };
 
