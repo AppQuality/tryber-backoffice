@@ -41,6 +41,12 @@ const StyledRow = styled.div`
   }
 `;
 
+type RateOption = {
+  value: string;
+  label: string;
+  dailyRate: number;
+};
+
 const useAssignees = ({ campaignId }: { campaignId: string }) => {
   const { data, isLoading } = useGetDossiersByCampaignQuery({
     campaign: campaignId,
@@ -72,17 +78,20 @@ const useAssignees = ({ campaignId }: { campaignId: string }) => {
     isLoading,
   };
 };
+
 const useRates = () => {
   const { data, isLoading } = useGetDossiersRatesQuery();
 
   if (!data || isLoading) {
-    return { data: [], isLoading };
+    return { data: [] as RateOption[], isLoading };
   }
   return {
     data: data.items.map((rate) => ({
       value: String(rate.id),
       label: `${rate.name} - ${rate.rate}€ / day`,
+      dailyRate: rate.rate,
     })),
+    isLoading: false,
   };
 };
 
@@ -142,6 +151,16 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
     );
   };
 
+  const totalHR = values.items
+    ? values.items
+        .reduce((sum, item) => {
+          const rateOption = rates.find((r) => r.value === String(item.role));
+          const subtotal = rateOption ? rateOption.dailyRate * item.days : 0;
+          return sum + subtotal;
+        }, 0)
+        .toFixed(2)
+    : 0;
+
   return (
     <>
       <span style={{ color: aqBootstrapTheme.palette.info }}>
@@ -157,82 +176,128 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
           <>
             {values.items &&
               values.items.length > 0 &&
-              values.items.map((item, index) => (
-                <StyledRow key={`hr-row-${index}`}>
-                  <div>
-                    <Select
-                      menuTargetQuery={"body"}
-                      name={"assignee-select"}
-                      options={assignees}
-                      label={
-                        <Text>
-                          Assignee <span style={{ color: "red" }}>*</span>
-                        </Text>
-                      }
-                      value={{ value: String(item.assignee), label: "Option" }}
-                      onChange={(newOptions) => {
-                        arrayHelpers.replace(index, {
-                          ...item,
-                          assignee: Number(newOptions.value),
-                        });
+              values.items.map((item, index) => {
+                const selectedAssignee = assignees.find(
+                  (a) => a.value === String(item.assignee)
+                );
+
+                const selectedRateOption = rates.find(
+                  (r) => r.value === String(item.role)
+                );
+
+                const rateForSelect: RateOption = selectedRateOption ?? {
+                  // fallback option
+                  value: String(item.role ?? ""),
+                  label: "",
+                  dailyRate: 0,
+                };
+
+                const subtotal = (rateForSelect.dailyRate * item.days).toFixed(
+                  2
+                );
+
+                return (
+                  <div key={`hr-row-wrapper-${index}`}>
+                    <StyledRow>
+                      <div>
+                        <Select
+                          menuTargetQuery={"body"}
+                          name={"assignee-select"}
+                          options={assignees}
+                          label={
+                            <Text>
+                              Assignee <span style={{ color: "red" }}>*</span>
+                            </Text>
+                          }
+                          value={
+                            selectedAssignee ?? {
+                              value: String(item.assignee ?? ""),
+                              label: "",
+                            }
+                          }
+                          onChange={(newOption) => {
+                            arrayHelpers.replace(index, {
+                              ...item,
+                              assignee: Number(newOption.value),
+                            });
+                          }}
+                          noOptionsMessage={() => "No options"}
+                        />
+                      </div>
+
+                      <div>
+                        <FormLabel
+                          htmlFor={`days-input-${index}`}
+                          label={
+                            <Text>
+                              Number of days{" "}
+                              <span style={{ color: "red" }}>*</span>
+                            </Text>
+                          }
+                        />
+                        <Input
+                          id={`days-input-${index}`}
+                          type="number"
+                          value={item.days.toString()}
+                          onChange={(e) => {
+                            const newValue = Number(e);
+                            arrayHelpers.replace(index, {
+                              ...item,
+                              days: newValue,
+                            });
+                          }}
+                        />
+                      </div>
+
+                      <div>
+                        <Select
+                          placeholder={"-"}
+                          menuTargetQuery={"body"}
+                          name={"dailyrate-select"}
+                          options={rates}
+                          label={
+                            <Text>
+                              Daily rate <span style={{ color: "red" }}>*</span>
+                            </Text>
+                          }
+                          value={rateForSelect}
+                          onChange={(newOption) => {
+                            arrayHelpers.replace(index, {
+                              ...item,
+                              role: Number(newOption.value),
+                            });
+                          }}
+                          noOptionsMessage={() => "No options"}
+                        />
+                      </div>
+
+                      <div>
+                        <Button
+                          size="sm"
+                          kind="danger"
+                          onClick={() => setRowPendingRemoval(index)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </div>
+                    </StyledRow>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        marginBottom: "8px",
                       }}
-                      noOptionsMessage={() => "No options"}
-                    />
-                  </div>
-                  <div>
-                    <FormLabel
-                      htmlFor={`days-input-${index}`}
-                      label={
-                        <Text>
-                          Number of days <span style={{ color: "red" }}>*</span>
-                        </Text>
-                      }
-                    />
-                    <Input
-                      id={`days-input-${index}`}
-                      type="number"
-                      value={item.days.toString()}
-                      onChange={(e) => {
-                        const newValue = Number(e);
-                        arrayHelpers.replace(index, {
-                          ...item,
-                          days: newValue,
-                        });
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <Select
-                      placeholder={"-"}
-                      menuTargetQuery={"body"}
-                      name={"dailyrate-select"}
-                      options={rates}
-                      label={
-                        <Text>
-                          Daily rate <span style={{ color: "red" }}>*</span>
-                        </Text>
-                      }
-                      value={{ value: String(item.role), label: "Option" }}
-                      onChange={(newOptions) => {
-                        arrayHelpers.replace(index, {
-                          ...item,
-                          role: Number(newOptions.value),
-                        });
-                      }}
-                      noOptionsMessage={() => "No options"}
-                    />
-                  </div>
-                  <div>
-                    <Button
-                      size="sm"
-                      kind="danger"
-                      onClick={() => setRowPendingRemoval(index)}
                     >
-                      <DeleteIcon />
-                    </Button>
+                      <Text>
+                        Subtotal:{" "}
+                        <span style={{ fontWeight: "bold" }}>{subtotal}€</span>
+                      </Text>
+                    </div>
                   </div>
-                </StyledRow>
-              ))}
+                );
+              })}
+
             <ModalHR
               isOpen={rowPendingRemoval !== null}
               onCancel={() => setRowPendingRemoval(null)}
@@ -243,17 +308,47 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                 submitForm();
               }}
             />
-            <div>
+
+            <div
+              style={{
+                marginTop: "16px",
+                paddingTop: "12px",
+                borderTop: "1px solid #ddd",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Button
                 forwardedAs="a"
                 onClick={() => {
                   arrayHelpers.push({ assignee: 0, days: 0, role: 0 });
                 }}
                 kind="link"
-                target="_blank"
               >
                 + Add Human Resources
               </Button>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ fontSize: "14px" }}>
+                  TOTAL HUMAN RESOURCES COSTS:{" "}
+                </Text>
+                <span
+                  style={{
+                    marginLeft: "6px",
+                    fontWeight: aqBootstrapTheme.typography.fontWeight.bold,
+                    fontSize: "20px",
+                  }}
+                >
+                  {totalHR}€
+                </span>
+              </div>
             </div>
           </>
         )}
