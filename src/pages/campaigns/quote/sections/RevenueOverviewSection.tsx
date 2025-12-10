@@ -235,17 +235,23 @@ const RevenueFormContent = ({
             </div>
           </BSCol>
         </div>
-      </Card>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          disabled={isSubmitting || !isValid || !dirty}
-          type="submit"
-          kind="primary"
-          size="sm"
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: aqBootstrapTheme.grid.spacing.default,
+          }}
         >
-          Save
-        </Button>
-      </div>
+          <Button
+            disabled={isSubmitting || !isValid || !dirty}
+            type="submit"
+            kind="primary"
+            size="sm"
+          >
+            Save
+          </Button>
+        </div>
+      </Card>
     </Form>
   );
 };
