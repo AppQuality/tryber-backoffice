@@ -5,10 +5,10 @@ import {
   Card,
   Input,
 } from "@appquality/appquality-design-system";
-import { Section } from "../../components/campaignForm/Section";
-import { HorizontalDivider } from "../components/Dividers";
 import { useGetDossiersByCampaignCostsQuery } from "src/services/tryberApi";
+import { HorizontalDivider } from "../components/Dividers";
 import HumanResources from "./HumanResources";
+import { Section } from "./Section";
 
 type CostAndResourceDetailsSectionProps = {
   campaignId?: string;

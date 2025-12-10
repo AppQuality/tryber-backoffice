@@ -19,7 +19,7 @@ export const QuoteBanner = ({ status }: { status: string }) => {
       </StyledDiv>
 
       {status === "pending" && (
-        <Text small color={"info"}>
+        <Text color={"info"}>
           💡 Please <strong>review this template-based quote.</strong>
           <br /> Saving it without changes will automatically confirm it
         </Text>

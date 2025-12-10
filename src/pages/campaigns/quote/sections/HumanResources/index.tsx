@@ -259,14 +259,16 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
         )}
       />
       <ErrorMessage name="items" />
-      <Button
-        disabled={!isValid || !dirty || isSubmitting}
-        onClick={submitForm}
-        type="submit"
-        style={{ marginTop: "16px" }}
-      >
-        Save
-      </Button>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          disabled={!isValid || !dirty || isSubmitting}
+          onClick={submitForm}
+          type="submit"
+          style={{ marginTop: "16px" }}
+        >
+          Save
+        </Button>
+      </div>
     </>
   );
 };

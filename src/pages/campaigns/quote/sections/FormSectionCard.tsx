@@ -1,7 +1,9 @@
-import React from "react";
 import { Card, Steps } from "@appquality/appquality-design-system";
+import { useQuoteFormContext } from "../QuoteFormContext";
 
-export const FormSectionCard = () => {
+export const FormSectionCard = ({ campaignId }: { campaignId: string }) => {
+  const { sections, goToSection, currentSection } = useQuoteFormContext();
+
   return (
     <Card className="aq-mb-4" title="Form Section">
       <div
@@ -11,14 +13,19 @@ export const FormSectionCard = () => {
           justifyContent: "flex-start",
         }}
       >
-        <Steps className="aq-m-3" current={0} direction="vertical">
-          <Steps.Step
-            description=""
-            isCompleted
-            title="History activity quotation"
-          />
-          <Steps.Step description="" title="Revenue details" />
-          <Steps.Step description="" title="Cost & Resource details" />
+        <Steps
+          direction="vertical"
+          current={sections.findIndex(
+            (section) => section.id === currentSection
+          )}
+          clickHandler={(index, current) => {
+            if (current === index) return;
+            goToSection(sections[index].id);
+          }}
+        >
+          {sections.map((section) => (
+            <Steps.Step key={section.id} title={section.title} />
+          ))}
         </Steps>
       </div>
     </Card>

@@ -1,6 +1,6 @@
 import { Accordion, Card } from "@appquality/appquality-design-system";
-import { Section } from "../../components/campaignForm/Section";
 import { QuoteTable, QuoteTableRow } from "../QuoteRecap";
+import { Section } from "./Section";
 
 export type QuoteHistorySectionProps = {
   history: QuoteTableRow[];

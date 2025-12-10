@@ -23,8 +23,8 @@ import {
 } from "src/services/tryberApi";
 import { styled } from "styled-components";
 import * as yup from "yup";
-import { Section } from "../../components/campaignForm/Section";
 import { VerticalDivider } from "../components/Dividers";
+import { Section } from "./Section";
 
 type RevenueOverviewFormValues = {
   agreement: string;
