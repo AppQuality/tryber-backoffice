@@ -62,9 +62,9 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
           }}
         >
           <Title size="s">📥 TOTAL REVENUE: </Title>
-          <span
+          <Title
+            size="s"
             style={{
-              fontWeight: "bold",
               color: aqBootstrapTheme.palette.secondary,
             }}
           >
@@ -73,7 +73,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
                   agreementData.tokens * agreementData.agreement.value
                 ).toFixed(2)}€`
               : "--€"}
-          </span>
+          </Title>
         </div>
 
         <div
@@ -122,17 +122,18 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            marginBottom: "12px",
           }}
         >
           <Title size="s">📥 TOTAL COST: </Title>
-          <span
+          <Title
+            size="s"
             style={{
-              fontWeight: "bold",
               color: aqBootstrapTheme.palette.primary,
             }}
           >
             {((communityCostsData?.totalCost || 0) + hrCostsTotal).toFixed(2)}€
-          </span>
+          </Title>
         </div>
 
         <div
@@ -148,13 +149,12 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
           <BSCol size="col-9">
             <div
               style={{
-                marginTop: "12px",
                 display: "flex",
                 alignItems: "center",
                 alignContent: "center",
+                justifyContent: "center",
                 gap: "4px 25px",
                 flexDirection: "row",
-                flexWrap: "wrap",
               }}
             >
               <Title size="s">💰 GROSS MARGIN</Title>
