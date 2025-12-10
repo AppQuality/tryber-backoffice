@@ -6,7 +6,7 @@ ARG SENTRY_AUTH_TOKEN
 ARG NPM_TOKEN
 RUN echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc  
 RUN cat .npmrc
-RUN ["yarn", "install", "--frozen-lockfile", "--ignore-scripts"]
+RUN yarn install --frozen-lockfile --ignore-scripts; cat /yarn-error.log
 RUN cat /yarn-error.log
 RUN rm -f .npmrc
 
