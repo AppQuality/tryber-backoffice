@@ -3,8 +3,10 @@ FROM node:18-alpine3.17 as base
 COPY package.json ./
 COPY yarn.lock ./
 ARG SENTRY_AUTH_TOKEN
-ARG NPM_TOKEN  
-RUN echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
+ARG NPM_TOKEN
+RUN echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc  
+RUN cat .npmrc
+RUN cat /yarn-error.log
 RUN ["yarn", "install", "--frozen-lockfile", "--ignore-scripts"]
 RUN rm -f .npmrc
 
