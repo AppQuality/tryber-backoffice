@@ -195,7 +195,7 @@ const RevenueFormContent = ({
                   color: aqBootstrapTheme.palette.primary,
                 }}
               >
-                {selectedAgreement.value || "--"}€
+                {selectedAgreement.value || "0.00"}€
               </strong>
             </div>
           </BSCol>
@@ -229,7 +229,7 @@ const RevenueFormContent = ({
                   (
                     Number(values.tokenUsage) * (selectedAgreement.value || 0)
                   ).toString()
-                ).toFixed(2) || "--"}{" "}
+                ).toFixed(2) || "0.00"}{" "}
                 €
               </strong>
             </div>
