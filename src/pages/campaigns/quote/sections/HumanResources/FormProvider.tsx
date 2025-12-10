@@ -9,6 +9,7 @@ import siteWideMessageStore from "src/redux/siteWideMessages";
 
 export type FormProps = {
   items: Array<{
+    notSaved?: boolean;
     assignee: number;
     days: number;
     role: number;
