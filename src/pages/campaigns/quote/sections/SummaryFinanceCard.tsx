@@ -3,6 +3,7 @@ import {
   BSCol,
   Card,
   Skeleton,
+  Title,
 } from "@appquality/appquality-design-system";
 import {
   useGetDossiersByCampaignAgreementsQuery,
@@ -60,7 +61,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
             alignItems: "center",
           }}
         >
-          <span style={{ fontWeight: "bold" }}>📥 TOTAL REVENUE: </span>
+          <Title size="s">📥 TOTAL REVENUE: </Title>
           <span
             style={{
               fontWeight: "bold",
@@ -123,7 +124,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
             alignItems: "center",
           }}
         >
-          <span style={{ fontWeight: "bold" }}>📥 TOTAL COST: </span>
+          <Title size="s">📥 TOTAL COST: </Title>
           <span
             style={{
               fontWeight: "bold",
@@ -156,13 +157,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
                 flexWrap: "wrap",
               }}
             >
-              <span
-                style={{
-                  fontWeight: aqBootstrapTheme.typography.fontWeight.bold,
-                }}
-              >
-                💰 GROSS MARGIN
-              </span>
+              <Title size="s">💰 GROSS MARGIN</Title>
               <strong
                 style={{
                   fontSize: "24px",
