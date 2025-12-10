@@ -27,15 +27,12 @@ import { Section } from "../../components/campaignForm/Section";
 import { VerticalDivider } from "../components/Dividers";
 
 type RevenueOverviewFormValues = {
-  agreement: {
-    label: string;
-    value: string;
-    tokenValue: number;
-  };
+  agreement: number;
   tokenUsage: string;
 };
 
 type RevenueFormContentProps = {
+  customerId: string;
   agreementsOptions: { label: React.ReactNode; value: string }[];
 };
 
@@ -44,9 +41,35 @@ const Wrapper = styled.div`
     display: none;
   }
 `;
-const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
+
+const useGetAgreement = ({ customerId }: { customerId: string }) => {
+  const { data: customerAgreements } =
+    useGetCustomersByCustomerIdAgreementsQuery({
+      customerId: customerId,
+    });
+
+  if (!customerAgreements) {
+    return () => ({ value: undefined });
+  }
+
+  return (agreementId: string) => {
+    const a = customerAgreements.items.find(
+      (agreement) => agreement.id?.toString() === agreementId
+    );
+
+    return a || { value: undefined };
+  };
+};
+
+const RevenueFormContent = ({
+  customerId,
+  agreementsOptions,
+}: RevenueFormContentProps) => {
   const { values, setFieldValue, isSubmitting, isValid, dirty } =
     useFormikContext<RevenueOverviewFormValues>();
+  const getAgreement = useGetAgreement({ customerId });
+
+  const selectedAgreement = getAgreement(values.agreement.toString());
   return (
     <Form>
       <Card className="aq-mb-4" title="Revenue details">
@@ -105,11 +128,11 @@ const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
                         </>
                       }
                       name="agreement-dropdown"
-                      value={field.value}
+                      value={{ value: field.value, label: "" }}
                       placeholder="Choose an agreement..."
                       options={agreementsOptions}
                       onChange={(value) => {
-                        setFieldValue(field.name, value, true);
+                        setFieldValue(field.name, value.value, true);
                       }}
                     />
                   </Wrapper>
@@ -164,7 +187,7 @@ const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
                   color: aqBootstrapTheme.palette.primary,
                 }}
               >
-                {values.agreement.tokenValue || "--"}€
+                {selectedAgreement.value || "--"}€
               </strong>
             </div>
           </BSCol>
@@ -194,7 +217,7 @@ const RevenueFormContent = ({ agreementsOptions }: RevenueFormContentProps) => {
                   color: aqBootstrapTheme.palette.secondary,
                 }}
               >
-                {Number(values.tokenUsage) * values.agreement.tokenValue ||
+                {Number(values.tokenUsage) * (selectedAgreement.value || 0) ||
                   "--"}{" "}
                 €
               </strong>
@@ -248,23 +271,12 @@ export const RevenueOverviewSection = () => {
     : [];
 
   const validationSchema = yup.object({
-    agreement: yup
-      .object()
-      .shape({
-        label: yup.string().required(),
-        value: yup.string().required(),
-        tokenValue: yup.number().required(),
-      })
-      .required("Required"),
+    agreement: yup.number().required("Required"),
     tokenUsage: yup.number().required("Required"),
   });
 
   const initialValues = {
-    agreement: {
-      label: campaignAgreement?.agreement?.name || "",
-      value: campaignAgreement?.agreement?.id?.toString() || "",
-      tokenValue: campaignAgreement?.agreement?.value || 0,
-    },
+    agreement: campaignAgreement?.agreement?.id?.toString() || "",
     tokenUsage: campaignAgreement?.tokens?.toString() || "",
   };
 
@@ -272,7 +284,7 @@ export const RevenueOverviewSection = () => {
     await putAgreement({
       campaign: id!,
       body: {
-        agreementId: Number(values.agreement.value),
+        agreementId: Number(values.agreement),
         tokens: Number(values.tokenUsage),
       },
     })
@@ -299,7 +311,10 @@ export const RevenueOverviewSection = () => {
         onSubmit={onSubmit}
         enableReinitialize={true}
       >
-        <RevenueFormContent agreementsOptions={agreementsOptions} />
+        <RevenueFormContent
+          customerId={dossier?.customer.id.toString() || ""}
+          agreementsOptions={agreementsOptions}
+        />
       </Formik>
     </Section>
   );
