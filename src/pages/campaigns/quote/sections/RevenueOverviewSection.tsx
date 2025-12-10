@@ -99,11 +99,14 @@ const RevenueFormContent = ({
                   />
                   <Input
                     id="tokenUsage"
-                    type="string"
+                    type="number"
                     placeholder="E.g. 10"
                     {...field}
                     onChange={(value) => {
-                      setFieldValue(field.name, Number(value) || "", true);
+                      const numberRegex = /^[0-9\b]+[.]?[0-9\b]{0,2}$/;
+                      if (value === "" || numberRegex.test(value.toString())) {
+                        setFieldValue(field.name, value, true);
+                      }
                     }}
                   />
                   <ErrorMessage name={field.name} />
@@ -217,8 +220,11 @@ const RevenueFormContent = ({
                   color: aqBootstrapTheme.palette.secondary,
                 }}
               >
-                {Number(values.tokenUsage) * (selectedAgreement.value || 0) ||
-                  "--"}{" "}
+                {parseFloat(
+                  (
+                    Number(values.tokenUsage) * (selectedAgreement.value || 0)
+                  ).toString()
+                ).toFixed(2) || "--"}{" "}
                 €
               </strong>
             </div>
