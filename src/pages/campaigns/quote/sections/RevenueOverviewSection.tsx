@@ -44,9 +44,14 @@ const Wrapper = styled.div`
 
 const useGetAgreement = ({ customerId }: { customerId: string }) => {
   const { data: customerAgreements } =
-    useGetCustomersByCustomerIdAgreementsQuery({
-      customerId: customerId,
-    });
+    useGetCustomersByCustomerIdAgreementsQuery(
+      {
+        customerId: customerId,
+      },
+      {
+        skip: !customerId,
+      }
+    );
 
   if (!customerAgreements) {
     return () => ({ value: undefined });
@@ -254,9 +259,14 @@ export const RevenueOverviewSection = () => {
     campaign: id,
   });
   const { data: customerAgreements } =
-    useGetCustomersByCustomerIdAgreementsQuery({
-      customerId: dossier?.customer.id.toString() || "",
-    });
+    useGetCustomersByCustomerIdAgreementsQuery(
+      {
+        customerId: dossier?.customer.id.toString() || "",
+      },
+      {
+        skip: !dossier?.customer.id,
+      }
+    );
 
   const [putAgreement] = usePutDossiersByCampaignAgreementsMutation();
 
