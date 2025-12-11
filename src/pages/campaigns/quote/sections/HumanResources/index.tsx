@@ -1,7 +1,6 @@
 import {
   aqBootstrapTheme,
   Button,
-  ErrorMessage,
   FormLabel,
   Input,
   Modal,
@@ -363,7 +362,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
           </>
         )}
       />
-      <ErrorMessage name="items" />
+
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
           disabled={!isValid || !dirty || isSubmitting}
