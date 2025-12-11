@@ -31,9 +31,9 @@ const FormProvider = ({
   const validationSchema = yup.object({
     items: yup.array().of(
       yup.object({
-        assignee: yup.number().required().min(1),
-        days: yup.number().min(1).required().min(1),
-        role: yup.number().required().min(1),
+        assignee: yup.number().required().min(0),
+        days: yup.number().min(0).required().min(0),
+        role: yup.number().required().min(0),
       })
     ),
   });
