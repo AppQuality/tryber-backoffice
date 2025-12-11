@@ -72,7 +72,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
               ? `${(
                   agreementData.tokens * agreementData.agreement.value
                 ).toFixed(2)}€`
-              : "--€"}
+              : "0.00€"}
           </Title>
         </div>
 
@@ -92,7 +92,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
           >
             {communityCostsData?.totalCost
               ? `${communityCostsData.totalCost.toFixed(2)}€`
-              : "--€"}
+              : "0.00€"}
           </span>
         </div>
 
@@ -173,7 +173,7 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
                           agreementData.agreement.value)) *
                       100
                     ).toFixed(2)}%`
-                  : "--%"}
+                  : "0.00%"}
               </strong>
             </div>
           </BSCol>
