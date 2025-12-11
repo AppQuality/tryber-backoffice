@@ -56,11 +56,15 @@ const FormProvider = ({
       onSubmit={async (values) => {
         await save({
           campaign: campaignId,
-          body: values.items.map((item) => ({
-            assignee: item.assignee,
-            days: item.days,
-            rate: item.role,
-          })),
+          body: values.items
+            .filter(
+              (item) => item.assignee > 0 && item.days > 0 && item.role > 0
+            )
+            .map((item) => ({
+              assignee: item.assignee,
+              days: item.days,
+              rate: item.role,
+            })),
         })
           .unwrap()
           .then(() => {
