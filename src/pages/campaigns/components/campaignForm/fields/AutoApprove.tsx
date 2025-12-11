@@ -7,22 +7,22 @@ import {
 import { useFormikContext } from "formik";
 import { NewCampaignValues } from "../FormProvider";
 
-const AutoApply = () => {
+const AutoApprove = () => {
   const { setFieldValue } = useFormikContext<NewCampaignValues>();
 
   return (
     <div>
-      <FormLabel htmlFor="" label="Auto-apply candidates" />
+      <FormLabel htmlFor="autoApprove" label="AI-Powered Bug Approval" />
 
-      <FormikField name="autoApply">
+      <FormikField name="autoApprove">
         {({ field }: FieldProps) => (
           <Checkbox
             name={field.name}
-            id="autoApply"
-            label="Should auto-select candidates once the tester applies?"
+            id="autoApprove"
+            label="Enable AI to automatically approve reported bugs"
             checked={field.value}
             onChange={(e: any) => {
-              setFieldValue("autoApply", e.target.checked);
+              setFieldValue("autoApprove", e.target.checked);
             }}
           />
         )}
@@ -31,4 +31,4 @@ const AutoApply = () => {
   );
 };
 
-export default AutoApply;
+export default AutoApprove;

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
 import { Button, Card, Radio } from "@appquality/appquality-design-system";
-import { v4 as uuidv4 } from "uuid";
+import React, { useState } from "react";
 import { getCustomQuestionTypeLabel } from "src/pages/preselectionForms/functions/getCustomQuestionTypeLabel";
+import { v4 as uuidv4 } from "uuid";
 
 export const CustomQuestionCard: React.FC<{
   add: (field: AdditionalField) => void;
@@ -26,7 +26,7 @@ export const CustomQuestionCard: React.FC<{
   }) => {
     return (
       <Radio
-        onChange={(val) => setSelected(val as CustomQuestionType)}
+        onChange={(val: any) => setSelected(val as CustomQuestionType)}
         label={getCustomQuestionTypeLabel(type)}
         name="customQuestion"
         id={`customQuestion-${type}`}

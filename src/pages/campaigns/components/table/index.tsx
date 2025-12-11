@@ -60,7 +60,7 @@ const CampaignsTable = () => {
               size="sm"
               kind="secondary"
               flat
-              onClick={(e) => openInWordpress(e, "open-new-campaign")}
+              onClick={(e: any) => openInWordpress(e, "open-new-campaign")}
             >
               Add campaign
             </Button>

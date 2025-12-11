@@ -1,10 +1,15 @@
-import { BSCol, BSGrid, Card } from "@appquality/appquality-design-system";
+import { BSCol, BSGrid } from "@appquality/appquality-design-system";
 import { useParams } from "react-router-dom";
 import { PageTemplate } from "src/features/PageTemplate";
+import { useGetDossiersByCampaignQuery } from "src/services/tryberApi";
 import { styled } from "styled-components";
-import { Section } from "../components/campaignForm/Section";
+import { QuoteFormContext } from "./QuoteFormContext";
 import { QuoteInput } from "./QuoteInput";
-import { QuoteTable } from "./QuoteRecap";
+import { CostAndResourceDetailsSection } from "./sections/CostAndResourceDetailsSection";
+import { FormSectionCard } from "./sections/FormSectionCard";
+import { QuoteHistorySection } from "./sections/QuoteHistorySection";
+import { RevenueOverviewSection } from "./sections/RevenueOverviewSection";
+import { SummaryFinanceCard } from "./sections/SummaryFinanceCard";
 import { useQuoteRecap } from "./useQuoteRecap";
 
 const FullGrid = styled(BSGrid)`
@@ -22,42 +27,38 @@ const EditCampaign = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useQuoteRecap({ campaign: Number(id) });
 
+  const { data: dossierData, isLoading: isDossierLoading } =
+    useGetDossiersByCampaignQuery({
+      campaign: id,
+    });
+
   return (
     <PageTemplate>
       <FullGrid>
-        <BSCol size="col-lg-8">
-          <Section
-            title="Activity Quotation"
-            subtitle="Set the price for this activity. Before proceeding, make sure to review the campaign dossier carefully and consider any previous quotes. If quotes have been created through app.unguess, they will be displayed directly on this page for easy comparison."
-            id="quote"
-          >
-            {data.history.length > 0 && (
-              <Card
-                className="aq-mb-4"
-                title="Previous quotes for this campaign"
-              >
-                <QuoteTable data={data.history} />
-              </Card>
+        <QuoteFormContext>
+          <BSCol size="col-lg-8">
+            {dossierData?.hasPlan && (
+              <QuoteHistorySection
+                history={data.history}
+                otherCampaigns={data.otherCampaigns}
+              />
             )}
-            <Card
-              className="aq-mb-4"
-              title="All other quotes in this workspace"
-            >
-              {data.otherCampaigns.length > 0 ? (
-                <QuoteTable data={data.otherCampaigns} />
-              ) : (
-                <div>This is the first quote for this workspace.</div>
-              )}
-            </Card>
-          </Section>
-        </BSCol>
-        <BSCol size="col-lg-4">
-          <StickyContainer>
-            <div className="aq-mb-4">
-              <QuoteInput campaignId={id} />
-            </div>
-          </StickyContainer>
-        </BSCol>
+
+            <RevenueOverviewSection />
+
+            <CostAndResourceDetailsSection campaignId={id} />
+          </BSCol>
+
+          <BSCol size="col-lg-4">
+            <StickyContainer>
+              <div className="aq-mb-4">
+                {dossierData?.hasPlan && <QuoteInput campaignId={id} />}
+                <SummaryFinanceCard campaignId={id} />
+                <FormSectionCard campaignId={id} />
+              </div>
+            </StickyContainer>
+          </BSCol>
+        </QuoteFormContext>
       </FullGrid>
     </PageTemplate>
   );

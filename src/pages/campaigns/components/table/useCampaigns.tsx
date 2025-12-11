@@ -11,8 +11,8 @@ import BugType from "./BugTypeIcon";
 import { useFiltersCardContext } from "./FilterContext";
 import ResultTypeIcon from "./ResultTypeIcon";
 import StatusIcon from "./StatusIcon";
-import VisibilityIcon from "./VisibilityIcon";
 import { Campaign } from "./types";
+import VisibilityIcon from "./VisibilityIcon";
 
 const formatDateTime = (dateTime: string) => {
   const date = new Date(dateTime.split(" ")[0]).toLocaleDateString("it-IT", {
@@ -171,7 +171,7 @@ const useCampaigns = (options?: {
             content: (
               <>
                 <TableButton
-                  onClick={(e) =>
+                  onClick={(e: any) =>
                     openInWordpress(e, "open-edit", { id: campaign.id })
                   }
                   size="sm"
@@ -181,7 +181,7 @@ const useCampaigns = (options?: {
                 </TableButton>
                 {" | "}
                 <TableButton
-                  onClick={(e) =>
+                  onClick={(e: any) =>
                     openInWordpress(e, "open-show", { id: campaign.id })
                   }
                   size="sm"
@@ -191,7 +191,7 @@ const useCampaigns = (options?: {
                 </TableButton>
                 {" | "}
                 <TableButton
-                  onClick={(e) =>
+                  onClick={(e: any) =>
                     openInWordpress(e, "open-bugs", { id: campaign.id })
                   }
                   size="sm"

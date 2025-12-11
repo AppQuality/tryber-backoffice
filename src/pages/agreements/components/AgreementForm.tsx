@@ -94,7 +94,7 @@ const AgreementForm = ({ agreement, onSubmit }: AgreementFormProps) => {
                       id={field.name}
                       name={field.name}
                       defaultChecked={field.value}
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         field.onChange(e);
                         // if agreement change to not token based, calculate number of tokens based on amount
                         if (e.target.checked === false) {

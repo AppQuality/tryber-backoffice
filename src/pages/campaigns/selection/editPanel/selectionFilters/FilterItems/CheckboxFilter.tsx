@@ -61,7 +61,7 @@ const CheckboxFilter = ({
               checked={
                 selected ? selected.includes(value.toString()) : undefined
               }
-              onChange={(e) => {
+              onChange={(e: any) => {
                 dispatch(changeTablePage({ newPage: 1 }));
                 dispatch(onSelect(e.target.checked, value.toString()));
               }}

@@ -1,12 +1,12 @@
 import {
-  Title,
   Checkbox,
-  FormikField,
   FieldProps,
+  FormikField,
+  Title,
 } from "@appquality/appquality-design-system";
-import InputField from "./InputField";
-import { NewCampaignValues } from "../FormProvider";
 import { useFormikContext } from "formik";
+import { NewCampaignValues } from "../FormProvider";
+import InputField from "./InputField";
 
 const TargetSize = () => {
   const {
@@ -40,7 +40,7 @@ const TargetSize = () => {
               id="checkboxCap"
               label="Limit the number of candidates"
               checked={field.value}
-              onChange={(e) => {
+              onChange={(e: any) => {
                 setFieldValue("checkboxCap", e.target.checked);
                 if (!e.target.checked) setFieldValue("targetCap", "");
               }}

@@ -1,20 +1,16 @@
 import { Button, Title } from "@appquality/appquality-design-system";
 import { useRef } from "react";
 import { useParams } from "react-router-dom";
+import { PageTemplate } from "src/features/PageTemplate";
 import { useContainerDimensions } from "src/hooks/useContainerDimensions";
 import { useGetCampaignsByCampaignQuery } from "src/services/tryberApi";
 import styled from "styled-components";
 import Table from "./Table";
-import { PageTemplate } from "src/features/PageTemplate";
 
 const FluidContainer = styled.div`
   max-width: 90%;
   margin: 0 auto;
 `;
-
-const HeaderButton = (props: Parameters<typeof Button>[0]) => {
-  return <Button {...props} size="sm" type="link-hover" />;
-};
 
 const Prospect = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,28 +23,33 @@ const Prospect = () => {
     <PageTemplate>
       <FluidContainer ref={tablewrapper}>
         <Title size="xl">Prospect</Title>
-        <HeaderButton
+        <Button
           as="a"
           href={`/wp-admin/admin.php?page=cp-prospect&id=${id}`}
-          kind="secondary"
           className="aq-mr-2"
+          size="sm"
+          type="link-hover"
         >
           {"<"} Go to old Prospect
-        </HeaderButton>
-        <HeaderButton
+        </Button>
+        <Button
           as="a"
           href={`/wp-admin/admin.php?page=cp-prospect-crowd&id=${id}`}
           className="aq-mr-2"
+          size="sm"
+          type="link-hover"
         >
           Pay Assistants
-        </HeaderButton>
-        <HeaderButton
+        </Button>
+        <Button
           as="a"
           href={`/wp-admin/admin.php?page=add-booty&cid=${id}`}
           className="aq-mr-2"
+          size="sm"
+          type="link-hover"
         >
           Go to Add Booty
-        </HeaderButton>
+        </Button>
         <Title size="mt" className="aq-mb-3" style={{ display: "flex" }}>
           CP{id} {data?.title ? `- ${data.title}` : ""}
         </Title>
