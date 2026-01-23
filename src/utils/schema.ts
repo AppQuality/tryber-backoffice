@@ -367,6 +367,7 @@ export interface paths {
   };
   "/dossiers/{campaign}/humanResources": {
     get: operations["get-dossiers-campaign-humanResources"];
+    put: operations["put-dossiers-campaign-humanResources"];
     parameters: {
       path: {
         /** A campaign id */
@@ -785,6 +786,15 @@ export interface paths {
   };
   "/users/me/rank/list": {
     get: operations["get-users-me-rank-list"];
+  };
+  "/campaigns/{campaign}/tasks/{usecase}/survey/jotform": {
+    post: operations["post-campaigns-campaign-tasks-usecase-survey-jotform"];
+    parameters: {
+      path: {
+        campaign: string;
+        usecase: string;
+      };
+    };
   };
 }
 
@@ -1861,6 +1871,8 @@ export interface operations {
               id: number;
               internalId: string;
               isFavourite: boolean;
+              /** @enum {string} */
+              reviewerType?: "ai" | "human";
               severity: {
                 id: number;
                 name: string;
@@ -2993,6 +3005,8 @@ export interface operations {
            * @enum {undefined}
            */
           notify_everyone?: 0 | 1;
+          /** @example 1 */
+          ux_notify?: number;
         };
       };
     };
@@ -3245,6 +3259,32 @@ export interface operations {
             }[];
           };
         };
+      };
+    };
+  };
+  "put-dossiers-campaign-humanResources": {
+    parameters: {
+      path: {
+        /** A campaign id */
+        campaign: components["parameters"]["campaign"];
+      };
+    };
+    responses: {
+      /** OK */
+      200: unknown;
+      403: components["responses"]["NotAuthorized"];
+      404: components["responses"]["NotFound"];
+      /** Internal Server Error */
+      500: unknown;
+    };
+    /** Overwrites the data for the given campaign in the campaign_human_resources table */
+    requestBody: {
+      content: {
+        "application/json": {
+          assignee: number;
+          days: number;
+          rate: number;
+        }[];
       };
     };
   };
@@ -5401,6 +5441,30 @@ export interface operations {
       };
       403: components["responses"]["NotAuthorized"];
       404: components["responses"]["NotFound"];
+    };
+  };
+  "post-campaigns-campaign-tasks-usecase-survey-jotform": {
+    parameters: {
+      path: {
+        campaign: string;
+        usecase: string;
+      };
+    };
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          "application/json": { [key: string]: unknown };
+        };
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          jotformId: string;
+          testerQuestionId: string;
+        };
+      };
     };
   };
 }
