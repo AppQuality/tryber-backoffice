@@ -1,8 +1,6 @@
 import { Formik } from "@appquality/appquality-design-system";
 import * as yup from "yup";
 
-import siteWideMessageStore from "src/redux/siteWideMessages";
-
 export type FormProps = {
   items: Array<{
     notSaved?: boolean;
@@ -21,7 +19,6 @@ const CostsFormProvider = ({
   children: React.ReactNode;
   campaignId: string;
 }) => {
-  const { add } = siteWideMessageStore();
   const data: FormProps = { items: [] };
 
   const validationSchema = yup.object({
@@ -43,10 +40,6 @@ const CostsFormProvider = ({
       })
     ),
   });
-
-  /*  if (!data || isLoading) {
-    return null;
-  } */
 
   return (
     <Formik<FormProps>

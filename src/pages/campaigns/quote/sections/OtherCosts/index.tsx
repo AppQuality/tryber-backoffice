@@ -13,6 +13,7 @@ import { useState } from "react";
 import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
 import { styled } from "styled-components";
 import CostsFormProvider, { FormProps } from "./CostsFormProvider";
+import { AttachmentsDropzone } from "./AttachmentsDropzone";
 
 const StyledRow = styled.div`
   margin-top: ${({ theme }) => theme.grid.spacing.default};
@@ -35,7 +36,6 @@ const StyledRow = styled.div`
   }
 `;
 
-// These should ideally come from an API hook like useGetSuppliers() or useGetCostTypes()
 const COST_TYPES = [
   { value: "1", label: "Travel" },
   { value: "2", label: "Equipment" },
@@ -48,12 +48,12 @@ const SUPPLIERS = [
 const OtherCosts = ({ campaignId }: { campaignId: string }) => {
   return (
     <CostsFormProvider campaignId={campaignId}>
-      <FormContent />
+      <FormContent campaignId={campaignId} />
     </CostsFormProvider>
   );
 };
 
-const FormContent = () => {
+const FormContent = ({ campaignId }: { campaignId: string }) => {
   const { values, isValid, submitForm, dirty, isSubmitting } =
     useFormikContext<FormProps>();
   const [rowPendingRemoval, setRowPendingRemoval] = useState<number | null>(
@@ -72,7 +72,6 @@ const FormContent = () => {
         💡
         <span style={{ fontWeight: "bold" }}>Add Other Costs</span> and{" "}
         <span style={{ fontWeight: "bold" }}>fill all required fields</span> (*)
-        to enable saving
       </span>
 
       <FieldArray
@@ -80,7 +79,6 @@ const FormContent = () => {
         render={(arrayHelpers) => (
           <>
             {values.items &&
-              values.items.length > 0 &&
               values.items.map((item, index) => {
                 const selectedType = COST_TYPES.find(
                   (t) => t.value === String(item.type)
@@ -90,15 +88,21 @@ const FormContent = () => {
                 );
 
                 return (
-                  <div key={`cost-row-wrapper-${index}`}>
+                  <div
+                    key={`cost-row-wrapper-${index}`}
+                    style={{
+                      borderBottom: "1px solid #eee",
+                      paddingBottom: "20px",
+                      marginBottom: "20px",
+                    }}
+                  >
                     <StyledRow>
-                      {/* DESCRIPTION */}
                       <div style={{ flex: 1 }}>
                         <FormLabel
                           htmlFor={`desc-${index}`}
                           label={
                             <Text>
-                              Description
+                              Description{" "}
                               <span style={{ color: "red" }}>*</span>
                             </Text>
                           }
@@ -117,10 +121,9 @@ const FormContent = () => {
                       </div>
                     </StyledRow>
                     <StyledRow>
-                      {/* TYPE */}
                       <div>
                         <Select
-                          name="type"
+                          name={`items.${index}.type`}
                           menuTargetQuery="body"
                           options={COST_TYPES}
                           label={
@@ -137,11 +140,9 @@ const FormContent = () => {
                           }}
                         />
                       </div>
-
-                      {/* SUPPLIER */}
                       <div>
                         <Select
-                          name="supplier"
+                          name={`items.${index}.supplier`}
                           menuTargetQuery="body"
                           options={SUPPLIERS}
                           label={
@@ -158,8 +159,6 @@ const FormContent = () => {
                           }}
                         />
                       </div>
-
-                      {/* COST */}
                       <div style={{ maxWidth: "150px" }}>
                         <FormLabel
                           htmlFor={`cost-${index}`}
@@ -181,13 +180,12 @@ const FormContent = () => {
                           }}
                         />
                       </div>
-
                       <div>
                         <Button
                           size="sm"
                           kind="danger"
                           onClick={() => {
-                            values.items[index].notSaved
+                            item.notSaved
                               ? arrayHelpers.remove(index)
                               : setRowPendingRemoval(index);
                           }}
@@ -196,6 +194,20 @@ const FormContent = () => {
                         </Button>
                       </div>
                     </StyledRow>
+
+                    <div style={{ marginTop: "12px" }}>
+                      <FormLabel
+                        label={
+                          <Text small>
+                            Attachments <span style={{ color: "red" }}>*</span>
+                          </Text>
+                        }
+                      />
+                      <AttachmentsDropzone
+                        campaignId={campaignId}
+                        name={`items.${index}.files`}
+                      />
+                    </div>
                   </div>
                 );
               })}
@@ -231,8 +243,6 @@ const FormContent = () => {
               <ModalBody>
                 <Text>
                   <strong>This will permanently remove this cost item.</strong>
-                  <br />
-                  Are you sure?
                 </Text>
               </ModalBody>
             </Modal>
