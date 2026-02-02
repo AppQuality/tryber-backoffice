@@ -1,7 +1,7 @@
 import { Dropzone, Spinner } from "@appquality/appquality-design-system";
 import { useFormikContext, getIn } from "formik";
 import { useState } from "react";
-import { usePostUsersMeCampaignsByCampaignIdMediaMutation } from "src/services/tryberApi";
+import { usePostCampaignsByCampaignFinanceAttachmentsMutation } from "src/services/tryberApi";
 import { normalizeFileName } from "./utils";
 import { FormProps } from "./CostsFormProvider";
 
@@ -11,11 +11,11 @@ interface Props {
 }
 
 export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
-  const [createMedia] = usePostUsersMeCampaignsByCampaignIdMediaMutation();
+  const [createAttachment] =
+    usePostCampaignsByCampaignFinanceAttachmentsMutation();
   const { values, setFieldValue, errors, touched } =
     useFormikContext<FormProps>();
   const [isUploading, setIsUploading] = useState(false);
-
   const currentFiles = getIn(values, name) || [];
   const error = getIn(errors, name);
   const isTouched = getIn(touched, name);
@@ -29,13 +29,19 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
       formData.append("media", f, normalizeFileName(f.name));
 
       try {
-        const res = await createMedia({
-          campaignId,
+        const res = await createAttachment({
+          campaign: campaignId,
           // @ts-ignore
           body: formData,
         }).unwrap();
 
-        /*         updatedList.push({ url: res.url, mimeType: f.type }); */
+        if (res.attachments && res.attachments.length > 0) {
+          const newFile = res.attachments[0];
+          updatedList.push({
+            url: newFile.url,
+            mimeType: newFile.mime_type,
+          });
+        }
       } catch (e) {
         console.error(e);
       }
@@ -55,7 +61,18 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
         danger={!!error && isTouched}
       />
 
-      {isUploading && <Spinner size="sm" style={{ marginTop: "8px" }} />}
+      {isUploading && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            marginTop: "8px",
+          }}
+        >
+          <Spinner size="sm" />
+        </div>
+      )}
 
       <div
         style={{
@@ -67,7 +84,7 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
       >
         {currentFiles.map((file: any, idx: number) => (
           <div
-            key={idx}
+            key={`${file.url}-${idx}`}
             style={{
               fontSize: "12px",
               padding: "2px 8px",
@@ -80,6 +97,12 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
           </div>
         ))}
       </div>
+
+      {error && isTouched && (
+        <div style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
+          {error}
+        </div>
+      )}
     </div>
   );
 };

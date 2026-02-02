@@ -1,6 +1,7 @@
 import {
   aqBootstrapTheme,
   Button,
+  Dropdown,
   FormLabel,
   Input,
   Modal,
@@ -9,11 +10,18 @@ import {
   Text,
 } from "@appquality/appquality-design-system";
 import { FieldArray, useFormikContext } from "formik";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
 import { styled } from "styled-components";
+import siteWideMessageStore from "src/redux/siteWideMessages";
 import CostsFormProvider, { FormProps } from "./CostsFormProvider";
 import { AttachmentsDropzone } from "./AttachmentsDropzone";
+import {
+  useGetCampaignsByCampaignFinanceSupplierQuery,
+  useGetCampaignsByCampaignFinanceTypeQuery,
+  usePostCampaignsByCampaignFinanceSupplierMutation,
+  useDeleteCampaignsByCampaignFinanceOtherCostsMutation,
+} from "src/services/tryberApi";
 
 const StyledRow = styled.div`
   margin-top: ${({ theme }) => theme.grid.spacing.default};
@@ -36,14 +44,38 @@ const StyledRow = styled.div`
   }
 `;
 
-const COST_TYPES = [
-  { value: "1", label: "Travel" },
-  { value: "2", label: "Equipment" },
-];
-const SUPPLIERS = [
-  { value: "1", label: "Supplier A" },
-  { value: "2", label: "Supplier B" },
-];
+const useCostTypes = ({ campaignId }: { campaignId: string }) => {
+  const { data, isLoading } = useGetCampaignsByCampaignFinanceTypeQuery({
+    campaign: campaignId,
+  });
+
+  const options = useMemo(() => {
+    if (!data?.items) return [];
+    return data.items.map((item, index) => ({
+      value: String(index + 1),
+      label: item.name || `Type ${index + 1}`,
+    }));
+  }, [data]);
+
+  return { data: options, isLoading };
+};
+
+const useSuppliers = ({ campaignId }: { campaignId: string }) => {
+  const { data, isLoading, refetch } =
+    useGetCampaignsByCampaignFinanceSupplierQuery({
+      campaign: campaignId,
+    });
+
+  const options = useMemo(() => {
+    if (!data?.items) return [];
+    return data.items.map((item, index) => ({
+      value: String(index + 1),
+      label: item.name,
+    }));
+  }, [data]);
+
+  return { data: options, isLoading, refetch };
+};
 
 const OtherCosts = ({ campaignId }: { campaignId: string }) => {
   return (
@@ -59,6 +91,51 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
   const [rowPendingRemoval, setRowPendingRemoval] = useState<number | null>(
     null
   );
+
+  const { data: costTypes, isLoading: costTypesLoading } = useCostTypes({
+    campaignId,
+  });
+  const { data: suppliers, refetch: refetchSuppliers } = useSuppliers({
+    campaignId,
+  });
+  const [createSupplier] = usePostCampaignsByCampaignFinanceSupplierMutation();
+  const [deleteOtherCost] =
+    useDeleteCampaignsByCampaignFinanceOtherCostsMutation();
+  const { add } = siteWideMessageStore();
+
+  const handleDelete = async (index: number, arrayHelpers: any) => {
+    const item = values.items[index];
+
+    if (item.notSaved) {
+      // Item not saved yet, just remove from array
+      arrayHelpers.remove(index);
+      setRowPendingRemoval(null);
+    } else if (item.cost_id) {
+      // Item is saved, call delete API
+      try {
+        await deleteOtherCost({
+          campaign: campaignId,
+          body: { cost_id: item.cost_id },
+        }).unwrap();
+
+        arrayHelpers.remove(index);
+        setRowPendingRemoval(null);
+        await submitForm();
+
+        add({
+          message: "Cost deleted successfully",
+          type: "success",
+        });
+      } catch (error) {
+        console.error("Failed to delete cost:", error);
+        add({
+          message: "Failed to delete cost",
+          type: "danger",
+        });
+        setRowPendingRemoval(null);
+      }
+    }
+  };
 
   const totalOtherCosts = values.items
     ? values.items
@@ -80,11 +157,8 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
           <>
             {values.items &&
               values.items.map((item, index) => {
-                const selectedType = COST_TYPES.find(
+                const selectedType = costTypes.find(
                   (t) => t.value === String(item.type)
-                );
-                const selectedSupplier = SUPPLIERS.find(
-                  (s) => s.value === String(item.supplier)
                 );
 
                 return (
@@ -120,18 +194,25 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         />
                       </div>
                     </StyledRow>
+
                     <StyledRow>
                       <div>
                         <Select
                           name={`items.${index}.type`}
                           menuTargetQuery="body"
-                          options={COST_TYPES}
+                          options={costTypes}
+                          isLoading={costTypesLoading}
                           label={
                             <Text>
                               Type <span style={{ color: "red" }}>*</span>
                             </Text>
                           }
-                          value={selectedType ?? { value: "", label: "" }}
+                          value={
+                            selectedType ?? {
+                              value: String(item.type || ""),
+                              label: "",
+                            }
+                          }
                           onChange={(opt) => {
                             arrayHelpers.replace(index, {
                               ...item,
@@ -141,22 +222,54 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         />
                       </div>
                       <div>
-                        <Select
-                          name={`items.${index}.supplier`}
-                          menuTargetQuery="body"
-                          options={SUPPLIERS}
+                        <FormLabel
                           label={
                             <Text>
                               Supplier <span style={{ color: "red" }}>*</span>
                             </Text>
                           }
-                          value={selectedSupplier ?? { value: "", label: "" }}
-                          onChange={(opt) => {
-                            arrayHelpers.replace(index, {
-                              ...item,
-                              supplier: Number(opt.value),
-                            });
+                        />
+                        <Dropdown
+                          isMulti={false}
+                          isClearable
+                          options={suppliers}
+                          value={suppliers.find(
+                            (s) => s.value === String(item.supplier)
+                          )}
+                          onChange={(opt: any) => {
+                            if (opt) {
+                              arrayHelpers.replace(index, {
+                                ...item,
+                                supplier: Number(opt.value),
+                              });
+                            } else {
+                              arrayHelpers.replace(index, {
+                                ...item,
+                                supplier: 0,
+                              });
+                            }
                           }}
+                          onCreateOption={async (inputValue: string) => {
+                            try {
+                              const response = await createSupplier({
+                                campaign: campaignId,
+                                body: { name: inputValue },
+                              });
+                              if ("data" in response) {
+                                await refetchSuppliers();
+                                // The new supplier will be at the end of the list, so use length
+                                const newSupplierId =
+                                  (suppliers?.length || 0) + 1;
+                                arrayHelpers.replace(index, {
+                                  ...item,
+                                  supplier: newSupplierId,
+                                });
+                              }
+                            } catch (e) {
+                              console.error("Failed to create supplier:", e);
+                            }
+                          }}
+                          placeholder="Start typing to select or add"
                         />
                       </div>
                       <div style={{ maxWidth: "150px" }}>
@@ -226,11 +339,9 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                   </Button>
                   <Button
                     kind="danger"
-                    onClick={() => {
+                    onClick={async () => {
                       if (rowPendingRemoval !== null) {
-                        arrayHelpers.remove(rowPendingRemoval);
-                        setRowPendingRemoval(null);
-                        submitForm();
+                        await handleDelete(rowPendingRemoval, arrayHelpers);
                       }
                     }}
                     className="aq-mx-2"
