@@ -3574,7 +3574,7 @@ export type PostCampaignsByCampaignFinanceOtherCostsApiArg = {
       url: string;
       mime_type: string;
     }[];
-  };
+  }[];
 };
 export type DeleteCampaignsByCampaignFinanceOtherCostsApiResponse =
   /** status 200 OK */ undefined;
@@ -3596,7 +3596,7 @@ export type PatchCampaignsByCampaignFinanceOtherCostsApiResponse =
       url: string;
       mime_type: string;
     }[];
-  };
+  }[];
 export type PatchCampaignsByCampaignFinanceOtherCostsApiArg = {
   /** A campaign id */
   campaign: string;
@@ -3610,7 +3610,7 @@ export type PatchCampaignsByCampaignFinanceOtherCostsApiArg = {
       mime_type: string;
     }[];
     cost_id: number;
-  };
+  }[];
 };
 export type Agreement = {
   expirationDate: string;

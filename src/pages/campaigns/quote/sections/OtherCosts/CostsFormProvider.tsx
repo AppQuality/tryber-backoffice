@@ -39,7 +39,7 @@ const CostsFormProvider = ({
   const initialValuesRef = useRef<FormProps | null>(null);
 
   useEffect(() => {
-    if (data && !initialValuesRef.current) {
+    if (data) {
       initialValuesRef.current = {
         items: (data?.items || []).map((item) => ({
           cost_id: item.cost_id,
@@ -77,10 +77,10 @@ const CostsFormProvider = ({
         );
       });
 
-      for (const item of newItems) {
+      if (newItems.length > 0) {
         await createOtherCosts({
           campaign: campaignId,
-          body: {
+          body: newItems.map((item) => ({
             description: item.description,
             type_id: item.type,
             supplier_id: item.supplier,
@@ -89,13 +89,14 @@ const CostsFormProvider = ({
               url: file.url,
               mime_type: file.mimeType,
             })),
-          },
+          })),
         }).unwrap();
       }
-      for (const item of modifiedItems) {
+
+      if (modifiedItems.length > 0) {
         await updateOtherCosts({
           campaign: campaignId,
-          body: {
+          body: modifiedItems.map((item) => ({
             cost_id: item.cost_id!,
             description: item.description,
             type_id: item.type,
@@ -105,7 +106,7 @@ const CostsFormProvider = ({
               url: file.url,
               mime_type: file.mimeType,
             })),
-          },
+          })),
         }).unwrap();
       }
 
@@ -136,7 +137,8 @@ const CostsFormProvider = ({
               mimeType: yup.string().required(),
             })
           )
-          .required(),
+          .required()
+          .min(1, "At least one attachment is required"),
       })
     ),
   });
@@ -162,6 +164,8 @@ const CostsFormProvider = ({
   return (
     <Formik<FormProps>
       enableReinitialize
+      validateOnMount
+      validateOnChange
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
