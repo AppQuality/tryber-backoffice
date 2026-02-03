@@ -269,6 +269,9 @@ tryberApi.enhanceEndpoints({
     deleteCampaignsByCampaignFinanceOtherCosts: {
       invalidatesTags: ["OtherCosts"],
     },
+    patchCampaignsByCampaignFinanceOtherCosts: {
+      invalidatesTags: ["OtherCosts"],
+    },
   },
 });
 

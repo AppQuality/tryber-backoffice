@@ -1,8 +1,10 @@
 import { Formik } from "@appquality/appquality-design-system";
+import { useRef, useEffect } from "react";
 import siteWideMessageStore from "src/redux/siteWideMessages";
 import {
   useGetCampaignsByCampaignFinanceOtherCostsQuery,
   usePostCampaignsByCampaignFinanceOtherCostsMutation,
+  usePatchCampaignsByCampaignFinanceOtherCostsMutation,
 } from "src/services/tryberApi";
 import * as yup from "yup";
 
@@ -30,15 +32,71 @@ const CostsFormProvider = ({
   });
   const [createOtherCosts] =
     usePostCampaignsByCampaignFinanceOtherCostsMutation();
+  const [updateOtherCosts] =
+    usePatchCampaignsByCampaignFinanceOtherCostsMutation();
   const { add } = siteWideMessageStore();
+
+  const initialValuesRef = useRef<FormProps | null>(null);
+
+  useEffect(() => {
+    if (data && !initialValuesRef.current) {
+      initialValuesRef.current = {
+        items: (data?.items || []).map((item) => ({
+          cost_id: item.cost_id,
+          description: item.description || "",
+          type: item.type?.id || 0,
+          supplier: item.supplier?.id || 0,
+          cost: item.cost || 0,
+          files: (item.attachments || []).map((attachment) => ({
+            url: attachment.url || "",
+            mimeType: attachment.mimetype || "",
+          })),
+        })),
+      };
+    }
+  }, [data]);
 
   const handleSubmit = async (values: FormProps) => {
     try {
       const newItems = values.items.filter((item) => item.notSaved);
+
+      const modifiedItems = values.items.filter((item) => {
+        if (item.notSaved || !item.cost_id) return false;
+
+        const initialItem = initialValuesRef.current?.items.find(
+          (i) => i.cost_id === item.cost_id
+        );
+        if (!initialItem) return false;
+
+        return (
+          item.description !== initialItem.description ||
+          item.type !== initialItem.type ||
+          item.supplier !== initialItem.supplier ||
+          item.cost !== initialItem.cost ||
+          JSON.stringify(item.files) !== JSON.stringify(initialItem.files)
+        );
+      });
+
       for (const item of newItems) {
         await createOtherCosts({
           campaign: campaignId,
           body: {
+            description: item.description,
+            type_id: item.type,
+            supplier_id: item.supplier,
+            cost: item.cost,
+            attachments: item.files.map((file) => ({
+              url: file.url,
+              mime_type: file.mimeType,
+            })),
+          },
+        }).unwrap();
+      }
+      for (const item of modifiedItems) {
+        await updateOtherCosts({
+          campaign: campaignId,
+          body: {
+            cost_id: item.cost_id!,
             description: item.description,
             type_id: item.type,
             supplier_id: item.supplier,
@@ -87,22 +145,24 @@ const CostsFormProvider = ({
     return null;
   }
 
+  const initialValues: FormProps = {
+    items: (data?.items || []).map((item) => ({
+      cost_id: item.cost_id,
+      description: item.description || "",
+      type: item.type?.id || 0,
+      supplier: item.supplier?.id || 0,
+      cost: item.cost || 0,
+      files: (item.attachments || []).map((attachment) => ({
+        url: attachment.url || "",
+        mimeType: attachment.mimetype || "",
+      })),
+    })),
+  };
+
   return (
     <Formik<FormProps>
       enableReinitialize
-      initialValues={{
-        items: (data?.items || []).map((item) => ({
-          cost_id: item.cost_id,
-          description: item.description || "",
-          type: item.type?.id || 0,
-          supplier: item.supplier?.id || 0,
-          cost: item.cost || 0,
-          files: (item.attachments || []).map((attachment) => ({
-            url: attachment.url || "",
-            mimeType: attachment.mimetype || "",
-          })),
-        })),
-      }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >

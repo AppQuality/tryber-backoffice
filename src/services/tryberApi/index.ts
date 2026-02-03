@@ -1252,6 +1252,16 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    patchCampaignsByCampaignFinanceOtherCosts: build.mutation<
+      PatchCampaignsByCampaignFinanceOtherCostsApiResponse,
+      PatchCampaignsByCampaignFinanceOtherCostsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/otherCosts`,
+        method: "PATCH",
+        body: queryArg.body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -3575,6 +3585,33 @@ export type DeleteCampaignsByCampaignFinanceOtherCostsApiArg = {
     cost_id: number;
   };
 };
+export type PatchCampaignsByCampaignFinanceOtherCostsApiResponse =
+  /** status 200 OK */ {
+    description: string;
+    type: string;
+    cost_id: number;
+    supplier: string;
+    cost: number;
+    attachments: {
+      url: string;
+      mime_type: string;
+    }[];
+  };
+export type PatchCampaignsByCampaignFinanceOtherCostsApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    description: string;
+    type_id: number;
+    supplier_id: number;
+    cost: number;
+    attachments: {
+      url: string;
+      mime_type: string;
+    }[];
+    cost_id: number;
+  };
+};
 export type Agreement = {
   expirationDate: string;
   isTokenBased?: boolean;
@@ -4042,4 +4079,5 @@ export const {
   useGetCampaignsByCampaignFinanceOtherCostsQuery,
   usePostCampaignsByCampaignFinanceOtherCostsMutation,
   useDeleteCampaignsByCampaignFinanceOtherCostsMutation,
+  usePatchCampaignsByCampaignFinanceOtherCostsMutation,
 } = injectedRtkApi;
