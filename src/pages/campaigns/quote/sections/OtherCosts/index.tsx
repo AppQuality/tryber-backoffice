@@ -44,6 +44,12 @@ const StyledRow = styled.div`
   }
 `;
 
+const StyledCostInput = styled(Input)`
+  input {
+    text-align: right;
+  }
+`;
+
 const useCostTypes = ({ campaignId }: { campaignId: string }) => {
   const { data, isLoading } = useGetCampaignsByCampaignFinanceTypeQuery({
     campaign: campaignId,
@@ -159,11 +165,13 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                   (t) => t.value === String(item.type)
                 );
 
+                const isLastItem = index === values.items.length - 1;
+
                 return (
                   <div
                     key={`cost-row-wrapper-${index}`}
                     style={{
-                      borderBottom: "1px solid #eee",
+                      borderBottom: isLastItem ? "none" : "1px solid #eee",
                       paddingBottom: "20px",
                       marginBottom: "20px",
                     }}
@@ -194,7 +202,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                     </StyledRow>
 
                     <StyledRow>
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <Select
                           name={`items.${index}.type`}
                           menuTargetQuery="body"
@@ -219,7 +227,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                           }}
                         />
                       </div>
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <FormLabel
                           label={
                             <Text>
@@ -255,7 +263,6 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                               });
                               if ("data" in response) {
                                 await refetchSuppliers();
-                                // The new supplier will be at the end of the list, so use length
                                 const newSupplierId =
                                   (suppliers?.length || 0) + 1;
                                 arrayHelpers.replace(index, {
@@ -270,7 +277,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                           placeholder="Start typing to select or add"
                         />
                       </div>
-                      <div style={{ maxWidth: "150px" }}>
+                      <div style={{ flex: 1 }}>
                         <FormLabel
                           htmlFor={`cost-${index}`}
                           label={
@@ -279,30 +286,17 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                             </Text>
                           }
                         />
-                        <Input
+                        <StyledCostInput
                           id={`cost-${index}`}
                           type="number"
                           value={item.cost.toString()}
-                          onChange={(value) => {
+                          onChange={(value: string) => {
                             arrayHelpers.replace(index, {
                               ...item,
                               cost: Number(value),
                             });
                           }}
                         />
-                      </div>
-                      <div>
-                        <Button
-                          size="sm"
-                          kind="danger"
-                          onClick={() => {
-                            item.notSaved
-                              ? arrayHelpers.remove(index)
-                              : setRowPendingRemoval(index);
-                          }}
-                        >
-                          <DeleteIcon />
-                        </Button>
                       </div>
                     </StyledRow>
 
@@ -318,6 +312,42 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         campaignId={campaignId}
                         name={`items.${index}.files`}
                       />
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "8px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          flex: 1,
+                        }}
+                      >
+                        <Text>
+                          Subtotal:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {(Number(item.cost) || 0).toFixed(2)}€
+                          </span>
+                        </Text>
+                      </div>
+                      <Button
+                        size="sm"
+                        kind="danger"
+                        onClick={() => {
+                          item.notSaved
+                            ? arrayHelpers.remove(index)
+                            : setRowPendingRemoval(index);
+                        }}
+                        style={{ marginLeft: "16px" }}
+                      >
+                        <DeleteIcon />
+                      </Button>
                     </div>
                   </div>
                 );
