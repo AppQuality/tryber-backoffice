@@ -107,11 +107,9 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
     const item = values.items[index];
 
     if (item.notSaved) {
-      // Item not saved yet, just remove from array
       arrayHelpers.remove(index);
       setRowPendingRemoval(null);
     } else if (item.cost_id) {
-      // Item is saved, call delete API
       try {
         await deleteOtherCost({
           campaign: campaignId,

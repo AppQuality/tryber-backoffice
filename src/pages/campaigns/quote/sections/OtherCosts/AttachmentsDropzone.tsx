@@ -51,6 +51,11 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
     setIsUploading(false);
   };
 
+  const handleDelete = (index: number) => {
+    const updatedList = currentFiles.filter((_: any, i: number) => i !== index);
+    setFieldValue(name, updatedList);
+  };
+
   return (
     <div style={{ marginTop: "8px" }}>
       <Dropzone
@@ -91,9 +96,27 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
               border: "1px solid #ddd",
               borderRadius: "4px",
               background: "#fff",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
             }}
           >
-            📎 {file.url.split("/").pop()}
+            <span>📎 {file.url.split("/").pop()}</span>
+            <button
+              type="button"
+              onClick={() => handleDelete(idx)}
+              style={{
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                padding: "0",
+                fontSize: "14px",
+                color: "#dc3545",
+              }}
+              title="Remove attachment"
+            >
+              ✕
+            </button>
           </div>
         ))}
       </div>
