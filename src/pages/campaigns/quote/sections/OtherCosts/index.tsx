@@ -288,6 +288,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         <StyledCostInput
                           id={`cost-${index}`}
                           type="number"
+                          placeholder="0.00"
                           value={String(item.cost)}
                           onChange={(value: string) => {
                             const numValue =
