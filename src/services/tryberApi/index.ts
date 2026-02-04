@@ -1493,6 +1493,7 @@ export type GetCampaignsByCampaignBugsApiResponse = /** status 200 OK */ {
     id: number;
     internalId: string;
     isFavourite: boolean;
+    reviewerType?: "ai" | "human";
     severity: {
       id: number;
       name: string;
@@ -2128,6 +2129,7 @@ export type PostDossiersApiArg = {
     skipPagesAndTasks?: number;
   } & {
     notify_everyone?: 0 | 1;
+    ux_notify?: number;
   };
 };
 export type GetDossiersByCampaignApiResponse = /** status 200 OK */ {
