@@ -289,7 +289,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         <StyledCostInput
                           id={`cost-${index}`}
                           type="number"
-                          value={item.cost.toString()}
+                          value={item.cost.toFixed(2)}
                           onChange={(value: string) => {
                             arrayHelpers.replace(index, {
                               ...item,

@@ -3552,6 +3552,7 @@ export type GetCampaignsByCampaignFinanceOtherCostsApiResponse =
         id: number;
         url: string;
         mimetype: string;
+        presigned_url: string;
       }[];
       cost: number;
     }[];

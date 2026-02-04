@@ -16,7 +16,7 @@ export type FormProps = {
     type: number;
     supplier: number;
     cost: number;
-    files: { url: string; mimeType: string }[];
+    files: { url: string; mimeType: string; presignedUrl?: string }[];
   }>;
 };
 
@@ -50,6 +50,7 @@ const CostsFormProvider = ({
           files: (item.attachments || []).map((attachment) => ({
             url: attachment.url || "",
             mimeType: attachment.mimetype || "",
+            presignedUrl: attachment.presigned_url || "",
           })),
         })),
       };
@@ -68,12 +69,23 @@ const CostsFormProvider = ({
         );
         if (!initialItem) return false;
 
+        // Compare files without presignedUrl
+        const currentFilesForComparison = item.files.map((f) => ({
+          url: f.url,
+          mimeType: f.mimeType,
+        }));
+        const initialFilesForComparison = initialItem.files.map((f) => ({
+          url: f.url,
+          mimeType: f.mimeType,
+        }));
+
         return (
           item.description !== initialItem.description ||
           item.type !== initialItem.type ||
           item.supplier !== initialItem.supplier ||
           item.cost !== initialItem.cost ||
-          JSON.stringify(item.files) !== JSON.stringify(initialItem.files)
+          JSON.stringify(currentFilesForComparison) !==
+            JSON.stringify(initialFilesForComparison)
         );
       });
 
@@ -157,6 +169,7 @@ const CostsFormProvider = ({
       files: (item.attachments || []).map((attachment) => ({
         url: attachment.url || "",
         mimeType: attachment.mimetype || "",
+        presignedUrl: attachment.presigned_url || "",
       })),
     })),
   };

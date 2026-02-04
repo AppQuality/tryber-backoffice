@@ -56,6 +56,18 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
     setFieldValue(name, updatedList);
   };
 
+  const downloadFile = (file: any) => {
+    const fileName = file.url.split("/").pop() || "attachment";
+    const link = document.createElement("a");
+    link.href = file.presignedUrl;
+    link.download = fileName;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div style={{ marginTop: "8px" }}>
       <Dropzone
@@ -91,7 +103,7 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
           <div
             key={`${file.url}-${idx}`}
             style={{
-              fontSize: "12px",
+              fontSize: "16px",
               padding: "2px 8px",
               border: "1px solid #ddd",
               borderRadius: "4px",
@@ -101,7 +113,24 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
               gap: "8px",
             }}
           >
-            <span>📎 {file.url.split("/").pop()}</span>
+            {file.presignedUrl ? (
+              <span
+                onClick={() => downloadFile(file)}
+                style={{
+                  cursor: "pointer",
+                  color: "#0066cc",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  flex: 1,
+                }}
+                title="Click to download"
+              >
+                📎 {file.url.split("/").pop()} ⬇
+              </span>
+            ) : (
+              <span>📎 {file.url.split("/").pop()}</span>
+            )}
             <button
               type="button"
               onClick={() => handleDelete(idx)}
