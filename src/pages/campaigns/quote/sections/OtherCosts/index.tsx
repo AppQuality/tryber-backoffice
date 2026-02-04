@@ -124,7 +124,6 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
 
         arrayHelpers.remove(index);
         setRowPendingRemoval(null);
-        await submitForm();
 
         add({
           message: "Cost deleted successfully",
@@ -289,11 +288,13 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         <StyledCostInput
                           id={`cost-${index}`}
                           type="number"
-                          value={item.cost.toFixed(2)}
+                          value={String(item.cost)}
                           onChange={(value: string) => {
+                            const numValue =
+                              value === "" ? 0 : parseFloat(value);
                             arrayHelpers.replace(index, {
                               ...item,
-                              cost: Number(value),
+                              cost: numValue,
                             });
                           }}
                         />
