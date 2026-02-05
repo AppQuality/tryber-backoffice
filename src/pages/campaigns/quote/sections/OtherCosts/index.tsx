@@ -206,7 +206,6 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                           name={`items.${index}.type`}
                           menuTargetQuery="body"
                           options={costTypes}
-                          isLoading={costTypesLoading}
                           label={
                             <Text>
                               Type <span style={{ color: "red" }}>*</span>
