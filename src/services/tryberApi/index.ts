@@ -1567,6 +1567,7 @@ export type GetCampaignsByCampaignBugsApiResponse = /** status 200 OK */ {
     id: number;
     internalId: string;
     isFavourite: boolean;
+    reviewerType?: "ai" | "human";
     severity: {
       id: number;
       name: string;
