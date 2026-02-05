@@ -44,12 +44,6 @@ const StyledRow = styled.div`
   }
 `;
 
-const StyledCostInput = styled(Input)`
-  input {
-    text-align: right;
-  }
-`;
-
 const useCostTypes = ({ campaignId }: { campaignId: string }) => {
   const { data, isLoading } = useGetCampaignsByCampaignFinanceTypeQuery({
     campaign: campaignId,
@@ -284,7 +278,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                             </Text>
                           }
                         />
-                        <StyledCostInput
+                        <Input
                           id={`cost-${index}`}
                           type="number"
                           placeholder="0.00"
