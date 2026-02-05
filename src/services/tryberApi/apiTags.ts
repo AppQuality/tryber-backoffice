@@ -260,6 +260,18 @@ tryberApi.enhanceEndpoints({
     putDossiersByCampaignAgreements: {
       invalidatesTags: ["Agreements"],
     },
+    getCampaignsByCampaignFinanceOtherCosts: {
+      providesTags: ["OtherCosts"],
+    },
+    postCampaignsByCampaignFinanceOtherCosts: {
+      invalidatesTags: ["OtherCosts"],
+    },
+    deleteCampaignsByCampaignFinanceOtherCosts: {
+      invalidatesTags: ["OtherCosts"],
+    },
+    patchCampaignsByCampaignFinanceOtherCosts: {
+      invalidatesTags: ["OtherCosts"],
+    },
   },
 });
 

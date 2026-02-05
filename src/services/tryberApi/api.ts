@@ -39,6 +39,7 @@ export const api = createApi({
     "HumanResources",
     "Agreements",
     "Quote",
+    "OtherCosts",
   ],
   endpoints: () => ({}), // auto generated npm run generate-api
 });

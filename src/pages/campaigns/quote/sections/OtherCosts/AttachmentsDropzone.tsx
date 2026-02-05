@@ -1,0 +1,160 @@
+import { Dropzone, Spinner } from "@appquality/appquality-design-system";
+import { useFormikContext, getIn } from "formik";
+import { useState } from "react";
+import { usePostCampaignsByCampaignFinanceAttachmentsMutation } from "src/services/tryberApi";
+import { normalizeFileName } from "./utils";
+import { FormProps } from "./CostsFormProvider";
+
+interface Props {
+  campaignId: string;
+  name: string;
+}
+
+export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
+  const [createAttachment] =
+    usePostCampaignsByCampaignFinanceAttachmentsMutation();
+  const { values, setFieldValue, errors, touched } =
+    useFormikContext<FormProps>();
+  const [isUploading, setIsUploading] = useState(false);
+  const currentFiles = getIn(values, name) || [];
+  const error = getIn(errors, name);
+  const isTouched = getIn(touched, name);
+
+  const uploadMedia = async (files: File[]) => {
+    setIsUploading(true);
+    const updatedList = [...currentFiles];
+
+    for (const f of files) {
+      const formData = new FormData();
+      formData.append("media", f, normalizeFileName(f.name));
+
+      try {
+        const res = await createAttachment({
+          campaign: campaignId,
+          // @ts-ignore
+          body: formData,
+        }).unwrap();
+
+        if (res.attachments && res.attachments.length > 0) {
+          const newFile = res.attachments[0];
+          updatedList.push({
+            url: newFile.url,
+            mimeType: newFile.mime_type,
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    setFieldValue(name, updatedList);
+    setIsUploading(false);
+  };
+
+  const handleDelete = (index: number) => {
+    const updatedList = currentFiles.filter((_: any, i: number) => i !== index);
+    setFieldValue(name, updatedList);
+  };
+
+  const downloadFile = (file: any) => {
+    const fileName = file.url.split("/").pop() || "attachment";
+    const link = document.createElement("a");
+    link.href = file.presignedUrl;
+    link.download = fileName;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <div style={{ marginTop: "8px" }}>
+      <Dropzone
+        description="Click or drag files here to upload"
+        onAccepted={uploadMedia}
+        onRejected={() => {}}
+        disabled={isUploading}
+        danger={!!error && isTouched}
+      />
+
+      {isUploading && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            marginTop: "8px",
+          }}
+        >
+          <Spinner size="sm" />
+        </div>
+      )}
+
+      <div
+        style={{
+          marginTop: "8px",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+        }}
+      >
+        {currentFiles.map((file: any, idx: number) => (
+          <div
+            key={`${file.url}-${idx}`}
+            style={{
+              fontSize: "16px",
+              padding: "2px 8px",
+              border: "1px solid #ddd",
+              borderRadius: "4px",
+              background: "#fff",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            {file.presignedUrl ? (
+              <span
+                onClick={() => downloadFile(file)}
+                style={{
+                  cursor: "pointer",
+                  color: "#0066cc",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  flex: 1,
+                }}
+                title="Click to download"
+              >
+                📎 {file.url.split("/").pop()} ⬇
+              </span>
+            ) : (
+              <span>📎 {file.url.split("/").pop()}</span>
+            )}
+            <button
+              type="button"
+              onClick={() => handleDelete(idx)}
+              style={{
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                padding: "0",
+                fontSize: "14px",
+                color: "#dc3545",
+              }}
+              title="Remove attachment"
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {error && isTouched && (
+        <div style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
+          {error}
+        </div>
+      )}
+    </div>
+  );
+};

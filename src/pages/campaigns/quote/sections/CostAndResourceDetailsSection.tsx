@@ -9,6 +9,7 @@ import { useGetDossiersByCampaignCostsQuery } from "src/services/tryberApi";
 import { HorizontalDivider } from "../components/Dividers";
 import HumanResources from "./HumanResources";
 import { Section } from "./Section";
+import OtherCosts from "./OtherCosts";
 
 type CostAndResourceDetailsSectionProps = {
   campaignId?: string;
@@ -92,6 +93,9 @@ export const CostAndResourceDetailsSection = ({
       </Card>
       <Card className="aq-mb-4" title="Human Resources cost">
         <HumanResources campaignId={campaignId || "0"} />
+      </Card>
+      <Card className="aq-mb-4" title="Other Costs">
+        <OtherCosts campaignId={campaignId || "0"} />
       </Card>
     </Section>
   );

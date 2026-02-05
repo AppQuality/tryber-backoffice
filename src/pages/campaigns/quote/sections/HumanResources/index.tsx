@@ -199,7 +199,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                 return (
                   <div key={`hr-row-wrapper-${index}`}>
                     <StyledRow>
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <Select
                           menuTargetQuery={"body"}
                           name={"assignee-select"}
@@ -225,7 +225,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         />
                       </div>
 
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <FormLabel
                           htmlFor={`days-input-${index}`}
                           label={
@@ -249,7 +249,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                         />
                       </div>
 
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <Select
                           placeholder={"-"}
                           menuTargetQuery={"body"}
@@ -270,33 +270,42 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                           noOptionsMessage={() => "No options"}
                         />
                       </div>
-
-                      <div>
-                        <Button
-                          size="sm"
-                          kind="danger"
-                          onClick={() => {
-                            values.items[index].notSaved
-                              ? arrayHelpers.remove(index)
-                              : setRowPendingRemoval(index);
-                          }}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </div>
                     </StyledRow>
 
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "flex-end",
-                        marginBottom: "8px",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "8px",
                       }}
                     >
-                      <Text>
-                        Subtotal:{" "}
-                        <span style={{ fontWeight: "bold" }}>{subtotal}€</span>
-                      </Text>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          flex: 1,
+                        }}
+                      >
+                        <Text>
+                          Subtotal:{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            {subtotal}€
+                          </span>
+                        </Text>
+                      </div>
+                      <Button
+                        size="sm"
+                        kind="danger"
+                        onClick={() => {
+                          values.items[index].notSaved
+                            ? arrayHelpers.remove(index)
+                            : setRowPendingRemoval(index);
+                        }}
+                        style={{ marginLeft: "16px" }}
+                      >
+                        <DeleteIcon />
+                      </Button>
                     </div>
                   </div>
                 );

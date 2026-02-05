@@ -242,6 +242,16 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/campaigns/${queryArg.campaign}/clusters`,
       }),
     }),
+    postCampaignsByCampaignFinanceAttachments: build.mutation<
+      PostCampaignsByCampaignFinanceAttachmentsApiResponse,
+      PostCampaignsByCampaignFinanceAttachmentsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/attachments`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
     getCampaignsByCampaignForms: build.query<
       GetCampaignsByCampaignFormsApiResponse,
       GetCampaignsByCampaignFormsApiArg
@@ -1188,6 +1198,70 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.body,
       }),
     }),
+    getCampaignsByCampaignFinanceSupplier: build.query<
+      GetCampaignsByCampaignFinanceSupplierApiResponse,
+      GetCampaignsByCampaignFinanceSupplierApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/supplier`,
+      }),
+    }),
+    postCampaignsByCampaignFinanceSupplier: build.mutation<
+      PostCampaignsByCampaignFinanceSupplierApiResponse,
+      PostCampaignsByCampaignFinanceSupplierApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/supplier`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    getCampaignsByCampaignFinanceType: build.query<
+      GetCampaignsByCampaignFinanceTypeApiResponse,
+      GetCampaignsByCampaignFinanceTypeApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/type`,
+      }),
+    }),
+    getCampaignsByCampaignFinanceOtherCosts: build.query<
+      GetCampaignsByCampaignFinanceOtherCostsApiResponse,
+      GetCampaignsByCampaignFinanceOtherCostsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/otherCosts`,
+      }),
+    }),
+    postCampaignsByCampaignFinanceOtherCosts: build.mutation<
+      PostCampaignsByCampaignFinanceOtherCostsApiResponse,
+      PostCampaignsByCampaignFinanceOtherCostsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/otherCosts`,
+        method: "POST",
+        body: queryArg.body,
+      }),
+    }),
+    deleteCampaignsByCampaignFinanceOtherCosts: build.mutation<
+      DeleteCampaignsByCampaignFinanceOtherCostsApiResponse,
+      DeleteCampaignsByCampaignFinanceOtherCostsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/otherCosts`,
+        method: "DELETE",
+        body: queryArg.body,
+      }),
+    }),
+    patchCampaignsByCampaignFinanceOtherCosts: build.mutation<
+      PatchCampaignsByCampaignFinanceOtherCostsApiResponse,
+      PatchCampaignsByCampaignFinanceOtherCostsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/campaigns/${queryArg.campaign}/finance/otherCosts`,
+        method: "PATCH",
+        body: queryArg.body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -1669,6 +1743,24 @@ export type GetCampaignsByCampaignClustersApiResponse =
 export type GetCampaignsByCampaignClustersApiArg = {
   /** A campaign id */
   campaign: string;
+};
+export type PostCampaignsByCampaignFinanceAttachmentsApiResponse =
+  /** status 200 OK */ {
+    attachments?: {
+      url: string;
+      name: string;
+      mime_type: string;
+    }[];
+    failed?: {
+      name: string;
+      path: string;
+    }[];
+  };
+export type PostCampaignsByCampaignFinanceAttachmentsApiArg = {
+  campaign: string;
+  body: {
+    attachment?: Blob | Blob[];
+  };
 };
 export type GetCampaignsByCampaignFormsApiResponse = /** status 200 OK */ {
   id: number;
@@ -3412,6 +3504,116 @@ export type PostCampaignsByCampaignTasksAndUsecaseSurveyJotformApiArg = {
     testerQuestionId: string;
   };
 };
+export type GetCampaignsByCampaignFinanceSupplierApiResponse =
+  /** status 200 OK */ {
+    items: {
+      name: string;
+      created_at?: string;
+      created_by?: number;
+      id: number;
+    }[];
+  };
+export type GetCampaignsByCampaignFinanceSupplierApiArg = {
+  campaign: string;
+};
+export type PostCampaignsByCampaignFinanceSupplierApiResponse =
+  /** status 201 Created */ {
+    supplier_id: number;
+  };
+export type PostCampaignsByCampaignFinanceSupplierApiArg = {
+  campaign: string;
+  body: {
+    name: string;
+  };
+};
+export type GetCampaignsByCampaignFinanceTypeApiResponse =
+  /** status 200 OK */ {
+    items: {
+      name: string;
+      id: number;
+    }[];
+  };
+export type GetCampaignsByCampaignFinanceTypeApiArg = {
+  campaign: string;
+};
+export type GetCampaignsByCampaignFinanceOtherCostsApiResponse =
+  /** status 200 OK */ {
+    items: {
+      cost_id: number;
+      type: {
+        name: string;
+        id: number;
+      };
+      supplier: {
+        name: string;
+        id: number;
+      };
+      description: string;
+      attachments: {
+        id: number;
+        url: string;
+        mimetype: string;
+        presigned_url: string;
+      }[];
+      cost: number;
+    }[];
+  };
+export type GetCampaignsByCampaignFinanceOtherCostsApiArg = {
+  /** A campaign id */
+  campaign: string;
+};
+export type PostCampaignsByCampaignFinanceOtherCostsApiResponse =
+  /** status 201 Created */ undefined;
+export type PostCampaignsByCampaignFinanceOtherCostsApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    description: string;
+    type_id: number;
+    supplier_id: number;
+    cost: number;
+    attachments: {
+      url: string;
+      mime_type: string;
+    }[];
+  }[];
+};
+export type DeleteCampaignsByCampaignFinanceOtherCostsApiResponse =
+  /** status 200 OK */ undefined;
+export type DeleteCampaignsByCampaignFinanceOtherCostsApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    cost_id: number;
+  };
+};
+export type PatchCampaignsByCampaignFinanceOtherCostsApiResponse =
+  /** status 200 OK */ {
+    description: string;
+    type: string;
+    cost_id: number;
+    supplier: string;
+    cost: number;
+    attachments: {
+      url: string;
+      mime_type: string;
+    }[];
+  }[];
+export type PatchCampaignsByCampaignFinanceOtherCostsApiArg = {
+  /** A campaign id */
+  campaign: string;
+  body: {
+    description: string;
+    type_id: number;
+    supplier_id: number;
+    cost: number;
+    attachments: {
+      url: string;
+      mime_type: string;
+    }[];
+    cost_id: number;
+  }[];
+};
 export type Agreement = {
   expirationDate: string;
   isTokenBased?: boolean;
@@ -3761,6 +3963,7 @@ export const {
   useGetCampaignsByCampaignCandidatesQuery,
   usePostCampaignsByCampaignCandidatesMutation,
   useGetCampaignsByCampaignClustersQuery,
+  usePostCampaignsByCampaignFinanceAttachmentsMutation,
   useGetCampaignsByCampaignFormsQuery,
   useGetCampaignsByCampaignGroupsQuery,
   useGetCampaignsByCampaignObservationsQuery,
@@ -3872,4 +4075,11 @@ export const {
   useGetUsersMeRankQuery,
   useGetUsersMeRankListQuery,
   usePostCampaignsByCampaignTasksAndUsecaseSurveyJotformMutation,
+  useGetCampaignsByCampaignFinanceSupplierQuery,
+  usePostCampaignsByCampaignFinanceSupplierMutation,
+  useGetCampaignsByCampaignFinanceTypeQuery,
+  useGetCampaignsByCampaignFinanceOtherCostsQuery,
+  usePostCampaignsByCampaignFinanceOtherCostsMutation,
+  useDeleteCampaignsByCampaignFinanceOtherCostsMutation,
+  usePatchCampaignsByCampaignFinanceOtherCostsMutation,
 } = injectedRtkApi;
