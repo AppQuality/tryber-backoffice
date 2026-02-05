@@ -13,6 +13,8 @@ import {
 import { useFiltersCardContext } from "../FilterContext";
 import { Button as AppQualityButton } from "@appquality/appquality-design-system";
 import { ReactComponent as InfoIcon } from "src/assets/info-icon.svg";
+import { ReactComponent as HumanIcon } from "src/assets/human.svg";
+import { ReactComponent as RobotAiIcon } from "src/assets/robot-ai.svg";
 import Button from "./TableButton";
 import Severity from "./Severity";
 import Type from "./Type";
@@ -24,10 +26,49 @@ const LIMIT = 100;
 
 const StarFill = icons.StarFill;
 
+interface ValidationByItemProps {
+  icon: React.ReactNode;
+  label: string;
+}
+
+const ValidationByItem = ({ icon, label }: ValidationByItemProps) => (
+  <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
+    {icon}
+    <span>{label}</span>
+  </div>
+);
+
 const BugsTable = ({ id }: { id: string }) => {
   const { filters, page, setPage, order, setOrder } = useFiltersCardContext();
   const [scoreModal, setScoreModal] = useState(false);
   const [statusModal, setStatusModal] = useState(false);
+
+  const getValidationByObject = (
+    statusName: string,
+    reviewerType?: string | null
+  ) => {
+    if (statusName?.toLowerCase() === "pending") {
+      return {
+        content: "--",
+      };
+    }
+
+    if (reviewerType === "ai") {
+      return {
+        content: <ValidationByItem icon={<RobotAiIcon />} label="AI" />,
+      };
+    }
+
+    if (reviewerType === "human") {
+      return {
+        content: <ValidationByItem icon={<HumanIcon />} label="Human" />,
+      };
+    }
+
+    return {
+      content: "--",
+    };
+  };
 
   let orderBy: GetCampaignsByCampaignBugsApiArg["orderBy"] = "id";
   if (order.field === "internalId") orderBy = "id";
@@ -94,6 +135,7 @@ const BugsTable = ({ id }: { id: string }) => {
             score: {
               content: <AiScore campaignId={id} bugId={r.id} />,
             },
+            validation_by: getValidationByObject(r.status.name, r.reviewerType),
             status: {
               title: r.status.name,
               content: r.status.name,
@@ -181,6 +223,12 @@ const BugsTable = ({ id }: { id: string }) => {
             ),
             dataIndex: "score",
             key: "score",
+            maxWidth: "15ch",
+          },
+          {
+            title: "Validation By",
+            dataIndex: "validation_by",
+            key: "validation_by",
             maxWidth: "15ch",
           },
           {

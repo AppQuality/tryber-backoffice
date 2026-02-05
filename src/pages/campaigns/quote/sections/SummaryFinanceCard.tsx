@@ -6,6 +6,7 @@ import {
   Title,
 } from "@appquality/appquality-design-system";
 import {
+  useGetCampaignsByCampaignFinanceOtherCostsQuery,
   useGetDossiersByCampaignAgreementsQuery,
   useGetDossiersByCampaignCostsQuery,
   useGetDossiersByCampaignHumanResourcesQuery,
@@ -29,6 +30,11 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
       campaign: campaignId,
     });
 
+  const { data: otherCostsData, isLoading: isOtherCostsDataLoading } =
+    useGetCampaignsByCampaignFinanceOtherCostsQuery({
+      campaign: campaignId,
+    });
+
   const hrCostsTotal =
     hrCostsData?.items && hrCostsData?.items.length > 0
       ? hrCostsData.items.reduce(
@@ -37,10 +43,16 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
         )
       : 0;
 
+  const otherCostsTotal =
+    otherCostsData?.items && otherCostsData?.items.length > 0
+      ? otherCostsData.items.reduce((acc, cost) => acc + (cost?.cost ?? 0), 0)
+      : 0;
+
   if (
     isAgreementDataLoading ||
     isCommunityCostsDataLoading ||
-    isHrCostsDataLoading
+    isHrCostsDataLoading ||
+    isOtherCostsDataLoading
   )
     return <Skeleton />;
 
@@ -114,6 +126,24 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
           </span>
         </div>
 
+        <div
+          style={{
+            color: aqBootstrapTheme.palette.primary,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>Other costs: </span>
+          <span
+            style={{
+              color: aqBootstrapTheme.palette.primary,
+            }}
+          >
+            {otherCostsTotal.toFixed(2)}€{" "}
+          </span>
+        </div>
+
         <HorizontalDivider />
 
         <div
@@ -132,7 +162,12 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
               color: aqBootstrapTheme.palette.primary,
             }}
           >
-            {((communityCostsData?.totalCost || 0) + hrCostsTotal).toFixed(2)}€
+            {(
+              (communityCostsData?.totalCost || 0) +
+              hrCostsTotal +
+              otherCostsTotal
+            ).toFixed(2)}
+            €
           </Title>
         </div>
 
@@ -168,7 +203,9 @@ export const SummaryFinanceCard = ({ campaignId }: { campaignId: string }) => {
                 {agreementData?.tokens && agreementData?.agreement?.value
                   ? `${(
                       ((agreementData.tokens * agreementData.agreement.value -
-                        ((communityCostsData?.totalCost || 0) + hrCostsTotal)) /
+                        ((communityCostsData?.totalCost || 0) +
+                          hrCostsTotal +
+                          otherCostsTotal)) /
                         (agreementData.tokens *
                           agreementData.agreement.value)) *
                       100
