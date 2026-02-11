@@ -249,19 +249,18 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                           }}
                           onCreateOption={async (inputValue: string) => {
                             try {
-                              const response = await createSupplier({
+                              const supplierId = await createSupplier({
                                 campaign: campaignId,
                                 body: { name: inputValue },
+                              })
+                                .unwrap()
+                                .then((res) => res.supplier_id);
+
+                              await refetchSuppliers();
+                              arrayHelpers.replace(index, {
+                                ...item,
+                                supplier: supplierId,
                               });
-                              if ("data" in response) {
-                                await refetchSuppliers();
-                                const newSupplierId =
-                                  (suppliers?.length || 0) + 1;
-                                arrayHelpers.replace(index, {
-                                  ...item,
-                                  supplier: newSupplierId,
-                                });
-                              }
                             } catch (e) {
                               console.error("Failed to create supplier:", e);
                             }
