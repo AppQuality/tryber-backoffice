@@ -51,9 +51,9 @@ const useCostTypes = ({ campaignId }: { campaignId: string }) => {
 
   const options = useMemo(() => {
     if (!data?.items) return [];
-    return data.items.map((item, index) => ({
-      value: String(index + 1),
-      label: item.name || `Type ${index + 1}`,
+    return data.items.map((item) => ({
+      value: String(item.id),
+      label: item.name,
     }));
   }, [data]);
 
@@ -68,8 +68,8 @@ const useSuppliers = ({ campaignId }: { campaignId: string }) => {
 
   const options = useMemo(() => {
     if (!data?.items) return [];
-    return data.items.map((item, index) => ({
-      value: String(index + 1),
+    return data.items.map((item) => ({
+      value: String(item.id),
       label: item.name,
     }));
   }, [data]);
