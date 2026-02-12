@@ -51,9 +51,9 @@ const useCostTypes = ({ campaignId }: { campaignId: string }) => {
 
   const options = useMemo(() => {
     if (!data?.items) return [];
-    return data.items.map((item, index) => ({
-      value: String(index + 1),
-      label: item.name || `Type ${index + 1}`,
+    return data.items.map((item) => ({
+      value: String(item.id),
+      label: item.name,
     }));
   }, [data]);
 
@@ -68,8 +68,8 @@ const useSuppliers = ({ campaignId }: { campaignId: string }) => {
 
   const options = useMemo(() => {
     if (!data?.items) return [];
-    return data.items.map((item, index) => ({
-      value: String(index + 1),
+    return data.items.map((item) => ({
+      value: String(item.id),
       label: item.name,
     }));
   }, [data]);
@@ -249,19 +249,18 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                           }}
                           onCreateOption={async (inputValue: string) => {
                             try {
-                              const response = await createSupplier({
+                              const supplierId = await createSupplier({
                                 campaign: campaignId,
                                 body: { name: inputValue },
+                              })
+                                .unwrap()
+                                .then((res) => res.supplier_id);
+
+                              await refetchSuppliers();
+                              arrayHelpers.replace(index, {
+                                ...item,
+                                supplier: supplierId,
                               });
-                              if ("data" in response) {
-                                await refetchSuppliers();
-                                const newSupplierId =
-                                  (suppliers?.length || 0) + 1;
-                                arrayHelpers.replace(index, {
-                                  ...item,
-                                  supplier: newSupplierId,
-                                });
-                              }
                             } catch (e) {
                               console.error("Failed to create supplier:", e);
                             }
