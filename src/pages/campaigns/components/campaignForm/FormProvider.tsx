@@ -406,7 +406,7 @@ const FormProvider = ({
               body: {
                 ...body,
                 duplicate: duplicate,
-                notify_everyone: 1,
+                notify_everyone: 0, // disabled because in duplication process if customer is different we're going to add unwanted users to the notification list.
               },
             }).unwrap();
             if (!resp.id) {
