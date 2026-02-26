@@ -2,6 +2,7 @@ import { Formik } from "@appquality/appquality-design-system";
 import { useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { addMessage } from "src/redux/siteWideMessages/actionCreators";
+
 import {
   GetDossiersByCampaignApiResponse,
   PostDossiersApiArg,
@@ -67,6 +68,11 @@ export interface NewCampaignValues {
   autoApply?: boolean;
   autoApprove?: boolean;
 }
+
+const stripHtml = (html: string): string => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent ?? "";
+};
 
 const useGetInitialCufCriteria = ({
   dossier,
@@ -167,7 +173,7 @@ const FormProvider = ({
     languages: dossier?.languages?.map((lang) => lang.name) || [],
     description: dossier?.description || "",
     productLink: dossier?.productLink || "",
-    goal: dossier?.goal || "",
+    goal: dossier?.goal ? stripHtml(dossier.goal).trim() : "",
     outOfScope: dossier?.outOfScope || "",
     deviceRequirements: dossier?.deviceRequirements || "",
     targetNotes: dossier?.target?.notes || "",
