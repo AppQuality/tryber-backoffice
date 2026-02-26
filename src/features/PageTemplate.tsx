@@ -2,7 +2,6 @@ import {
   aqBootstrapTheme,
   GlobalStyle,
 } from "@appquality/appquality-design-system";
-import * as Sentry from "@sentry/react";
 import React from "react";
 import TagManager from "react-gtm-module";
 import { useGetUsersMeQuery } from "src/services/tryberApi";
@@ -30,13 +29,6 @@ export const PageTemplate = ({
     dataLayer: {
       event: "ApiLoaded",
     },
-  });
-  Sentry.setUser({
-    id: user?.id ?? 0,
-    email: user?.email ?? "unknown",
-    username: user?.username ?? "unknown",
-    wp_user_id: user?.wp_user_id ?? 0,
-    role: user?.role ?? "unknown",
   });
   if (error) {
     if ("status" in error && error.status === 403) {
