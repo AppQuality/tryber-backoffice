@@ -1,7 +1,10 @@
 import { Button } from "@appquality/appquality-design-system";
-import { ButtonProps } from "@appquality/appquality-design-system/dist/stories/button/_types";
 import React from "react";
 import styled from "styled-components";
+
+type ButtonProps = React.ComponentProps<typeof Button> & {
+  href: string;
+};
 
 const StyledButton = styled(
   ({ children, style, href, ...rest }: ButtonProps) => (

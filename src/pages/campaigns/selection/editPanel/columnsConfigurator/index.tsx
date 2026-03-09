@@ -1,5 +1,4 @@
 import { Button, Select } from "@appquality/appquality-design-system";
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
 import { useEffect, useState } from "react";
 import { useGetCampaignsByCampaignFormsQuery } from "src/services/tryberApi";
 import { useAppDispatch } from "src/store";
@@ -9,6 +8,8 @@ import { mapCampaingFormData, mapSelectedQuestions } from "./mapData";
 interface ColumnsConfiguratorProps {
   id: string;
 }
+
+type Option = any;
 
 const ColumnsConfigurator = ({ id }: ColumnsConfiguratorProps) => {
   const dispatch = useAppDispatch();

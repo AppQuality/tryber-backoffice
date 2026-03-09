@@ -2,18 +2,12 @@ import {
   aqBootstrapTheme,
   GlobalStyle,
 } from "@appquality/appquality-design-system";
-import {
-  ToastProvider,
-  GlobalStyle as UnguessGlobalStyle,
-} from "@appquality/unguess-design-system";
 import * as Sentry from "@sentry/react";
-import { ThemeProvider as UnguessThemeProvider } from "@zendeskgarden/react-theming";
 import React from "react";
 import TagManager from "react-gtm-module";
 import { useGetUsersMeQuery } from "src/services/tryberApi";
 import { ThemeProvider } from "styled-components";
 import SiteWideMessages from "./SiteWideMessages";
-import { appTheme } from "./unguessTheme";
 
 export const PageTemplate = ({
   type = "tryber",
@@ -55,28 +49,6 @@ export const PageTemplate = ({
       if ("message" in error) alert(error.message);
     }
     return null;
-  }
-  if (type === "unguess") {
-    return (
-      <UnguessThemeProvider theme={appTheme}>
-        <UnguessGlobalStyle />
-        <ToastProvider
-          limit={5}
-          zIndex={500}
-          placementProps={{
-            top: {
-              style: {
-                top:
-                  parseInt(appTheme.components.chrome.header.height, 10) +
-                  appTheme.space.base * 4,
-              },
-            },
-          }}
-        >
-          {children}
-        </ToastProvider>
-      </UnguessThemeProvider>
-    );
   }
 
   return (

@@ -1,11 +1,12 @@
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
+import { FieldArray } from "formik";
+import { useAppDispatch } from "src/store";
 import styled from "styled-components";
+import { setDisableApplyFilters } from "../../../selectionSlice";
 import { ReactComponent as Trash } from "./assets/trash.svg";
 import { InputFilter } from "./InputFilter";
 import { SelectFilter } from "./SelectFilter";
-import { FieldArray } from "formik";
-import { useAppDispatch } from "src/store";
-import { setDisableApplyFilters } from "../../../selectionSlice";
+
+type Option = any;
 
 const StyledFilterRow = styled.div`
   display: flex;

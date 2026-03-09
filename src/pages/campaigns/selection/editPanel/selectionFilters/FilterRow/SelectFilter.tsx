@@ -4,10 +4,11 @@ import {
   Select,
 } from "@appquality/appquality-design-system";
 import { Field, FieldProps } from "formik";
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
-import styled from "styled-components";
 import { useAppDispatch } from "src/store";
+import styled from "styled-components";
 import { setDisableApplyFilters } from "../../../selectionSlice";
+
+type Option = any;
 
 const StyledSelect = styled.div`
   flex: 1 1 0px;

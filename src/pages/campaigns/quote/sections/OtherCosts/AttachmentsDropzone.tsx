@@ -1,9 +1,9 @@
 import { Dropzone, Spinner } from "@appquality/appquality-design-system";
-import { useFormikContext, getIn } from "formik";
+import { getIn, useFormikContext } from "formik";
 import { useState } from "react";
 import { usePostCampaignsByCampaignFinanceAttachmentsMutation } from "src/services/tryberApi";
-import { normalizeFileName } from "./utils";
 import { FormProps } from "./CostsFormProvider";
+import { normalizeFileName } from "./utils";
 
 interface Props {
   campaignId: string;
@@ -87,7 +87,7 @@ export const AttachmentsDropzone = ({ campaignId, name }: Props) => {
             marginTop: "8px",
           }}
         >
-          <Spinner size="sm" />
+          <Spinner />
         </div>
       )}
 

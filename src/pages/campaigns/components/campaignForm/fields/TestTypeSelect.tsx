@@ -19,7 +19,7 @@ const TestTypeSelect = () => {
   );
 
   const handleChange = useCallback(
-    (option) => {
+    (option: any) => {
       const testType = testTypes?.find(
         (testType) => testType.id.toString() === option.value
       );

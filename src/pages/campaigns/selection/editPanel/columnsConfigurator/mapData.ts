@@ -1,5 +1,6 @@
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
 import { GetCampaignsByCampaignFormsApiResponse } from "src/services/tryberApi";
+
+type Option = any;
 
 export const mapCampaingFormData = (
   data: GetCampaignsByCampaignFormsApiResponse | undefined

@@ -10,18 +10,18 @@ import {
   Text,
 } from "@appquality/appquality-design-system";
 import { FieldArray, useFormikContext } from "formik";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { ReactComponent as DeleteIcon } from "src/assets/trash.svg";
-import { styled } from "styled-components";
 import siteWideMessageStore from "src/redux/siteWideMessages";
-import CostsFormProvider, { FormProps } from "./CostsFormProvider";
-import { AttachmentsDropzone } from "./AttachmentsDropzone";
 import {
+  useDeleteCampaignsByCampaignFinanceOtherCostsMutation,
   useGetCampaignsByCampaignFinanceSupplierQuery,
   useGetCampaignsByCampaignFinanceTypeQuery,
   usePostCampaignsByCampaignFinanceSupplierMutation,
-  useDeleteCampaignsByCampaignFinanceOtherCostsMutation,
 } from "src/services/tryberApi";
+import { styled } from "styled-components";
+import { AttachmentsDropzone } from "./AttachmentsDropzone";
+import CostsFormProvider, { FormProps } from "./CostsFormProvider";
 
 const StyledRow = styled.div`
   margin-top: ${({ theme }) => theme.grid.spacing.default};
@@ -221,6 +221,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
                       </div>
                       <div style={{ flex: 1 }}>
                         <FormLabel
+                          htmlFor={`supplier-${index}`}
                           label={
                             <Text>
                               Supplier <span style={{ color: "red" }}>*</span>
@@ -296,6 +297,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
 
                     <div style={{ marginTop: "12px" }}>
                       <FormLabel
+                        htmlFor={`attachments-${index}`}
                         label={
                           <Text small>
                             Attachments <span style={{ color: "red" }}>*</span>

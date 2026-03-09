@@ -1,11 +1,12 @@
 import {
-  Select,
-  FormGroup,
   ErrorMessage,
+  FormGroup,
+  Select,
 } from "@appquality/appquality-design-system";
-import { Option } from "@appquality/appquality-design-system/dist/stories/select/_types";
 import { Field, FieldProps } from "formik";
 import { useMemo } from "react";
+
+type Option = any;
 
 const optionAll = [{ label: "All options", value: "-1" }];
 

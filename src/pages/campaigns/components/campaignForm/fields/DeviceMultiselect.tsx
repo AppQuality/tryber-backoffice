@@ -1,16 +1,16 @@
-import { useFormikContext } from "formik";
-import {
-  GetDevicesByDeviceTypeOperatingSystemsApiResponse,
-  useGetDevicesByDeviceTypeOperatingSystemsQuery,
-} from "src/services/tryberApi";
-import { NewCampaignValues } from "../FormProvider";
-import { useCallback, useMemo } from "react";
-import { groupDevicesByType } from "../groupByType";
 import {
   Dropdown,
   FormGroup,
   FormLabel,
 } from "@appquality/appquality-design-system";
+import { useFormikContext } from "formik";
+import { useCallback, useMemo } from "react";
+import {
+  GetDevicesByDeviceTypeOperatingSystemsApiResponse,
+  useGetDevicesByDeviceTypeOperatingSystemsQuery,
+} from "src/services/tryberApi";
+import { NewCampaignValues } from "../FormProvider";
+import { groupDevicesByType } from "../groupByType";
 import { FieldWrapper } from "./FieldWrapper";
 import { Option } from "./SelectField";
 
@@ -25,7 +25,7 @@ const OsMultiselect = ({ options, label }: OsMultiselectProps) => {
   } = useFormikContext<NewCampaignValues>();
 
   const handleChange = useCallback(
-    (selectedOptions) => {
+    (selectedOptions: any) => {
       if (
         selectedOptions === null ||
         selectedOptions === undefined ||
@@ -99,7 +99,7 @@ const DeviceMultiselect = () => {
 
   // handle deviceTypes change
   const handleDeviceTypesChange = useCallback(
-    (option) => {
+    (option: any) => {
       if (option === null || option === undefined) {
         setFieldValue("deviceTypes", []);
         setFieldValue("deviceList", []);

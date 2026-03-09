@@ -57,7 +57,7 @@ const AgreementsListPage = () => (
         <FlexContainer>
           <Title size="m">Agreements List</Title>
           <Button
-            size="md"
+            size="medium"
             kind="secondary"
             as="a"
             href={`/backoffice/agreements/new`}

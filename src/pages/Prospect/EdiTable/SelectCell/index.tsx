@@ -2,17 +2,18 @@ import * as React from "react";
 import styled from "styled-components";
 import "./style.css";
 
-import { isAlphaNumericKey, isNavigationKey } from "@silevis/reactgrid";
-import { getCellProperty } from "@silevis/reactgrid";
-import { keyCodes } from "@silevis/reactgrid";
 import {
   Cell,
   CellTemplate,
   Compatible,
+  getCellProperty,
+  getCharFromKeyCode,
+  isAlphaNumericKey,
+  isNavigationKey,
+  keyCodes,
   Uncertain,
   UncertainCompatible,
 } from "@silevis/reactgrid";
-import { getCharFromKeyCode } from "@silevis/reactgrid";
 
 export interface SelectCell extends Cell {
   type: "select";
@@ -123,7 +124,6 @@ export class SelectCellTemplate implements CellTemplate<SelectCell> {
         onCopy={(e) => e.stopPropagation()}
         onCut={(e) => e.stopPropagation()}
         onPointerDown={(e) => e.stopPropagation()}
-        placeholder={cell.placeholder}
         onKeyDown={(e) => {
           if (isAlphaNumericKey(e.keyCode) || isNavigationKey(e.keyCode))
             e.stopPropagation();

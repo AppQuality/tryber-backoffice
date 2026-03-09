@@ -124,7 +124,7 @@ const FormContent = ({ campaignId }: { campaignId: string }) => {
     return (
       <Modal
         title="Delete this Research cost?"
-        isOpen={isOpen}
+        isOpen={!!isOpen}
         onClose={onCancel}
         footer={
           <div className="aq-float-right">

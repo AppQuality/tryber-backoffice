@@ -57,7 +57,7 @@ export const SelectField = ({
   }, [options, isMulti, currentValue]);
 
   const handleChange = useCallback(
-    (option) => {
+    (option: any) => {
       if (option === null || option === undefined) {
         setFieldValue(name, isMulti ? [] : "");
         return;
