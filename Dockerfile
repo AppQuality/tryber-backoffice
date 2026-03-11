@@ -1,17 +1,15 @@
-FROM node:18-alpine3.17 as base
+FROM node:24-alpine as base
 
 COPY package.json ./
-COPY yarn.lock ./
-ARG SENTRY_AUTH_TOKEN
-ARG NPM_TOKEN  
+COPY package-lock.json ./
+ARG NPM_TOKEN
 RUN echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
-RUN ["yarn", "install", "--frozen-lockfile", "--ignore-scripts"]
+RUN ["npm", "ci", "--ignore-scripts"]
 RUN rm -f .npmrc
 
 COPY . .
 
-RUN ["yarn", "build"]
-RUN ["yarn", "sentry:sourcemaps"]
+RUN ["npm", "run", "build"]
 
 
 FROM alpine:3.14 as web
